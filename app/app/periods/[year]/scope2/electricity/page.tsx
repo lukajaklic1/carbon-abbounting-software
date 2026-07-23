@@ -275,7 +275,7 @@ export default function Scope2ElectricityPage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Letna poraba', 'Annual consumption')} (kWh) <span className="text-red-400">*</span></label>
                 <div className="flex gap-2">
-                  <input value={form.kwh} onChange={e => f('kwh', e.target.value)} type="number" min="0" step="1" placeholder="0" className={INPUT} autoFocus />
+                  <input value={form.kwh} onChange={e => f('kwh', e.target.value)} onBlur={e => f('kwh', fmtQty(e.target.value))} type="text" inputMode="decimal" placeholder="0" className={INPUT} autoFocus />
                   <div className="w-12 px-2 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center shrink-0 font-medium">kWh</div>
                 </div>
               </div>

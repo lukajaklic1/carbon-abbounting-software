@@ -279,7 +279,7 @@ export default function Scope1MobilePage() {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Letna poraba', 'Annual consumption')} <span className="text-red-400">*</span></label>
                 <div className="flex gap-2">
-                  <input value={form.quantity} onChange={e => f('quantity', e.target.value)} type="text" inputMode="decimal" placeholder="0" className={INPUT} autoFocus />
+                  <input value={form.quantity} onChange={e => f('quantity', e.target.value)} onBlur={e => f('quantity', fmtQty(e.target.value))} type="text" inputMode="decimal" placeholder="0" className={INPUT} autoFocus />
                   <div className="w-14 px-2 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center shrink-0 font-medium">
                     {FUEL_FACTORS[form.fuel_type]?.unit ?? 'L'}
                   </div>
