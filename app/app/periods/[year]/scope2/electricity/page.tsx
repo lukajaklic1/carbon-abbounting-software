@@ -9,6 +9,7 @@ import { useParams } from 'next/navigation'
 import { Pagination } from '@/components/ui/Pagination'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { useEmissionCountersStore } from '@/stores/emissionCounters'
+import { parseQty, fmtQty } from '@/lib/utils/format'
 
 const PAGE_SIZE = 20
 const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 transition-shadow'
@@ -24,10 +25,7 @@ const EMPTY_FORM = { kwh: '', country_code: 'SI', method: 'location_based', data
 type EntryForm = typeof EMPTY_FORM
 
 
-  function fmtQty(val: any) {
-    const n = parseFloat(String(val).replace(/[.]/g, "").replace(",", "."))
-    if (isNaN(n)) return val
-    return n.toLocaleString("sl-SI", { maximumFractionDigits: 6 })
+  )
   }
 export default function Scope2ElectricityPage() {
   const { t } = useLocale()
@@ -86,14 +84,14 @@ export default function Scope2ElectricityPage() {
   }
 
   function co2ePreview(): number | null {
-    const kwh = parseFloat(String(form.kwh).replace(',', '.'))
+    const kwh = parseQty(form.kwh)
     const ef = ELECTRICITY_FACTORS[form.country_code]
     if (!kwh || !ef) return null
     return calcCo2eKg(kwh, ef.factor)
   }
 
   async function handleSave() {
-    const kwh = parseFloat(String(form.kwh).replace(',', '.'))
+    const kwh = parseQty(form.kwh)
     if (!kwh || kwh <= 0) { setError(t('Vnesite veljavno količino kWh.', 'Enter a valid kWh quantity.')); return }
     if (!period) { setError('Poročevalsko obdobje ni najdeno.'); return }
     const ef = ELECTRICITY_FACTORS[form.country_code]
@@ -325,7 +323,7 @@ export default function Scope2ElectricityPage() {
                 </button>
               )}
               <button onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">{t('Prekliči', 'Cancel')}</button>
-              <button onClick={handleSave} disabled={saving || !form.kwh || parseFloat(String(form.kwh).replace(',', '.')) <= 0}
+              <button onClick={handleSave} disabled={saving || !form.kwh || parseQty(form.kwh) <= 0}
                 className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : entriesMap[activeLocation.id] ? t('Shrani', 'Save') : t('Dodaj vnos', 'Add entry')}
               </button>
