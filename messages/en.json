@@ -1,0 +1,117 @@
+{
+  "nav": {
+    "locations": "Locations",
+    "vehicles": "Vehicles",
+    "equipment": "Equipment",
+    "scope1": "Scope 1",
+    "scope2": "Scope 2",
+    "analytics": "Footprint Analytics",
+    "reports": "Reports",
+    "organization": "Organization",
+    "dashboard": "Dashboard"
+  },
+  "scope1": {
+    "title": "Scope 1 – Direct Emissions",
+    "stationary": {
+      "title": "Natural Gas Consumption",
+      "description": "Add fuel consumption data for each location (boilers, heating, etc.)."
+    },
+    "mobile": {
+      "title": "Vehicle Usage (Fuel)",
+      "description": "Add fuel consumption or distance data for each vehicle."
+    },
+    "equipmentFuel": {
+      "title": "Fuel Consumption (Equipment)",
+      "description": "Add fuel consumption data for stationary equipment."
+    },
+    "refrigerants": {
+      "title": "Refrigerant Consumption",
+      "description": "Add refrigerant top-up data for cooling and AC equipment."
+    },
+    "industrialGases": {
+      "title": "Industrial Gas Consumption",
+      "description": "Add data for process gases, fire suppression agents, etc."
+    }
+  },
+  "scope2": {
+    "title": "Scope 2 – Indirect Emissions",
+    "electricity": {
+      "title": "Electricity Consumption",
+      "description": "Add electricity consumption data for each location."
+    }
+  },
+  "units": {
+    "kWh": "kWh",
+    "kWh_gross": "kWh (Gross CV)",
+    "kWh_net": "kWh (Net CV)",
+    "litres": "Litres",
+    "cubic_metres": "Cubic metres",
+    "km": "km",
+    "kg": "kg",
+    "tonnes": "Tonnes"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit data",
+    "add": "Add",
+    "done": "Done",
+    "needsData": "Needs data",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "delete": "Delete",
+    "back": "Back",
+    "continue": "Continue",
+    "search": "Search...",
+    "noResults": "No results found"
+  },
+  "auth": {
+    "login": "Sign in",
+    "register": "Create account",
+    "logout": "Sign out",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?"
+  },
+  "onboarding": {
+    "step1Title": "Tell us about your organization",
+    "step2Title": "Add your first reporting period",
+    "step3Title": "Add your emission sources",
+    "companyName": "Company name",
+    "industry": "Industry",
+    "country": "Country",
+    "year": "Reporting year",
+    "addLocations": "Add locations",
+    "addVehicles": "Add vehicles",
+    "addEquipment": "Add equipment",
+    "startMeasuring": "Start measuring"
+  },
+  "dashboard": {
+    "climateProfile": "Climate Profile",
+    "totalEmissions": "Total Calculated Emissions",
+    "dataUpdated": "Data Updated",
+    "footprintMeasured": "of footprint measured",
+    "viewAnalytics": "Footprint Analytics",
+    "generateReport": "Generate Report"
+  },
+  "plan": {
+    "free": "Free",
+    "starter": "Starter",
+    "professional": "Professional",
+    "enterprise": "Enterprise",
+    "upgrade": "Upgrade Plan",
+    "limitReached": "Plan limit reached"
+  },
+  "industries": {
+    "manufacturing": "Manufacturing",
+    "retail": "Retail",
+    "transport": "Transport",
+    "energy": "Energy",
+    "finance": "Finance",
+    "construction": "Construction",
+    "agriculture": "Agriculture",
+    "other": "Other"
+  }
+}

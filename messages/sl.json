@@ -1,0 +1,117 @@
+{
+  "nav": {
+    "locations": "Lokacije",
+    "vehicles": "Vozila",
+    "equipment": "Oprema",
+    "scope1": "Obseg 1",
+    "scope2": "Obseg 2",
+    "analytics": "Analitika odtisa",
+    "reports": "Poročila",
+    "organization": "Organizacija",
+    "dashboard": "Nadzorna plošča"
+  },
+  "scope1": {
+    "title": "Obseg 1 – Neposredne emisije",
+    "stationary": {
+      "title": "Poraba zemeljskega plina",
+      "description": "Dodajte podatke o porabi goriva za vsako lokacijo (kotli, ogrevanje itd.)."
+    },
+    "mobile": {
+      "title": "Poraba goriva vozil",
+      "description": "Dodajte podatke o porabi goriva ali prevoženih kilometrih za vsako vozilo."
+    },
+    "equipmentFuel": {
+      "title": "Poraba goriva opreme",
+      "description": "Dodajte podatke o porabi goriva za stacionarno opremo."
+    },
+    "refrigerants": {
+      "title": "Poraba hladilnih sredstev",
+      "description": "Dodajte podatke o dopolnjevanju hladilnih sredstev za hlajenje in klimatske naprave."
+    },
+    "industrialGases": {
+      "title": "Poraba industrijskih plinov",
+      "description": "Dodajte podatke za procesne pline, sredstva za gašenje požarov itd."
+    }
+  },
+  "scope2": {
+    "title": "Obseg 2 – Posredne emisije",
+    "electricity": {
+      "title": "Poraba električne energije",
+      "description": "Dodajte podatke o porabi električne energije za vsako lokacijo."
+    }
+  },
+  "units": {
+    "kWh": "kWh",
+    "kWh_gross": "kWh (bruto kurilna vrednost)",
+    "kWh_net": "kWh (neto kurilna vrednost)",
+    "litres": "Litri",
+    "cubic_metres": "Kubični metri",
+    "km": "km",
+    "kg": "kg",
+    "tonnes": "Tone"
+  },
+  "common": {
+    "save": "Shrani",
+    "cancel": "Prekliči",
+    "edit": "Uredi podatke",
+    "add": "Dodaj",
+    "done": "Opravljeno",
+    "needsData": "Potrebuje podatke",
+    "loading": "Nalaganje...",
+    "error": "Prišlo je do napake",
+    "delete": "Izbriši",
+    "back": "Nazaj",
+    "continue": "Nadaljuj",
+    "search": "Išči...",
+    "noResults": "Ni rezultatov"
+  },
+  "auth": {
+    "login": "Prijava",
+    "register": "Ustvari račun",
+    "logout": "Odjava",
+    "email": "E-pošta",
+    "password": "Geslo",
+    "forgotPassword": "Pozabljeno geslo?",
+    "noAccount": "Nimate računa?",
+    "hasAccount": "Že imate račun?"
+  },
+  "onboarding": {
+    "step1Title": "Povejte nam o vaši organizaciji",
+    "step2Title": "Dodajte prvo poročevalsko obdobje",
+    "step3Title": "Dodajte vire emisij",
+    "companyName": "Ime podjetja",
+    "industry": "Panoga",
+    "country": "Država",
+    "year": "Leto poročanja",
+    "addLocations": "Dodaj lokacije",
+    "addVehicles": "Dodaj vozila",
+    "addEquipment": "Dodaj opremo",
+    "startMeasuring": "Začni meriti"
+  },
+  "dashboard": {
+    "climateProfile": "Klimatski profil",
+    "totalEmissions": "Skupne izračunane emisije",
+    "dataUpdated": "Podatki posodobljeni",
+    "footprintMeasured": "odtisa izmerjenega",
+    "viewAnalytics": "Analitika odtisa",
+    "generateReport": "Ustvari poročilo"
+  },
+  "plan": {
+    "free": "Brezplačno",
+    "starter": "Začetnik",
+    "professional": "Profesionalno",
+    "enterprise": "Podjetniško",
+    "upgrade": "Nadgradi paket",
+    "limitReached": "Dosežena omejitev paketa"
+  },
+  "industries": {
+    "manufacturing": "Proizvodnja",
+    "retail": "Trgovina na drobno",
+    "transport": "Transport",
+    "energy": "Energetika",
+    "finance": "Finance",
+    "construction": "Gradbeništvo",
+    "agriculture": "Kmetijstvo",
+    "other": "Drugo"
+  }
+}
