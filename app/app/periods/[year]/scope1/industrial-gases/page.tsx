@@ -201,7 +201,7 @@ export default function Scope1IndustrialGasesPage() {
                       {entry ? entry.gas_type : <span className="text-gray-300">—</span>}
                     </td>
                     <td className="px-5 py-4 text-sm font-medium text-gray-700">
-                      {entry ? `${Number(entry.quantity).toLocaleString('sl-SI')} kg` : <span className="text-gray-300">—</span>}
+                      {entry ? `${fmtQty(entry.quantity)} kg` : <span className="text-gray-300">—</span>}
                     </td>
                     <td className="px-5 py-4">
                       {entry

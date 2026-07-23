@@ -76,7 +76,7 @@ export default function Scope2ElectricityPage() {
 
   function openEdit(location: any) {
     const e = entriesMap[location.id]
-    setForm({ kwh: Number(e.quantity ?? 0).toLocaleString('sl-SI', { maximumFractionDigits: 6 }), country_code: e.country_code ?? 'SI', method: e.method ?? 'location_based', data_source: e.data_source ?? '', notes: e.notes ?? '' })
+    setForm({ kwh: fmtQty(e.quantity ?? 0), country_code: e.country_code ?? 'SI', method: e.method ?? 'location_based', data_source: e.data_source ?? '', notes: e.notes ?? '' })
     setActiveLocation(location); setError(''); setShowModal(true)
   }
 
@@ -207,7 +207,7 @@ export default function Scope2ElectricityPage() {
                       {entry ? ELECTRICITY_FACTORS[entry.country_code]?.label ?? entry.country_code : (ELECTRICITY_FACTORS[loc.country_code]?.label ?? loc.country_code ?? <span className="text-gray-300">—</span>)}
                     </td>
                     <td className="px-5 py-4 text-sm font-medium text-gray-700">
-                      {entry ? `${Number(entry.quantity).toLocaleString('sl-SI')} kWh` : <span className="text-gray-300">—</span>}
+                      {entry ? `${fmtQty(entry.quantity)} kWh` : <span className="text-gray-300">—</span>}
                     </td>
                     <td className="px-5 py-4">
                       {entry

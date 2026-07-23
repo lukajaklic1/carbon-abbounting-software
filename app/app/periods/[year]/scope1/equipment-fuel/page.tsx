@@ -71,7 +71,7 @@ export default function Scope1EquipmentFuelPage() {
 
   function openEdit(item: any) {
     const e = entriesMap[item.id]
-    setForm({ fuel_type: e.fuel_type ?? 'diesel', quantity: Number(e.quantity ?? 0).toLocaleString('sl-SI', { maximumFractionDigits: 6 }), data_source: e.data_source ?? '', notes: e.notes ?? '' })
+    setForm({ fuel_type: e.fuel_type ?? 'diesel', quantity: fmtQty(e.quantity ?? 0), data_source: e.data_source ?? '', notes: e.notes ?? '' })
     setActiveItem(item); setError(''); setShowModal(true)
   }
 
@@ -200,7 +200,7 @@ export default function Scope1EquipmentFuelPage() {
                       {entry ? t(FUEL_FACTORS[entry.fuel_type]?.label_sl ?? entry.fuel_type, FUEL_FACTORS[entry.fuel_type]?.label_en ?? entry.fuel_type) : t(FUEL_FACTORS[item.fuel_type]?.label_sl ?? '—', FUEL_FACTORS[item.fuel_type]?.label_en ?? '—') || <span className="text-gray-300">—</span>}
                     </td>
                     <td className="px-5 py-4 text-sm font-medium text-gray-700">
-                      {entry ? `${Number(entry.quantity).toLocaleString('sl-SI')} ${entry.unit}` : <span className="text-gray-300">—</span>}
+                      {entry ? `${fmtQty(entry.quantity)} ${entry.unit}` : <span className="text-gray-300">—</span>}
                     </td>
                     <td className="px-5 py-4">
                       {entry

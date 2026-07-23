@@ -70,7 +70,7 @@ export default function Scope1StationaryPage() {
 
   function openEdit(location: any) {
     const e = entriesMap[location.id]
-    setForm({ fuel_type: e.fuel_type ?? 'natural_gas', quantity: Number(e.quantity ?? 0).toLocaleString('sl-SI', { maximumFractionDigits: 6 }), data_source: e.data_source ?? '', notes: e.notes ?? '' })
+    setForm({ fuel_type: e.fuel_type ?? 'natural_gas', quantity: fmtQty(e.quantity ?? 0), data_source: e.data_source ?? '', notes: e.notes ?? '' })
     setActiveLocation(location); setError(''); setShowModal(true)
   }
 
@@ -202,7 +202,7 @@ export default function Scope1StationaryPage() {
                       {entry ? t(FUEL_FACTORS[entry.fuel_type]?.label_sl ?? entry.fuel_type, FUEL_FACTORS[entry.fuel_type]?.label_en ?? entry.fuel_type) : <span className="text-gray-300">—</span>}
                     </td>
                     <td className="px-5 py-4 text-sm font-medium text-gray-700">
-                      {entry ? `${Number(entry.quantity).toLocaleString('sl-SI')} ${entry.unit}` : <span className="text-gray-300">—</span>}
+                      {entry ? `${fmtQty(entry.quantity)} ${entry.unit}` : <span className="text-gray-300">—</span>}
                     </td>
                     <td className="px-5 py-4">
                       {entry
