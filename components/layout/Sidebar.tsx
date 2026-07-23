@@ -32,6 +32,7 @@ export function Sidebar() {
     if (selectedYear) refresh(selectedYear)
   }, [selectedYear, pathname])
 
+  const [openOrg, setOpenOrg] = useState(true)
   const [openScope1, setOpenScope1] = useState(true)
   const [openScope2, setOpenScope2] = useState(true)
   const [openReports, setOpenReports] = useState(true)
@@ -113,16 +114,21 @@ export function Sidebar() {
       {/* Org name */}
       <div className="px-4 pt-4 pb-3 border-b border-gray-100">
         <p className="text-sm font-bold text-gray-800 truncate">{orgName}</p>
-        <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mt-2">{t('Moja organizacija', 'My organisation')}</p>
       </div>
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-3 overflow-y-auto space-y-0.5">
-        {/* Main items */}
-        {mainItems.map(item => (
-          <NavItem key={item.href} href={item.href} label={item.label} icon={item.icon}
-            active={pathname.startsWith(item.href)} counter={counters[item.href]} entityOnly />
-        ))}
+        {/* Moja organizacija */}
+        <CollapsibleSection
+          label={t('Moja organizacija', 'My organisation')}
+          open={openOrg}
+          onToggle={() => setOpenOrg(v => !v)}
+        >
+          {mainItems.map(item => (
+            <NavItem key={item.href} href={item.href} label={item.label} icon={item.icon}
+              active={pathname.startsWith(item.href)} counter={counters[item.href]} entityOnly />
+          ))}
+        </CollapsibleSection>
 
         {/* Scope 1 */}
         <CollapsibleSection
