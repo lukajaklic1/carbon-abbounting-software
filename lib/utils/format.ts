@@ -51,11 +51,11 @@ export function parseQty(val: any): number {
 export function fmtQty(val: any): string {
   const n = parseQty(val)
   if (isNaN(n)) return String(val)
-  // Manual SI formatting: dot=thousands, comma=decimal (never trust browser locale)
-  const fixed = n % 1 === 0 ? n.toFixed(0) : parseFloat(n.toFixed(6)).toString()
+  // Always 2 decimal places, dot=thousands, comma=decimal (SI format)
+  const fixed = n.toFixed(2)
   const [intPart, decPart] = fixed.split('.')
   const intFormatted = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
-  return decPart ? `${intFormatted},${decPart}` : intFormatted
+  return `${intFormatted},${decPart}`
 }
 
 export function formatPercent(n: number): string {
