@@ -19,9 +19,6 @@ const STATIONARY_FUELS = ['natural_gas', 'heating_oil', 'lpg', 'diesel', 'wood_c
 const EMPTY_FORM = { fuel_type: 'natural_gas', quantity: '', data_source: '', notes: '' }
 type EntryForm = typeof EMPTY_FORM
 
-
-  )
-  }
 export default function Scope1StationaryPage() {
   const { t } = useLocale()
   const params = useParams()

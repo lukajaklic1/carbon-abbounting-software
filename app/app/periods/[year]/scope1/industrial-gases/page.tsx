@@ -20,9 +20,6 @@ const GAS_KEYS = Object.keys(INDUSTRIAL_GAS_FACTORS)
 const EMPTY_FORM = { gas_type: GAS_KEYS[0] ?? 'SF6', quantity_kg: '', data_source: '', notes: '' }
 type EntryForm = typeof EMPTY_FORM
 
-
-  )
-  }
 export default function Scope1IndustrialGasesPage() {
   const { t } = useLocale()
   const params = useParams()

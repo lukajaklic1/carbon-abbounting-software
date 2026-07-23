@@ -24,9 +24,6 @@ const METHODS = [
 const EMPTY_FORM = { kwh: '', country_code: 'SI', method: 'location_based', data_source: '', notes: '' }
 type EntryForm = typeof EMPTY_FORM
 
-
-  )
-  }
 export default function Scope2ElectricityPage() {
   const { t } = useLocale()
   const params = useParams()

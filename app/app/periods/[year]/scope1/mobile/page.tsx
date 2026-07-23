@@ -21,9 +21,6 @@ type EntryForm = typeof EMPTY_FORM
 
 const VEHICLE_EMOJI: Record<string, string> = { car: '🚘', van: '🚚', truck: '🚛', bus: '🚍', motorcycle: '🏍️', other: '🚘' }
 
-
-  )
-  }
 export default function Scope1MobilePage() {
   const { t } = useLocale()
   const params = useParams()

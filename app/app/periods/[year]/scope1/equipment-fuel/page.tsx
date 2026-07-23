@@ -19,9 +19,6 @@ const ALL_FUEL_KEYS = Object.keys(FUEL_FACTORS)
 const EMPTY_FORM = { fuel_type: 'diesel', quantity: '', data_source: '', notes: '' }
 type EntryForm = typeof EMPTY_FORM
 
-
-  )
-  }
 export default function Scope1EquipmentFuelPage() {
   const { t } = useLocale()
   const params = useParams()

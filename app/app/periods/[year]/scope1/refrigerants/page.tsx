@@ -25,9 +25,6 @@ const REFRIG_MAP: Record<string, string> = {
 const EMPTY_FORM = { refrigerant_type: REFRIG_KEYS[0] ?? 'R-410A', quantity_kg: '', data_source: '', notes: '' }
 type EntryForm = typeof EMPTY_FORM
 
-
-  )
-  }
 export default function Scope1RefrigerantsPage() {
   const { t } = useLocale()
   const params = useParams()
