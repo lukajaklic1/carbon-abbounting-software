@@ -25,7 +25,7 @@ const EMPTY_FORM = { refrigerant_type: REFRIG_KEYS[0] ?? 'R-410A', quantity_kg: 
 type EntryForm = typeof EMPTY_FORM
 
 
-  function fmtQty(val) {
+  function fmtQty(val: any) {
     const n = parseFloat(String(val).replace(/[.]/g, "").replace(",", "."))
     if (isNaN(n)) return val
     return n.toLocaleString("sl-SI", { maximumFractionDigits: 6 })

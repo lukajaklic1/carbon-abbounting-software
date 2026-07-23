@@ -20,7 +20,7 @@ const EMPTY_FORM = { gas_type: GAS_KEYS[0] ?? 'SF6', quantity_kg: '', data_sourc
 type EntryForm = typeof EMPTY_FORM
 
 
-  function fmtQty(val) {
+  function fmtQty(val: any) {
     const n = parseFloat(String(val).replace(/[.]/g, "").replace(",", "."))
     if (isNaN(n)) return val
     return n.toLocaleString("sl-SI", { maximumFractionDigits: 6 })

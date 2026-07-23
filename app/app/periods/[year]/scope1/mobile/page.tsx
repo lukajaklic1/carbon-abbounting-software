@@ -21,7 +21,7 @@ type EntryForm = typeof EMPTY_FORM
 const VEHICLE_EMOJI: Record<string, string> = { car: '🚘', van: '🚚', truck: '🚛', bus: '🚍', motorcycle: '🏍️', other: '🚘' }
 
 
-  function fmtQty(val) {
+  function fmtQty(val: any) {
     const n = parseFloat(String(val).replace(/[.]/g, "").replace(",", "."))
     if (isNaN(n)) return val
     return n.toLocaleString("sl-SI", { maximumFractionDigits: 6 })
