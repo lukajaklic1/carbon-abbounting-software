@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Upload, Check, Clock, FileText, X, Leaf, Package } from 'lucide-react'
+import { Upload, Check, Clock, FileText, X, Leaf, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { useParams } from 'next/navigation'
@@ -42,6 +42,7 @@ export default function Scope3Page() {
 
   const [submissions, setSubmissions] = useState<Record<number, Submission>>({})
   const [uploading, setUploading] = useState<Set<number>>(new Set())
+  const [deleting, setDeleting] = useState<Set<number>>(new Set())
   const [orgId, setOrgId] = useState<string | null>(null)
   const [periodId, setPeriodId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -115,6 +116,26 @@ export default function Scope3Page() {
     setUploading(prev => { const n = new Set(prev); n.delete(catNum); return n })
   }
 
+  async function handleDelete(catNum: number) {
+    const sub = submissions[catNum]
+    if (!sub) return
+    setDeleting(prev => new Set(prev).add(catNum))
+    try {
+      const supabase = createClient()
+      await supabase.from('scope3_submissions').delete().eq('id', sub.id)
+      if (sub.file_url) {
+        // extract storage path from public URL
+        const url = new URL(sub.file_url)
+        const pathParts = url.pathname.split('/object/public/scope3-uploads/')
+        if (pathParts[1]) {
+          await supabase.storage.from('scope3-uploads').remove([decodeURIComponent(pathParts[1])])
+        }
+      }
+      await load()
+    } catch (err) { console.error(err) }
+    setDeleting(prev => { const n = new Set(prev); n.delete(catNum); return n })
+  }
+
   const totalCo2e = Object.values(submissions).reduce((s, sub) => s + (sub.co2e_kg ?? 0), 0)
   const doneCount = Object.values(submissions).filter(s => s.status === 'done').length
   const inReviewCount = Object.values(submissions).filter(s => s.status === 'in_review').length
@@ -173,60 +194,74 @@ export default function Scope3Page() {
             const isDone = sub?.status === 'done'
             const isInReview = sub?.status === 'in_review'
 
+            const isDeleting = deleting.has(cat.number)
+
             return (
-              <div key={cat.number} className={cn('flex items-center gap-4 px-5 py-4', i !== 0 && 'border-t border-gray-100', 'hover:bg-gray-50/50 transition-colors')}>
-                {/* Number */}
-                <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold',
-                  isDone ? 'bg-green-50 text-green-600' : isInReview ? 'bg-amber-50 text-amber-600' : 'bg-gray-100 text-gray-500'
-                )}>
-                  {cat.number}
-                </div>
-
-                {/* Name + desc */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900">{t(cat.label_sl, cat.label_en)}</p>
-                  <p className="text-xs text-gray-400 mt-0.5 truncate">{t(cat.desc_sl, cat.desc_en)}</p>
-                </div>
-
-                {/* File name */}
-                {sub?.file_name && (
-                  <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 shrink-0 max-w-[160px]">
-                    <FileText className="h-3 w-3 shrink-0" />
-                    <span className="truncate">{sub.file_name}</span>
+              <div key={cat.number} className={cn('px-5 py-4', i !== 0 && 'border-t border-gray-100', 'hover:bg-gray-50/50 transition-colors')}>
+                <div className="flex items-center gap-4">
+                  {/* Number */}
+                  <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold',
+                    isDone ? 'bg-green-50 text-green-600' : isInReview ? 'bg-amber-50 text-amber-600' : 'bg-gray-100 text-gray-500'
+                  )}>
+                    {cat.number}
                   </div>
-                )}
 
-                {/* Badge + action */}
-                <div className="flex items-center gap-2 shrink-0">
-                  {isDone && (
-                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-green-50 text-green-700">
-                      <Check className="h-3 w-3" />
-                      {t('Zaključeno', 'Done')}
-                      {sub.co2e_kg != null && <span className="ml-1 font-normal opacity-75">· {(sub.co2e_kg / 1000).toFixed(2).replace('.', ',')} t</span>}
-                    </span>
-                  )}
-                  {isInReview && (
-                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-amber-50 text-amber-700">
-                      <Clock className="h-3 w-3" />
-                      {t('V pregledu', 'In review')}
-                    </span>
-                  )}
+                  {/* Name + desc */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-gray-900">{t(cat.label_sl, cat.label_en)}</p>
+                    <p className="text-xs text-gray-400 mt-0.5 truncate">{t(cat.desc_sl, cat.desc_en)}</p>
+                  </div>
+
+                  {/* Badge */}
+                  <div className="shrink-0">
+                    {isDone && (
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700 border border-green-200">
+                        <Check className="h-3 w-3" />
+                        {t('Zaključeno', 'Done')}
+                        {sub.co2e_kg != null && <span className="ml-1 font-normal">· {(sub.co2e_kg / 1000).toFixed(2).replace('.', ',')} t</span>}
+                      </span>
+                    )}
+                    {isInReview && (
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200">
+                        <Clock className="h-3 w-3" />
+                        {t('V pregledu', 'In review')}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Upload / Replace button */}
                   <button
                     onClick={() => triggerUpload(cat.number)}
-                    disabled={isUploading}
+                    disabled={isUploading || isDeleting}
                     className={cn(
-                      'inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors',
+                      'inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0',
                       isUploading
                         ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                         : sub
                         ? 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                        : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
                     )}
                   >
                     <Upload className="h-3 w-3" />
-                    {isUploading ? t('Nalaganje...', 'Uploading...') : sub ? t('Zamenjaj datoteko', 'Replace file') : t('Naloži podatke', 'Upload data')}
+                    {isUploading ? t('Nalaganje...', 'Uploading...') : sub ? t('Zamenjaj', 'Replace') : t('Naloži podatke', 'Upload data')}
                   </button>
                 </div>
+
+                {/* Uploaded file row */}
+                {sub?.file_name && (
+                  <div className="mt-2.5 ml-12 flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+                    <FileText className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                    <span className="text-xs text-gray-700 font-medium flex-1 truncate">{sub.file_name}</span>
+                    <button
+                      onClick={() => handleDelete(cat.number)}
+                      disabled={isDeleting}
+                      className="p-1 text-gray-400 hover:text-red-500 transition-colors shrink-0"
+                      title={t('Izbriši datoteko', 'Delete file')}
+                    >
+                      {isDeleting ? <Clock className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+                    </button>
+                  </div>
+                )}
               </div>
             )
           })}
