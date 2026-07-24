@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import {
   MapPin, Car, BarChart2, FileText,
-  Flame, Zap, Thermometer, FlaskConical, Settings, LogOut, Users, ChevronDown, Wrench, Wind,
+  Flame, Zap, Thermometer, FlaskConical, Settings, LogOut, Users, ChevronDown, Wrench, Wind, Package,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useOrganizationStore } from '@/stores/organization'
@@ -35,6 +35,7 @@ export function Sidebar() {
   const [openOrg, setOpenOrg] = useState(true)
   const [openScope1, setOpenScope1] = useState(true)
   const [openScope2, setOpenScope2] = useState(true)
+  const [openScope3, setOpenScope3] = useState(true)
   const [openReports, setOpenReports] = useState(true)
 
   const orgName = organization?.name ?? (IS_MOCK ? mockOrg.name : '—')
@@ -90,6 +91,10 @@ export function Sidebar() {
     { label: t('Toplota', 'Heat'), href: `/app/periods/${selectedYear}/scope2/heat`, icon: Flame },
     { label: t('Para', 'Steam'), href: `/app/periods/${selectedYear}/scope2/steam`, icon: Wind },
     { label: t('Hlajenje', 'Cooling'), href: `/app/periods/${selectedYear}/scope2/cooling`, icon: Thermometer },
+  ]
+
+  const scope3Items = [
+    { label: t('Obseg 3', 'Scope 3'), href: `/app/periods/${selectedYear}/scope3`, icon: Package },
   ]
 
   const reportItems = [
@@ -151,6 +156,18 @@ export function Sidebar() {
           {scope2Items.map(item => (
             <NavItem key={item.href} href={item.href} label={item.label} icon={item.icon}
               active={pathname.startsWith(item.href)} counter={counters[item.href]} />
+          ))}
+        </CollapsibleSection>
+
+        {/* Scope 3 */}
+        <CollapsibleSection
+          label={t('Obseg 3', 'Scope 3')}
+          open={openScope3}
+          onToggle={() => setOpenScope3(v => !v)}
+        >
+          {scope3Items.map(item => (
+            <NavItem key={item.href} href={item.href} label={item.label} icon={item.icon}
+              active={pathname.startsWith(item.href)} />
           ))}
         </CollapsibleSection>
 
