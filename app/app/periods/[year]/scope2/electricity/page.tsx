@@ -16,12 +16,7 @@ const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-
 const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] transition-shadow'
 
 const COUNTRY_KEYS = Object.keys(getElectricityFactors(2024))
-const METHODS = [
-  { value: 'location_based', label_sl: 'Na osnovi lokacije', label_en: 'Location-based' },
-  { value: 'market_based', label_sl: 'Na osnovi trga', label_en: 'Market-based' },
-]
-
-const EMPTY_FORM = { kwh: '', country_code: 'SI', method: 'location_based' }
+const EMPTY_FORM = { kwh: '', country_code: 'SI' }
 type EntryForm = typeof EMPTY_FORM
 
 export default function Scope2ElectricityPage() {
@@ -71,13 +66,13 @@ export default function Scope2ElectricityPage() {
 
   function openAdd(location: any) {
     const cc = location.country_code && COUNTRY_KEYS.includes(location.country_code) ? location.country_code : 'SI'
-    setForm({ kwh: '', country_code: cc, method: 'location_based' })
+    setForm({ kwh: '', country_code: cc })
     setActiveLocation(location); setError(''); setShowModal(true)
   }
 
   function openEdit(location: any) {
     const e = entriesMap[location.id]
-    setForm({ kwh: fmtQty(e.quantity ?? 0), country_code: e.country_code ?? 'SI', method: e.method ?? 'location_based' })
+    setForm({ kwh: fmtQty(e.quantity ?? 0), country_code: e.country_code ?? 'SI' })
     setActiveLocation(location); setError(''); setShowModal(true)
   }
 
@@ -103,7 +98,7 @@ export default function Scope2ElectricityPage() {
       if (!org) return
       const payload = {
         location_id: activeLocation.id, quantity: kwh, unit: 'kWh', country_code: form.country_code,
-        method: form.method, co2e_kg, factor_kg_co2e_per_kwh: ef?.factor ?? null,
+        method: 'location_based', co2e_kg, factor_kg_co2e_per_kwh: ef?.factor ?? null,
 
         organization_id: org.id, reporting_period_id: period.id,
       }
@@ -288,12 +283,7 @@ export default function Scope2ElectricityPage() {
                   ))}
                 </select>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Metoda', 'Method')}</label>
-                <select value={form.method} onChange={e => f('method', e.target.value)} className={SELECT}>
-                  {METHODS.map(m => <option key={m.value} value={m.value}>{t(m.label_sl, m.label_en)}</option>)}
-                </select>
-              </div>
+
               {preview !== null && (
                 <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3 flex items-center gap-3">
                   <Leaf className="h-4 w-4 text-green-600 shrink-0" />
