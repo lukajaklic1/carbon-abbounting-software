@@ -90,7 +90,7 @@ export default function Scope1RefrigerantsPage() {
 
   async function handleSave() {
     const qty = parseQty(form.quantity_kg)
-    if (!qty || qty <= 0) { setError(t('Vnesite veljavno količino.', 'Enter a valid quantity.')); return }
+    if (isNaN(qty) || qty < 0) { setError(t('Vnesite veljavno količino.', 'Enter a valid quantity.')); return }
     if (!period) { setError('Poročevalsko obdobje ni najdeno.'); return }
     const rf = REFRIGERANT_FACTORS[form.refrigerant_type]
     const co2e_kg = rf ? calcCo2eKg(qty, rf.factor) : 0
@@ -310,7 +310,7 @@ export default function Scope1RefrigerantsPage() {
                 </button>
               )}
               <button onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">{t('Prekliči', 'Cancel')}</button>
-              <button onClick={handleSave} disabled={saving || !form.quantity_kg || parseQty(form.quantity_kg) <= 0}
+              <button onClick={handleSave} disabled={saving || !form.quantity_kg || parseQty(form.quantity_kg) < 0}
                 className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : entriesMap[activeItem.id] ? t('Shrani', 'Save') : t('Dodaj vnos', 'Add entry')}
               </button>

@@ -82,7 +82,7 @@ export default function Scope2CoolingPage() {
 
   async function handleSave() {
     const kwh = parseQty(form.kwh)
-    if (!kwh || kwh <= 0) { setError(t('Vnesite veljavno količino kWh.', 'Enter a valid kWh quantity.')); return }
+    if (isNaN(kwh) || kwh < 0) { setError(t('Vnesite veljavno količino kWh.', 'Enter a valid kWh quantity.')); return }
     if (!period) { setError('Poročevalsko obdobje ni najdeno.'); return }
     const cf = COOLING_FACTORS[form.method]
     const co2e_kg = cf ? calcCo2eKg(kwh, cf.factor) : 0
@@ -287,7 +287,7 @@ export default function Scope2CoolingPage() {
                 </button>
               )}
               <button onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">{t('Prekliči', 'Cancel')}</button>
-              <button onClick={handleSave} disabled={saving || !form.kwh || parseQty(form.kwh) <= 0}
+              <button onClick={handleSave} disabled={saving || !form.kwh || parseQty(form.kwh) < 0}
                 className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : entriesMap[activeLocation.id] ? t('Shrani', 'Save') : t('Dodaj vnos', 'Add entry')}
               </button>
