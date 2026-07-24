@@ -22,7 +22,7 @@ const REFRIG_MAP: Record<string, string> = {
   r407c: 'R-407C', r32: 'R-32', r22: 'R-22',
 }
 
-const EMPTY_FORM = { refrigerant_type: REFRIG_KEYS[0] ?? 'R-410A', quantity_kg: '', data_source: '', notes: '' }
+const EMPTY_FORM = { refrigerant_type: REFRIG_KEYS[0] ?? 'R-410A', quantity_kg: '' }
 type EntryForm = typeof EMPTY_FORM
 
 export default function Scope1RefrigerantsPage() {
@@ -71,13 +71,13 @@ export default function Scope1RefrigerantsPage() {
 
   function openAdd(item: any) {
     const rt = item.refrigerant_type ? (REFRIG_MAP[item.refrigerant_type] ?? REFRIGERANT_FACTORS[item.refrigerant_type] ? item.refrigerant_type : REFRIG_KEYS[0]) : REFRIG_KEYS[0]
-    setForm({ refrigerant_type: REFRIG_KEYS.includes(rt) ? rt : REFRIG_KEYS[0], quantity_kg: '', data_source: '', notes: '' })
+    setForm({ refrigerant_type: REFRIG_KEYS.includes(rt) ? rt : REFRIG_KEYS[0], quantity_kg: '' })
     setActiveItem(item); setError(''); setShowModal(true)
   }
 
   function openEdit(item: any) {
     const e = entriesMap[item.id]
-    setForm({ refrigerant_type: e.refrigerant_type ?? REFRIG_KEYS[0], quantity_kg: String(e.quantity ?? ''), data_source: e.data_source ?? '', notes: e.notes ?? '' })
+    setForm({ refrigerant_type: e.refrigerant_type ?? REFRIG_KEYS[0], quantity_kg: String(e.quantity ?? '') })
     setActiveItem(item); setError(''); setShowModal(true)
   }
 
@@ -104,7 +104,7 @@ export default function Scope1RefrigerantsPage() {
       const payload = {
         equipment_id: activeItem.id, refrigerant_type: form.refrigerant_type,
         quantity: qty, co2e_kg,
-        data_source: form.data_source || null, notes: form.notes || null,
+
         organization_id: org.id, reporting_period_id: period.id,
       }
       const existing = entriesMap[activeItem.id]
@@ -292,14 +292,6 @@ export default function Scope1RefrigerantsPage() {
                   </div>
                 </div>
               )}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Vir podatkov', 'Data source')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <input value={form.data_source} onChange={e => f('data_source', e.target.value)} placeholder={t('npr. servisni zapisnik', 'e.g. service log')} className={INPUT} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Opombe', 'Notes')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <textarea value={form.notes} onChange={e => f('notes', e.target.value)} rows={2} className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 resize-none" />
-              </div>
               {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
             </div>
             <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3 rounded-b-2xl">

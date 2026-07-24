@@ -16,7 +16,7 @@ const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-
 const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] transition-shadow'
 const FUEL_OPTS = ['diesel', 'petrol', 'lpg', 'cng'] as const
 
-const EMPTY_FORM = { fuel_type: 'diesel', quantity: '', unit: 'L', data_source: '', notes: '' }
+const EMPTY_FORM = { fuel_type: 'diesel', quantity: '', unit: 'L' }
 type EntryForm = typeof EMPTY_FORM
 
 const VEHICLE_EMOJI: Record<string, string> = { car: '🚘', van: '🚚', truck: '🚛', bus: '🚍', motorcycle: '🏍️', other: '🚘' }
@@ -68,13 +68,13 @@ export default function Scope1MobilePage() {
 
   function openAdd(vehicle: any) {
     const ft = vehicle.fuel_type && FUEL_FACTORS[vehicle.fuel_type] ? vehicle.fuel_type : 'diesel'
-    setForm({ fuel_type: ft, quantity: '', unit: FUEL_FACTORS[ft]?.unit ?? 'L', data_source: '', notes: '' })
+    setForm({ fuel_type: ft, quantity: '', unit: FUEL_FACTORS[ft]?.unit ?? 'L' })
     setActiveVehicle(vehicle); setError(''); setShowModal(true)
   }
 
   function openEdit(vehicle: any) {
     const e = entriesMap[vehicle.id]
-    setForm({ fuel_type: e.fuel_type ?? 'diesel', quantity: fmtQty(e.quantity ?? 0), unit: e.unit ?? 'L', data_source: e.data_source ?? '', notes: e.notes ?? '' })
+    setForm({ fuel_type: e.fuel_type ?? 'diesel', quantity: fmtQty(e.quantity ?? 0), unit: e.unit ?? 'L' })
     setActiveVehicle(vehicle); setError(''); setShowModal(true)
   }
 
@@ -105,7 +105,7 @@ export default function Scope1MobilePage() {
       const payload = {
         vehicle_id: activeVehicle.id, fuel_type: form.fuel_type, quantity: qty,
         unit: form.unit, co2e_kg, factor_kg_co2e_per_unit: ff?.factor ?? null,
-        data_source: form.data_source || null, notes: form.notes || null,
+
         organization_id: org.id, reporting_period_id: period.id,
       }
       const existing = entriesMap[activeVehicle.id]
@@ -295,14 +295,6 @@ export default function Scope1MobilePage() {
                   </div>
                 </div>
               )}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Vir podatkov', 'Data source')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <input value={form.data_source} onChange={e => f('data_source', e.target.value)} placeholder={t('npr. računi za gorivo', 'e.g. fuel receipts')} className={INPUT} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Opombe', 'Notes')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <textarea value={form.notes} onChange={e => f('notes', e.target.value)} rows={2} className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 resize-none" />
-              </div>
               {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
             </div>
             <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3 rounded-b-2xl">

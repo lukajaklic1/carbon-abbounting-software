@@ -17,7 +17,7 @@ const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded
 
 const GAS_KEYS = Object.keys(INDUSTRIAL_GAS_FACTORS)
 
-const EMPTY_FORM = { gas_type: GAS_KEYS[0] ?? 'SF6', quantity_kg: '', data_source: '', notes: '' }
+const EMPTY_FORM = { gas_type: GAS_KEYS[0] ?? 'SF6', quantity_kg: '' }
 type EntryForm = typeof EMPTY_FORM
 
 export default function Scope1IndustrialGasesPage() {
@@ -67,13 +67,13 @@ export default function Scope1IndustrialGasesPage() {
   function openAdd(item: any) {
     const gt = item.industrial_gas_type && GAS_KEYS.includes(item.industrial_gas_type.toUpperCase?.() ?? item.industrial_gas_type)
       ? item.industrial_gas_type : GAS_KEYS[0]
-    setForm({ gas_type: GAS_KEYS.includes(gt) ? gt : GAS_KEYS[0], quantity_kg: '', data_source: '', notes: '' })
+    setForm({ gas_type: GAS_KEYS.includes(gt) ? gt : GAS_KEYS[0], quantity_kg: '' })
     setActiveItem(item); setError(''); setShowModal(true)
   }
 
   function openEdit(item: any) {
     const e = entriesMap[item.id]
-    setForm({ gas_type: e.gas_type ?? GAS_KEYS[0], quantity_kg: String(e.quantity ?? ''), data_source: e.data_source ?? '', notes: e.notes ?? '' })
+    setForm({ gas_type: e.gas_type ?? GAS_KEYS[0], quantity_kg: String(e.quantity ?? '') })
     setActiveItem(item); setError(''); setShowModal(true)
   }
 
@@ -100,7 +100,7 @@ export default function Scope1IndustrialGasesPage() {
       const payload = {
         equipment_id: activeItem.id, gas_type: form.gas_type,
         quantity: qty, unit: 'kg', co2e_kg,
-        data_source: form.data_source || null, notes: form.notes || null,
+
         organization_id: org.id, reporting_period_id: period.id,
       }
       const existing = entriesMap[activeItem.id]
@@ -288,14 +288,6 @@ export default function Scope1IndustrialGasesPage() {
                   </div>
                 </div>
               )}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Vir podatkov', 'Data source')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <input value={form.data_source} onChange={e => f('data_source', e.target.value)} placeholder={t('npr. servisni zapisnik', 'e.g. service log')} className={INPUT} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Opombe', 'Notes')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <textarea value={form.notes} onChange={e => f('notes', e.target.value)} rows={2} className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 resize-none" />
-              </div>
               {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
             </div>
             <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3 rounded-b-2xl">

@@ -16,7 +16,7 @@ const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-
 const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] transition-shadow'
 
 const ALL_FUEL_KEYS = Object.keys(getFuelFactors(2024))
-const EMPTY_FORM = { fuel_type: 'diesel', quantity: '', data_source: '', notes: '' }
+const EMPTY_FORM = { fuel_type: 'diesel', quantity: '' }
 type EntryForm = typeof EMPTY_FORM
 
 export default function Scope1EquipmentFuelPage() {
@@ -66,13 +66,13 @@ export default function Scope1EquipmentFuelPage() {
 
   function openAdd(item: any) {
     const ft = item.fuel_type && FUEL_FACTORS[item.fuel_type] ? item.fuel_type : 'diesel'
-    setForm({ fuel_type: ft, quantity: '', data_source: '', notes: '' })
+    setForm({ fuel_type: ft, quantity: '' })
     setActiveItem(item); setError(''); setShowModal(true)
   }
 
   function openEdit(item: any) {
     const e = entriesMap[item.id]
-    setForm({ fuel_type: e.fuel_type ?? 'diesel', quantity: fmtQty(e.quantity ?? 0), data_source: e.data_source ?? '', notes: e.notes ?? '' })
+    setForm({ fuel_type: e.fuel_type ?? 'diesel', quantity: fmtQty(e.quantity ?? 0) })
     setActiveItem(item); setError(''); setShowModal(true)
   }
 
@@ -100,7 +100,7 @@ export default function Scope1EquipmentFuelPage() {
       const payload = {
         equipment_id: activeItem.id, fuel_type: form.fuel_type, quantity: qty, unit,
         co2e_kg, factor_kg_co2e_per_unit: ff?.factor ?? null,
-        data_source: form.data_source || null, notes: form.notes || null,
+
         organization_id: org.id, reporting_period_id: period.id,
       }
       const existing = entriesMap[activeItem.id]
@@ -290,14 +290,6 @@ export default function Scope1EquipmentFuelPage() {
                   </div>
                 </div>
               )}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Vir podatkov', 'Data source')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <input value={form.data_source} onChange={e => f('data_source', e.target.value)} placeholder={t('npr. računi za gorivo', 'e.g. fuel receipts')} className={INPUT} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Opombe', 'Notes')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <textarea value={form.notes} onChange={e => f('notes', e.target.value)} rows={2} className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 resize-none" />
-              </div>
               {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
             </div>
             <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3 rounded-b-2xl">

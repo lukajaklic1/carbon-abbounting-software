@@ -21,7 +21,7 @@ const METHODS = [
   { value: 'market_based', label_sl: 'Na osnovi trga', label_en: 'Market-based' },
 ]
 
-const EMPTY_FORM = { kwh: '', country_code: 'SI', method: 'location_based', data_source: '', notes: '' }
+const EMPTY_FORM = { kwh: '', country_code: 'SI', method: 'location_based' }
 type EntryForm = typeof EMPTY_FORM
 
 export default function Scope2ElectricityPage() {
@@ -71,13 +71,13 @@ export default function Scope2ElectricityPage() {
 
   function openAdd(location: any) {
     const cc = location.country_code && COUNTRY_KEYS.includes(location.country_code) ? location.country_code : 'SI'
-    setForm({ kwh: '', country_code: cc, method: 'location_based', data_source: '', notes: '' })
+    setForm({ kwh: '', country_code: cc, method: 'location_based' })
     setActiveLocation(location); setError(''); setShowModal(true)
   }
 
   function openEdit(location: any) {
     const e = entriesMap[location.id]
-    setForm({ kwh: fmtQty(e.quantity ?? 0), country_code: e.country_code ?? 'SI', method: e.method ?? 'location_based', data_source: e.data_source ?? '', notes: e.notes ?? '' })
+    setForm({ kwh: fmtQty(e.quantity ?? 0), country_code: e.country_code ?? 'SI', method: e.method ?? 'location_based' })
     setActiveLocation(location); setError(''); setShowModal(true)
   }
 
@@ -104,7 +104,7 @@ export default function Scope2ElectricityPage() {
       const payload = {
         location_id: activeLocation.id, quantity: kwh, unit: 'kWh', country_code: form.country_code,
         method: form.method, co2e_kg, factor_kg_co2e_per_kwh: ef?.factor ?? null,
-        data_source: form.data_source || null, notes: form.notes || null,
+
         organization_id: org.id, reporting_period_id: period.id,
       }
       const existing = entriesMap[activeLocation.id]
@@ -303,14 +303,6 @@ export default function Scope2ElectricityPage() {
                   </div>
                 </div>
               )}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Vir podatkov', 'Data source')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <input value={form.data_source} onChange={e => f('data_source', e.target.value)} placeholder={t('npr. račun za elektriko', 'e.g. electricity bill')} className={INPUT} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Opombe', 'Notes')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <textarea value={form.notes} onChange={e => f('notes', e.target.value)} rows={2} className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 resize-none" />
-              </div>
               {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
             </div>
             <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3 rounded-b-2xl">
