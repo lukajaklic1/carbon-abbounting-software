@@ -16,7 +16,7 @@ const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-
 const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] transition-shadow'
 
 const COOLING_KEYS = Object.keys(getCoolingFactors(2024))
-const EMPTY_FORM = { kwh: '', method: 'air_cooled' }
+const EMPTY_FORM = { kwh: '', method: 'air_cooled', data_source: '', notes: '' }
 type EntryForm = typeof EMPTY_FORM
 
 export default function Scope2CoolingPage() {
@@ -63,13 +63,13 @@ export default function Scope2CoolingPage() {
   }
 
   function openAdd(loc: any) {
-    setForm({ kwh: '', method: 'air_cooled' })
+    setForm({ kwh: '', method: 'air_cooled', data_source: '', notes: '' })
     setActiveLocation(loc); setError(''); setShowModal(true)
   }
 
   function openEdit(loc: any) {
     const e = entriesMap[loc.id]
-    setForm({ kwh: fmtQty(e.quantity ?? 0), method: e.method ?? 'air_cooled' })
+    setForm({ kwh: fmtQty(e.quantity ?? 0), method: e.method ?? 'air_cooled', data_source: e.data_source ?? '', notes: e.notes ?? '' })
     setActiveLocation(loc); setError(''); setShowModal(true)
   }
 
@@ -96,7 +96,7 @@ export default function Scope2CoolingPage() {
       const payload = {
         location_id: activeLocation.id, quantity: kwh, unit: 'kWh',
         method: form.method, co2e_kg, factor_kg_co2e_per_kwh: cf?.factor ?? null,
-        
+        data_source: form.data_source || null, notes: form.notes || null,
         organization_id: org.id, reporting_period_id: period.id,
       }
       const existing = entriesMap[activeLocation.id]
@@ -247,6 +247,36 @@ export default function Scope2CoolingPage() {
               <button onClick={() => setShowModal(false)} className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"><X className="h-4 w-4" /></button>
             </div>
             <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Metoda hlajenja', 'Cooling method')}</label>
+                <select value={form.method} onChange={e => f('method', e.target.value)} className={SELECT}>
+                  {COOLING_KEYS.map(k => <option key={k} value={k}>{t(COOLING_FACTORS[k].label_sl, COOLING_FACTORS[k].label_en)}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Letna poraba hlajenja', 'Annual cooling consumption')} <span className="text-red-400">*</span></label>
+                <div className="flex gap-2">
+                  <input value={form.kwh} onChange={e => f('kwh', e.target.value)} onBlur={e => f('kwh', fmtQty(e.target.value))} type="text" inputMode="decimal" placeholder="0" className={INPUT} autoFocus />
+                  <div className="w-12 px-2 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center shrink-0 font-medium">kWh</div>
+                </div>
+              </div>
+              {preview !== null && (
+                <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3 flex items-center gap-3">
+                  <Leaf className="h-4 w-4 text-green-600 shrink-0" />
+                  <div>
+                    <p className="text-xs text-green-700">{t('Izračunane emisije', 'Calculated emissions')}</p>
+                    <p className="text-base font-bold text-green-800">{(preview / 1000).toFixed(2).replace('.', ',')} tCO₂e</p>
+                  </div>
+                </div>
+              )}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Vir podatkov', 'Data source')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
+                <input value={form.data_source} onChange={e => f('data_source', e.target.value)} placeholder={t('npr. račun za hlajenje', 'e.g. cooling bill')} className={INPUT} />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Opombe', 'Notes')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
+                <textarea value={form.notes} onChange={e => f('notes', e.target.value)} rows={2} className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] resize-none" />
+              </div>
               {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
             </div>
             <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3 rounded-b-2xl">
