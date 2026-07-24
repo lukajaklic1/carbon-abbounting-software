@@ -15,7 +15,7 @@ const PAGE_SIZE = 20
 const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 transition-shadow'
 const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] transition-shadow'
 
-const ALL_FUEL_KEYS = Object.keys(FUEL_FACTORS)
+const ALL_FUEL_KEYS = Object.keys(getFuelFactors(2024))
 const EMPTY_FORM = { fuel_type: 'diesel', quantity: '', data_source: '', notes: '' }
 type EntryForm = typeof EMPTY_FORM
 
