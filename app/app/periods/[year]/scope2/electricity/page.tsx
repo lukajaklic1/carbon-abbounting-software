@@ -15,7 +15,7 @@ const PAGE_SIZE = 20
 const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 transition-shadow'
 const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] transition-shadow'
 
-const COUNTRY_KEYS = Object.keys(ELECTRICITY_FACTORS)
+const COUNTRY_KEYS = Object.keys(getElectricityFactors(2024))
 const METHODS = [
   { value: 'location_based', label_sl: 'Na osnovi lokacije', label_en: 'Location-based' },
   { value: 'market_based', label_sl: 'Na osnovi trga', label_en: 'Market-based' },
