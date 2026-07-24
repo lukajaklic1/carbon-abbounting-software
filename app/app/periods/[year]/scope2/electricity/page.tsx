@@ -317,7 +317,7 @@ export default function Scope2ElectricityPage() {
               {entriesMap[activeLocation.id] && (
                 <button onClick={() => { setShowModal(false); setConfirmDelete(activeLocation.id) }}
                   className="px-4 py-2.5 text-sm font-medium text-red-600 hover:text-red-700 bg-white border border-red-200 hover:bg-red-50 rounded-xl transition-colors">
-                  {t('Izbriši podatke', 'Delete usage data')}
+                  {t('Izbriši podatke o porabi', 'Delete usage data')}
                 </button>
               )}
               <button onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">{t('Prekliči', 'Cancel')}</button>
