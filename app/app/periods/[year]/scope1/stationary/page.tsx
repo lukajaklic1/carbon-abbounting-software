@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Building2, Plus, Pencil, X, Leaf, Check } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
-import { FUEL_FACTORS, calcCo2eKg } from '@/lib/emission-factors'
+import { getFuelFactors, calcCo2eKg } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
 import { Pagination } from '@/components/ui/Pagination'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
@@ -23,6 +23,7 @@ export default function Scope1StationaryPage() {
   const { t } = useLocale()
   const params = useParams()
   const year = Number(params.year)
+  const FUEL_FACTORS = getFuelFactors(year)
   const refreshCounters = useEmissionCountersStore(s => s.refresh)
 
   const [locations, setLocations] = useState<any[]>([])

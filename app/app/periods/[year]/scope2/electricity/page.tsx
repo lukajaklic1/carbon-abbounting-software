@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Zap, Plus, Pencil, X, Leaf, Check } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
-import { ELECTRICITY_FACTORS, calcCo2eKg } from '@/lib/emission-factors'
+import { getElectricityFactors, calcCo2eKg } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
 import { Pagination } from '@/components/ui/Pagination'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
@@ -28,6 +28,7 @@ export default function Scope2ElectricityPage() {
   const { t } = useLocale()
   const params = useParams()
   const year = Number(params.year)
+  const ELECTRICITY_FACTORS = getElectricityFactors(year)
   const refreshCounters = useEmissionCountersStore(s => s.refresh)
 
   const [locations, setLocations] = useState<any[]>([])
