@@ -46,6 +46,8 @@ export default function Scope3Page() {
   const [orgId, setOrgId] = useState<string | null>(null)
   const [periodId, setPeriodId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
+  const [uploadError, setUploadError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [uploadTarget, setUploadTarget] = useState<number | null>(null)
 
@@ -53,25 +55,28 @@ export default function Scope3Page() {
 
   async function load() {
     setLoading(true)
+    setLoadError(null)
     try {
       const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
-      const { data: org } = await supabase.from('organizations').select('id').eq('owner_id', user.id).single()
-      if (!org) return
+      const { data: { user }, error: authErr } = await supabase.auth.getUser()
+      if (authErr || !user) { setLoadError('Ni prijave'); setLoading(false); return }
+
+      const { data: org, error: orgErr } = await supabase.from('organizations').select('id').eq('owner_id', user.id).single()
+      if (orgErr || !org) { setLoadError(`Org ni najdena: ${orgErr?.message}`); setLoading(false); return }
       setOrgId(org.id)
 
-      const { data: pd } = await supabase.from('reporting_periods').select('id').eq('organization_id', org.id).eq('year', year).single()
-      if (!pd) return
+      const { data: pd, error: pdErr } = await supabase.from('reporting_periods').select('id').eq('organization_id', org.id).eq('year', year).single()
+      if (pdErr || !pd) { setLoadError(`Obdobje ${year} ne obstaja: ${pdErr?.message}`); setLoading(false); return }
       setPeriodId(pd.id)
 
-      const { data: subs } = await supabase.from('scope3_submissions')
+      const { data: subs, error: subsErr } = await supabase.from('scope3_submissions')
         .select('*').eq('organization_id', org.id).eq('reporting_period_id', pd.id)
+      if (subsErr) { setLoadError(`Napaka pri nalaganju: ${subsErr.message}`); setLoading(false); return }
 
       const map: Record<number, Submission> = {}
       if (subs) subs.forEach((s: Submission) => { map[s.category_number] = s })
       setSubmissions(map)
-    } catch {}
+    } catch (e: any) { setLoadError(String(e)) }
     setLoading(false)
   }
 
@@ -89,25 +94,28 @@ export default function Scope3Page() {
     const catNum = uploadTarget
     setUploadTarget(null)
 
+    setUploadError(null)
     try {
       const supabase = createClient()
       const path = `${orgId}/${year}/cat_${catNum}/${Date.now()}_${file.name}`
       const { error: uploadErr } = await supabase.storage.from('scope3-uploads').upload(path, file, { upsert: true })
-      if (uploadErr) throw uploadErr
+      if (uploadErr) { setUploadError(`Storage napaka: ${uploadErr.message}`); throw uploadErr }
 
       const { data: { publicUrl } } = supabase.storage.from('scope3-uploads').getPublicUrl(path)
 
       const existing = submissions[catNum]
       if (existing) {
-        await supabase.from('scope3_submissions').update({
+        const { error: updErr } = await supabase.from('scope3_submissions').update({
           file_url: publicUrl, file_name: file.name, status: 'in_review', updated_at: new Date().toISOString()
         }).eq('id', existing.id)
+        if (updErr) setUploadError(`Update napaka: ${updErr.message}`)
       } else {
-        await supabase.from('scope3_submissions').insert({
+        const { error: insErr } = await supabase.from('scope3_submissions').insert({
           organization_id: orgId, reporting_period_id: periodId,
           category_number: catNum, status: 'in_review',
           file_url: publicUrl, file_name: file.name,
         })
+        if (insErr) setUploadError(`Insert napaka: ${insErr.message}`)
       }
       await load()
     } catch (err) {
@@ -179,6 +187,13 @@ export default function Scope3Page() {
           </div>
         </div>
       </div>
+
+      {loadError && (
+        <div className="mb-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">{loadError}</div>
+      )}
+      {uploadError && (
+        <div className="mb-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">{uploadError}</div>
+      )}
 
       {/* Hidden file input */}
       <input ref={fileInputRef} type="file" accept=".xlsx,.xls,.csv,.pdf" className="hidden" onChange={handleFileChange} />
