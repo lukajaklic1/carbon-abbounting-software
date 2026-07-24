@@ -21,7 +21,7 @@ const METHODS = [
   { value: 'market_based', label_sl: 'Na osnovi trga', label_en: 'Market-based' },
 ]
 
-const EMPTY_FORM = { kwh: '', country_code: 'SI', method: 'location_based', data_source: '', notes: '' }
+const EMPTY_FORM = { kwh: '', country_code: 'SI', method: 'location_based' }
 type EntryForm = typeof EMPTY_FORM
 
 export default function Scope2ElectricityPage() {
@@ -71,13 +71,13 @@ export default function Scope2ElectricityPage() {
 
   function openAdd(location: any) {
     const cc = location.country_code && COUNTRY_KEYS.includes(location.country_code) ? location.country_code : 'SI'
-    setForm({ kwh: '', country_code: cc, method: 'location_based', data_source: '', notes: '' })
+    setForm({ kwh: '', country_code: cc, method: 'location_based' })
     setActiveLocation(location); setError(''); setShowModal(true)
   }
 
   function openEdit(location: any) {
     const e = entriesMap[location.id]
-    setForm({ kwh: fmtQty(e.quantity ?? 0), country_code: e.country_code ?? 'SI', method: e.method ?? 'location_based', data_source: e.data_source ?? '', notes: e.notes ?? '' })
+    setForm({ kwh: fmtQty(e.quantity ?? 0), country_code: e.country_code ?? 'SI', method: e.method ?? 'location_based' })
     setActiveLocation(location); setError(''); setShowModal(true)
   }
 
@@ -104,7 +104,7 @@ export default function Scope2ElectricityPage() {
       const payload = {
         location_id: activeLocation.id, quantity: kwh, unit: 'kWh', country_code: form.country_code,
         method: form.method, co2e_kg, factor_kg_co2e_per_kwh: ef?.factor ?? null,
-        data_source: form.data_source || null, notes: form.notes || null,
+        
         organization_id: org.id, reporting_period_id: period.id,
       }
       const existing = entriesMap[activeLocation.id]
@@ -273,44 +273,6 @@ export default function Scope2ElectricityPage() {
               <button onClick={() => setShowModal(false)} className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"><X className="h-4 w-4" /></button>
             </div>
             <div className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Letna poraba', 'Annual consumption')} (kWh) <span className="text-red-400">*</span></label>
-                <div className="flex gap-2">
-                  <input value={form.kwh} onChange={e => f('kwh', e.target.value)} onBlur={e => f('kwh', fmtQty(e.target.value))} type="text" inputMode="decimal" placeholder="0" className={INPUT} autoFocus />
-                  <div className="w-12 px-2 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center shrink-0 font-medium">kWh</div>
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Država / faktor', 'Country / factor')}</label>
-                <select value={form.country_code} onChange={e => f('country_code', e.target.value)} className={SELECT}>
-                  {COUNTRY_KEYS.map(k => (
-                    <option key={k} value={k}>{ELECTRICITY_FACTORS[k]?.label} — {ELECTRICITY_FACTORS[k]?.factor} kg/kWh</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Metoda', 'Method')}</label>
-                <select value={form.method} onChange={e => f('method', e.target.value)} className={SELECT}>
-                  {METHODS.map(m => <option key={m.value} value={m.value}>{t(m.label_sl, m.label_en)}</option>)}
-                </select>
-              </div>
-              {preview !== null && (
-                <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3 flex items-center gap-3">
-                  <Leaf className="h-4 w-4 text-green-600 shrink-0" />
-                  <div>
-                    <p className="text-xs text-green-700">{t('Izračunane emisije', 'Calculated emissions')}</p>
-                    <p className="text-base font-bold text-green-800">{(preview / 1000).toFixed(2).replace('.', ',')} tCO₂e</p>
-                  </div>
-                </div>
-              )}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Vir podatkov', 'Data source')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <input value={form.data_source} onChange={e => f('data_source', e.target.value)} placeholder={t('npr. račun za elektriko', 'e.g. electricity bill')} className={INPUT} />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Opombe', 'Notes')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
-                <textarea value={form.notes} onChange={e => f('notes', e.target.value)} rows={2} className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 resize-none" />
-              </div>
               {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
             </div>
             <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3 rounded-b-2xl">
