@@ -5,7 +5,6 @@ import { Upload, Check, Clock, FileText, X, Leaf, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { useParams } from 'next/navigation'
-import { fmtQty } from '@/lib/utils/format'
 import { cn } from '@/lib/utils'
 
 const SCOPE3_CATEGORIES = [
@@ -35,21 +34,29 @@ type Submission = {
   co2e_kg: number | null
 }
 
+type ModalState = {
+  catNumber: number
+  catLabel: string
+  existing: Submission | null
+  selectedFile: File | null
+  uploading: boolean
+  error: string | null
+}
+
 export default function Scope3Page() {
   const { t } = useLocale()
   const params = useParams()
   const year = Number(params.year)
 
   const [submissions, setSubmissions] = useState<Record<number, Submission>>({})
-  const [uploading, setUploading] = useState<Set<number>>(new Set())
   const [deleting, setDeleting] = useState<Set<number>>(new Set())
   const [orgId, setOrgId] = useState<string | null>(null)
   const [periodId, setPeriodId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
-  const [uploadError, setUploadError] = useState<string | null>(null)
+  const [modal, setModal] = useState<ModalState | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [uploadTarget, setUploadTarget] = useState<number | null>(null)
+  const modalFileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => { if (year) load() }, [year])
 
@@ -80,48 +87,59 @@ export default function Scope3Page() {
     setLoading(false)
   }
 
-  function triggerUpload(catNumber: number) {
-    setUploadTarget(catNumber)
-    fileInputRef.current?.click()
+  function openModal(cat: typeof SCOPE3_CATEGORIES[0]) {
+    setModal({
+      catNumber: cat.number,
+      catLabel: t(cat.label_sl, cat.label_en),
+      existing: submissions[cat.number] ?? null,
+      selectedFile: null,
+      uploading: false,
+      error: null,
+    })
   }
 
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleModalFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
-    if (!file || uploadTarget === null || !orgId || !periodId) return
+    if (!file || !modal) return
     e.target.value = ''
+    setModal(m => m ? { ...m, selectedFile: file, error: null } : m)
+  }
 
-    setUploading(prev => new Set(prev).add(uploadTarget))
-    const catNum = uploadTarget
-    setUploadTarget(null)
+  async function handleSubmit() {
+    if (!modal?.selectedFile || !orgId || !periodId) return
+    setModal(m => m ? { ...m, uploading: true, error: null } : m)
 
-    setUploadError(null)
     try {
       const supabase = createClient()
+      const file = modal.selectedFile
+      const catNum = modal.catNumber
       const path = `${orgId}/${year}/cat_${catNum}/${Date.now()}_${file.name}`
+
       const { error: uploadErr } = await supabase.storage.from('scope3-uploads').upload(path, file, { upsert: true })
-      if (uploadErr) { setUploadError(`Storage napaka: ${uploadErr.message}`); throw uploadErr }
+      if (uploadErr) throw uploadErr
 
       const { data: { publicUrl } } = supabase.storage.from('scope3-uploads').getPublicUrl(path)
 
-      const existing = submissions[catNum]
+      const existing = modal.existing
       if (existing) {
         const { error: updErr } = await supabase.from('scope3_submissions').update({
           file_url: publicUrl, file_name: file.name, status: 'in_review', updated_at: new Date().toISOString()
         }).eq('id', existing.id)
-        if (updErr) setUploadError(`Update napaka: ${updErr.message}`)
+        if (updErr) throw updErr
       } else {
         const { error: insErr } = await supabase.from('scope3_submissions').insert({
           organization_id: orgId, reporting_period_id: periodId,
           category_number: catNum, status: 'in_review',
           file_url: publicUrl, file_name: file.name,
         })
-        if (insErr) setUploadError(`Insert napaka: ${insErr.message}`)
+        if (insErr) throw insErr
       }
+
+      setModal(null)
       await load()
-    } catch (err) {
-      console.error(err)
+    } catch (err: any) {
+      setModal(m => m ? { ...m, uploading: false, error: err.message ?? String(err) } : m)
     }
-    setUploading(prev => { const n = new Set(prev); n.delete(catNum); return n })
   }
 
   async function handleDelete(catNum: number) {
@@ -132,12 +150,9 @@ export default function Scope3Page() {
       const supabase = createClient()
       await supabase.from('scope3_submissions').delete().eq('id', sub.id)
       if (sub.file_url) {
-        // extract storage path from public URL
         const url = new URL(sub.file_url)
         const pathParts = url.pathname.split('/object/public/scope3-uploads/')
-        if (pathParts[1]) {
-          await supabase.storage.from('scope3-uploads').remove([decodeURIComponent(pathParts[1])])
-        }
+        if (pathParts[1]) await supabase.storage.from('scope3-uploads').remove([decodeURIComponent(pathParts[1])])
       }
       await load()
     } catch (err) { console.error(err) }
@@ -191,12 +206,6 @@ export default function Scope3Page() {
       {loadError && (
         <div className="mb-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">{loadError}</div>
       )}
-      {uploadError && (
-        <div className="mb-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">{uploadError}</div>
-      )}
-
-      {/* Hidden file input */}
-      <input ref={fileInputRef} type="file" accept=".xlsx,.xls,.csv,.pdf" className="hidden" onChange={handleFileChange} />
 
       {/* Categories */}
       {loading ? (
@@ -205,10 +214,8 @@ export default function Scope3Page() {
         <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
           {SCOPE3_CATEGORIES.map((cat, i) => {
             const sub = submissions[cat.number]
-            const isUploading = uploading.has(cat.number)
             const isDone = sub?.status === 'done'
             const isInReview = sub?.status === 'in_review'
-
             const isDeleting = deleting.has(cat.number)
 
             return (
@@ -226,20 +233,12 @@ export default function Scope3Page() {
                   {sub?.file_name ? (
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <FileText className="h-3 w-3 text-gray-400 shrink-0" />
-                      <a
-                        href={sub.file_url ?? '#'}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-blue-600 hover:underline truncate max-w-[200px]"
-                      >
+                      <a href={sub.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
+                        className="text-xs text-blue-600 hover:underline truncate max-w-[220px]">
                         {sub.file_name}
                       </a>
-                      <button
-                        onClick={() => handleDelete(cat.number)}
-                        disabled={isDeleting}
-                        className="text-gray-300 hover:text-red-500 transition-colors shrink-0"
-                        title={t('Izbriši datoteko', 'Delete file')}
-                      >
+                      <button onClick={() => handleDelete(cat.number)} disabled={isDeleting}
+                        className="text-gray-300 hover:text-red-500 transition-colors shrink-0">
                         {isDeleting ? <Clock className="h-3 w-3 animate-spin" /> : <X className="h-3 w-3" />}
                       </button>
                     </div>
@@ -265,13 +264,13 @@ export default function Scope3Page() {
                   )}
                 </div>
 
-                {/* Upload / Replace button */}
+                {/* Upload button */}
                 <button
-                  onClick={() => triggerUpload(cat.number)}
-                  disabled={isUploading || isDeleting}
+                  onClick={() => openModal(cat)}
+                  disabled={isDeleting}
                   className={cn(
                     'inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0',
-                    isUploading
+                    isDeleting
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       : sub
                       ? 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -279,11 +278,92 @@ export default function Scope3Page() {
                   )}
                 >
                   <Upload className="h-3 w-3" />
-                  {isUploading ? t('Nalaganje...', 'Uploading...') : sub ? t('Zamenjaj', 'Replace') : t('Naloži podatke', 'Upload data')}
+                  {sub ? t('Zamenjaj', 'Replace') : t('Naloži podatke', 'Upload data')}
                 </button>
               </div>
             )
           })}
+        </div>
+      )}
+
+      {/* Upload Modal */}
+      {modal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+            {/* Modal header */}
+            <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100">
+              <div>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-0.5">
+                  {t('Kategorija', 'Category')} {modal.catNumber}
+                </p>
+                <h2 className="text-base font-bold text-gray-900">{modal.catLabel}</h2>
+              </div>
+              <button onClick={() => setModal(null)} className="p-1.5 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Modal body */}
+            <div className="px-6 py-5">
+              {/* Drop zone */}
+              <button
+                type="button"
+                onClick={() => modalFileRef.current?.click()}
+                className={cn(
+                  'w-full border-2 border-dashed rounded-xl p-8 text-center transition-colors',
+                  modal.selectedFile
+                    ? 'border-blue-300 bg-blue-50'
+                    : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
+                )}
+              >
+                {modal.selectedFile ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <FileText className="h-8 w-8 text-blue-500" />
+                    <p className="text-sm font-semibold text-gray-900">{modal.selectedFile.name}</p>
+                    <p className="text-xs text-gray-400">{(modal.selectedFile.size / 1024).toFixed(0)} KB · {t('Kliknite za zamenjavo', 'Click to replace')}</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-2">
+                    <Upload className="h-8 w-8 text-gray-300" />
+                    <p className="text-sm font-semibold text-gray-700">{t('Kliknite za izbiro datoteke', 'Click to select file')}</p>
+                    <p className="text-xs text-gray-400">Excel, CSV, PDF · max 50 MB</p>
+                  </div>
+                )}
+              </button>
+
+              {modal.existing?.file_name && !modal.selectedFile && (
+                <p className="mt-3 text-xs text-gray-400 text-center">
+                  {t('Trenutna datoteka', 'Current file')}: <span className="font-medium text-gray-600">{modal.existing.file_name}</span>
+                </p>
+              )}
+
+              {modal.error && (
+                <p className="mt-3 text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">{modal.error}</p>
+              )}
+            </div>
+
+            {/* Modal footer */}
+            <div className="flex items-center justify-end gap-2 px-6 pb-6 pt-0">
+              <button onClick={() => setModal(null)}
+                className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors">
+                {t('Prekliči', 'Cancel')}
+              </button>
+              <button
+                onClick={handleSubmit}
+                disabled={!modal.selectedFile || modal.uploading}
+                className={cn(
+                  'px-5 py-2 text-sm font-semibold rounded-lg transition-colors',
+                  !modal.selectedFile || modal.uploading
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                )}
+              >
+                {modal.uploading ? t('Pošiljanje...', 'Submitting...') : t('Pošlji v pregled', 'Submit for Review')}
+              </button>
+            </div>
+          </div>
+
+          <input ref={modalFileRef} type="file" accept=".xlsx,.xls,.csv,.pdf" className="hidden" onChange={handleModalFileSelect} />
         </div>
       )}
     </div>
