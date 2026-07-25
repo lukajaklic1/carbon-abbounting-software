@@ -305,36 +305,45 @@ export default function Scope3Page() {
 
             {/* Modal body */}
             <div className="px-6 py-5">
-              {/* Drop zone */}
-              <button
-                type="button"
-                onClick={() => modalFileRef.current?.click()}
-                className={cn(
-                  'w-full border-2 border-dashed rounded-xl p-8 text-center transition-colors',
-                  modal.selectedFile
-                    ? 'border-blue-300 bg-blue-50'
-                    : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
-                )}
-              >
-                {modal.selectedFile ? (
-                  <div className="flex flex-col items-center gap-2">
-                    <FileText className="h-8 w-8 text-blue-500" />
-                    <p className="text-sm font-semibold text-gray-900">{modal.selectedFile.name}</p>
-                    <p className="text-xs text-gray-400">{(modal.selectedFile.size / 1024).toFixed(0)} KB · {t('Kliknite za zamenjavo', 'Click to replace')}</p>
+              {modal.selectedFile ? (
+                /* File selected state */
+                <div className="border-2 border-dashed border-green-300 bg-green-50 rounded-xl p-6 text-center">
+                  <FileText className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                  <p className="text-sm font-semibold text-gray-900 mb-0.5">{modal.selectedFile.name}</p>
+                  <p className="text-xs text-gray-400 mb-4">{(modal.selectedFile.size / 1024).toFixed(0)} KB</p>
+                  <div className="flex items-center justify-center gap-2">
+                    <button type="button" onClick={() => modalFileRef.current?.click()}
+                      className="px-3 py-1.5 text-xs font-semibold bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors">
+                      {t('Zamenjaj datoteko', 'Replace file')}
+                    </button>
+                    <button type="button" onClick={() => setModal(m => m ? { ...m, selectedFile: null } : m)}
+                      className="px-3 py-1.5 text-xs font-semibold bg-white border border-red-200 text-red-500 rounded-lg hover:bg-red-50 transition-colors">
+                      {t('Odstrani', 'Remove')}
+                    </button>
                   </div>
-                ) : (
-                  <div className="flex flex-col items-center gap-2">
-                    <Upload className="h-8 w-8 text-gray-300" />
-                    <p className="text-sm font-semibold text-gray-700">{t('Kliknite za izbiro datoteke', 'Click to select file')}</p>
-                    <p className="text-xs text-gray-400">Excel, CSV, PDF · max 50 MB</p>
-                  </div>
-                )}
-              </button>
+                </div>
+              ) : (
+                /* Empty drop zone */
+                <button type="button" onClick={() => modalFileRef.current?.click()}
+                  className="w-full border-2 border-dashed border-gray-200 hover:border-blue-300 hover:bg-gray-50 rounded-xl p-8 text-center transition-colors">
+                  <Upload className="h-8 w-8 text-gray-300 mx-auto mb-2" />
+                  <p className="text-sm font-semibold text-gray-700">{t('Kliknite za izbiro datoteke', 'Click to select file')}</p>
+                  <p className="text-xs text-gray-400 mt-1">Excel, CSV, PDF · max 50 MB</p>
+                </button>
+              )}
 
-              {modal.existing?.file_name && !modal.selectedFile && (
-                <p className="mt-3 text-xs text-gray-400 text-center">
-                  {t('Trenutna datoteka', 'Current file')}: <span className="font-medium text-gray-600">{modal.existing.file_name}</span>
-                </p>
+              {/* Existing file download */}
+              {modal.existing?.file_name && (
+                <div className="mt-3 flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <FileText className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                    <span className="text-xs text-gray-500 truncate">{t('Obstoječa', 'Existing')}: {modal.existing.file_name}</span>
+                  </div>
+                  <a href={modal.existing.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
+                    className="text-xs text-blue-600 hover:underline shrink-0 ml-2">
+                    {t('Prenesi', 'Download')}
+                  </a>
+                </div>
               )}
 
               {modal.error && (
