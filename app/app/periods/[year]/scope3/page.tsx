@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Upload, Check, Clock, FileText, X, Leaf, Trash2 } from 'lucide-react'
+import { Upload, Check, Clock, FileText, X, Leaf, Download } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { useParams } from 'next/navigation'
@@ -236,20 +236,27 @@ export default function Scope3Page() {
                 </div>
 
                 {/* Name + file inline */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900 leading-tight">{t(cat.label_sl, cat.label_en)}</p>
-                  {sub?.file_name ? (
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      <FileText className="h-3 w-3 text-gray-400 shrink-0" />
+                <div className="flex-1 min-w-0 flex items-center gap-2">
+                  <p className="text-sm font-semibold text-gray-900 shrink-0">{t(cat.label_sl, cat.label_en)}</p>
+                  {sub?.file_name && (
+                    <>
+                      <span className="text-gray-300 shrink-0">·</span>
                       <a href={sub.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
-                        className="text-xs text-blue-600 hover:underline truncate max-w-[220px]">
-                        {sub.file_name}
+                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline truncate min-w-0">
+                        <Download className="h-3 w-3 shrink-0" />
+                        <span className="truncate">{sub.file_name}</span>
                       </a>
-                    </div>
-                  ) : (
-                    <p className="text-xs text-gray-400 mt-0.5 truncate">{t(cat.desc_sl, cat.desc_en)}</p>
+                    </>
                   )}
                 </div>
+
+                {/* CO2e value */}
+                {isDone && sub?.co2e_kg != null && (
+                  <span className="text-sm font-semibold text-gray-900 shrink-0 tabular-nums">
+                    {(sub.co2e_kg / 1000).toFixed(2).replace('.', ',')}
+                    <span className="text-xs font-normal text-gray-400 ml-1">tCO₂e</span>
+                  </span>
+                )}
 
                 {/* Badge */}
                 <div className="shrink-0">
@@ -257,7 +264,6 @@ export default function Scope3Page() {
                     <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700 border border-green-200">
                       <Check className="h-3 w-3" />
                       {t('Zaključeno', 'Done')}
-                      {sub.co2e_kg != null && <span className="ml-1 font-normal">· {(sub.co2e_kg / 1000).toFixed(2).replace('.', ',')} t</span>}
                     </span>
                   )}
                   {isInReview && (
