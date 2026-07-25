@@ -248,12 +248,14 @@ export default function Scope3Page() {
                 </div>
 
                 {/* CO2e value */}
-                {isDone && sub?.co2e_kg != null && (
+                {isDone && sub?.co2e_kg != null ? (
                   <span className="text-sm font-semibold text-gray-900 shrink-0 tabular-nums">
                     {(sub.co2e_kg / 1000).toFixed(2).replace('.', ',')}
                     <span className="text-xs font-normal text-gray-400 ml-1">tCO₂e</span>
                   </span>
-                )}
+                ) : sub ? (
+                  <span className="text-sm text-gray-300 shrink-0 tabular-nums">— tCO₂e</span>
+                ) : null}
 
                 {/* Badge */}
                 <div className="shrink-0">
