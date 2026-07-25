@@ -122,6 +122,14 @@ export default function Scope3Page() {
 
       const existing = modal.existing
       if (existing) {
+        // Delete old file from storage before replacing
+        if (existing.file_url) {
+          try {
+            const oldUrl = new URL(existing.file_url)
+            const oldPath = oldUrl.pathname.split('/object/public/scope3-uploads/')[1]
+            if (oldPath) await supabase.storage.from('scope3-uploads').remove([decodeURIComponent(oldPath)])
+          } catch {}
+        }
         const { error: updErr } = await supabase.from('scope3_submissions').update({
           file_url: publicUrl, file_name: file.name, status: 'in_review', updated_at: new Date().toISOString()
         }).eq('id', existing.id)
