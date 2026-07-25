@@ -269,7 +269,7 @@ export default function Scope3Page() {
                 </div>
 
                 {/* Upload button — locked when submitted */}
-                {!sub ? (
+                {!sub && (
                   <button
                     onClick={() => openModal(cat)}
                     className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0 bg-blue-600 text-white hover:bg-blue-700"
@@ -277,8 +277,6 @@ export default function Scope3Page() {
                     <Upload className="h-3 w-3" />
                     {t('Naloži podatke', 'Upload data')}
                   </button>
-                ) : (
-                  <span className="text-xs text-gray-400 shrink-0">{t('Zaklenjeno', 'Locked')}</span>
                 )}
               </div>
             )
