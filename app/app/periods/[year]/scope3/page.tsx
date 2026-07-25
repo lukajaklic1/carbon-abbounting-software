@@ -236,17 +236,14 @@ export default function Scope3Page() {
                 </div>
 
                 {/* Name + file inline */}
-                <div className="flex-1 min-w-0 flex items-center gap-2">
+                <div className="flex-1 min-w-0 flex items-center gap-2 overflow-hidden">
                   <p className="text-sm font-semibold text-gray-900 shrink-0">{t(cat.label_sl, cat.label_en)}</p>
                   {sub?.file_name && (
-                    <>
-                      <span className="text-gray-300 shrink-0">·</span>
-                      <a href={sub.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline truncate min-w-0">
-                        <Download className="h-3 w-3 shrink-0" />
-                        <span className="truncate">{sub.file_name}</span>
-                      </a>
-                    </>
+                    <a href={sub.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-gray-100 hover:bg-blue-50 hover:text-blue-600 text-gray-500 transition-colors shrink min-w-0 max-w-[200px]">
+                      <Download className="h-3 w-3 shrink-0" />
+                      <span className="text-xs font-medium truncate">{sub.file_name}</span>
+                    </a>
                   )}
                 </div>
 
