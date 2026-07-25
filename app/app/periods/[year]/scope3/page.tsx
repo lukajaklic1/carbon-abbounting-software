@@ -245,10 +245,6 @@ export default function Scope3Page() {
                         className="text-xs text-blue-600 hover:underline truncate max-w-[220px]">
                         {sub.file_name}
                       </a>
-                      <button onClick={() => handleDelete(cat.number)} disabled={isDeleting}
-                        className="text-gray-300 hover:text-red-500 transition-colors shrink-0">
-                        {isDeleting ? <Clock className="h-3 w-3 animate-spin" /> : <X className="h-3 w-3" />}
-                      </button>
                     </div>
                   ) : (
                     <p className="text-xs text-gray-400 mt-0.5 truncate">{t(cat.desc_sl, cat.desc_en)}</p>
@@ -272,22 +268,18 @@ export default function Scope3Page() {
                   )}
                 </div>
 
-                {/* Upload button */}
-                <button
-                  onClick={() => openModal(cat)}
-                  disabled={isDeleting}
-                  className={cn(
-                    'inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0',
-                    isDeleting
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : sub
-                      ? 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
-                  )}
-                >
-                  <Upload className="h-3 w-3" />
-                  {sub ? t('Zamenjaj', 'Replace') : t('Naloži podatke', 'Upload data')}
-                </button>
+                {/* Upload button — locked when submitted */}
+                {!sub ? (
+                  <button
+                    onClick={() => openModal(cat)}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0 bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    <Upload className="h-3 w-3" />
+                    {t('Naloži podatke', 'Upload data')}
+                  </button>
+                ) : (
+                  <span className="text-xs text-gray-400 shrink-0">{t('Zaklenjeno', 'Locked')}</span>
+                )}
               </div>
             )
           })}

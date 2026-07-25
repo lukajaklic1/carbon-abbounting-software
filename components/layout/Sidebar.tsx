@@ -22,6 +22,7 @@ export function Sidebar() {
   const router = useRouter()
   const { organization, memberRole } = useOrganizationStore()
   const isAdmin = memberRole === 'admin'
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
   const { selectedYear } = usePeriodStore()
   const { locale, switchLocale } = useLocale()
   const [userMeta, setUserMeta] = useState<{ firstName?: string; lastName?: string; email?: string } | null>(null)
@@ -42,12 +43,17 @@ export function Sidebar() {
 
   useEffect(() => {
     if (!IS_MOCK) {
-      createClient().auth.getUser().then(({ data: { user } }) => {
-        if (user) setUserMeta({
-          firstName: user.user_metadata?.first_name,
-          lastName: user.user_metadata?.last_name,
-          email: user.email,
-        })
+      const supabase = createClient()
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (user) {
+          setUserMeta({
+            firstName: user.user_metadata?.first_name,
+            lastName: user.user_metadata?.last_name,
+            email: user.email,
+          })
+          supabase.from('super_admins').select('user_id').eq('user_id', user.id).single()
+            .then(({ data }) => { if (data) setIsSuperAdmin(true) })
+        }
       })
     } else {
       setUserMeta({ firstName: 'Luka', lastName: 'Novak', email: 'luka@demo.com' })
@@ -197,6 +203,10 @@ export function Sidebar() {
         {isAdmin && (
           <NavItem href="/app/team" label={t('Uporabniki', 'Users')} icon={Users}
             active={pathname.startsWith('/app/team')} />
+        )}
+        {isSuperAdmin && (
+          <NavItem href="/app/admin/scope3" label="Admin · Scope 3" icon={FileText}
+            active={pathname.startsWith('/app/admin')} />
         )}
 
         {/* Language */}
