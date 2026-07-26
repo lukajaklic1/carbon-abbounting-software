@@ -7,6 +7,7 @@ import { usePeriodStore } from '@/stores/period'
 import { useOrganizationStore } from '@/stores/organization'
 import { ChevronDown, Download, FileText } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { downloadGhgPdf } from '@/components/reports/GhgPdf'
 
 const CATEGORY_LABELS: Record<number, string> = {
   1: 'Nabavljeno blago in storitve', 2: 'Kapitalsko blago',
@@ -122,6 +123,7 @@ export default function ReportsPage() {
 
   const [report, setReport] = useState<ReportData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [exporting, setExporting] = useState(false)
 
   useEffect(() => { loadReport() }, [year])
 
@@ -203,10 +205,24 @@ export default function ReportsPage() {
             {t('Pregled metodologij in emisijskih faktorjev za izračun ogljičnega odtisa po GHG protokolu.', 'Overview of methodologies and emission factors used to calculate your carbon footprint per GHG Protocol.')}
           </p>
         </div>
-        <button onClick={() => window.print()}
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-gray-900 text-white rounded-xl hover:bg-gray-700 transition-colors shrink-0">
+        <button
+          onClick={async () => {
+            if (!report) return
+            setExporting(true)
+            await downloadGhgPdf({
+              orgName: organization?.name ?? 'Organizacija',
+              year,
+              period: report.period,
+              scope1: report.scope1,
+              scope2: report.scope2,
+              scope3: report.scope3,
+            })
+            setExporting(false)
+          }}
+          disabled={!report || exporting}
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-gray-900 text-white rounded-xl hover:bg-gray-700 disabled:opacity-50 transition-colors shrink-0">
           <Download className="h-4 w-4" />
-          {t('Izvozi PDF', 'Export PDF')}
+          {exporting ? t('Generiranje...', 'Generating...') : t('Izvozi PDF', 'Export PDF')}
         </button>
       </div>
 
