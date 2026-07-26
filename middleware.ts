@@ -37,6 +37,8 @@ export async function middleware(request: NextRequest) {
   }
 
   if (user && (pathname === '/login' || pathname === '/register')) {
+    const { data: sa } = await supabase.from('super_admins').select('user_id').eq('user_id', user.id).maybeSingle()
+    if (sa) return NextResponse.redirect(new URL('/app/super-admin', request.url))
     return NextResponse.redirect(new URL('/app/dashboard', request.url))
   }
 
