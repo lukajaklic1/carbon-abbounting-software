@@ -77,6 +77,8 @@ export default function LoginPage() {
 
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
+        const { data: sa } = await supabase.from('super_admins').select('user_id').eq('user_id', user.id).maybeSingle()
+        if (sa) { router.push('/app/super-admin'); return }
         const { data: org } = await supabase.from('organizations').select('id').eq('owner_id', user.id).maybeSingle()
         if (!org) { router.push('/onboarding'); return }
       }
