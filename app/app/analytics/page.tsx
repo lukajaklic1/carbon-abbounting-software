@@ -23,11 +23,14 @@ type ScopeData = {
   sources: { name: string; kg: number; scope: string }[]
 }
 
+type YearPoint = { year: string; emisije: number }
+
 export default function AnalyticsPage() {
   const { t } = useLocale()
   const { availablePeriods, selectedYear } = usePeriodStore()
   const [orgId, setOrgId] = useState<string | null>(null)
   const [scopeData, setScopeData] = useState<ScopeData | null>(null)
+  const [yearTrend, setYearTrend] = useState<YearPoint[]>([])
   const [loading, setLoading] = useState(true)
 
   const year = selectedYear ?? new Date().getFullYear()
@@ -92,6 +95,24 @@ export default function AnalyticsPage() {
       ].filter(s => s.kg > 0)
 
       setScopeData({ scope1_kg, scope2_kg, scope3_kg: scope3Kg, sources })
+
+      // Trend: fetch real sums for all available periods
+      const { data: allPeriods } = await supabase
+        .from('reporting_periods').select('id, year').eq('organization_id', org.id).order('year')
+
+      if (allPeriods && allPeriods.length > 0) {
+        const TABLES = ['scope1_stationary','scope1_mobile','scope1_equipment_fuel','scope1_refrigerants','scope1_industrial_gases','scope2_electricity','scope2_heat','scope2_steam','scope2_cooling']
+        const trendPoints: YearPoint[] = []
+        for (const p of allPeriods) {
+          const results = await Promise.all(TABLES.map(tbl =>
+            supabase.from(tbl).select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', p.id)
+          ))
+          const s3 = await supabase.from('scope3_submissions').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', p.id).eq('status', 'done')
+          const totalKg = [...results, s3].reduce((s, r) => s + (r.data ?? []).reduce((a: number, x: any) => a + (x.co2e_kg ?? 0), 0), 0)
+          if (totalKg > 0) trendPoints.push({ year: String(p.year), emisije: parseFloat((totalKg / 1000).toFixed(3)) })
+        }
+        setYearTrend(trendPoints)
+      }
     } catch (e) { console.error(e) }
     setLoading(false)
   }
@@ -99,9 +120,7 @@ export default function AnalyticsPage() {
   const total = (scopeData?.scope1_kg ?? 0) + (scopeData?.scope2_kg ?? 0) + (scopeData?.scope3_kg ?? 0)
   const totalT = total / 1000
 
-  const yearChartData = [...(availablePeriods ?? [])]
-    .sort((a, b) => a.year - b.year)
-    .map(p => ({ year: String(p.year), emisije: parseFloat((p.total_co2e_kg / 1000).toFixed(3)) }))
+  const yearChartData = yearTrend
 
   const scopeChartData = [
     { name: 'Scope 1', value: parseFloat(((scopeData?.scope1_kg ?? 0) / 1000).toFixed(3)), color: SCOPE_COLORS[0] },
