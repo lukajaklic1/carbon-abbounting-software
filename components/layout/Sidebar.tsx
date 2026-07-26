@@ -189,11 +189,6 @@ export function Sidebar() {
           ))}
         </CollapsibleSection>
 
-        {/* Dashboard at bottom of nav */}
-        <div className="pt-2 border-t border-gray-100 mt-2">
-          <NavItem href="/app/dashboard" label={t('Nadzorna plošča', 'Dashboard')} icon={BarChart2}
-            active={pathname === '/app/dashboard'} />
-        </div>
       </nav>
 
       {/* Bottom */}
