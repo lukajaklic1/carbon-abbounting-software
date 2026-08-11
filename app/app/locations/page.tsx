@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { MapPin, Plus, Pencil, Trash2, Building2, X, Check } from 'lucide-react'
@@ -211,7 +211,7 @@ export default function LocationsPage() {
           <p className="text-sm text-gray-400 mt-0.5">{locations.length} {t(locations.length === 1 ? 'lokacija' : 'lokacij', locations.length === 1 ? 'location' : 'locations')} · {t('Pisarne, tovarne, skladišča in druge nepremičnine', 'Offices, factories, warehouses and other premises')}</p>
         </div>
         <button onClick={openNew}
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+          className="inline-flex items-center gap-2 bg-green-700 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
           <Plus className="h-4 w-4" />
           {t('Nova lokacija', 'New location')}
         </button>
@@ -256,7 +256,7 @@ export default function LocationsPage() {
           <MapPin className="h-7 w-7 text-gray-300 mx-auto mb-3" />
           <p className="text-sm text-gray-500 mb-2">{t('Ni lokacij.', 'No locations.')}</p>
           <button onClick={openNew}
-            className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors">
+            className="text-sm text-green-700 hover:text-blue-700 font-medium transition-colors">
             {t('Dodajte prvo lokacijo →', 'Add your first location →')}
           </button>
         </div>
@@ -307,7 +307,7 @@ export default function LocationsPage() {
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-1 justify-end">
                       <button onClick={() => openEdit(loc)}
-                        className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                        className="p-1.5 text-gray-400 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors">
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
                       <button
@@ -358,7 +358,7 @@ export default function LocationsPage() {
                 </label>
                 <input value={form.name} onChange={e => f('name', e.target.value)}
                   placeholder={t('npr. Centralna pisarna Ljubljana', 'e.g. Main Office Ljubljana')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300"
+                  className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300"
                 />
               </div>
 
@@ -367,7 +367,7 @@ export default function LocationsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Ulica in hišna številka', 'Street address')}</label>
                 <input value={form.address} onChange={e => f('address', e.target.value)}
                   placeholder={t('npr. Dunajska cesta 5', 'e.g. Main Street 5')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300"
+                  className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300"
                 />
               </div>
 
@@ -377,14 +377,14 @@ export default function LocationsPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Mesto', 'City')}</label>
                   <input value={form.city} onChange={e => f('city', e.target.value)}
                     placeholder={t('Ljubljana', 'Ljubljana')}
-                    className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300"
+                    className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Poštna številka', 'Postal code')}</label>
                   <input value={form.postal_code} onChange={e => f('postal_code', e.target.value)}
                     placeholder="1000"
-                    className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300"
+                    className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300"
                   />
                 </div>
               </div>
@@ -394,14 +394,14 @@ export default function LocationsPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Država', 'Country')}</label>
                   <select value={form.country_code} onChange={e => f('country_code', e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb]">
+                    className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a]">
                     {COUNTRIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Tip lokacije', 'Location type')}</label>
                   <select value={form.location_type} onChange={e => f('location_type', e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb]">
+                    className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a]">
                     {LOCATION_TYPES.map(lt => <option key={lt.value} value={lt.value}>{t(lt.sl, lt.en)}</option>)}
                   </select>
                 </div>
@@ -413,7 +413,7 @@ export default function LocationsPage() {
                 <div className="flex gap-2">
                   <input value={form.floor_area_m2} onChange={e => f('floor_area_m2', e.target.value)}
                     type="number" placeholder={t('npr. 500', 'e.g. 500')}
-                    className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300"
+                    className="flex-1 px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300"
                   />
                   <div className="w-16 px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center">
                     m²
@@ -426,14 +426,14 @@ export default function LocationsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">{t('Energenti na tej lokaciji', 'Utilities at this location')}</label>
                 <div className="space-y-2">
                   {UTILITIES.map(u => (
-                    <label key={u.key} className="flex items-start gap-3 p-3 rounded-xl border border-gray-200 hover:border-blue-200 hover:bg-blue-50/30 cursor-pointer transition-colors group">
+                    <label key={u.key} className="flex items-start gap-3 p-3 rounded-xl border border-gray-200 hover:border-blue-200 hover:bg-green-50/30 cursor-pointer transition-colors group">
                       <div className="relative mt-0.5 shrink-0">
                         <input type="checkbox"
                           checked={!!(form as any)[u.key]}
                           onChange={e => f(u.key as keyof LocationForm, e.target.checked)}
                           className="sr-only" />
                         <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-                          (form as any)[u.key] ? 'bg-blue-600 border-blue-600' : 'border-gray-300'
+                          (form as any)[u.key] ? 'bg-green-700 border-green-700' : 'border-gray-300'
                         }`}>
                           {(form as any)[u.key] && <Check className="w-2.5 h-2.5 text-white" />}
                         </div>
@@ -469,7 +469,7 @@ export default function LocationsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Opombe', 'Notes')} <span className="text-gray-400 font-normal">({t('neobvezno', 'optional')})</span></label>
                 <textarea value={form.notes} onChange={e => f('notes', e.target.value)}
                   rows={2} placeholder={t('Dodatne informacije o lokaciji...', 'Additional information about this location...')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 resize-none"
+                  className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300 resize-none"
                 />
               </div>
 
@@ -483,7 +483,7 @@ export default function LocationsPage() {
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={handleSave} disabled={saving || !form.name.trim()}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : editingId ? t('Shrani spremembe', 'Save changes') : t('Dodaj lokacijo', 'Add location')}
               </button>
             </div>

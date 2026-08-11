@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -64,7 +64,7 @@ export default function SuperAdminDashboard() {
   }
 
   const cards = [
-    { label: 'Skupaj podjetij', value: stats.orgs, icon: Building2, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: 'Skupaj podjetij', value: stats.orgs, icon: Building2, color: 'text-green-700', bg: 'bg-green-50' },
     { label: 'Aktivni uporabniki', value: stats.users, icon: Users, color: 'text-green-600', bg: 'bg-green-50' },
     { label: 'Nova podjetja ta mesec', value: stats.newOrgs, icon: TrendingUp, color: 'text-amber-500', bg: 'bg-amber-50' },
     { label: 'Novi uporabniki ta mesec', value: stats.newUsers, icon: UserPlus, color: 'text-orange-500', bg: 'bg-orange-50' },
@@ -97,7 +97,7 @@ export default function SuperAdminDashboard() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <TrendCard title="Rast podjetij" data={orgTrend} color="#2563eb" total={stats.orgs} />
+        <TrendCard title="Rast podjetij" data={orgTrend} color="#16a34a" total={stats.orgs} />
         <TrendCard title="Rast uporabnikov" data={userTrend} color="#10b981" total={stats.users} />
       </div>
     </div>

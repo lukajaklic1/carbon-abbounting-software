@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { Car, Plus, Pencil, Trash2, X, Truck, Bus } from 'lucide-react'
@@ -17,7 +17,7 @@ const fuelColors: Record<string, string> = {
   diesel: 'bg-gray-100 text-gray-600',
   petrol: 'bg-orange-50 text-orange-600',
   electric: 'bg-green-50 text-green-600',
-  hybrid: 'bg-blue-50 text-blue-600',
+  hybrid: 'bg-green-50 text-green-700',
   lpg: 'bg-yellow-50 text-yellow-600',
   cng: 'bg-cyan-50 text-cyan-600',
   unknown: 'bg-gray-50 text-gray-400',
@@ -64,8 +64,8 @@ const EMPTY_FORM = {
 
 type VehicleForm = typeof EMPTY_FORM
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] transition-shadow'
 
 export default function VehiclesPage() {
   const { t, locale } = useLocale()
@@ -251,7 +251,7 @@ export default function VehiclesPage() {
           </p>
         </div>
         <button onClick={openNew}
-          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+          className="inline-flex items-center gap-2 bg-green-700 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
           <Plus className="h-4 w-4" />
           {t('Novo vozilo', 'New vehicle')}
         </button>
@@ -293,7 +293,7 @@ export default function VehiclesPage() {
         <select
           value={filterType}
           onChange={e => setFilterType(e.target.value)}
-          className="text-sm px-3 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-600 text-gray-600"
+          className="text-sm px-3 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-green-700 text-gray-600"
         >
           <option value="">{t('Vsi tipi', 'All types')}</option>
           {VEHICLE_TYPES.map(vt => (
@@ -304,7 +304,7 @@ export default function VehiclesPage() {
           <select
             value={filterLocation}
             onChange={e => setFilterLocation(e.target.value)}
-            className="text-sm px-3 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-600 text-gray-600"
+            className="text-sm px-3 py-2 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-green-700 text-gray-600"
           >
             <option value="">{t('Vse lokacije', 'All locations')}</option>
             {locations.map(loc => (
@@ -329,7 +329,7 @@ export default function VehiclesPage() {
           <Car className="h-7 w-7 text-gray-300 mx-auto mb-3" />
           <p className="text-sm text-gray-500 mb-2">{t('Ni vozil.', 'No vehicles.')}</p>
           <button onClick={openNew}
-            className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors">
+            className="text-sm text-green-700 hover:text-blue-700 font-medium transition-colors">
             {t('Dodajte prvo vozilo →', 'Add your first vehicle →')}
           </button>
         </div>
@@ -352,7 +352,7 @@ export default function VehiclesPage() {
                 <tr key={v.id} className={`hover:bg-gray-50 transition-colors ${i !== 0 ? 'border-t border-gray-100' : ''}`}>
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
                         <VehicleIcon type={v.vehicle_type} />
                       </div>
                       <div>
@@ -384,7 +384,7 @@ export default function VehiclesPage() {
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-1 justify-end">
                       <button onClick={() => openEdit(v)}
-                        className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                        className="p-1.5 text-gray-400 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors">
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
                       <button
@@ -548,7 +548,7 @@ export default function VehiclesPage() {
                 <textarea value={form.notes} onChange={e => f('notes', e.target.value)}
                   rows={2}
                   placeholder={t('Dodatne informacije o vozilu...', 'Additional vehicle information...')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 resize-none"
+                  className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300 resize-none"
                 />
               </div>
 
@@ -564,7 +564,7 @@ export default function VehiclesPage() {
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={handleSave} disabled={saving || !form.name.trim()}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving
                   ? t('Shranjevanje...', 'Saving...')
                   : editingId

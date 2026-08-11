@@ -240,7 +240,7 @@ export default function Scope3Page() {
                   <p className="text-sm font-semibold text-gray-900 shrink-0">{t(cat.label_sl, cat.label_en)}</p>
                   {sub?.file_name && (
                     <a href={sub.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-gray-100 hover:bg-blue-50 hover:text-blue-600 text-gray-500 transition-colors shrink min-w-0 max-w-[200px]">
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-gray-100 hover:bg-green-50 hover:text-green-700 text-gray-500 transition-colors shrink min-w-0 max-w-[200px]">
                       <Download className="h-3 w-3 shrink-0" />
                       <span className="text-xs font-medium truncate">{sub.file_name}</span>
                     </a>
@@ -277,7 +277,7 @@ export default function Scope3Page() {
                 {!sub && (
                   <button
                     onClick={() => openModal(cat)}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0 bg-blue-600 text-white hover:bg-blue-700"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0 bg-green-700 text-white hover:bg-blue-700"
                   >
                     <Upload className="h-3 w-3" />
                     {t('Naloži podatke', 'Upload data')}
@@ -343,7 +343,7 @@ export default function Scope3Page() {
                     <span className="text-xs text-gray-500 truncate">{t('Obstoječa', 'Existing')}: {modal.existing.file_name}</span>
                   </div>
                   <a href={modal.existing.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
-                    className="text-xs text-blue-600 hover:underline shrink-0 ml-2">
+                    className="text-xs text-green-700 hover:underline shrink-0 ml-2">
                     {t('Prenesi', 'Download')}
                   </a>
                 </div>
@@ -367,7 +367,7 @@ export default function Scope3Page() {
                   'px-5 py-2 text-sm font-semibold rounded-lg transition-colors',
                   !modal.selectedFile || modal.uploading
                     ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'bg-green-700 text-white hover:bg-blue-700'
                 )}
               >
                 {modal.uploading ? t('Pošiljanje...', 'Submitting...') : t('Pošlji v pregled', 'Submit for Review')}

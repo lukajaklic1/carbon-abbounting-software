@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -74,7 +74,7 @@ export default function UsersPage() {
 
   const roleBadge = (role: string, isSA: boolean) => {
     if (isSA) return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">Super admin</span>
-    if (role === 'admin') return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Admin</span>
+    if (role === 'admin') return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-blue-700">Admin</span>
     return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">Uporabnik</span>
   }
 
@@ -94,10 +94,10 @@ export default function UsersPage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
           <input value={search} onChange={e => setSearch(e.target.value)}
             placeholder="Ime, priimek ali e-pošta..."
-            className="pl-8 pr-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-64" />
+            className="pl-8 pr-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-green-500 w-64" />
         </div>
         <select value={roleFilter} onChange={e => setRoleFilter(e.target.value)}
-          className="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          className="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-green-500">
           <option value="all">Vse vloge</option>
           <option value="admin">Admin</option>
           <option value="user">Uporabnik</option>

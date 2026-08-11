@@ -12,8 +12,8 @@ import { useEmissionCountersStore } from '@/stores/emissionCounters'
 import { parseQty, fmtQty } from '@/lib/utils/format'
 
 const PAGE_SIZE = 20
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] transition-shadow'
 
 const COUNTRY_KEYS = Object.keys(getSteamFactors(2024))
 const EMPTY_FORM = { kwh: '', country_code: 'SI' }
@@ -136,8 +136,8 @@ export default function Scope2SteamPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div className="bg-white border border-gray-200 rounded-xl p-4 flex items-center gap-3">
-          <div className="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
-            <Leaf className="h-4 w-4 text-blue-500" />
+          <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
+            <Leaf className="h-4 w-4 text-green-600" />
           </div>
           <div>
             <p className="text-xs text-gray-400">{t('Skupne emisije', 'Total emissions')} · {year}</p>
@@ -183,8 +183,8 @@ export default function Scope2SteamPage() {
                   <tr key={loc.id} className={`hover:bg-gray-50 transition-colors ${i !== 0 ? 'border-t border-gray-100' : ''}`}>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
-                          <Building2 className="h-4 w-4 text-blue-500" />
+                        <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
+                          <Building2 className="h-4 w-4 text-green-600" />
                         </div>
                         <div>
                           <p className="text-sm font-semibold text-gray-900">{loc.name}</p>
@@ -210,7 +210,7 @@ export default function Scope2SteamPage() {
                             {t('Uredi podatke o emisijah', 'Edit emission data')}
                           </button>
                         ) : (
-                          <button onClick={() => openAdd(loc)} className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                          <button onClick={() => openAdd(loc)} className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 hover:text-blue-700 px-3 py-1.5 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
                             <Plus className="h-3 w-3" />{t('Dodaj emisije', 'Add emission data')}
                           </button>
                         )}
@@ -280,7 +280,7 @@ export default function Scope2SteamPage() {
               )}
               <button onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">{t('Prekliči', 'Cancel')}</button>
               <button onClick={handleSave} disabled={saving || !form.kwh || parseQty(form.kwh) < 0}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : entriesMap[activeLocation.id] ? t('Shrani', 'Save') : t('Dodaj vnos', 'Add entry')}
               </button>
             </div>

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -6,8 +6,8 @@ import { useOrganizationStore } from '@/stores/organization'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { Check, AlertCircle, Building2, User } from 'lucide-react'
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] transition-shadow'
 
 const INDUSTRIES = [
   { value: 'manufacturing', sl: 'Predelovalna industrija', en: 'Manufacturing' },
@@ -62,8 +62,8 @@ function Card({ title, icon: Icon, children }: { title: string; icon: React.Elem
   return (
     <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
       <div className="px-8 py-5 border-b border-gray-100 flex items-center gap-3">
-        <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
-          <Icon className="h-4 w-4 text-blue-600" />
+        <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
+          <Icon className="h-4 w-4 text-green-700" />
         </div>
         <h2 className="text-sm font-semibold text-gray-900">{title}</h2>
       </div>
@@ -185,7 +185,7 @@ export default function SettingsPage() {
             {isAdmin && (
               <div className="flex justify-end pt-1">
                 <button onClick={saveOrg} disabled={savingOrg || !orgName.trim()}
-                  className="px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
+                  className="px-6 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
                   {savingOrg ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
                 </button>
               </div>
@@ -210,7 +210,7 @@ export default function SettingsPage() {
 
             <div className="flex justify-end pt-1">
               <button onClick={saveProfile} disabled={savingProfile}
-                className="px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="px-6 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
                 {savingProfile ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
               </button>
             </div>

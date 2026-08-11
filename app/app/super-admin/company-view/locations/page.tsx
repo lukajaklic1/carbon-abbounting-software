@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { useSuperAdmin } from '../../SuperAdminContext'
@@ -47,8 +47,8 @@ export default function AdminLocationsPage() {
                 <tr key={r.id} className={cn('hover:bg-gray-50', i !== 0 && 'border-t border-gray-100')}>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
-                        <MapPin className="h-3.5 w-3.5 text-blue-500" />
+                      <div className="w-7 h-7 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
+                        <MapPin className="h-3.5 w-3.5 text-green-600" />
                       </div>
                       <span className="text-sm font-semibold text-gray-900">{r.name}</span>
                     </div>

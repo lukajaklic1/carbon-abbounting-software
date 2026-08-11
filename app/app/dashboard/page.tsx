@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { usePeriodStore } from '@/stores/period'
@@ -23,8 +23,8 @@ const INDUSTRY_LABELS: Record<string, string> = {
   it: 'Informacijska tehnologija', education: 'Izobraževanje', public: 'Javna uprava', other: 'Drugo',
 }
 
-const SCOPE_COLORS = ['#2563eb', '#f59e0b', '#10b981']
-const YEAR_COLOR = '#2563eb'
+const SCOPE_COLORS = ['#16a34a', '#f59e0b', '#10b981']
+const YEAR_COLOR = '#16a34a'
 
 export default function DashboardPage() {
   const { selectedYear, currentPeriod, availablePeriods, setSelectedYear, setCurrentPeriod } = usePeriodStore()
@@ -65,7 +65,7 @@ export default function DashboardPage() {
 
   const sources = [
     { label: 'Zemeljski plin', href: `/app/periods/${displayYear}/scope1/stationary`, icon: Flame, color: 'text-orange-500', bg: 'bg-orange-50', scope: 'Scope 1' },
-    { label: 'Vozila', href: `/app/periods/${displayYear}/scope1/mobile`, icon: Car, color: 'text-blue-600', bg: 'bg-blue-50', scope: 'Scope 1' },
+    { label: 'Vozila', href: `/app/periods/${displayYear}/scope1/mobile`, icon: Car, color: 'text-green-700', bg: 'bg-green-50', scope: 'Scope 1' },
     { label: 'Oprema', href: `/app/periods/${displayYear}/scope1/equipment-fuel`, icon: Wrench, color: 'text-gray-500', bg: 'bg-gray-100', scope: 'Scope 1' },
     { label: 'Hladilni plini', href: `/app/periods/${displayYear}/scope1/refrigerants`, icon: Thermometer, color: 'text-cyan-500', bg: 'bg-cyan-50', scope: 'Scope 1' },
     { label: 'Industrijski plini', href: `/app/periods/${displayYear}/scope1/industrial-gases`, icon: FlaskConical, color: 'text-purple-500', bg: 'bg-purple-50', scope: 'Scope 1' },
@@ -76,7 +76,7 @@ export default function DashboardPage() {
     { label: t('Skupne emisije', 'Total emissions'), value: `${totalTons.toFixed(2)} t`, sub: t('CO₂e letno', 'CO₂e annual'), icon: Leaf, color: 'text-green-600', bg: 'bg-green-50' },
     { label: 'Scope 1', value: '0.00 t', sub: t('Direktne emisije', 'Direct emissions'), icon: Flame, color: 'text-orange-500', bg: 'bg-orange-50' },
     { label: 'Scope 2', value: '0.00 t', sub: t('Posredne emisije', 'Indirect emissions'), icon: Zap, color: 'text-yellow-600', bg: 'bg-yellow-50' },
-    { label: t('Viri podatkov', 'Data sources'), value: `0 / ${sources.length}`, sub: t('Izpolnjeno', 'Completed'), icon: BarChart3, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: t('Viri podatkov', 'Data sources'), value: `0 / ${sources.length}`, sub: t('Izpolnjeno', 'Completed'), icon: BarChart3, color: 'text-green-700', bg: 'bg-green-50' },
   ]
 
   return (
@@ -137,7 +137,7 @@ export default function DashboardPage() {
                   {yearChartData.map((entry, index) => (
                     <Cell
                       key={index}
-                      fill={entry.year === String(displayYear) ? '#2563eb' : '#bfdbfe'}
+                      fill={entry.year === String(displayYear) ? '#16a34a' : '#bfdbfe'}
                     />
                   ))}
                 </Bar>
@@ -212,14 +212,14 @@ export default function DashboardPage() {
           <div className="space-y-3">
             <Link href="/app/analytics"
               className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
-              <div className="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center shrink-0">
-                <TrendingUp className="h-4 w-4 text-blue-600" />
+              <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
+                <TrendingUp className="h-4 w-4 text-green-700" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-gray-900">{t('Analitika', 'Analytics')}</p>
                 <p className="text-xs text-gray-400">{t('Grafi in trendi', 'Charts & trends')}</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-blue-600 shrink-0" />
+              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-green-700 shrink-0" />
             </Link>
             <Link href="/app/reports"
               className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
@@ -230,7 +230,7 @@ export default function DashboardPage() {
                 <p className="text-sm font-semibold text-gray-900">{t('Poročila', 'Reports')}</p>
                 <p className="text-xs text-gray-400">{t('Izvoz PDF, CSRD', 'PDF export, CSRD')}</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-blue-600 shrink-0" />
+              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-green-700 shrink-0" />
             </Link>
             <Link href="/app/locations"
               className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
@@ -241,7 +241,7 @@ export default function DashboardPage() {
                 <p className="text-sm font-semibold text-gray-900">{t('Lokacije', 'Locations')}</p>
                 <p className="text-xs text-gray-400">{t('Upravljanje lokacij', 'Manage locations')}</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-blue-600 shrink-0" />
+              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-green-700 shrink-0" />
             </Link>
           </div>
         </div>

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -66,7 +66,7 @@ export default function NewVehiclePage() {
             Cancel
           </button>
           <button type="submit" disabled={loading}
-            className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60 rounded-xl transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:opacity-60 rounded-xl transition-colors">
             {loading ? 'Saving...' : 'Add Vehicle'}
           </button>
         </div>

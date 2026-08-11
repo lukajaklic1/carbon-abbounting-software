@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -10,8 +10,8 @@ import {
 } from 'recharts'
 import { cn } from '@/lib/utils'
 
-const SCOPE_COLORS = ['#2563eb', '#f59e0b', '#10b981']
-const SOURCE_COLORS = ['#2563eb','#3b82f6','#60a5fa','#f59e0b','#fbbf24','#10b981','#34d399','#6366f1','#a78bfa']
+const SCOPE_COLORS = ['#16a34a', '#f59e0b', '#10b981']
+const SOURCE_COLORS = ['#16a34a','#3b82f6','#60a5fa','#f59e0b','#fbbf24','#10b981','#34d399','#6366f1','#a78bfa']
 const TABLES = ['scope1_stationary','scope1_mobile','scope1_equipment_fuel','scope1_refrigerants','scope1_industrial_gases','scope2_electricity','scope2_heat','scope2_steam','scope2_cooling']
 
 type ScopeData = {
@@ -143,7 +143,7 @@ export default function CompanyDataPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'Skupaj', value: fmtT(total), sub: 'tCO₂e', icon: Leaf, color: 'text-green-600', bg: 'bg-green-50' },
-          { label: 'Scope 1', value: fmtT(scopeData?.scope1_kg ?? 0), sub: `${pct(scopeData?.scope1_kg ?? 0)}%`, icon: Flame, color: 'text-blue-600', bg: 'bg-blue-50' },
+          { label: 'Scope 1', value: fmtT(scopeData?.scope1_kg ?? 0), sub: `${pct(scopeData?.scope1_kg ?? 0)}%`, icon: Flame, color: 'text-green-700', bg: 'bg-green-50' },
           { label: 'Scope 2', value: fmtT(scopeData?.scope2_kg ?? 0), sub: `${pct(scopeData?.scope2_kg ?? 0)}%`, icon: Zap, color: 'text-amber-500', bg: 'bg-amber-50' },
           { label: 'Scope 3', value: fmtT(scopeData?.scope3_kg ?? 0), sub: `${pct(scopeData?.scope3_kg ?? 0)}%`, icon: Wind, color: 'text-emerald-600', bg: 'bg-emerald-50' },
         ].map(card => {
@@ -178,7 +178,7 @@ export default function CompanyDataPage() {
                   formatter={(v: any) => [`${String(v).replace('.', ',')} tCO₂e`, 'Emisije']} />
                 <Bar dataKey="emisije" radius={[6, 6, 0, 0]}>
                   {yearTrend.map((entry, i) => (
-                    <Cell key={i} fill={entry.year === String(year) ? '#2563eb' : '#bfdbfe'} />
+                    <Cell key={i} fill={entry.year === String(year) ? '#16a34a' : '#bfdbfe'} />
                   ))}
                 </Bar>
               </BarChart>

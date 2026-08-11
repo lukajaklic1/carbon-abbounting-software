@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useCallback } from 'react'
 import { Plus, Pencil, UserMinus, RefreshCw, X, Check, Crown, UserCheck } from 'lucide-react'
@@ -21,8 +21,8 @@ type Member = {
   isOwner?: boolean
 }
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] transition-shadow'
 
 export default function TeamPage() {
   const { t } = useLocale()
@@ -206,7 +206,7 @@ export default function TeamPage() {
         </div>
         {isAdmin && (
           <button onClick={() => { setShowInvite(true); resetInviteForm() }}
-            className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+            className="inline-flex items-center gap-2 bg-green-700 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
             <Plus className="h-4 w-4" /> {t('Dodaj uporabnika', 'Add user')}
           </button>
         )}
@@ -249,7 +249,7 @@ export default function TeamPage() {
 
               <label className="flex items-center gap-2.5 cursor-pointer select-none">
                 <input type="checkbox" checked={inviteAsAdmin} onChange={e => setInviteAsAdmin(e.target.checked)}
-                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600 focus:ring-1" />
+                  className="w-4 h-4 rounded border-gray-300 text-green-700 focus:ring-green-700 focus:ring-1" />
                 <span className="text-sm text-gray-700">{t('Povabi kot administratorja', 'Invite as administrator')}</span>
               </label>
 
@@ -264,7 +264,7 @@ export default function TeamPage() {
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={sendInvite} disabled={inviting || !inviteEmail.trim()}
-                className="px-5 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-lg transition-colors">
+                className="px-5 py-2 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-lg transition-colors">
                 {inviting ? t('Pošiljanje...', 'Sending...') : t('Pošlji povabilo', 'Send invite')}
               </button>
             </div>
@@ -312,7 +312,7 @@ export default function TeamPage() {
                     {/* Role */}
                     <td className="px-6 py-3.5">
                       {m.role === 'admin'
-                        ? <span className="inline-flex items-center gap-1 text-xs font-medium bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full">Administrator</span>
+                        ? <span className="inline-flex items-center gap-1 text-xs font-medium bg-green-50 text-blue-700 px-2.5 py-1 rounded-full">Administrator</span>
                         : <span className="inline-flex items-center gap-1 text-xs font-medium bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full"><UserCheck className="h-3 w-3" /> {t('Član', 'Member')}</span>
                       }
                     </td>
@@ -334,7 +334,7 @@ export default function TeamPage() {
                       <div className="flex items-center gap-1 justify-end">
                         {canEdit && (
                           <button onClick={() => { setEditMember(m); setEditRole(m.role); setEditFirstName(m.first_name ?? ''); setEditLastName(m.last_name ?? '') }}
-                            className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title={t('Uredi', 'Edit')}>
+                            className="p-1.5 text-gray-400 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors" title={t('Uredi', 'Edit')}>
                             <Pencil className="h-3.5 w-3.5" />
                           </button>
                         )}
@@ -363,7 +363,7 @@ export default function TeamPage() {
               <button onClick={() => setEditMember(null)} className="p-1 text-gray-400 hover:text-gray-600 rounded-lg"><X className="h-4 w-4" /></button>
             </div>
             <div className="flex items-center gap-3 mb-5 p-3 bg-gray-50 rounded-xl">
-              <div className="w-9 h-9 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center text-xs font-bold text-blue-600 shrink-0">
+              <div className="w-9 h-9 rounded-full bg-green-50 border border-blue-100 flex items-center justify-center text-xs font-bold text-green-700 shrink-0">
                 {initials(editMember)}
               </div>
               <div>
@@ -398,7 +398,7 @@ export default function TeamPage() {
             )}
             <div className="flex gap-2 justify-end">
               <button onClick={() => setEditMember(null)} className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">{t('Prekliči', 'Cancel')}</button>
-              <button onClick={saveEdit} disabled={saving} className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-lg transition-colors">
+              <button onClick={saveEdit} disabled={saving} className="px-4 py-2 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-lg transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
               </button>
             </div>

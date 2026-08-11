@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { Check, Clock, FileText, ExternalLink, ChevronDown } from 'lucide-react'
@@ -172,7 +172,7 @@ export default function AdminScope3Page() {
                 {/* File link */}
                 {sub.file_name && (
                   <a href={sub.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
-                    className="hidden sm:inline-flex items-center gap-1.5 text-xs text-blue-600 hover:underline shrink-0 max-w-[180px]">
+                    className="hidden sm:inline-flex items-center gap-1.5 text-xs text-green-700 hover:underline shrink-0 max-w-[180px]">
                     <FileText className="h-3.5 w-3.5 shrink-0" />
                     <span className="truncate">{sub.file_name}</span>
                     <ExternalLink className="h-3 w-3 shrink-0" />

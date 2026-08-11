@@ -27,34 +27,31 @@ export function TopBar() {
   }
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
-      <div className="flex items-center gap-4">
-        <div>
-          <p className="text-xs text-gray-400">{t('Skupne emisije', 'Total emissions')}</p>
-          <p className="text-sm font-bold text-blue-600">{formatCo2e(totalKg)}</p>
-        </div>
+    <header className="h-12 bg-white flex items-center justify-between px-6 shrink-0" style={{ borderBottom: '1px solid #e5e7eb' }}>
+      <div className="flex items-center gap-3">
+        <p className="text-xs text-gray-400">{t('Skupne emisije', 'Total emissions')}</p>
+        <p className="text-sm font-bold" style={{ color: '#16a34a' }}>{formatCo2e(totalKg)}</p>
       </div>
 
       <div className="flex items-center gap-2">
-        {/* Year selector — only shows real periods */}
         <DropdownMenu>
-          <DropdownMenuTrigger className="inline-flex items-center gap-2 h-8 px-3 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl cursor-pointer transition-colors border border-gray-200 outline-none">
-            <span className="text-xs text-gray-400 font-normal">{t('Leto poročanja', 'Reporting year')}</span>
-            <span className="font-semibold text-gray-800">{displayYear}</span>
-            <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
+          <DropdownMenuTrigger className="inline-flex items-center gap-2 h-7 px-3 text-xs font-medium rounded-lg cursor-pointer transition-colors outline-none" style={{ background: '#f3f4f6', color: '#374151', border: '1px solid #e5e7eb' }}>
+            <span className="text-gray-400 font-normal">{t('Leto', 'Year')}</span>
+            <span className="font-bold text-gray-800">{displayYear}</span>
+            <ChevronDown className="h-3 w-3 text-gray-400" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="min-w-[140px]">
+          <DropdownMenuContent align="end" className="min-w-[120px]">
             {IS_MOCK ? (
               [2024, 2025].map(y => (
                 <DropdownMenuItem key={y} onClick={() => handleSelectYear(y)}
-                  className={y === selectedYear ? 'font-semibold text-blue-600' : ''}>
+                  className={y === selectedYear ? 'font-semibold text-green-600' : ''}>
                   {y}
                 </DropdownMenuItem>
               ))
             ) : availablePeriods.length > 0 ? (
               availablePeriods.map(p => (
                 <DropdownMenuItem key={p.year} onClick={() => handleSelectYear(p.year)}
-                  className={p.year === selectedYear ? 'font-semibold text-blue-600' : ''}>
+                  className={p.year === selectedYear ? 'font-semibold text-green-600' : ''}>
                   {p.year}
                   {p.status === 'completed' && <span className="ml-auto text-xs text-green-500">✓</span>}
                 </DropdownMenuItem>
@@ -67,8 +64,7 @@ export function TopBar() {
             {!IS_MOCK && (
               <>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => router.push('/app/periods/new')}
-                  className="text-blue-600 font-medium">
+                <DropdownMenuItem onClick={() => router.push('/app/periods/new')} className="text-green-600 font-medium">
                   <Plus className="h-3.5 w-3.5 mr-1.5" />
                   {t('Dodaj leto', 'Add year')}
                 </DropdownMenuItem>
@@ -76,7 +72,6 @@ export function TopBar() {
             )}
           </DropdownMenuContent>
         </DropdownMenu>
-
       </div>
     </header>
   )

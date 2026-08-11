@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -56,8 +56,8 @@ export default function NewPeriodPage() {
     <div className="max-w-lg mx-auto p-6">
       <FormCard title={t('Novo leto poročanja', 'New reporting year')} backHref="/app/dashboard">
         <div className="p-6 space-y-5">
-          <div className="flex items-center gap-3 p-4 bg-blue-50 border border-blue-100 rounded-xl">
-            <CalendarDays className="h-5 w-5 text-blue-600 shrink-0" />
+          <div className="flex items-center gap-3 p-4 bg-green-50 border border-blue-100 rounded-xl">
+            <CalendarDays className="h-5 w-5 text-green-700 shrink-0" />
             <p className="text-sm text-blue-700">
               {t('Vsako leto poročanja je ločen nabor podatkov o emisijah.', 'Each reporting year is a separate set of emissions data.')}
             </p>
@@ -72,7 +72,7 @@ export default function NewPeriodPage() {
                   <button key={y} onClick={() => !taken && setYear(y)} disabled={taken}
                     className={`py-2.5 rounded-xl text-sm font-semibold border-2 transition-all ${
                       taken ? 'border-gray-100 bg-gray-50 text-gray-300 cursor-not-allowed' :
-                      year === y ? 'border-blue-600 bg-blue-50 text-blue-600' :
+                      year === y ? 'border-green-700 bg-green-50 text-green-700' :
                       'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
                     }`}>
                     {y}
@@ -91,7 +91,7 @@ export default function NewPeriodPage() {
               {t('Prekliči', 'Cancel')}
             </button>
             <button onClick={handleCreate} disabled={loading}
-              className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
+              className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
               {loading ? t('Ustvarjanje...', 'Creating...') : `${t('Ustvari', 'Create')} ${year}`}
             </button>
           </div>

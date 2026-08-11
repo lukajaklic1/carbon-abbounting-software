@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -99,13 +99,13 @@ function NavItem({ href, label, icon: Icon, counter, entityOnly, exact }: {
   return (
     <Link href={href} className={cn(
       'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold transition-colors',
-      active ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+      active ? 'bg-green-50 text-green-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
     )}>
-      <Icon className={cn('h-4 w-4 shrink-0', active ? 'text-blue-600' : 'text-gray-400')} />
+      <Icon className={cn('h-4 w-4 shrink-0', active ? 'text-green-700' : 'text-gray-400')} />
       <span className="truncate flex-1">{label}</span>
       {counter !== undefined && (
         <span className={cn('text-[10px] font-normal tabular-nums shrink-0 tracking-tight',
-          allDone ? 'text-green-500' : active ? 'text-blue-400' : 'text-gray-400')}>
+          allDone ? 'text-green-500' : active ? 'text-green-500' : 'text-gray-400')}>
           {entityOnly ? counter.total : `${counter.done}/${counter.total}`}
         </span>
       )}
@@ -158,7 +158,7 @@ function SuperAdminSidebar() {
     <aside className="flex flex-col h-full w-[220px] bg-white border-r border-gray-200 shrink-0">
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-5 h-16 border-b border-gray-200 shrink-0">
-        <div className="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center shrink-0">
+        <div className="w-8 h-8 bg-green-700 rounded-xl flex items-center justify-center shrink-0">
           <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
             <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
             <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>
@@ -167,7 +167,7 @@ function SuperAdminSidebar() {
         </div>
         <div>
           <span className="font-bold text-gray-900 text-sm leading-tight block">CarbonTrack</span>
-          <span className="text-[10px] text-blue-600 font-semibold">Super Admin</span>
+          <span className="text-[10px] text-green-700 font-semibold">Super Admin</span>
         </div>
       </div>
 
@@ -191,7 +191,7 @@ function SuperAdminSidebar() {
         <div className="px-2 pb-1">
           <div className="relative">
             <select value={year} onChange={e => setYear(Number(e.target.value))}
-              className="appearance-none w-full pl-2.5 pr-6 py-1.5 text-xs font-semibold text-gray-700 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
+              className="appearance-none w-full pl-2.5 pr-6 py-1.5 text-xs font-semibold text-gray-700 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer">
               {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}</option>)}
             </select>
             <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3 w-3 text-gray-400 pointer-events-none" />
@@ -266,7 +266,7 @@ function CompanySelector() {
         <select
           value={selectedOrg?.id ?? ''}
           onChange={e => setSelectedOrg(orgs.find(o => o.id === e.target.value) ?? null)}
-          className="appearance-none pl-3 pr-7 py-1.5 text-sm font-semibold text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+          className="appearance-none pl-3 pr-7 py-1.5 text-sm font-semibold text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer"
         >
           {orgs.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
         </select>

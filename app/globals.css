@@ -46,40 +46,40 @@
 }
 
 :root {
-  --primary: #2563eb;
+  --primary: #16a34a;
   --primary-foreground: #ffffff;
-  --background: #f9fafb;
-  --foreground: oklch(0.130 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.130 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.130 0 0);
-  --muted: oklch(0.967 0 0);
-  --muted-foreground: oklch(0.551 0 0);
-  --secondary: oklch(0.967 0 0);
-  --secondary-foreground: oklch(0.374 0 0);
-  --accent: oklch(0.941 0.026 264);
-  --accent-foreground: oklch(0.488 0.243 264.376);
-  --border: oklch(0.918 0 0);
-  --input: oklch(0.967 0 0);
-  --ring: #2563eb;
+  --background: #f8faf8;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --secondary: #f3f4f6;
+  --secondary-foreground: #374151;
+  --accent: #f0fdf4;
+  --accent-foreground: #15803d;
+  --border: #e5e7eb;
+  --input: #f9fafb;
+  --ring: #16a34a;
   --destructive: #ef4444;
-  --chart-1: #2563eb;
-  --chart-2: #16a34a;
-  --chart-3: #ca8a04;
+  --chart-1: #22c55e;
+  --chart-2: #3b82f6;
+  --chart-3: #f59e0b;
   --chart-4: #ea580c;
-  --chart-5: #9333ea;
+  --chart-5: #8b5cf6;
   --radius: 0.5rem;
 
-  /* Sidebar */
-  --sidebar: #ffffff;
-  --sidebar-foreground: #4b5563;
-  --sidebar-primary: #2563eb;
-  --sidebar-primary-foreground: #2563eb;
-  --sidebar-accent: #eff6ff;
-  --sidebar-accent-foreground: #2563eb;
-  --sidebar-border: #e5e7eb;
-  --sidebar-ring: #2563eb;
+  /* Sidebar — Greenly dark green */
+  --sidebar: #0a1b11;
+  --sidebar-foreground: rgba(255,255,255,0.60);
+  --sidebar-primary: #22c55e;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(255,255,255,0.08);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255,255,255,0.07);
+  --sidebar-ring: #22c55e;
 }
 
 @layer base {
@@ -88,4 +88,77 @@
     @apply bg-background text-foreground antialiased;
     font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
+
+  /* Tables — Greenly style */
+  .ct-table { width: 100%; border-collapse: collapse; }
+  .ct-table thead tr { border-bottom: 1px solid #e5e7eb; }
+  .ct-table thead th {
+    padding: 10px 12px; text-align: left;
+    font-size: 11px; font-weight: 600; color: #9ca3af;
+    text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap;
+  }
+  .ct-table tbody tr { border-bottom: 1px solid #f3f4f6; transition: background 0.1s; }
+  .ct-table tbody tr:hover { background: #f9fafb; }
+  .ct-table tbody tr:last-child { border-bottom: none; }
+  .ct-table tbody td { padding: 11px 12px; font-size: 13px; color: #374151; }
+
+  /* Badges */
+  .badge-green  { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:100px; background:#dcfce7; color:#15803d; font-size:11px; font-weight:600; }
+  .badge-yellow { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:100px; background:#fef9c3; color:#a16207; font-size:11px; font-weight:600; }
+  .badge-gray   { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:100px; background:#f3f4f6; color:#6b7280; font-size:11px; font-weight:600; }
+  .badge-red    { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:100px; background:#fee2e2; color:#b91c1c; font-size:11px; font-weight:600; }
+  .badge-blue   { display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:100px; background:#dbeafe; color:#1d4ed8; font-size:11px; font-weight:600; }
+
+  /* Page layout helpers */
+  .ct-page { padding: 28px 32px; max-width: 1100px; }
+  .ct-page-title { font-size: 22px; font-weight: 700; color: #111827; letter-spacing: -0.025em; margin-bottom: 20px; }
+  .ct-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; }
+  .ct-stat-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; }
+  .ct-stat-label { font-size: 12px; color: #9ca3af; margin-bottom: 4px; }
+  .ct-stat-value { font-size: 26px; font-weight: 700; color: #111827; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .ct-stat-unit { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+
+  /* Inputs — clean Greenly style */
+  .ct-input {
+    width: 100%; padding: 8px 12px; font-size: 13px;
+    background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px;
+    color: #111827; outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+  }
+  .ct-input:focus { border-color: #16a34a; box-shadow: 0 0 0 2px rgba(22,163,74,0.12); }
+  .ct-input::placeholder { color: #d1d5db; }
+
+  .ct-select {
+    width: 100%; padding: 8px 12px; font-size: 13px;
+    background: #ffffff; border: 1px solid #d1d5db; border-radius: 8px;
+    color: #111827; outline: none; transition: border-color 0.15s; cursor: pointer;
+    font-family: inherit;
+  }
+  .ct-select:focus { border-color: #16a34a; box-shadow: 0 0 0 2px rgba(22,163,74,0.12); }
+
+  /* Buttons */
+  .ct-btn-primary {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; font-size: 13px; font-weight: 600;
+    background: #16a34a; color: #ffffff; border: none; border-radius: 8px;
+    cursor: pointer; transition: background 0.15s; font-family: inherit;
+  }
+  .ct-btn-primary:hover { background: #15803d; }
+  .ct-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .ct-btn-ghost {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; font-size: 13px; font-weight: 500;
+    background: transparent; color: #6b7280; border: 1px solid #e5e7eb; border-radius: 8px;
+    cursor: pointer; transition: all 0.15s; font-family: inherit;
+  }
+  .ct-btn-ghost:hover { background: #f9fafb; color: #374151; border-color: #d1d5db; }
+
+  .ct-btn-danger {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; font-size: 13px; font-weight: 500;
+    background: transparent; color: #ef4444; border: 1px solid #fecaca; border-radius: 8px;
+    cursor: pointer; transition: all 0.15s; font-family: inherit;
+  }
+  .ct-btn-danger:hover { background: #fef2f2; }
 }
