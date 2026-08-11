@@ -85,6 +85,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => { setSidebarOpen(false) }, [pathname])
 
+  if (pathname.startsWith('/app/super-admin')) {
+    return <>{children}</>
+  }
+
   return (
     <LocaleProvider>
       <div className="flex h-screen bg-[#f7f8fa] overflow-hidden">

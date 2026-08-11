@@ -5,7 +5,6 @@ export async function middleware(request: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  // Skip auth guard if Supabase is not configured yet
   if (!supabaseUrl || !supabaseKey) {
     return NextResponse.next()
   }
@@ -14,17 +13,11 @@ export async function middleware(request: NextRequest) {
 
   const supabase = createServerClient(supabaseUrl, supabaseKey, {
     cookies: {
-      getAll() {
-        return request.cookies.getAll()
-      },
+      getAll() { return request.cookies.getAll() },
       setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) =>
-          request.cookies.set(name, value)
-        )
+        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
         supabaseResponse = NextResponse.next({ request })
-        cookiesToSet.forEach(({ name, value, options }) =>
-          supabaseResponse.cookies.set(name, value, options)
-        )
+        cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options))
       },
     },
   })
@@ -32,14 +25,31 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   const { pathname } = request.nextUrl
 
+  // Not logged in → send to login
   if (!user && (pathname.startsWith('/app') || pathname === '/onboarding')) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  if (user && (pathname === '/login' || pathname === '/register')) {
-    const { data: sa } = await supabase.from('super_admins').select('user_id').eq('user_id', user.id).maybeSingle()
-    if (sa) return NextResponse.redirect(new URL('/app/super-admin', request.url))
-    return NextResponse.redirect(new URL('/app/dashboard', request.url))
+  if (user) {
+    const { data: sa } = await supabase
+      .from('super_admins').select('user_id').eq('user_id', user.id).maybeSingle()
+    const isSuperAdmin = !!sa
+
+    // Logged in but on login/register → send home
+    if (pathname === '/login' || pathname === '/register') {
+      const dest = isSuperAdmin ? '/app/super-admin' : '/app/analytics'
+      return NextResponse.redirect(new URL(dest, request.url))
+    }
+
+    // Super admin trying to access regular app → redirect to super admin
+    if (isSuperAdmin && pathname.startsWith('/app') && !pathname.startsWith('/app/super-admin')) {
+      return NextResponse.redirect(new URL('/app/super-admin', request.url))
+    }
+
+    // Regular user trying to access super admin → redirect to analytics
+    if (!isSuperAdmin && pathname.startsWith('/app/super-admin')) {
+      return NextResponse.redirect(new URL('/app/analytics', request.url))
+    }
   }
 
   return supabaseResponse

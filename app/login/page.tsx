@@ -66,7 +66,7 @@ export default function LoginPage() {
 
     if (IS_MOCK) {
       await new Promise(r => setTimeout(r, 500))
-      router.push('/app/dashboard')
+      router.push('/app/analytics')
       return
     }
 
@@ -82,7 +82,7 @@ export default function LoginPage() {
         const { data: org } = await supabase.from('organizations').select('id').eq('owner_id', user.id).maybeSingle()
         if (!org) { router.push('/onboarding'); return }
       }
-      router.push('/app/dashboard')
+      router.push('/app/analytics')
     } catch (err: any) {
       setError(err?.message ?? 'Something went wrong')
       setLoading(false)

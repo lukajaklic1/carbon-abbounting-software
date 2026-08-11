@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Search } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useSuperAdmin } from '../SuperAdminContext'
 
 type UserRow = {
   id: string
@@ -18,12 +19,13 @@ type UserRow = {
 }
 
 export default function UsersPage() {
+  const { selectedOrg } = useSuperAdmin()
   const [users, setUsers] = useState<UserRow[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [roleFilter, setRoleFilter] = useState('all')
 
-  useEffect(() => { load() }, [])
+  useEffect(() => { load() }, [selectedOrg?.id])
 
   async function load() {
     setLoading(true)
@@ -31,15 +33,15 @@ export default function UsersPage() {
       const supabase = createClient()
 
       const [{ data: members }, { data: orgs }, { data: superAdmins }] = await Promise.all([
-        supabase.from('organization_members').select('*').order('created_at', { ascending: false }),
+        selectedOrg
+          ? supabase.from('organization_members').select('*').eq('organization_id', selectedOrg.id).order('created_at', { ascending: false })
+          : supabase.from('organization_members').select('*').order('created_at', { ascending: false }),
         supabase.from('organizations').select('id, name, owner_id'),
         supabase.from('super_admins').select('user_id'),
       ])
 
       const orgMap: Record<string, string> = {}
-      const ownerMap: Record<string, string> = {}
-      ;(orgs ?? []).forEach(o => { orgMap[o.id] = o.name; ownerMap[o.owner_id] = o.id })
-
+      ;(orgs ?? []).forEach(o => { orgMap[o.id] = o.name })
       const superAdminIds = new Set((superAdmins ?? []).map(s => s.user_id))
 
       const rows: UserRow[] = (members ?? []).map(m => ({
@@ -68,7 +70,7 @@ export default function UsersPage() {
     return true
   })
 
-  const fmt = (d: string | null) => d ? new Date(d).toLocaleDateString('sl-SI', { day: 'numeric', month: 'numeric', year: 'numeric' }) : '—'
+  const fmt = (d: string | null) => d ? new Date(d).toLocaleDateString('sl-SI') : '—'
 
   const roleBadge = (role: string, isSA: boolean) => {
     if (isSA) return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">Super admin</span>
@@ -76,19 +78,17 @@ export default function UsersPage() {
     return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">Uporabnik</span>
   }
 
-  const fullName = (u: UserRow) => {
-    const n = [u.first_name, u.last_name].filter(Boolean).join(' ')
-    return n || u.email || '—'
-  }
+  const fullName = (u: UserRow) => [u.first_name, u.last_name].filter(Boolean).join(' ') || u.email || '—'
 
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Uporabniki</h1>
-        <p className="text-sm text-gray-400 mt-0.5">{users.length} uporabnikov na platformi</p>
+        <p className="text-sm text-gray-400 mt-0.5">
+          {selectedOrg ? `${users.length} uporabnikov · ${selectedOrg.name}` : `${users.length} uporabnikov na platformi`}
+        </p>
       </div>
 
-      {/* Filters */}
       <div className="flex gap-3 mb-4 flex-wrap">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
@@ -105,14 +105,13 @@ export default function UsersPage() {
         </select>
       </div>
 
-      {/* Table */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-100">
               <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400">Uporabnik</th>
               <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400">E-pošta</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400">Podjetje</th>
+              {!selectedOrg && <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400">Podjetje</th>}
               <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400">Vloga</th>
               <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400">Registriran</th>
               <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400">Status</th>
@@ -127,13 +126,12 @@ export default function UsersPage() {
               <tr key={u.id} className={cn('border-b border-gray-50 hover:bg-gray-50 transition-colors', i === filtered.length - 1 && 'border-0')}>
                 <td className="px-5 py-3.5 text-sm font-semibold text-gray-900">{fullName(u)}</td>
                 <td className="px-5 py-3.5 text-sm text-gray-400">{u.email}</td>
-                <td className="px-5 py-3.5 text-sm text-gray-600">{u.org_name}</td>
+                {!selectedOrg && <td className="px-5 py-3.5 text-sm text-gray-600">{u.org_name}</td>}
                 <td className="px-5 py-3.5">{roleBadge(u.role, u.is_super_admin)}</td>
                 <td className="px-5 py-3.5 text-sm text-gray-500">{fmt(u.created_at)}</td>
                 <td className="px-5 py-3.5">
                   <span className={cn('px-2 py-0.5 rounded-full text-xs font-semibold',
-                    u.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'
-                  )}>
+                    u.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500')}>
                     {u.status === 'active' ? 'Aktiven' : u.status}
                   </span>
                 </td>
