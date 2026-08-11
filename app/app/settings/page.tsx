@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -6,8 +6,8 @@ import { useOrganizationStore } from '@/stores/organization'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { Check, AlertCircle, Building2, User } from 'lucide-react'
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
 
 const INDUSTRIES = [
   { value: 'manufacturing', sl: 'Predelovalna industrija', en: 'Manufacturing' },
@@ -60,12 +60,12 @@ function ToastNotification({ toast, onClose }: { toast: Toast; onClose: () => vo
 
 function Card({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-      <div className="px-8 py-5 border-b border-gray-100 flex items-center gap-3">
-        <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
-          <Icon className="h-4 w-4 text-green-700" />
+    <div className="bg-white border border-[#e2e2e4] rounded-2xl overflow-hidden">
+      <div className="px-8 py-5 border-b border-[#e2e2e4] flex items-center gap-3">
+        <div className="w-8 h-8 bg-[#edf7f1] rounded-lg flex items-center justify-center shrink-0">
+          <Icon className="h-4 w-4 text-[#26a552]" />
         </div>
-        <h2 className="text-sm font-semibold text-gray-900">{title}</h2>
+        <h2 className="text-sm font-semibold text-[#031f18]">{title}</h2>
       </div>
       <div className="px-8 py-6">{children}</div>
     </div>
@@ -75,7 +75,7 @@ function Card({ title, icon: Icon, children }: { title: string; icon: React.Elem
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>
+      <label className="block text-sm font-medium text-[#031f18] mb-1.5">{label}</label>
       {children}
     </div>
   )
@@ -141,12 +141,12 @@ export default function SettingsPage() {
     setSavingProfile(false)
   }
 
-  const disabled = (base: string) => base + (!isAdmin ? ' bg-gray-50 text-gray-400 cursor-not-allowed' : '')
+  const disabled = (base: string) => base + (!isAdmin ? ' bg-[#f9f9f9] text-[#455451] cursor-not-allowed' : '')
 
   return (
     <div className="min-h-full py-10 px-8">
       <div className="max-w-2xl mx-auto space-y-6">
-        <h1 className="text-2xl font-bold text-gray-900">{t('Nastavitve', 'Settings')}</h1>
+        <h1 className="text-2xl font-bold text-[#031f18]">{t('Nastavitve', 'Settings')}</h1>
 
         {/* Company */}
         <Card title={t('Profil podjetja', 'Company profile')} icon={Building2}>
@@ -185,7 +185,7 @@ export default function SettingsPage() {
             {isAdmin && (
               <div className="flex justify-end pt-1">
                 <button onClick={saveOrg} disabled={savingOrg || !orgName.trim()}
-                  className="px-6 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
+                  className="px-6 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#e5e5e7] disabled:text-[#455451] disabled:cursor-not-allowed rounded-xl transition-colors">
                   {savingOrg ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
                 </button>
               </div>
@@ -205,12 +205,12 @@ export default function SettingsPage() {
               </Field>
             </div>
             <Field label="Email">
-              <input value={email} disabled className={INPUT + ' bg-gray-50 text-gray-400 cursor-not-allowed'} />
+              <input value={email} disabled className={INPUT + ' bg-[#f9f9f9] text-[#455451] cursor-not-allowed'} />
             </Field>
 
             <div className="flex justify-end pt-1">
               <button onClick={saveProfile} disabled={savingProfile}
-                className="px-6 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="px-6 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#e5e5e7] disabled:text-[#455451] disabled:cursor-not-allowed rounded-xl transition-colors">
                 {savingProfile ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
               </button>
             </div>

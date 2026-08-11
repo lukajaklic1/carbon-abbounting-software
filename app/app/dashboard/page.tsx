@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { usePeriodStore } from '@/stores/period'
@@ -23,8 +23,8 @@ const INDUSTRY_LABELS: Record<string, string> = {
   it: 'Informacijska tehnologija', education: 'Izobraževanje', public: 'Javna uprava', other: 'Drugo',
 }
 
-const SCOPE_COLORS = ['#16a34a', '#f59e0b', '#10b981']
-const YEAR_COLOR = '#16a34a'
+const SCOPE_COLORS = ['#26a552', '#f59e0b', '#10b981']
+const YEAR_COLOR = '#26a552'
 
 export default function DashboardPage() {
   const { selectedYear, currentPeriod, availablePeriods, setSelectedYear, setCurrentPeriod } = usePeriodStore()
@@ -65,8 +65,8 @@ export default function DashboardPage() {
 
   const sources = [
     { label: 'Zemeljski plin', href: `/app/periods/${displayYear}/scope1/stationary`, icon: Flame, color: 'text-orange-500', bg: 'bg-orange-50', scope: 'Scope 1' },
-    { label: 'Vozila', href: `/app/periods/${displayYear}/scope1/mobile`, icon: Car, color: 'text-green-700', bg: 'bg-green-50', scope: 'Scope 1' },
-    { label: 'Oprema', href: `/app/periods/${displayYear}/scope1/equipment-fuel`, icon: Wrench, color: 'text-gray-500', bg: 'bg-gray-100', scope: 'Scope 1' },
+    { label: 'Vozila', href: `/app/periods/${displayYear}/scope1/mobile`, icon: Car, color: 'text-[#26a552]', bg: 'bg-[#edf7f1]', scope: 'Scope 1' },
+    { label: 'Oprema', href: `/app/periods/${displayYear}/scope1/equipment-fuel`, icon: Wrench, color: 'text-[#455451]', bg: 'bg-[#f4f4f6]', scope: 'Scope 1' },
     { label: 'Hladilni plini', href: `/app/periods/${displayYear}/scope1/refrigerants`, icon: Thermometer, color: 'text-cyan-500', bg: 'bg-cyan-50', scope: 'Scope 1' },
     { label: 'Industrijski plini', href: `/app/periods/${displayYear}/scope1/industrial-gases`, icon: FlaskConical, color: 'text-purple-500', bg: 'bg-purple-50', scope: 'Scope 1' },
     { label: 'Elektrika', href: `/app/periods/${displayYear}/scope2/electricity`, icon: Zap, color: 'text-yellow-600', bg: 'bg-yellow-50', scope: 'Scope 2' },
@@ -76,7 +76,7 @@ export default function DashboardPage() {
     { label: t('Skupne emisije', 'Total emissions'), value: `${totalTons.toFixed(2)} t`, sub: t('CO₂e letno', 'CO₂e annual'), icon: Leaf, color: 'text-green-600', bg: 'bg-green-50' },
     { label: 'Scope 1', value: '0.00 t', sub: t('Direktne emisije', 'Direct emissions'), icon: Flame, color: 'text-orange-500', bg: 'bg-orange-50' },
     { label: 'Scope 2', value: '0.00 t', sub: t('Posredne emisije', 'Indirect emissions'), icon: Zap, color: 'text-yellow-600', bg: 'bg-yellow-50' },
-    { label: t('Viri podatkov', 'Data sources'), value: `0 / ${sources.length}`, sub: t('Izpolnjeno', 'Completed'), icon: BarChart3, color: 'text-green-700', bg: 'bg-green-50' },
+    { label: t('Viri podatkov', 'Data sources'), value: `0 / ${sources.length}`, sub: t('Izpolnjeno', 'Completed'), icon: BarChart3, color: 'text-[#26a552]', bg: 'bg-[#edf7f1]' },
   ]
 
   return (
@@ -89,8 +89,8 @@ export default function DashboardPage() {
 
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">{org?.name}</h1>
-        <p className="text-sm text-gray-400 mt-0.5">
+        <h1 className="text-2xl font-bold text-[#031f18]">{org?.name}</h1>
+        <p className="text-sm text-[#455451] mt-0.5">
           {org?.industry ? (INDUSTRY_LABELS[org.industry] ?? org.industry) : ''} · {org?.country_code} · {displayYear}
         </p>
       </div>
@@ -100,11 +100,11 @@ export default function DashboardPage() {
         {statsCards.map((s) => {
           const Icon = s.icon
           return (
-            <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-5 flex items-start justify-between">
+            <div key={s.label} className="bg-white border border-[#e2e2e4] rounded-xl p-5 flex items-start justify-between">
               <div>
-                <p className="text-xs text-gray-400 mb-1">{s.label}</p>
-                <p className="text-2xl font-bold text-gray-900">{s.value}</p>
-                <p className="text-xs text-gray-400 mt-0.5">{s.sub}</p>
+                <p className="text-xs text-[#455451] mb-1">{s.label}</p>
+                <p className="text-2xl font-bold text-[#031f18]">{s.value}</p>
+                <p className="text-xs text-[#455451] mt-0.5">{s.sub}</p>
               </div>
               <div className={`w-9 h-9 ${s.bg} rounded-lg flex items-center justify-center shrink-0`}>
                 <Icon className={`h-4 w-4 ${s.color}`} />
@@ -118,9 +118,9 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
         {/* Emissions by year */}
-        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl p-6">
-          <p className="text-sm font-semibold text-gray-700 mb-1">{t('Emisije po letih', 'Emissions by year')}</p>
-          <p className="text-xs text-gray-400 mb-5">{t('Skupne emisije CO₂e (tCO₂e) po poročevalskih obdobjih', 'Total CO₂e emissions (tCO₂e) by reporting period')}</p>
+        <div className="lg:col-span-2 bg-white border border-[#e2e2e4] rounded-xl p-6">
+          <p className="text-sm font-semibold text-[#031f18] mb-1">{t('Emisije po letih', 'Emissions by year')}</p>
+          <p className="text-xs text-[#455451] mb-5">{t('Skupne emisije CO₂e (tCO₂e) po poročevalskih obdobjih', 'Total CO₂e emissions (tCO₂e) by reporting period')}</p>
           {yearChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={yearChartData} barSize={36}>
@@ -137,23 +137,23 @@ export default function DashboardPage() {
                   {yearChartData.map((entry, index) => (
                     <Cell
                       key={index}
-                      fill={entry.year === String(displayYear) ? '#16a34a' : '#bfdbfe'}
+                      fill={entry.year === String(displayYear) ? '#26a552' : '#bfdbfe'}
                     />
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[200px] flex items-center justify-center text-sm text-gray-400">
+            <div className="h-[200px] flex items-center justify-center text-sm text-[#455451]">
               {t('Ni podatkov za prikaz', 'No data to display')}
             </div>
           )}
         </div>
 
         {/* Scope breakdown */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <p className="text-sm font-semibold text-gray-700 mb-1">{t('Emisije po scopu', 'Emissions by scope')} — {displayYear}</p>
-          <p className="text-xs text-gray-400 mb-5">{t('Razmerje med Scope 1 in Scope 2', 'Breakdown between Scope 1 and Scope 2')}</p>
+        <div className="bg-white border border-[#e2e2e4] rounded-xl p-6">
+          <p className="text-sm font-semibold text-[#031f18] mb-1">{t('Emisije po scopu', 'Emissions by scope')} — {displayYear}</p>
+          <p className="text-xs text-[#455451] mb-5">{t('Razmerje med Scope 1 in Scope 2', 'Breakdown between Scope 1 and Scope 2')}</p>
           {scopeChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[200px] flex items-center justify-center text-sm text-gray-400">
+            <div className="h-[200px] flex items-center justify-center text-sm text-[#455451]">
               {t('Vnesite podatke za prikaz', 'Enter data to display')}
             </div>
           )}
@@ -185,20 +185,20 @@ export default function DashboardPage() {
 
         {/* Emission sources */}
         <div className="lg:col-span-2">
-          <h2 className="text-sm font-semibold text-gray-700 mb-3">{t('Viri emisij', 'Emission sources')} — {displayYear}</h2>
+          <h2 className="text-sm font-semibold text-[#031f18] mb-3">{t('Viri emisij', 'Emission sources')} — {displayYear}</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {sources.map((s) => {
               const Icon = s.icon
               return (
                 <Link key={s.href} href={s.href}
-                  className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
+                  className="flex items-center gap-3 bg-white border border-[#e2e2e4] rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
                   <div className={`w-9 h-9 ${s.bg} rounded-lg flex items-center justify-center shrink-0`}>
                     <Icon className={`h-4 w-4 ${s.color}`} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-gray-400">{s.scope}</p>
-                    <p className="text-sm font-medium text-gray-900 truncate">{s.label}</p>
-                    <p className="text-xs text-gray-400">{t('Ni podatkov', 'No data')}</p>
+                    <p className="text-xs font-semibold text-[#455451]">{s.scope}</p>
+                    <p className="text-sm font-medium text-[#031f18] truncate">{s.label}</p>
+                    <p className="text-xs text-[#455451]">{t('Ni podatkov', 'No data')}</p>
                   </div>
                 </Link>
               )
@@ -208,40 +208,40 @@ export default function DashboardPage() {
 
         {/* Quick links */}
         <div>
-          <h2 className="text-sm font-semibold text-gray-700 mb-3">{t('Hitri dostop', 'Quick links')}</h2>
+          <h2 className="text-sm font-semibold text-[#031f18] mb-3">{t('Hitri dostop', 'Quick links')}</h2>
           <div className="space-y-3">
             <Link href="/app/analytics"
-              className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
-              <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
-                <TrendingUp className="h-4 w-4 text-green-700" />
+              className="flex items-center gap-3 bg-white border border-[#e2e2e4] rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
+              <div className="w-9 h-9 bg-[#edf7f1] rounded-lg flex items-center justify-center shrink-0">
+                <TrendingUp className="h-4 w-4 text-[#26a552]" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900">{t('Analitika', 'Analytics')}</p>
-                <p className="text-xs text-gray-400">{t('Grafi in trendi', 'Charts & trends')}</p>
+                <p className="text-sm font-semibold text-[#031f18]">{t('Analitika', 'Analytics')}</p>
+                <p className="text-xs text-[#455451]">{t('Grafi in trendi', 'Charts & trends')}</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-green-700 shrink-0" />
+              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-[#26a552] shrink-0" />
             </Link>
             <Link href="/app/reports"
-              className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
+              className="flex items-center gap-3 bg-white border border-[#e2e2e4] rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
               <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
                 <FileText className="h-4 w-4 text-green-600" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900">{t('Poročila', 'Reports')}</p>
-                <p className="text-xs text-gray-400">{t('Izvoz PDF, CSRD', 'PDF export, CSRD')}</p>
+                <p className="text-sm font-semibold text-[#031f18]">{t('Poročila', 'Reports')}</p>
+                <p className="text-xs text-[#455451]">{t('Izvoz PDF, CSRD', 'PDF export, CSRD')}</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-green-700 shrink-0" />
+              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-[#26a552] shrink-0" />
             </Link>
             <Link href="/app/locations"
-              className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
+              className="flex items-center gap-3 bg-white border border-[#e2e2e4] rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
               <div className="w-9 h-9 bg-purple-50 rounded-lg flex items-center justify-center shrink-0">
                 <Building2 className="h-4 w-4 text-purple-600" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900">{t('Lokacije', 'Locations')}</p>
-                <p className="text-xs text-gray-400">{t('Upravljanje lokacij', 'Manage locations')}</p>
+                <p className="text-sm font-semibold text-[#031f18]">{t('Lokacije', 'Locations')}</p>
+                <p className="text-xs text-[#455451]">{t('Upravljanje lokacij', 'Manage locations')}</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-green-700 shrink-0" />
+              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-[#26a552] shrink-0" />
             </Link>
           </div>
         </div>

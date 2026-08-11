@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -50,41 +50,41 @@ export default function CompaniesPage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Podjetja</h1>
-        <p className="text-sm text-gray-400 mt-0.5">{companies.length} podjetij na platformi</p>
+        <h1 className="text-2xl font-bold text-[#031f18]">Podjetja</h1>
+        <p className="text-sm text-[#455451] mt-0.5">{companies.length} podjetij na platformi</p>
       </div>
 
       {/* Filters */}
       <div className="flex gap-3 mb-4">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#455451]" />
           <input value={search} onChange={e => setSearch(e.target.value)}
             placeholder="Išči podjetje..."
-            className="pl-8 pr-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-green-500 w-56" />
+            className="pl-8 pr-3 py-2 text-sm border border-[#e2e2e4] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-56" />
         </div>
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="bg-white border border-[#e2e2e4] rounded-xl overflow-hidden">
         <table className="w-full">
-          <thead>
-            <tr className="border-b border-gray-100">
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400">Podjetje</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400">Registrirano</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400">Uporabniki</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-400">Status</th>
+          <thead className="bg-[#fafafc]">
+            <tr className="border-b border-[#e2e2e4]">
+              <th className="text-left px-5 py-3 text-xs font-semibold text-[#455451]">Podjetje</th>
+              <th className="text-left px-5 py-3 text-xs font-semibold text-[#455451]">Registrirano</th>
+              <th className="text-left px-5 py-3 text-xs font-semibold text-[#455451]">Uporabniki</th>
+              <th className="text-left px-5 py-3 text-xs font-semibold text-[#455451]">Status</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={4} className="text-center py-12 text-sm text-gray-400">Nalaganje...</td></tr>
+              <tr><td colSpan={4} className="text-center py-12 text-sm text-[#455451]">Nalaganje...</td></tr>
             ) : filtered.length === 0 ? (
-              <tr><td colSpan={4} className="text-center py-12 text-sm text-gray-400">Ni rezultatov.</td></tr>
+              <tr><td colSpan={4} className="text-center py-12 text-sm text-[#455451]">Ni rezultatov.</td></tr>
             ) : filtered.map((c, i) => (
-              <tr key={c.id} className={cn('border-b border-gray-50 hover:bg-gray-50 transition-colors', i === filtered.length - 1 && 'border-0')}>
-                <td className="px-5 py-3.5 text-sm font-semibold text-gray-900">{c.name}</td>
-                <td className="px-5 py-3.5 text-sm text-gray-500">{fmt(c.created_at)}</td>
-                <td className="px-5 py-3.5 text-sm text-gray-500">{c.member_count} {c.member_count === 1 ? 'uporabnik' : 'uporabnika'}</td>
+              <tr key={c.id} className={cn('border-b border-gray-50 hover:bg-[#f9f9f9] transition-colors', i === filtered.length - 1 && 'border-0')}>
+                <td className="px-5 py-3.5 text-sm font-semibold text-[#031f18]">{c.name}</td>
+                <td className="px-5 py-3.5 text-sm text-[#455451]">{fmt(c.created_at)}</td>
+                <td className="px-5 py-3.5 text-sm text-[#455451]">{c.member_count} {c.member_count === 1 ? 'uporabnik' : 'uporabnika'}</td>
                 <td className="px-5 py-3.5">
                   <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700">Aktivno</span>
                 </td>

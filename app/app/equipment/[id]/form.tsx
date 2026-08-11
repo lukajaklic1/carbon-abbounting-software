@@ -67,11 +67,11 @@ export default function EditEquipmentForm({ equipment, locations }: { equipment:
             <Trash2 className="h-4 w-4" />
           </button>
           <button type="button" onClick={() => router.push('/app/equipment')}
-            className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
             Cancel
           </button>
           <button type="submit" disabled={loading}
-            className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:opacity-60 rounded-xl transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:opacity-60 rounded-xl transition-colors">
             {loading ? 'Saving...' : 'Save changes'}
           </button>
         </div>

@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -10,8 +10,8 @@ import {
 } from 'recharts'
 import { cn } from '@/lib/utils'
 
-const SCOPE_COLORS = ['#16a34a', '#f59e0b', '#10b981']
-const SOURCE_COLORS = ['#16a34a','#3b82f6','#60a5fa','#f59e0b','#fbbf24','#10b981','#34d399','#6366f1','#a78bfa']
+const SCOPE_COLORS = ['#26a552', '#f59e0b', '#10b981']
+const SOURCE_COLORS = ['#26a552','#3b82f6','#60a5fa','#f59e0b','#fbbf24','#10b981','#34d399','#6366f1','#a78bfa']
 const TABLES = ['scope1_stationary','scope1_mobile','scope1_equipment_fuel','scope1_refrigerants','scope1_industrial_gases','scope2_electricity','scope2_heat','scope2_steam','scope2_cooling']
 
 type ScopeData = {
@@ -128,36 +128,36 @@ export default function CompanyDataPage() {
     .map(s => ({ name: s.name, value: parseFloat((s.kg / 1000).toFixed(3)) }))
 
   if (!selectedOrg) {
-    return <div className="p-8 text-sm text-gray-400">Izberite podjetje v zgornjem meniju.</div>
+    return <div className="p-8 text-sm text-[#455451]">Izberite podjetje v zgornjem meniju.</div>
   }
 
   return (
     <div className="p-4 lg:p-8 space-y-6">
       <div>
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Podatki podjetja</p>
-        <h1 className="text-2xl font-bold text-gray-900">{selectedOrg.name}</h1>
-        <p className="text-sm text-gray-400 mt-0.5">Emisije CO₂e za leto {year}</p>
+        <p className="text-xs font-semibold text-[#455451] uppercase tracking-widest mb-1">Podatki podjetja</p>
+        <h1 className="text-2xl font-bold text-[#031f18]">{selectedOrg.name}</h1>
+        <p className="text-sm text-[#455451] mt-0.5">Emisije CO₂e za leto {year}</p>
       </div>
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'Skupaj', value: fmtT(total), sub: 'tCO₂e', icon: Leaf, color: 'text-green-600', bg: 'bg-green-50' },
-          { label: 'Scope 1', value: fmtT(scopeData?.scope1_kg ?? 0), sub: `${pct(scopeData?.scope1_kg ?? 0)}%`, icon: Flame, color: 'text-green-700', bg: 'bg-green-50' },
+          { label: 'Scope 1', value: fmtT(scopeData?.scope1_kg ?? 0), sub: `${pct(scopeData?.scope1_kg ?? 0)}%`, icon: Flame, color: 'text-[#26a552]', bg: 'bg-[#edf7f1]' },
           { label: 'Scope 2', value: fmtT(scopeData?.scope2_kg ?? 0), sub: `${pct(scopeData?.scope2_kg ?? 0)}%`, icon: Zap, color: 'text-amber-500', bg: 'bg-amber-50' },
           { label: 'Scope 3', value: fmtT(scopeData?.scope3_kg ?? 0), sub: `${pct(scopeData?.scope3_kg ?? 0)}%`, icon: Wind, color: 'text-emerald-600', bg: 'bg-emerald-50' },
         ].map(card => {
           const Icon = card.icon
           return (
-            <div key={card.label} className="bg-white border border-gray-200 rounded-xl p-5">
+            <div key={card.label} className="bg-white border border-[#e2e2e4] rounded-xl p-5">
               <div className="flex items-start justify-between mb-3">
-                <p className="text-xs text-gray-400">{card.label}</p>
+                <p className="text-xs text-[#455451]">{card.label}</p>
                 <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0', card.bg)}>
                   <Icon className={cn('h-4 w-4', card.color)} />
                 </div>
               </div>
-              <p className="text-2xl font-bold text-gray-900 tabular-nums">{loading ? '—' : card.value}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{card.sub}</p>
+              <p className="text-2xl font-bold text-[#031f18] tabular-nums">{loading ? '—' : card.value}</p>
+              <p className="text-xs text-[#455451] mt-0.5">{card.sub}</p>
             </div>
           )
         })}
@@ -165,9 +165,9 @@ export default function CompanyDataPage() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl p-6">
-          <p className="text-sm font-semibold text-gray-900 mb-0.5">Trend emisij po letih</p>
-          <p className="text-xs text-gray-400 mb-5">tCO₂e</p>
+        <div className="lg:col-span-2 bg-white border border-[#e2e2e4] rounded-xl p-6">
+          <p className="text-sm font-semibold text-[#031f18] mb-0.5">Trend emisij po letih</p>
+          <p className="text-xs text-[#455451] mb-5">tCO₂e</p>
           {yearTrend.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={yearTrend} barSize={40}>
@@ -178,7 +178,7 @@ export default function CompanyDataPage() {
                   formatter={(v: any) => [`${String(v).replace('.', ',')} tCO₂e`, 'Emisije']} />
                 <Bar dataKey="emisije" radius={[6, 6, 0, 0]}>
                   {yearTrend.map((entry, i) => (
-                    <Cell key={i} fill={entry.year === String(year) ? '#16a34a' : '#bfdbfe'} />
+                    <Cell key={i} fill={entry.year === String(year) ? '#26a552' : '#bfdbfe'} />
                   ))}
                 </Bar>
               </BarChart>
@@ -188,9 +188,9 @@ export default function CompanyDataPage() {
           )}
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <p className="text-sm font-semibold text-gray-900 mb-0.5">Delež po obsegu</p>
-          <p className="text-xs text-gray-400 mb-5">{year}</p>
+        <div className="bg-white border border-[#e2e2e4] rounded-xl p-6">
+          <p className="text-sm font-semibold text-[#031f18] mb-0.5">Delež po obsegu</p>
+          <p className="text-xs text-[#455451] mb-5">{year}</p>
           {scopeChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
@@ -211,9 +211,9 @@ export default function CompanyDataPage() {
 
       {/* Source breakdown */}
       {sourceChartData.length > 0 && (
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <p className="text-sm font-semibold text-gray-900 mb-0.5">Emisije po virih</p>
-          <p className="text-xs text-gray-400 mb-5">{year} · tCO₂e</p>
+        <div className="bg-white border border-[#e2e2e4] rounded-xl p-6">
+          <p className="text-sm font-semibold text-[#031f18] mb-0.5">Emisije po virih</p>
+          <p className="text-xs text-[#455451] mb-5">{year} · tCO₂e</p>
           <ResponsiveContainer width="100%" height={Math.max(180, sourceChartData.length * 36)}>
             <BarChart data={sourceChartData} layout="vertical" barSize={18} margin={{ left: 16, right: 32 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />

@@ -97,8 +97,8 @@ function getCookieLocale(): 'EN' | 'SL' {
   return m?.[1]?.toUpperCase() === 'EN' ? 'EN' : 'SL'
 }
 
-const INPUT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] transition-shadow'
+const INPUT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#e2e2e4] rounded-xl focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#e2e2e4] rounded-xl focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
 
 export default function OnboardingPage() {
   const router = useRouter()
@@ -154,7 +154,7 @@ export default function OnboardingPage() {
 
         {/* Logo */}
         <div className="flex justify-center mb-10">
-          <div className="w-11 h-11 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
+          <div className="w-11 h-11 bg-[#26a552] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
               <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
               <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>
@@ -174,60 +174,60 @@ export default function OnboardingPage() {
                 <div className="flex flex-col items-center gap-1.5">
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                     done ? 'bg-green-500 text-white' :
-                    active ? 'bg-blue-600 text-white shadow-md shadow-blue-200' :
-                    'bg-white border-2 border-gray-200 text-gray-400'
+                    active ? 'bg-[#26a552] text-white shadow-md shadow-blue-200' :
+                    'bg-white border-2 border-[#e2e2e4] text-[#455451]'
                   }`}>
                     {done ? <Check className="h-4 w-4" strokeWidth={2.5} /> : num}
                   </div>
-                  <span className={`text-xs font-semibold ${active ? 'text-blue-600' : done ? 'text-green-600' : 'text-gray-400'}`}>
+                  <span className={`text-xs font-semibold ${active ? 'text-[#26a552]' : done ? 'text-green-600' : 'text-[#455451]'}`}>
                     {t.steps[i]}
                   </span>
                 </div>
-                {i < 1 && <div className={`w-28 h-px mx-4 mb-5 ${step > num ? 'bg-green-400' : 'bg-gray-200'}`} />}
+                {i < 1 && <div className={`w-28 h-px mx-4 mb-5 ${step > num ? 'bg-green-400' : 'bg-[#e5e5e7]'}`} />}
               </div>
             )
           })}
         </div>
 
         {/* Card */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm">
+        <div className="bg-white border border-[#e2e2e4] rounded-2xl shadow-sm">
 
           {/* Step 1 */}
           {step === 1 && (
             <div className="p-8">
               <div className="flex items-start gap-4 mb-6">
-                <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                  <Building2 className="h-5 w-5 text-blue-600" />
+                <div className="w-10 h-10 bg-[#edf7f1] rounded-xl flex items-center justify-center shrink-0">
+                  <Building2 className="h-5 w-5 text-[#26a552]" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-gray-900 leading-tight">{t.s1title}</h2>
-                  <p className="text-sm text-gray-400 mt-0.5">{t.s1sub}</p>
+                  <h2 className="text-lg font-bold text-[#031f18] leading-tight">{t.s1title}</h2>
+                  <p className="text-sm text-[#455451] mt-0.5">{t.s1sub}</p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">
                     {t.companyName} <span className="text-red-400">*</span>
                   </label>
                   <input value={orgName} onChange={e => setOrgName(e.target.value)}
                     placeholder={t.companyPlaceholder} className={INPUT} autoFocus />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t.industry}</label>
+                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t.industry}</label>
                   <select value={industry} onChange={e => setIndustry(e.target.value)} className={SELECT}>
                     {INDUSTRIES[locale].map(ind => <option key={ind.value} value={ind.value}>{ind.label}</option>)}
                   </select>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">{t.country}</label>
+                    <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t.country}</label>
                     <select value={country} onChange={e => setCountry(e.target.value)} className={SELECT}>
                       {COUNTRIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">{t.employees}</label>
+                    <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t.employees}</label>
                     <select value={employees} onChange={e => setEmployees(e.target.value)} className={SELECT}>
                       {EMPLOYEES[locale].map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
                     </select>
@@ -236,7 +236,7 @@ export default function OnboardingPage() {
               </div>
 
               <button onClick={() => setStep(2)} disabled={!orgName.trim()}
-                className="w-full mt-7 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors">
+                className="w-full mt-7 bg-[#26a552] hover:bg-[#1e8a43] disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors">
                 {t.continue}
               </button>
             </div>
@@ -246,25 +246,25 @@ export default function OnboardingPage() {
           {step === 2 && (
             <div className="p-8">
               <div className="flex items-start gap-4 mb-6">
-                <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                  <User className="h-5 w-5 text-blue-600" />
+                <div className="w-10 h-10 bg-[#edf7f1] rounded-xl flex items-center justify-center shrink-0">
+                  <User className="h-5 w-5 text-[#26a552]" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-gray-900 leading-tight">{t.s2title}</h2>
-                  <p className="text-sm text-gray-400 mt-0.5">{t.s2sub(orgName)}</p>
+                  <h2 className="text-lg font-bold text-[#031f18] leading-tight">{t.s2title}</h2>
+                  <p className="text-sm text-[#455451] mt-0.5">{t.s2sub(orgName)}</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">
                     {t.firstName} <span className="text-red-400">*</span>
                   </label>
                   <input value={firstName} onChange={e => setFirstName(e.target.value)}
                     placeholder={t.firstPh} className={INPUT} autoFocus />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">
                     {t.lastName} <span className="text-red-400">*</span>
                   </label>
                   <input value={lastName} onChange={e => setLastName(e.target.value)}
@@ -278,12 +278,12 @@ export default function OnboardingPage() {
 
               <div className="flex gap-3 mt-7">
                 <button onClick={() => setStep(1)}
-                  className="px-5 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
+                  className="px-5 py-3 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
                   {t.back}
                 </button>
                 <button onClick={handleComplete}
                   disabled={loading || !firstName.trim() || !lastName.trim()}
-                  className="flex-1 py-3 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-xl transition-colors">
+                  className="flex-1 py-3 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:opacity-50 rounded-xl transition-colors">
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
                       <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
@@ -301,12 +301,12 @@ export default function OnboardingPage() {
 
         {/* Footer */}
         <div className="mt-5 flex items-center justify-between px-1">
-          <p className="text-xs text-gray-400">{t.footer}</p>
+          <p className="text-xs text-[#455451]">{t.footer}</p>
           <div className="flex gap-0.5">
             {(['SL', 'EN'] as const).map(l => (
               <button key={l} onClick={() => switchLocale(l)}
                 className={`text-xs font-semibold px-2.5 py-1 rounded-full transition-colors ${
-                  locale === l ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-gray-600'
+                  locale === l ? 'bg-[#26a552] text-white' : 'text-[#455451] hover:text-[#455451]'
                 }`}>
                 {l}
               </button>

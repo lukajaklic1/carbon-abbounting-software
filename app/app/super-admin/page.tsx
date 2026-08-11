@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -64,7 +64,7 @@ export default function SuperAdminDashboard() {
   }
 
   const cards = [
-    { label: 'Skupaj podjetij', value: stats.orgs, icon: Building2, color: 'text-green-700', bg: 'bg-green-50' },
+    { label: 'Skupaj podjetij', value: stats.orgs, icon: Building2, color: 'text-[#26a552]', bg: 'bg-[#edf7f1]' },
     { label: 'Aktivni uporabniki', value: stats.users, icon: Users, color: 'text-green-600', bg: 'bg-green-50' },
     { label: 'Nova podjetja ta mesec', value: stats.newOrgs, icon: TrendingUp, color: 'text-amber-500', bg: 'bg-amber-50' },
     { label: 'Novi uporabniki ta mesec', value: stats.newUsers, icon: UserPlus, color: 'text-orange-500', bg: 'bg-orange-50' },
@@ -73,8 +73,8 @@ export default function SuperAdminDashboard() {
   return (
     <div className="p-6 lg:p-8 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Nadzorna plošča</h1>
-        <p className="text-sm text-gray-400 mt-0.5">Pregled platforme</p>
+        <h1 className="text-2xl font-bold text-[#031f18]">Nadzorna plošča</h1>
+        <p className="text-sm text-[#455451] mt-0.5">Pregled platforme</p>
       </div>
 
       {/* Stat cards */}
@@ -82,13 +82,13 @@ export default function SuperAdminDashboard() {
         {cards.map(c => {
           const Icon = c.icon
           return (
-            <div key={c.label} className="bg-white border border-gray-200 rounded-xl p-5 flex items-center gap-4">
+            <div key={c.label} className="bg-white border border-[#e2e2e4] rounded-xl p-5 flex items-center gap-4">
               <div className={`w-10 h-10 ${c.bg} rounded-xl flex items-center justify-center shrink-0`}>
                 <Icon className={`h-5 w-5 ${c.color}`} />
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">{loading ? '—' : c.value}</p>
-                <p className="text-xs text-gray-400">{c.label}</p>
+                <p className="text-2xl font-bold text-[#031f18]">{loading ? '—' : c.value}</p>
+                <p className="text-xs text-[#455451]">{c.label}</p>
               </div>
             </div>
           )
@@ -97,7 +97,7 @@ export default function SuperAdminDashboard() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <TrendCard title="Rast podjetij" data={orgTrend} color="#16a34a" total={stats.orgs} />
+        <TrendCard title="Rast podjetij" data={orgTrend} color="#26a552" total={stats.orgs} />
         <TrendCard title="Rast uporabnikov" data={userTrend} color="#10b981" total={stats.users} />
       </div>
     </div>
@@ -106,9 +106,9 @@ export default function SuperAdminDashboard() {
 
 function TrendCard({ title, data, color, total }: { title: string; data: MonthPoint[]; color: string; total: number }) {
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-5">
+    <div className="bg-white border border-[#e2e2e4] rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm font-semibold text-gray-900">{title}</p>
+        <p className="text-sm font-semibold text-[#031f18]">{title}</p>
         <span className="text-lg font-bold tabular-nums" style={{ color }}>{total}</span>
       </div>
       <ResponsiveContainer width="100%" height={140}>

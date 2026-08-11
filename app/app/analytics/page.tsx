@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -11,8 +11,8 @@ import {
 } from 'recharts'
 import { cn } from '@/lib/utils'
 
-const SCOPE_COLORS = ['#16a34a', '#f59e0b', '#10b981']
-const SOURCE_COLORS = ['#16a34a','#3b82f6','#60a5fa','#f59e0b','#fbbf24','#10b981','#34d399','#6366f1','#a78bfa']
+const SCOPE_COLORS = ['#2f624a', '#51a676', '#add8a4']
+const SOURCE_COLORS = ['#0e2016','#2f624a','#51a676','#add8a4','#455451','#1a4d2e','#6dbf8a','#3d8a5e','#8fcfaa']
 
 type Period = { id: string; year: number; total_co2e_kg: number }
 
@@ -140,30 +140,30 @@ export default function AnalyticsPage() {
     <div className="p-4 lg:p-8 space-y-6">
       {/* Header */}
       <div>
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">{t('Analitika', 'Analytics')} · {year}</p>
-        <h1 className="text-2xl font-bold text-gray-900">{t('Ogljični odtis', 'Carbon Footprint')}</h1>
-        <p className="text-sm text-gray-400 mt-0.5">{t('Pregled emisij CO₂e za poročevalsko leto', 'Overview of CO₂e emissions for the reporting year')} {year}</p>
+        <p className="text-xs font-semibold text-[#455451] uppercase tracking-widest mb-1">{t('Analitika', 'Analytics')} · {year}</p>
+        <h1 className="text-2xl font-bold text-[#031f18]">{t('Ogljični odtis', 'Carbon Footprint')}</h1>
+        <p className="text-sm text-[#455451] mt-0.5">{t('Pregled emisij CO₂e za poročevalsko leto', 'Overview of CO₂e emissions for the reporting year')} {year}</p>
       </div>
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: t('Skupaj', 'Total'), value: fmtT(total), sub: 'tCO₂e', icon: Leaf, color: 'text-green-600', bg: 'bg-green-50' },
-          { label: 'Scope 1', value: fmtT(scopeData?.scope1_kg ?? 0), sub: `${pct(scopeData?.scope1_kg ?? 0)}%`, icon: Flame, color: 'text-green-700', bg: 'bg-green-50' },
+          { label: 'Scope 1', value: fmtT(scopeData?.scope1_kg ?? 0), sub: `${pct(scopeData?.scope1_kg ?? 0)}%`, icon: Flame, color: 'text-[#26a552]', bg: 'bg-[#edf7f1]' },
           { label: 'Scope 2', value: fmtT(scopeData?.scope2_kg ?? 0), sub: `${pct(scopeData?.scope2_kg ?? 0)}%`, icon: Zap, color: 'text-amber-500', bg: 'bg-amber-50' },
           { label: 'Scope 3', value: fmtT(scopeData?.scope3_kg ?? 0), sub: `${pct(scopeData?.scope3_kg ?? 0)}%`, icon: Wind, color: 'text-emerald-600', bg: 'bg-emerald-50' },
         ].map(card => {
           const Icon = card.icon
           return (
-            <div key={card.label} className="bg-white border border-gray-200 rounded-xl p-5">
+            <div key={card.label} className="bg-white border border-[#e2e2e4] rounded-xl p-5">
               <div className="flex items-start justify-between mb-3">
-                <p className="text-xs text-gray-400">{card.label}</p>
+                <p className="text-xs text-[#455451]">{card.label}</p>
                 <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0', card.bg)}>
                   <Icon className={cn('h-4 w-4', card.color)} />
                 </div>
               </div>
-              <p className="text-2xl font-bold text-gray-900 tabular-nums">{loading ? '—' : card.value}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{card.sub}</p>
+              <p className="text-2xl font-bold text-[#031f18] tabular-nums">{loading ? '—' : card.value}</p>
+              <p className="text-xs text-[#455451] mt-0.5">{card.sub}</p>
             </div>
           )
         })}
@@ -172,9 +172,9 @@ export default function AnalyticsPage() {
       {/* Charts row 1: trend + scope pie */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Trend by year */}
-        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl p-6">
-          <p className="text-sm font-semibold text-gray-900 mb-0.5">{t('Trend emisij po letih', 'Emissions trend by year')}</p>
-          <p className="text-xs text-gray-400 mb-5">tCO₂e</p>
+        <div className="lg:col-span-2 bg-white border border-[#e2e2e4] rounded-xl p-6">
+          <p className="text-sm font-semibold text-[#031f18] mb-0.5">{t('Trend emisij po letih', 'Emissions trend by year')}</p>
+          <p className="text-xs text-[#455451] mb-5">tCO₂e</p>
           {yearChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={yearChartData} barSize={40}>
@@ -187,7 +187,7 @@ export default function AnalyticsPage() {
                 />
                 <Bar dataKey="emisije" radius={[6, 6, 0, 0]}>
                   {yearChartData.map((entry, i) => (
-                    <Cell key={i} fill={entry.year === String(year) ? '#16a34a' : '#bfdbfe'} />
+                    <Cell key={i} fill={entry.year === String(year) ? '#26a552' : '#bfdbfe'} />
                   ))}
                 </Bar>
               </BarChart>
@@ -198,9 +198,9 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Scope breakdown pie */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <p className="text-sm font-semibold text-gray-900 mb-0.5">{t('Delež po obsegu', 'Breakdown by scope')}</p>
-          <p className="text-xs text-gray-400 mb-5">{year}</p>
+        <div className="bg-white border border-[#e2e2e4] rounded-xl p-6">
+          <p className="text-sm font-semibold text-[#031f18] mb-0.5">{t('Delež po obsegu', 'Breakdown by scope')}</p>
+          <p className="text-xs text-[#455451] mb-5">{year}</p>
           {scopeChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
@@ -224,9 +224,9 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Emission sources breakdown */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6">
-        <p className="text-sm font-semibold text-gray-900 mb-0.5">{t('Emisije po virih', 'Emissions by source')}</p>
-        <p className="text-xs text-gray-400 mb-5">{year} · tCO₂e</p>
+      <div className="bg-white border border-[#e2e2e4] rounded-xl p-6">
+        <p className="text-sm font-semibold text-[#031f18] mb-0.5">{t('Emisije po virih', 'Emissions by source')}</p>
+        <p className="text-xs text-[#455451] mb-5">{year} · tCO₂e</p>
         {sourceChartData.length > 0 ? (
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={sourceChartData} layout="vertical" barSize={18} margin={{ left: 16, right: 32 }}>
@@ -254,9 +254,9 @@ export default function AnalyticsPage() {
             {sourceChartData.map((s, i) => (
               <div key={s.name} className="flex items-center gap-3">
                 <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: SOURCE_COLORS[i % SOURCE_COLORS.length] }} />
-                <span className="text-xs text-gray-600 flex-1">{s.name}</span>
-                <span className="text-xs font-semibold text-gray-900 tabular-nums">{String(s.value).replace('.', ',')} t</span>
-                <span className="text-xs text-gray-400 w-10 text-right">{total > 0 ? ((s.value * 1000 / total) * 100).toFixed(1) : 0}%</span>
+                <span className="text-xs text-[#455451] flex-1">{s.name}</span>
+                <span className="text-xs font-semibold text-[#031f18] tabular-nums">{String(s.value).replace('.', ',')} t</span>
+                <span className="text-xs text-[#455451] w-10 text-right">{total > 0 ? ((s.value * 1000 / total) * 100).toFixed(1) : 0}%</span>
               </div>
             ))}
           </div>

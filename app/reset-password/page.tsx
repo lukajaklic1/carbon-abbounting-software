@@ -42,14 +42,14 @@ export default function ResetPasswordPage() {
     setLoading(false)
   }
 
-  const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] placeholder:text-gray-300 transition-shadow'
+  const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
 
   return (
     <div className="min-h-screen bg-[#f9fafb] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
+          <div className="w-12 h-12 bg-[#26a552] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
               <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
               <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>
@@ -58,19 +58,19 @@ export default function ResetPasswordPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-8">
+        <div className="bg-white border border-[#e2e2e4] rounded-2xl shadow-sm p-8">
           {done ? (
             <div className="text-center py-2">
               <div className="w-12 h-12 bg-green-50 border border-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Check className="h-5 w-5 text-green-600" />
               </div>
-              <h2 className="text-base font-bold text-gray-900 mb-1">Geslo posodobljeno</h2>
-              <p className="text-sm text-gray-400">Preusmerjamo vas na prijavo...</p>
+              <h2 className="text-base font-bold text-[#031f18] mb-1">Geslo posodobljeno</h2>
+              <p className="text-sm text-[#455451]">Preusmerjamo vas na prijavo...</p>
             </div>
           ) : (
             <>
-              <h1 className="text-xl font-bold text-gray-900 mb-1">Novo geslo</h1>
-              <p className="text-sm text-gray-400 mb-6">Vnesite novo geslo za vaš račun.</p>
+              <h1 className="text-xl font-bold text-[#031f18] mb-1">Novo geslo</h1>
+              <p className="text-sm text-[#455451] mb-6">Vnesite novo geslo za vaš račun.</p>
 
               {!ready && (
                 <p className="text-xs text-amber-600 bg-amber-50 border border-amber-100 px-3 py-2 rounded-lg mb-4">
@@ -80,7 +80,7 @@ export default function ResetPasswordPage() {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Novo geslo</label>
+                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">Novo geslo</label>
                   <div className="relative">
                     <input
                       type={showPass ? 'text' : 'password'}
@@ -89,14 +89,14 @@ export default function ResetPasswordPage() {
                       className={INPUT + ' pr-10'}
                     />
                     <button type="button" onClick={() => setShowPass(!showPass)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#455451] hover:text-[#455451]">
                       {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Potrdi geslo</label>
+                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">Potrdi geslo</label>
                   <input
                     type={showPass ? 'text' : 'password'}
                     value={confirm} onChange={e => setConfirm(e.target.value)}
@@ -108,7 +108,7 @@ export default function ResetPasswordPage() {
                 {error && <p className="text-xs text-red-500">{error}</p>}
 
                 <button type="submit" disabled={loading || !password || !confirm || !ready}
-                  className="w-full py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 rounded-lg transition-colors">
+                  className="w-full py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:opacity-50 rounded-lg transition-colors">
                   {loading ? 'Shranjevanje...' : 'Nastavi novo geslo'}
                 </button>
               </form>

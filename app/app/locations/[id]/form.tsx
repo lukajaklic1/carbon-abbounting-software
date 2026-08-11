@@ -60,15 +60,15 @@ export default function EditLocationForm({ location }: { location: any }) {
         {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
         <div className="flex gap-3 pt-2">
           <button type="button" onClick={handleDelete} disabled={deleting}
-            className="px-3 py-2.5 text-sm font-medium text-red-600 bg-white border border-red-200 rounded-xl hover:bg-red-50 transition-colors disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed">
+            className="px-3 py-2.5 text-sm font-medium text-red-600 bg-white border border-red-200 rounded-xl hover:bg-red-50 transition-colors disabled:bg-[#e5e5e7] disabled:text-[#455451] disabled:cursor-not-allowed">
             <Trash2 className="h-4 w-4" />
           </button>
           <button type="button" onClick={() => router.push('/app/locations')}
-            className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
             Cancel
           </button>
           <button type="submit" disabled={loading}
-            className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:opacity-60 rounded-xl transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:opacity-60 rounded-xl transition-colors">
             {loading ? 'Saving...' : 'Save changes'}
           </button>
         </div>

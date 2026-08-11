@@ -29,21 +29,21 @@ export function ConfirmDialog({
             </div>
           )}
           <div className="flex-1">
-            <h3 className="text-base font-bold text-gray-900">{title}</h3>
-            <p className="text-sm text-gray-500 mt-1">{message}</p>
+            <h3 className="text-base font-bold text-[#031f18]">{title}</h3>
+            <p className="text-sm text-[#455451] mt-1">{message}</p>
           </div>
-          <button onClick={onCancel} className="p-1 text-gray-400 hover:text-gray-600 rounded-lg transition-colors">
+          <button onClick={onCancel} className="p-1 text-[#455451] hover:text-[#455451] rounded-lg transition-colors">
             <X className="h-4 w-4" />
           </button>
         </div>
         <div className="flex gap-3 mt-6">
           <button onClick={onCancel}
-            className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
             {cancelLabel}
           </button>
           <button onClick={onConfirm}
             className={`flex-1 px-4 py-2.5 text-sm font-semibold text-white rounded-xl transition-colors ${
-              destructive ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'
+              destructive ? 'bg-red-600 hover:bg-red-700' : 'bg-[#26a552] hover:bg-[#1e8a43]'
             }`}>
             {confirmLabel}
           </button>

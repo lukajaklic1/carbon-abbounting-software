@@ -94,7 +94,7 @@ export default function LoginPage() {
 
       {/* Logo */}
       <div className="mb-6">
-        <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
+        <div className="w-14 h-14 bg-[#26a552] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
             {/* top face */}
             <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
@@ -107,9 +107,9 @@ export default function LoginPage() {
       </div>
 
       {/* Card */}
-      <div className="w-full max-w-[360px] bg-white rounded-2xl border border-gray-200 px-8 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 text-center mb-1">{t.title}</h1>
-        <p className="text-sm text-gray-400 text-center mb-7">{t.subtitle}</p>
+      <div className="w-full max-w-[360px] bg-white rounded-2xl border border-[#e2e2e4] px-8 py-8">
+        <h1 className="text-2xl font-bold text-[#031f18] text-center mb-1">{t.title}</h1>
+        <p className="text-sm text-[#455451] text-center mb-7">{t.subtitle}</p>
 
         {IS_MOCK && (
           <div className="mb-5 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 text-xs text-amber-700 text-center">
@@ -119,31 +119,31 @@ export default function LoginPage() {
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">{t.email}</label>
+            <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t.email}</label>
             <input
               type="email" value={email} onChange={e => setEmail(e.target.value)} required
               placeholder={t.placeholder_email}
-              className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] focus:bg-white placeholder:text-gray-300"
+              className="w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] focus:bg-white placeholder:text-gray-300"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">{t.password}</label>
+            <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t.password}</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password} onChange={e => setPassword(e.target.value)} required
                 placeholder={t.placeholder_password}
-                className="w-full px-3 py-2 pr-10 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 focus:shadow-[0_0_0_1px_#2563eb] focus:bg-white placeholder:text-gray-300"
+                className="w-full px-3 py-2 pr-10 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] focus:bg-white placeholder:text-gray-300"
               />
               <button type="button" onClick={() => setShowPassword(v => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#455451] hover:text-[#455451]">
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
           </div>
 
           <div className="flex justify-end -mt-1">
-            <Link href="/forgot-password" className="text-xs text-blue-600 hover:underline">
+            <Link href="/forgot-password" className="text-xs text-[#26a552] hover:underline">
               {locale === 'SL' ? 'Pozabljeno geslo?' : 'Forgot password?'}
             </Link>
           </div>
@@ -153,7 +153,7 @@ export default function LoginPage() {
           )}
 
           <button type="submit" disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors">
+            className="w-full bg-[#26a552] hover:bg-[#1e8a43] disabled:opacity-60 text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors">
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
@@ -169,15 +169,15 @@ export default function LoginPage() {
 
       {/* Footer */}
       <div className="mt-5 flex items-center justify-between w-full max-w-[360px]">
-        <p className="text-sm text-gray-400">
+        <p className="text-sm text-[#455451]">
           {t.noAccount}{' '}
-          <Link href="/register" className="text-blue-600 hover:underline font-semibold">{t.createOne}</Link>
+          <Link href="/register" className="text-[#26a552] hover:underline font-semibold">{t.createOne}</Link>
         </p>
         <div className="flex gap-1">
           {(['EN', 'SL'] as const).map(l => (
             <button key={l} onClick={() => switchLocale(l)}
               className={`text-xs font-semibold px-2.5 py-1 rounded-full transition-colors ${
-                locale === l ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-gray-600'
+                locale === l ? 'bg-[#26a552] text-white' : 'text-[#455451] hover:text-[#455451]'
               }`}>
               {l}
             </button>

@@ -12,8 +12,8 @@ import { useEmissionCountersStore } from '@/stores/emissionCounters'
 import { parseQty, fmtQty } from '@/lib/utils/format'
 
 const PAGE_SIZE = 20
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-green-700 focus:shadow-[0_0_0_1px_#16a34a] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
 
 const REFRIG_KEYS = Object.keys(REFRIGERANT_FACTORS)
 
@@ -141,50 +141,50 @@ export default function Scope1RefrigerantsPage() {
   return (
     <div className="p-4 lg:p-8">
       <div className="mb-6">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Scope 1 · {year}</p>
-        <h1 className="text-2xl font-bold text-gray-900">{t('Hladiva – oprema', 'Refrigerants – equipment')}</h1>
-        <p className="text-sm text-gray-400 mt-0.5">{t('Direktne emisije iz izhajanja hladil', 'Direct emissions from refrigerant leakage')}</p>
+        <p className="text-xs font-semibold text-[#455451] uppercase tracking-widest mb-1">Scope 1 · {year}</p>
+        <h1 className="text-2xl font-bold text-[#031f18]">{t('Hladiva – oprema', 'Refrigerants – equipment')}</h1>
+        <p className="text-sm text-[#455451] mt-0.5">{t('Direktne emisije iz izhajanja hladil', 'Direct emissions from refrigerant leakage')}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white border border-gray-200 rounded-xl p-4 flex items-center gap-3">
+        <div className="bg-white border border-[#e2e2e4] rounded-xl p-4 flex items-center gap-3">
           <div className="w-9 h-9 bg-cyan-50 rounded-lg flex items-center justify-center shrink-0">
             <Leaf className="h-4 w-4 text-cyan-600" />
           </div>
           <div>
-            <p className="text-xs text-gray-400">{t('Skupne emisije', 'Total emissions')} · {year}</p>
-            <p className="text-lg font-bold text-gray-900">{(totalCo2e / 1000).toFixed(2).replace('.', ',')} <span className="text-xs font-normal text-gray-500">tCO₂e</span></p>
+            <p className="text-xs text-[#455451]">{t('Skupne emisije', 'Total emissions')} · {year}</p>
+            <p className="text-lg font-bold text-[#031f18]">{(totalCo2e / 1000).toFixed(2).replace('.', ',')} <span className="text-xs font-normal text-[#455451]">tCO₂e</span></p>
           </div>
         </div>
-        <div className="bg-white border border-gray-200 rounded-xl p-4 flex items-center gap-3">
+        <div className="bg-white border border-[#e2e2e4] rounded-xl p-4 flex items-center gap-3">
           <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${done === total && total > 0 ? 'bg-green-50' : 'bg-amber-50'}`}>
             <Check className={`h-4 w-4 ${done === total && total > 0 ? 'text-green-600' : 'text-amber-500'}`} />
           </div>
           <div>
-            <p className="text-xs text-gray-400">{t('Dokončano', 'Completed')}</p>
-            <p className="text-lg font-bold text-gray-900">{done} <span className="text-xs font-normal text-gray-500">/ {total}</span></p>
+            <p className="text-xs text-[#455451]">{t('Dokončano', 'Completed')}</p>
+            <p className="text-lg font-bold text-[#031f18]">{done} <span className="text-xs font-normal text-[#455451]">/ {total}</span></p>
           </div>
         </div>
         </div>
 
       {loading ? (
-        <div className="bg-white border border-gray-200 rounded-xl p-12 text-center text-sm text-gray-400">{t('Nalaganje...', 'Loading...')}</div>
+        <div className="bg-white border border-[#e2e2e4] rounded-xl p-12 text-center text-sm text-[#455451]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !equipment.length ? (
-        <div className="bg-white border border-gray-200 rounded-xl py-14 text-center">
+        <div className="bg-white border border-[#e2e2e4] rounded-xl py-14 text-center">
           <Thermometer className="h-7 w-7 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-gray-500 mb-1">{t('Ni opreme s hladivi.', 'No refrigerant-using equipment.')}</p>
-          <p className="text-xs text-gray-400">{t('Označite opremo kot "Uporablja hladiva" v razdelku Oprema.', 'Mark equipment as "Uses refrigerants" in the Equipment section.')}</p>
+          <p className="text-sm text-[#455451] mb-1">{t('Ni opreme s hladivi.', 'No refrigerant-using equipment.')}</p>
+          <p className="text-xs text-[#455451]">{t('Označite opremo kot "Uporablja hladiva" v razdelku Oprema.', 'Mark equipment as "Uses refrigerants" in the Equipment section.')}</p>
         </div>
       ) : (
-        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden overflow-x-auto">
+        <div className="bg-white border border-[#e2e2e4] rounded-xl overflow-hidden overflow-x-auto">
           <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-100 bg-gray-50/50">
-                <th className="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider px-5 py-3">{t('Oprema', 'Equipment')}</th>
-                <th className="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider px-5 py-3">{t('Hladivo', 'Refrigerant')}</th>
-                <th className="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider px-5 py-3">{t('Dopolnitev', 'Top-up')} (kg)</th>
-                <th className="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider px-5 py-3">{t('Emisije', 'Emissions')}</th>
-                <th className="text-left text-xs font-semibold text-gray-400 uppercase tracking-wider px-5 py-3">{t('Status', 'Status')}</th>
+            <thead className="bg-[#fafafc]">
+              <tr className="border-b border-[#e2e2e4] bg-[#f9f9f9]/50">
+                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Oprema', 'Equipment')}</th>
+                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Hladivo', 'Refrigerant')}</th>
+                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Dopolnitev', 'Top-up')} (kg)</th>
+                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Emisije', 'Emissions')}</th>
+                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Status', 'Status')}</th>
                 <th className="px-5 py-3" />
               </tr>
             </thead>
@@ -192,19 +192,19 @@ export default function Scope1RefrigerantsPage() {
               {paginated.map((item, i) => {
                 const entry = entriesMap[item.id]
                 return (
-                  <tr key={item.id} className={`hover:bg-gray-50 transition-colors ${i !== 0 ? 'border-t border-gray-100' : ''}`}>
+                  <tr key={item.id} className={`hover:bg-[#f9f9f9] transition-colors ${i !== 0 ? 'border-t border-[#e2e2e4]' : ''}`}>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-cyan-50 rounded-lg flex items-center justify-center shrink-0">
                           <Thermometer className="h-4 w-4 text-cyan-500" />
                         </div>
-                        <p className="text-sm font-semibold text-gray-900">{item.name}</p>
+                        <p className="text-sm font-semibold text-[#031f18]">{item.name}</p>
                       </div>
                     </td>
-                    <td className="px-5 py-4 text-sm text-gray-600">
+                    <td className="px-5 py-4 text-sm text-[#455451]">
                       {entry ? entry.refrigerant_type : <span className="text-gray-300">—</span>}
                     </td>
-                    <td className="px-5 py-4 text-sm font-medium text-gray-700">
+                    <td className="px-5 py-4 text-sm font-medium text-[#031f18]">
                       {entry ? `${fmtQty(entry.quantity)} kg` : <span className="text-gray-300">—</span>}
                     </td>
                     <td className="px-5 py-4">
@@ -227,13 +227,13 @@ export default function Scope1RefrigerantsPage() {
                       <div className="flex items-center gap-1 justify-end">
                         {entry ? (
                           <button onClick={() => openEdit(item)}
-                            className="inline-flex items-center gap-1 text-xs font-semibold text-gray-600 hover:text-gray-900 px-3 py-1.5 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg transition-colors">
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#455451] hover:text-[#031f18] px-3 py-1.5 bg-white border border-[#e2e2e4] hover:bg-[#f9f9f9] rounded-lg transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
                             {t('Uredi podatke o emisijah', 'Edit emission data')}
                           </button>
                         ) : (
                           <button onClick={() => openAdd(item)}
-                            className="inline-flex items-center gap-1 text-xs font-semibold text-green-700 hover:text-blue-700 px-3 py-1.5 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#26a552] hover:text-[#1e8a43] px-3 py-1.5 bg-[#edf7f1] hover:bg-[#d4eddf] rounded-lg transition-colors">
                             <Plus className="h-3 w-3" />{t('Dodaj emisije', 'Add emission data')}
                           </button>
                         )}
@@ -262,25 +262,25 @@ export default function Scope1RefrigerantsPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowModal(false)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 z-10 bg-white border-b border-gray-100 px-6 py-5 flex items-center justify-between rounded-t-2xl">
+            <div className="sticky top-0 z-10 bg-white border-b border-[#e2e2e4] px-6 py-5 flex items-center justify-between rounded-t-2xl">
               <div>
-                <h2 className="text-lg font-bold text-gray-900">{entriesMap[activeItem.id] ? t('Uredi vnos', 'Edit entry') : t('Dodaj hladivo', 'Add refrigerant')}</h2>
-                <p className="text-xs text-gray-400 mt-0.5">{activeItem.name} · Scope 1 · {year}</p>
+                <h2 className="text-lg font-bold text-[#031f18]">{entriesMap[activeItem.id] ? t('Uredi vnos', 'Edit entry') : t('Dodaj hladivo', 'Add refrigerant')}</h2>
+                <p className="text-xs text-[#455451] mt-0.5">{activeItem.name} · Scope 1 · {year}</p>
               </div>
-              <button onClick={() => setShowModal(false)} className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"><X className="h-4 w-4" /></button>
+              <button onClick={() => setShowModal(false)} className="p-2 text-[#455451] hover:text-[#455451] hover:bg-[#f4f4f6] rounded-xl transition-colors"><X className="h-4 w-4" /></button>
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Vrsta hladiva', 'Refrigerant type')}</label>
+                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Vrsta hladiva', 'Refrigerant type')}</label>
                 <select value={form.refrigerant_type} onChange={e => f('refrigerant_type', e.target.value)} className={SELECT}>
                   {REFRIG_KEYS.map(k => <option key={k} value={k}>{k} — GWP {REFRIGERANT_FACTORS[k]?.factor}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Letna dopolnitev', 'Annual top-up')} (kg) <span className="text-red-400">*</span></label>
+                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Letna dopolnitev', 'Annual top-up')} (kg) <span className="text-red-400">*</span></label>
                 <div className="flex gap-2">
                   <input value={form.quantity_kg} onChange={e => f('quantity_kg', e.target.value)} onBlur={e => f('quantity_kg', fmtQty(e.target.value))} type="text" inputMode="decimal" placeholder="0" className={INPUT} autoFocus />
-                  <div className="w-10 px-2 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center shrink-0 font-medium">kg</div>
+                  <div className="w-10 px-2 py-2 text-sm bg-[#f9f9f9] border border-[#e2e2e4] rounded-lg text-[#455451] flex items-center justify-center shrink-0 font-medium">kg</div>
                 </div>
               </div>
               {preview !== null && (
@@ -294,16 +294,16 @@ export default function Scope1RefrigerantsPage() {
               )}
               {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
             </div>
-            <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3 rounded-b-2xl">
+            <div className="sticky bottom-0 bg-white border-t border-[#e2e2e4] px-6 py-4 flex gap-3 rounded-b-2xl">
               {entriesMap[activeItem.id] && (
                 <button onClick={() => { setShowModal(false); setConfirmDelete(activeItem.id) }}
                   className="px-4 py-2.5 text-sm font-medium text-red-600 hover:text-red-700 bg-white border border-red-200 hover:bg-red-50 rounded-xl transition-colors">
                   {t('Izbriši podatke o porabi', 'Delete usage data')}
                 </button>
               )}
-              <button onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">{t('Prekliči', 'Cancel')}</button>
+              <button onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">{t('Prekliči', 'Cancel')}</button>
               <button onClick={handleSave} disabled={saving || !form.quantity_kg || parseQty(form.quantity_kg) < 0}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-green-700 hover:bg-blue-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#e5e5e7] disabled:text-[#455451] disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : entriesMap[activeItem.id] ? t('Shrani', 'Save') : t('Dodaj vnos', 'Add entry')}
               </button>
             </div>
