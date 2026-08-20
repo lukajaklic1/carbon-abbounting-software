@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Wrench, Plus, Pencil, Trash2, X } from 'lucide-react'
+import { Wrench, Plus, Pencil, Trash2, X, Search } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { mockEquipment, mockLocations } from '@/lib/mock-data'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
@@ -175,6 +175,9 @@ export default function EquipmentPage() {
   const [error, setError] = useState('')
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null)
   const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
+  const [filterCategory, setFilterCategory] = useState('')
+  const [filterStatus, setFilterStatus] = useState('')
 
   useEffect(() => { load() }, [])
 
@@ -319,8 +322,12 @@ export default function EquipmentPage() {
 
   const f = (key: keyof EquipmentForm, val: any) => setForm(prev => ({ ...prev, [key]: val }))
 
-  const totalPages = Math.ceil(equipment.length / PAGE_SIZE)
-  const paginatedEquipment = equipment.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const filtered = equipment
+    .filter(eq => !search || eq.name?.toLowerCase().includes(search.toLowerCase()) || eq.locations?.name?.toLowerCase().includes(search.toLowerCase()))
+    .filter(eq => !filterCategory || (filterCategory === 'fuel' && eq.uses_fuel) || (filterCategory === 'refrigerants' && eq.uses_refrigerants) || (filterCategory === 'industrial_gas' && eq.uses_industrial_gases))
+    .filter(eq => filterStatus === '' ? true : filterStatus === 'active' ? eq.is_active : !eq.is_active)
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
+  const paginatedEquipment = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   function getCategoryBadges(eq: any) {
     const badges = []
@@ -436,6 +443,43 @@ export default function EquipmentPage() {
         </div>
       )}
 
+      {/* Filters */}
+      {!loading && equipment.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <div className="inline-flex items-center gap-2 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] min-w-[180px]">
+            <Search className="h-3.5 w-3.5 text-[#767676] shrink-0" />
+            <input value={search} onChange={e => { setSearch(e.target.value); setPage(1) }}
+              placeholder={t('Iskanje...', 'Search...')}
+              className="flex-1 bg-transparent focus:outline-none text-[#0f0f10] placeholder:text-[#b0b0b0] text-[13px]" />
+          </div>
+          <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+            <span className="text-[#767676]">{t('Kategorija:', 'Category:')}</span>
+            <select value={filterCategory} onChange={e => { setFilterCategory(e.target.value); setPage(1) }}
+              className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
+              <option value="">{t('Vse', 'All')}</option>
+              <option value="fuel">{t('Gorivo', 'Fuel')}</option>
+              <option value="refrigerants">{t('Hladiva', 'Refrigerants')}</option>
+              <option value="industrial_gas">{t('Ind. plini', 'Industrial gases')}</option>
+            </select>
+          </label>
+          <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+            <span className="text-[#767676]">{t('Status:', 'Status:')}</span>
+            <select value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1) }}
+              className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
+              <option value="">{t('Vsi', 'All')}</option>
+              <option value="active">{t('Aktivno', 'Active')}</option>
+              <option value="inactive">{t('Neaktivno', 'Inactive')}</option>
+            </select>
+          </label>
+          {(search || filterCategory || filterStatus) && (
+            <button onClick={() => { setSearch(''); setFilterCategory(''); setFilterStatus(''); setPage(1) }}
+              className="h-8 px-3 text-[13px] font-medium text-[#767676] bg-white border border-[#ececec] rounded-xl hover:bg-[#fafafa] transition-colors">
+              {t('Počisti', 'Clear')}
+            </button>
+          )}
+        </div>
+      )}
+
       {loading ? (
         <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !equipment.length ? (
@@ -446,6 +490,10 @@ export default function EquipmentPage() {
             subtitle={t('Dodajte kotel, generator, hladilnik ali drugo napravo, ki porablja gorivo ali hladilne pline.', 'Add a boiler, generator, refrigerator or other device that consumes fuel or refrigerants.')}
             action={{ label: t('+ Dodaj opremo', '+ Add equipment'), onClick: openNew }}
           />
+        </div>
+      ) : !filtered.length ? (
+        <div className="bg-white border border-[#ececec] rounded-xl">
+          <EmptyState icon={Search} title={t('Ni zadetkov', 'No results')} subtitle={t('Poskusite spremeniti iskanje ali filtre.', 'Try changing your search or filters.')} />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">
@@ -524,7 +572,7 @@ export default function EquipmentPage() {
               })}
             </tbody>
           </table>
-          <Pagination page={page} totalPages={totalPages} totalItems={equipment.length} pageSize={PAGE_SIZE} onPage={setPage} />
+          <Pagination page={page} totalPages={totalPages} totalItems={filtered.length} pageSize={PAGE_SIZE} onPage={setPage} />
         </div>
       )}
 

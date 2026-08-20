@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { MapPin, Plus, Pencil, Trash2, Building2, X, Check } from 'lucide-react'
+import { MapPin, Plus, Pencil, Trash2, Building2, X, Check, Search } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { mockLocations } from '@/lib/mock-data'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
@@ -70,6 +70,9 @@ export default function LocationsPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
+  const [filterType, setFilterType] = useState('')
+  const [filterStatus, setFilterStatus] = useState('')
 
   useEffect(() => { loadLocations() }, [])
 
@@ -200,8 +203,12 @@ export default function LocationsPage() {
 
   const f = (key: keyof LocationForm, val: any) => setForm(prev => ({ ...prev, [key]: val }))
 
-  const totalPages = Math.ceil(locations.length / PAGE_SIZE)
-  const paginatedLocations = locations.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const filtered = locations
+    .filter(l => !search || l.name?.toLowerCase().includes(search.toLowerCase()) || l.city?.toLowerCase().includes(search.toLowerCase()) || l.address?.toLowerCase().includes(search.toLowerCase()))
+    .filter(l => !filterType || l.location_type === filterType)
+    .filter(l => filterStatus === '' ? true : filterStatus === 'active' ? l.is_active : !l.is_active)
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
+  const paginatedLocations = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
     <div className="p-4 lg:p-8">
@@ -216,6 +223,41 @@ export default function LocationsPage() {
           <Plus className="h-4 w-4" />
           {t('Nova lokacija', 'New location')}
         </button>
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-wrap items-center gap-2 mb-4">
+        <div className="inline-flex items-center gap-2 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] min-w-[180px]">
+          <Search className="h-3.5 w-3.5 text-[#767676] shrink-0" />
+          <input
+            value={search} onChange={e => { setSearch(e.target.value); setPage(1) }}
+            placeholder={t('Iskanje...', 'Search...')}
+            className="flex-1 bg-transparent focus:outline-none text-[#0f0f10] placeholder:text-[#b0b0b0] text-[13px]"
+          />
+        </div>
+        <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+          <span className="text-[#767676]">{t('Tip:', 'Type:')}</span>
+          <select value={filterType} onChange={e => { setFilterType(e.target.value); setPage(1) }}
+            className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
+            <option value="">{t('Vsi', 'All')}</option>
+            {LOCATION_TYPES.map(lt => <option key={lt.value} value={lt.value}>{lt.sl}</option>)}
+          </select>
+        </label>
+        <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+          <span className="text-[#767676]">{t('Status:', 'Status:')}</span>
+          <select value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1) }}
+            className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
+            <option value="">{t('Vsi', 'All')}</option>
+            <option value="active">{t('Aktivno', 'Active')}</option>
+            <option value="inactive">{t('Neaktivno', 'Inactive')}</option>
+          </select>
+        </label>
+        {(search || filterType || filterStatus) && (
+          <button onClick={() => { setSearch(''); setFilterType(''); setFilterStatus(''); setPage(1) }}
+            className="h-8 px-3 text-[13px] font-medium text-[#767676] bg-white border border-[#ececec] rounded-xl hover:bg-[#fafafa] transition-colors">
+            {t('Počisti', 'Clear')}
+          </button>
+        )}
       </div>
 
       {/* Confirm delete modal */}
@@ -252,14 +294,12 @@ export default function LocationsPage() {
       {/* Table */}
       {loading ? (
         <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
-      ) : !locations.length ? (
+      ) : !filtered.length ? (
         <div className="bg-white border border-[#ececec] rounded-xl">
-          <EmptyState
-            icon={MapPin}
-            title={t('Zaenkrat še ni nobenih lokacij', 'No locations yet')}
-            subtitle={t('Dodajte prvo lokacijo — pisarno, tovarno ali skladišče — da začnete evidentirati emisije.', 'Add your first location — an office, factory or warehouse — to start tracking emissions.')}
-            action={{ label: t('+ Dodaj lokacijo', '+ Add location'), onClick: openNew }}
-          />
+          {locations.length === 0
+            ? <EmptyState icon={MapPin} title={t('Zaenkrat še ni nobenih lokacij', 'No locations yet')} subtitle={t('Dodajte prvo lokacijo — pisarno, tovarno ali skladišče — da začnete evidentirati emisije.', 'Add your first location — an office, factory or warehouse — to start tracking emissions.')} action={{ label: t('+ Dodaj lokacijo', '+ Add location'), onClick: openNew }} />
+            : <EmptyState icon={Search} title={t('Ni zadetkov', 'No results')} subtitle={t('Poskusite spremeniti iskanje ali filtre.', 'Try changing your search or filters.')} />
+          }
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">
