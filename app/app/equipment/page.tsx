@@ -456,7 +456,7 @@ export default function EquipmentPage() {
           </div>
           <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] has-[:focus]:border-[#0f0f10] transition-colors">
             <span className="text-[#767676]">{t('Kategorija:', 'Category:')}</span>
-            <select value={filterCategory} onChange={e => { setFilterCategory(e.target.value); setPage(1) }}
+            <select value={filterCategory} onChange={e => { setFilterCategory(e.target.value); setFilterFuelType(''); setPage(1) }}
               className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
               <option value="">{t('Vse', 'All')}</option>
               <option value="fuel">{t('Gorivo', 'Fuel')}</option>
@@ -469,9 +469,9 @@ export default function EquipmentPage() {
             <select value={filterFuelType} onChange={e => { setFilterFuelType(e.target.value); setPage(1) }}
               className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
               <option value="">{t('Vsi', 'All')}</option>
-              {FUEL_TYPES.map(ft => <option key={ft.value} value={ft.value}>{ft.sl}</option>)}
-              {REFRIGERANT_TYPES.map(rt => <option key={rt.value} value={rt.value}>{rt.sl}</option>)}
-              {INDUSTRIAL_GAS_TYPES.map(gt => <option key={gt.value} value={gt.value}>{gt.sl}</option>)}
+              {(!filterCategory || filterCategory === 'fuel') && FUEL_TYPES.map(ft => <option key={ft.value} value={ft.value}>{ft.sl}</option>)}
+              {(!filterCategory || filterCategory === 'refrigerants') && REFRIGERANT_TYPES.map(rt => <option key={rt.value} value={rt.value}>{rt.sl}</option>)}
+              {(!filterCategory || filterCategory === 'industrial_gas') && INDUSTRIAL_GAS_TYPES.map(gt => <option key={gt.value} value={gt.value}>{gt.sl}</option>)}
             </select>
           </label>
           <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] has-[:focus]:border-[#0f0f10] transition-colors">
