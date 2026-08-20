@@ -343,8 +343,8 @@ export default function VehiclesPage() {
         <div className="bg-white border border-[#ececec] rounded-xl">
           <EmptyState
             icon={Car}
-            title={t('Ni vozil.', 'No vehicles.')}
-            subtitle={t('Dodajte prvo vozilo.', 'Add your first vehicle.')}
+            title={t('Ni vozil', 'No vehicles')}
+            subtitle={t('Dodajte prvo vozilo', 'Add your first vehicle')}
           />
         </div>
       ) : (

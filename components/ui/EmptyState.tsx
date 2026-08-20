@@ -19,7 +19,7 @@ export function EmptyState({ icon: Icon, title, subtitle, action }: EmptyStatePr
       </div>
 
       {/* Title */}
-      <p className="text-[15px] font-semibold text-[#0f0f10] mb-2">{title}</p>
+      <p className="text-[15px] font-medium text-[#0f0f10] mb-2">{title}</p>
 
       {/* Subtitle */}
       {subtitle && (

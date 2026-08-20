@@ -486,13 +486,13 @@ export default function EquipmentPage() {
         <div className="bg-white border border-[#ececec] rounded-xl">
           <EmptyState
             icon={Wrench}
-            title={t('Ni opreme.', 'No equipment.')}
-            subtitle={t('Dodajte prvo napravo.', 'Add your first device.')}
+            title={t('Ni opreme', 'No equipment')}
+            subtitle={t('Dodajte prvo napravo', 'Add your first device')}
           />
         </div>
       ) : !filtered.length ? (
         <div className="bg-white border border-[#ececec] rounded-xl">
-          <EmptyState icon={Search} title={t('Ni zadetkov.', 'No results.')} subtitle={t('Poskusite spremeniti iskanje ali filtre.', 'Try changing your search or filters.')} />
+          <EmptyState icon={Search} title={t('Ni zadetkov', 'No results')} subtitle={t('Poskusite spremeniti iskanje ali filtre', 'Try changing your search or filters')} />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">
