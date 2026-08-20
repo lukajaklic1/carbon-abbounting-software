@@ -448,11 +448,11 @@ export default function EquipmentPage() {
       {/* Filters */}
       {!loading && (
         <div className="flex flex-wrap items-center gap-2 mb-4">
-          <div className="inline-flex items-center gap-2 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] min-w-[180px]">
+          <div className="inline-flex items-center gap-2 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] min-w-[180px] focus-within:border-[#0f0f10] focus-within:ring-2 focus-within:ring-[#0f0f10]/10 transition-shadow">
             <Search className="h-3.5 w-3.5 text-[#767676] shrink-0" />
             <input value={search} onChange={e => { setSearch(e.target.value); setPage(1) }}
               placeholder={t('Iskanje...', 'Search...')}
-              className="flex-1 bg-transparent focus:outline-none text-[#0f0f10] placeholder:text-[#b0b0b0] text-[13px]" />
+              className="flex-1 bg-transparent focus:outline-none text-[#0f0f10] placeholder:text-[#767676] text-[13px]" />
           </div>
           <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
             <span className="text-[#767676]">{t('Kategorija:', 'Category:')}</span>
