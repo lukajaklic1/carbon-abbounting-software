@@ -30,15 +30,15 @@ export function ConfirmDialog({
           )}
           <div className="flex-1">
             <h3 className="text-base font-bold text-[#031f18]">{title}</h3>
-            <p className="text-sm text-[#455451] mt-1">{message}</p>
+            <p className="text-sm text-[#767676] mt-1">{message}</p>
           </div>
-          <button onClick={onCancel} className="p-1 text-[#455451] hover:text-[#455451] rounded-lg transition-colors">
+          <button onClick={onCancel} className="p-1 text-[#767676] hover:text-[#767676] rounded-lg transition-colors">
             <X className="h-4 w-4" />
           </button>
         </div>
         <div className="flex gap-3 mt-6">
           <button onClick={onCancel}
-            className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
             {cancelLabel}
           </button>
           <button onClick={onConfirm}

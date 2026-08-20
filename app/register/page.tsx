@@ -126,9 +126,9 @@ export default function RegisterPage() {
       </div>
 
       {/* Card */}
-      <div className="w-full max-w-[360px] bg-white rounded-2xl border border-[#e2e2e4] px-8 py-8">
+      <div className="w-full max-w-[360px] bg-white rounded-2xl border border-[#ececec] px-8 py-8">
         <h1 className="text-2xl font-bold text-[#031f18] text-center mb-1">{t.title}</h1>
-        <p className="text-sm text-[#455451] text-center mb-7">{t.subtitle}</p>
+        <p className="text-sm text-[#767676] text-center mb-7">{t.subtitle}</p>
 
         {IS_MOCK && (
           <div className="mb-5 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5 text-xs text-amber-700 text-center">
@@ -142,7 +142,7 @@ export default function RegisterPage() {
             <input
               type="email" value={email} onChange={e => setEmail(e.target.value)} required
               placeholder={t.placeholder_email}
-              className="w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] focus:bg-white placeholder:text-gray-300"
+              className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] focus:bg-white placeholder:text-gray-300"
             />
           </div>
 
@@ -153,10 +153,10 @@ export default function RegisterPage() {
                 type={showPassword ? 'text' : 'password'}
                 value={password} onChange={e => setPassword(e.target.value)} required minLength={8}
                 placeholder={t.placeholder_password}
-                className="w-full px-3 py-2 pr-10 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] focus:bg-white placeholder:text-gray-300"
+                className="w-full px-3 py-2 pr-10 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] focus:bg-white placeholder:text-gray-300"
               />
               <button type="button" onClick={() => setShowPassword(v => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#455451] hover:text-[#455451]">
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#767676] hover:text-[#767676]">
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
@@ -169,10 +169,10 @@ export default function RegisterPage() {
                 type={showConfirm ? 'text' : 'password'}
                 value={confirm} onChange={e => setConfirm(e.target.value)} required
                 placeholder={t.placeholder_confirm}
-                className="w-full px-3 py-2 pr-10 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] focus:bg-white placeholder:text-gray-300"
+                className="w-full px-3 py-2 pr-10 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] focus:bg-white placeholder:text-gray-300"
               />
               <button type="button" onClick={() => setShowConfirm(v => !v)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#455451] hover:text-[#455451]">
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#767676] hover:text-[#767676]">
                 {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
@@ -184,7 +184,7 @@ export default function RegisterPage() {
               <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)}
                 className="sr-only" />
               <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-                agreed ? 'bg-[#26a552] border-[#26a552]' : 'border-[#e2e2e4] group-hover:border-blue-400'
+                agreed ? 'bg-[#26a552] border-[#26a552]' : 'border-[#ececec] group-hover:border-blue-400'
               }`}>
                 {agreed && (
                   <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 10 10" fill="none">
@@ -193,7 +193,7 @@ export default function RegisterPage() {
                 )}
               </div>
             </div>
-            <span className="text-sm text-[#455451] leading-snug">
+            <span className="text-sm text-[#767676] leading-snug">
               {t.terms1}{' '}
               <a href="#" className="text-[#26a552] font-semibold hover:underline">{t.termsLink}</a>
               {' '}{t.terms2}{' '}
@@ -222,7 +222,7 @@ export default function RegisterPage() {
 
       {/* Footer */}
       <div className="mt-5 flex items-center justify-between w-full max-w-[360px]">
-        <p className="text-sm text-[#455451]">
+        <p className="text-sm text-[#767676]">
           {t.hasAccount}{' '}
           <Link href="/login" className="text-[#26a552] hover:underline font-semibold">{t.signIn}</Link>
         </p>
@@ -230,7 +230,7 @@ export default function RegisterPage() {
           {(['EN', 'SL'] as const).map(l => (
             <button key={l} onClick={() => switchLocale(l)}
               className={`text-xs font-semibold px-2.5 py-1 rounded-full transition-colors ${
-                locale === l ? 'bg-[#26a552] text-white' : 'text-[#455451] hover:text-[#455451]'
+                locale === l ? 'bg-[#26a552] text-white' : 'text-[#767676] hover:text-[#767676]'
               }`}>
               {l}
             </button>

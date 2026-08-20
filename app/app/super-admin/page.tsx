@@ -74,7 +74,7 @@ export default function SuperAdminDashboard() {
     <div className="p-6 lg:p-8 space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-[#031f18]">Nadzorna plošča</h1>
-        <p className="text-sm text-[#455451] mt-0.5">Pregled platforme</p>
+        <p className="text-sm text-[#767676] mt-0.5">Pregled platforme</p>
       </div>
 
       {/* Stat cards */}
@@ -82,13 +82,13 @@ export default function SuperAdminDashboard() {
         {cards.map(c => {
           const Icon = c.icon
           return (
-            <div key={c.label} className="bg-white border border-[#e2e2e4] rounded-xl p-5 flex items-center gap-4">
+            <div key={c.label} className="bg-white border border-[#ececec] rounded-xl p-5 flex items-center gap-4">
               <div className={`w-10 h-10 ${c.bg} rounded-xl flex items-center justify-center shrink-0`}>
                 <Icon className={`h-5 w-5 ${c.color}`} />
               </div>
               <div>
                 <p className="text-2xl font-bold text-[#031f18]">{loading ? '—' : c.value}</p>
-                <p className="text-xs text-[#455451]">{c.label}</p>
+                <p className="text-xs text-[#767676]">{c.label}</p>
               </div>
             </div>
           )
@@ -106,7 +106,7 @@ export default function SuperAdminDashboard() {
 
 function TrendCard({ title, data, color, total }: { title: string; data: MonthPoint[]; color: string; total: number }) {
   return (
-    <div className="bg-white border border-[#e2e2e4] rounded-xl p-5">
+    <div className="bg-white border border-[#ececec] rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <p className="text-sm font-semibold text-[#031f18]">{title}</p>
         <span className="text-lg font-bold tabular-nums" style={{ color }}>{total}</span>

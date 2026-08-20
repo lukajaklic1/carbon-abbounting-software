@@ -10,14 +10,14 @@ export function FormCard({ title, subtitle, backHref, children }: {
   return (
     <div className="max-w-6xl mx-auto p-4 lg:p-6">
       <div className="mb-5">
-        <Link href={backHref} className="inline-flex items-center gap-1.5 text-sm text-[#455451] hover:text-[#455451] transition-colors mb-4">
+        <Link href={backHref} className="inline-flex items-center gap-1.5 text-sm text-[#767676] hover:text-[#767676] transition-colors mb-4">
           <ArrowLeft className="h-3.5 w-3.5" />
           Back
         </Link>
         <h1 className="text-2xl font-bold text-[#031f18]">{title}</h1>
-        {subtitle && <p className="text-sm text-[#455451] mt-0.5">{subtitle}</p>}
+        {subtitle && <p className="text-sm text-[#767676] mt-0.5">{subtitle}</p>}
       </div>
-      <div className="bg-white border border-[#e2e2e4] rounded-xl shadow-sm max-w-xl">
+      <div className="bg-white border border-[#ececec] rounded-xl shadow-sm max-w-xl">
         {children}
       </div>
     </div>
@@ -33,7 +33,7 @@ export function FormField({ label, children, hint }: {
     <div>
       <label className="block text-sm font-medium text-[#031f18] mb-1.5">{label}</label>
       {children}
-      {hint && <p className="text-xs text-[#455451] mt-1">{hint}</p>}
+      {hint && <p className="text-xs text-[#767676] mt-1">{hint}</p>}
     </div>
   )
 }
@@ -52,7 +52,7 @@ export function FormInput({ name, placeholder, defaultValue, required, maxLength
       defaultValue={defaultValue}
       required={required}
       maxLength={maxLength}
-      className="w-full px-3 py-2.5 text-sm bg-[#f9f9f9] border border-[#e2e2e4] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent placeholder:text-gray-300"
+      className="w-full px-3 py-2.5 text-sm bg-[#f9f9f9] border border-[#ececec] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent placeholder:text-gray-300"
     />
   )
 }
@@ -66,7 +66,7 @@ export function FormSelect({ name, defaultValue, children }: {
     <select
       name={name}
       defaultValue={defaultValue}
-      className="w-full px-3 py-2.5 text-sm bg-[#f9f9f9] border border-[#e2e2e4] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+      className="w-full px-3 py-2.5 text-sm bg-[#f9f9f9] border border-[#ececec] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
     >
       {children}
     </select>

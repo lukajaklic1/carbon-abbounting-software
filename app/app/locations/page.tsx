@@ -208,7 +208,7 @@ export default function LocationsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-[#031f18]">{t('Lokacije', 'Locations')}</h1>
-          <p className="text-sm text-[#455451] mt-0.5">{locations.length} {t(locations.length === 1 ? 'lokacija' : 'lokacij', locations.length === 1 ? 'location' : 'locations')} · {t('Pisarne, tovarne, skladišča in druge nepremičnine', 'Offices, factories, warehouses and other premises')}</p>
+          <p className="text-sm text-[#767676] mt-0.5">{locations.length} {t(locations.length === 1 ? 'lokacija' : 'lokacij', locations.length === 1 ? 'location' : 'locations')} · {t('Pisarne, tovarne, skladišča in druge nepremičnine', 'Offices, factories, warehouses and other premises')}</p>
         </div>
         <button onClick={openNew}
           className="inline-flex items-center gap-2 bg-[#26a552] hover:bg-[#1e8a43] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
@@ -228,7 +228,7 @@ export default function LocationsPage() {
               </div>
               <div>
                 <h3 className="text-base font-bold text-[#031f18]">{t('Izbriši lokacijo', 'Delete location')}</h3>
-                <p className="text-sm text-[#455451] mt-0.5">
+                <p className="text-sm text-[#767676] mt-0.5">
                   {t(`Ali ste prepričani, da želite izbrisati "${confirmDelete.name}"? Tega dejanja ni mogoče razveljaviti.`,
                      `Are you sure you want to delete "${confirmDelete.name}"? This action cannot be undone.`)}
                 </p>
@@ -236,7 +236,7 @@ export default function LocationsPage() {
             </div>
             <div className="flex gap-3 pt-1">
               <button onClick={() => setConfirmDelete(null)}
-                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={confirmAndDelete}
@@ -250,56 +250,56 @@ export default function LocationsPage() {
 
       {/* Table */}
       {loading ? (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl p-12 text-center text-sm text-[#455451]">{t('Nalaganje...', 'Loading...')}</div>
+        <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !locations.length ? (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl py-14 text-center">
+        <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
           <MapPin className="h-7 w-7 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-[#455451] mb-2">{t('Ni lokacij.', 'No locations.')}</p>
+          <p className="text-sm text-[#767676] mb-2">{t('Ni lokacij.', 'No locations.')}</p>
           <button onClick={openNew}
             className="text-sm text-[#26a552] hover:text-[#1e8a43] font-medium transition-colors">
             {t('Dodajte prvo lokacijo →', 'Add your first location →')}
           </button>
         </div>
       ) : (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl overflow-hidden overflow-x-auto">
+        <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">
           <table className="w-full">
             <thead className="bg-[#fafafc]">
-              <tr className="border-b border-[#e2e2e4] bg-[#f9f9f9]/50">
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Ime lokacije', 'Location name')}</th>
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Naslov', 'Address')}</th>
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Tip', 'Type')}</th>
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Površina', 'Floor area')}</th>
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Status', 'Status')}</th>
+              <tr className="border-b border-[#ececec] bg-[#f9f9f9]/50">
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Ime lokacije', 'Location name')}</th>
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Naslov', 'Address')}</th>
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Tip', 'Type')}</th>
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Površina', 'Floor area')}</th>
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Status', 'Status')}</th>
                 <th className="px-5 py-3"></th>
               </tr>
             </thead>
             <tbody>
               {paginatedLocations.map((loc, i) => (
-                <tr key={loc.id} className={`hover:bg-[#f9f9f9] transition-colors ${i !== 0 ? 'border-t border-[#e2e2e4]' : ''}`}>
+                <tr key={loc.id} className={`hover:bg-[#f9f9f9] transition-colors ${i !== 0 ? 'border-t border-[#ececec]' : ''}`}>
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-[#f4f4f6] rounded-lg flex items-center justify-center shrink-0 text-lg leading-none">
+                      <div className="w-8 h-8 bg-[#fafafa] rounded-lg flex items-center justify-center shrink-0 text-lg leading-none">
                         {LOCATION_TYPES.find(lt => lt.value === loc.location_type)?.emoji ?? '📍'}
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-[#031f18]">{loc.name}</p>
-                        <p className="text-xs text-[#455451]">{COUNTRIES.find(c => c.value === loc.country_code)?.label ?? loc.country_code}</p>
+                        <p className="text-xs text-[#767676]">{COUNTRIES.find(c => c.value === loc.country_code)?.label ?? loc.country_code}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="px-5 py-4 text-sm text-[#455451]">
+                  <td className="px-5 py-4 text-sm text-[#767676]">
                     {[loc.address, loc.city, loc.postal_code].filter(Boolean).join(', ') || '—'}
                   </td>
                   <td className="px-5 py-4">
-                    <span className="text-xs bg-[#f4f4f6] text-[#455451] px-2 py-1 rounded-lg font-medium">
+                    <span className="text-xs bg-[#fafafa] text-[#767676] px-2 py-1 rounded-lg font-medium">
                       {(() => { const lt = LOCATION_TYPES.find(lt => lt.value === loc.location_type); return lt ? t(lt.sl, lt.en) : '—' })()}
                     </span>
                   </td>
-                  <td className="px-5 py-4 text-sm text-[#455451]">
+                  <td className="px-5 py-4 text-sm text-[#767676]">
                     {loc.floor_area_m2 ? `${loc.floor_area_m2} m²` : '—'}
                   </td>
                   <td className="px-5 py-4">
-                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${loc.is_active ? 'bg-green-50 text-green-700' : 'bg-[#f4f4f6] text-[#455451]'}`}>
+                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${loc.is_active ? 'bg-green-50 text-green-700' : 'bg-[#fafafa] text-[#767676]'}`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${loc.is_active ? 'bg-green-500' : 'bg-gray-400'}`} />
                       {loc.is_active ? t('Aktivno', 'Active') : t('Neaktivno', 'Inactive')}
                     </span>
@@ -307,14 +307,14 @@ export default function LocationsPage() {
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-1 justify-end">
                       <button onClick={() => openEdit(loc)}
-                        className="p-1.5 text-[#455451] hover:text-[#26a552] hover:bg-[#edf7f1] rounded-lg transition-colors">
+                        className="p-1.5 text-[#767676] hover:text-[#26a552] hover:bg-[#edf7f1] rounded-lg transition-colors">
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
                       <button
                         onClick={() => setConfirmDelete({ id: loc.id, name: loc.name })}
                         disabled={!!(linkedCounts[loc.id])}
                         title={linkedCounts[loc.id] ? t(`Ni možno izbrisati – ${linkedCounts[loc.id]} vezanih zapisov`, `Cannot delete – ${linkedCounts[loc.id]} linked records`) : undefined}
-                        className="p-1.5 text-[#455451] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-[#455451] disabled:hover:bg-transparent">
+                        className="p-1.5 text-[#767676] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-[#767676] disabled:hover:bg-transparent">
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
@@ -334,17 +334,17 @@ export default function LocationsPage() {
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
 
             {/* Modal header */}
-            <div className="sticky top-0 z-10 bg-white border-b border-[#e2e2e4] px-6 py-5 flex items-center justify-between rounded-t-2xl">
+            <div className="sticky top-0 z-10 bg-white border-b border-[#ececec] px-6 py-5 flex items-center justify-between rounded-t-2xl">
               <div>
                 <h2 className="text-lg font-bold text-[#031f18]">
                   {editingId ? t('Uredi lokacijo', 'Edit location') : t('Dodaj lokacijo', 'Add location')}
                 </h2>
-                <p className="text-xs text-[#455451] mt-0.5">
+                <p className="text-xs text-[#767676] mt-0.5">
                   {editingId ? t('Posodobite podatke lokacije', 'Update location details') : t('Fizično mesto, pisarna ali skladišče', 'Physical place, office or warehouse')}
                 </p>
               </div>
               <button onClick={() => setShowModal(false)}
-                className="p-2 text-[#455451] hover:text-[#455451] hover:bg-[#f4f4f6] rounded-xl transition-colors">
+                className="p-2 text-[#767676] hover:text-[#767676] hover:bg-[#fafafa] rounded-xl transition-colors">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -358,7 +358,7 @@ export default function LocationsPage() {
                 </label>
                 <input value={form.name} onChange={e => f('name', e.target.value)}
                   placeholder={t('npr. Centralna pisarna Ljubljana', 'e.g. Main Office Ljubljana')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300"
+                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300"
                 />
               </div>
 
@@ -367,7 +367,7 @@ export default function LocationsPage() {
                 <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Ulica in hišna številka', 'Street address')}</label>
                 <input value={form.address} onChange={e => f('address', e.target.value)}
                   placeholder={t('npr. Dunajska cesta 5', 'e.g. Main Street 5')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300"
+                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300"
                 />
               </div>
 
@@ -377,14 +377,14 @@ export default function LocationsPage() {
                   <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Mesto', 'City')}</label>
                   <input value={form.city} onChange={e => f('city', e.target.value)}
                     placeholder={t('Ljubljana', 'Ljubljana')}
-                    className="w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300"
+                    className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Poštna številka', 'Postal code')}</label>
                   <input value={form.postal_code} onChange={e => f('postal_code', e.target.value)}
                     placeholder="1000"
-                    className="w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300"
+                    className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300"
                   />
                 </div>
               </div>
@@ -394,14 +394,14 @@ export default function LocationsPage() {
                 <div>
                   <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Država', 'Country')}</label>
                   <select value={form.country_code} onChange={e => f('country_code', e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233]">
+                    className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233]">
                     {COUNTRIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                   </select>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Tip lokacije', 'Location type')}</label>
                   <select value={form.location_type} onChange={e => f('location_type', e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233]">
+                    className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233]">
                     {LOCATION_TYPES.map(lt => <option key={lt.value} value={lt.value}>{t(lt.sl, lt.en)}</option>)}
                   </select>
                 </div>
@@ -409,13 +409,13 @@ export default function LocationsPage() {
 
               {/* Floor area */}
               <div>
-                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Površina', 'Floor area')} <span className="text-[#455451] font-normal">({t('neobvezno', 'optional')})</span></label>
+                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Površina', 'Floor area')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span></label>
                 <div className="flex gap-2">
                   <input value={form.floor_area_m2} onChange={e => f('floor_area_m2', e.target.value)}
                     type="number" placeholder={t('npr. 500', 'e.g. 500')}
-                    className="flex-1 px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300"
+                    className="flex-1 px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300"
                   />
-                  <div className="w-16 px-3 py-2 text-sm bg-[#f9f9f9] border border-[#e2e2e4] rounded-lg text-[#455451] flex items-center justify-center">
+                  <div className="w-16 px-3 py-2 text-sm bg-[#f9f9f9] border border-[#ececec] rounded-lg text-[#767676] flex items-center justify-center">
                     m²
                   </div>
                 </div>
@@ -426,21 +426,21 @@ export default function LocationsPage() {
                 <label className="block text-sm font-medium text-[#031f18] mb-2">{t('Energenti na tej lokaciji', 'Utilities at this location')}</label>
                 <div className="space-y-2">
                   {UTILITIES.map(u => (
-                    <label key={u.key} className="flex items-start gap-3 p-3 rounded-xl border border-[#e2e2e4] hover:border-blue-200 hover:bg-[#edf7f1]/30 cursor-pointer transition-colors group">
+                    <label key={u.key} className="flex items-start gap-3 p-3 rounded-xl border border-[#ececec] hover:border-blue-200 hover:bg-[#edf7f1]/30 cursor-pointer transition-colors group">
                       <div className="relative mt-0.5 shrink-0">
                         <input type="checkbox"
                           checked={!!(form as any)[u.key]}
                           onChange={e => f(u.key as keyof LocationForm, e.target.checked)}
                           className="sr-only" />
                         <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-                          (form as any)[u.key] ? 'bg-[#26a552] border-[#26a552]' : 'border-[#e2e2e4]'
+                          (form as any)[u.key] ? 'bg-[#26a552] border-[#26a552]' : 'border-[#ececec]'
                         }`}>
                           {(form as any)[u.key] && <Check className="w-2.5 h-2.5 text-white" />}
                         </div>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-[#031f18]">{u.label}</p>
-                        <p className="text-xs text-[#455451] mt-0.5">{u.desc}</p>
+                        <p className="text-xs text-[#767676] mt-0.5">{u.desc}</p>
                       </div>
                     </label>
                   ))}
@@ -453,11 +453,11 @@ export default function LocationsPage() {
                   <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Status', 'Status')}</label>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => f('is_active', true)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-green-50 border-green-400 text-green-700' : 'border-[#e2e2e4] text-[#455451] hover:border-[#e2e2e4]'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-green-50 border-green-400 text-green-700' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
                       {t('Aktivno', 'Active')}
                     </button>
                     <button type="button" onClick={() => f('is_active', false)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${!form.is_active ? 'bg-[#f4f4f6] border-gray-400 text-[#031f18]' : 'border-[#e2e2e4] text-[#455451] hover:border-[#e2e2e4]'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${!form.is_active ? 'bg-[#fafafa] border-gray-400 text-[#031f18]' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
                       {t('Neaktivno', 'Inactive')}
                     </button>
                   </div>
@@ -466,10 +466,10 @@ export default function LocationsPage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Opombe', 'Notes')} <span className="text-[#455451] font-normal">({t('neobvezno', 'optional')})</span></label>
+                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Opombe', 'Notes')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span></label>
                 <textarea value={form.notes} onChange={e => f('notes', e.target.value)}
                   rows={2} placeholder={t('Dodatne informacije o lokaciji...', 'Additional information about this location...')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 resize-none"
+                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 resize-none"
                 />
               </div>
 
@@ -477,13 +477,13 @@ export default function LocationsPage() {
             </div>
 
             {/* Modal footer */}
-            <div className="sticky bottom-0 bg-white border-t border-[#e2e2e4] px-6 py-4 flex gap-3 rounded-b-2xl">
+            <div className="sticky bottom-0 bg-white border-t border-[#ececec] px-6 py-4 flex gap-3 rounded-b-2xl">
               <button onClick={() => setShowModal(false)}
-                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={handleSave} disabled={saving || !form.name.trim()}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#e5e5e7] disabled:text-[#455451] disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : editingId ? t('Shrani spremembe', 'Save changes') : t('Dodaj lokacijo', 'Add location')}
               </button>
             </div>

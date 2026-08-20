@@ -14,13 +14,13 @@ const PAGE_SIZE = 20
 const IS_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL
 
 const fuelColors: Record<string, string> = {
-  diesel: 'bg-[#f4f4f6] text-[#455451]',
+  diesel: 'bg-[#fafafa] text-[#767676]',
   petrol: 'bg-orange-50 text-orange-600',
   electric: 'bg-green-50 text-green-600',
   hybrid: 'bg-[#edf7f1] text-[#26a552]',
   lpg: 'bg-yellow-50 text-yellow-600',
   cng: 'bg-cyan-50 text-cyan-600',
-  unknown: 'bg-[#f9f9f9] text-[#455451]',
+  unknown: 'bg-[#f9f9f9] text-[#767676]',
 }
 
 const FUEL_TYPES = [
@@ -64,8 +64,8 @@ const EMPTY_FORM = {
 
 type VehicleForm = typeof EMPTY_FORM
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
 
 export default function VehiclesPage() {
   const { t, locale } = useLocale()
@@ -246,7 +246,7 @@ export default function VehiclesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-[#031f18]">{t('Vozila', 'Vehicles')}</h1>
-          <p className="text-sm text-[#455451] mt-0.5">
+          <p className="text-sm text-[#767676] mt-0.5">
             {vehicles.length} {t(vehicles.length === 1 ? 'vozilo' : 'vozil', vehicles.length === 1 ? 'vehicle' : 'vehicles')} · {t('Poraba goriva in mobilne emisije', 'Fuel consumption and mobile emissions')}
           </p>
         </div>
@@ -268,7 +268,7 @@ export default function VehiclesPage() {
               </div>
               <div>
                 <h3 className="text-base font-bold text-[#031f18]">{t('Izbriši vozilo', 'Delete vehicle')}</h3>
-                <p className="text-sm text-[#455451] mt-0.5">
+                <p className="text-sm text-[#767676] mt-0.5">
                   {t(`Ali ste prepričani, da želite izbrisati "${confirmDelete.name}"? Tega dejanja ni mogoče razveljaviti.`,
                      `Are you sure you want to delete "${confirmDelete.name}"? This action cannot be undone.`)}
                 </p>
@@ -276,7 +276,7 @@ export default function VehiclesPage() {
             </div>
             <div className="flex gap-3 pt-1">
               <button onClick={() => setConfirmDelete(null)}
-                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={confirmAndDelete}
@@ -293,7 +293,7 @@ export default function VehiclesPage() {
         <select
           value={filterType}
           onChange={e => setFilterType(e.target.value)}
-          className="text-sm px-3 py-2 bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] text-[#455451]"
+          className="text-sm px-3 py-2 bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] text-[#767676]"
         >
           <option value="">{t('Vsi tipi', 'All types')}</option>
           {VEHICLE_TYPES.map(vt => (
@@ -304,7 +304,7 @@ export default function VehiclesPage() {
           <select
             value={filterLocation}
             onChange={e => setFilterLocation(e.target.value)}
-            className="text-sm px-3 py-2 bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] text-[#455451]"
+            className="text-sm px-3 py-2 bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] text-[#767676]"
           >
             <option value="">{t('Vse lokacije', 'All locations')}</option>
             {locations.map(loc => (
@@ -313,7 +313,7 @@ export default function VehiclesPage() {
           </select>
         )}
         {(filterType || filterLocation) && (
-          <button onClick={() => { setFilterType(''); setFilterLocation('') }} className="text-xs text-[#455451] hover:text-[#455451]">
+          <button onClick={() => { setFilterType(''); setFilterLocation('') }} className="text-xs text-[#767676] hover:text-[#767676]">
             {t('Počisti', 'Clear')}
           </button>
         )}
@@ -321,35 +321,35 @@ export default function VehiclesPage() {
 
       {/* Table */}
       {loading ? (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl p-12 text-center text-sm text-[#455451]">
+        <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">
           {t('Nalaganje...', 'Loading...')}
         </div>
       ) : !vehicles.length ? (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl py-14 text-center">
+        <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
           <Car className="h-7 w-7 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-[#455451] mb-2">{t('Ni vozil.', 'No vehicles.')}</p>
+          <p className="text-sm text-[#767676] mb-2">{t('Ni vozil.', 'No vehicles.')}</p>
           <button onClick={openNew}
             className="text-sm text-[#26a552] hover:text-[#1e8a43] font-medium transition-colors">
             {t('Dodajte prvo vozilo →', 'Add your first vehicle →')}
           </button>
         </div>
       ) : (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl overflow-hidden overflow-x-auto">
+        <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">
           <table className="w-full">
             <thead className="bg-[#fafafc]">
-              <tr className="border-b border-[#e2e2e4] bg-[#f9f9f9]/50">
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Vozilo', 'Vehicle')}</th>
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Tip', 'Type')}</th>
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Gorivo', 'Fuel')}</th>
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Lastništvo', 'Ownership')}</th>
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Lokacija', 'Location')}</th>
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">{t('Status', 'Status')}</th>
+              <tr className="border-b border-[#ececec] bg-[#f9f9f9]/50">
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Vozilo', 'Vehicle')}</th>
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Tip', 'Type')}</th>
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Gorivo', 'Fuel')}</th>
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Lastništvo', 'Ownership')}</th>
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Lokacija', 'Location')}</th>
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Status', 'Status')}</th>
                 <th className="px-5 py-3" />
               </tr>
             </thead>
             <tbody>
               {paginatedVehicles.map((v, i) => (
-                <tr key={v.id} className={`hover:bg-[#f9f9f9] transition-colors ${i !== 0 ? 'border-t border-[#e2e2e4]' : ''}`}>
+                <tr key={v.id} className={`hover:bg-[#f9f9f9] transition-colors ${i !== 0 ? 'border-t border-[#ececec]' : ''}`}>
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-[#edf7f1] rounded-lg flex items-center justify-center shrink-0">
@@ -357,7 +357,7 @@ export default function VehiclesPage() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-[#031f18]">{v.name}</p>
-                        <p className="text-xs text-[#455451]">
+                        <p className="text-xs text-[#767676]">
                           {[v.make, v.model].filter(Boolean).join(' ')}
                           {v.registration_number && <span className="ml-1 text-gray-300">·</span>}
                           {v.registration_number && <span className="ml-1">{v.registration_number}</span>}
@@ -365,18 +365,18 @@ export default function VehiclesPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-5 py-4 text-sm text-[#455451]">{label(VEHICLE_TYPES, v.vehicle_type)}</td>
+                  <td className="px-5 py-4 text-sm text-[#767676]">{label(VEHICLE_TYPES, v.vehicle_type)}</td>
                   <td className="px-5 py-4">
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${fuelColors[v.fuel_type] ?? fuelColors.unknown}`}>
                       {label(FUEL_TYPES, v.fuel_type)}
                     </span>
                   </td>
-                  <td className="px-5 py-4 text-sm text-[#455451]">{label(OWNERSHIP_TYPES, v.ownership_type ?? 'owned')}</td>
-                  <td className="px-5 py-4 text-sm text-[#455451]">
+                  <td className="px-5 py-4 text-sm text-[#767676]">{label(OWNERSHIP_TYPES, v.ownership_type ?? 'owned')}</td>
+                  <td className="px-5 py-4 text-sm text-[#767676]">
                     {locations.find(l => l.id === v.location_id)?.name ?? '—'}
                   </td>
                   <td className="px-5 py-4">
-                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${v.is_active ? 'bg-green-50 text-green-700' : 'bg-[#f4f4f6] text-[#455451]'}`}>
+                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${v.is_active ? 'bg-green-50 text-green-700' : 'bg-[#fafafa] text-[#767676]'}`}>
                       <span className={`w-1.5 h-1.5 rounded-full ${v.is_active ? 'bg-green-500' : 'bg-gray-400'}`} />
                       {v.is_active ? t('Aktivno', 'Active') : t('Neaktivno', 'Inactive')}
                     </span>
@@ -384,14 +384,14 @@ export default function VehiclesPage() {
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-1 justify-end">
                       <button onClick={() => openEdit(v)}
-                        className="p-1.5 text-[#455451] hover:text-[#26a552] hover:bg-[#edf7f1] rounded-lg transition-colors">
+                        className="p-1.5 text-[#767676] hover:text-[#26a552] hover:bg-[#edf7f1] rounded-lg transition-colors">
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
                       <button
                         onClick={() => setConfirmDelete({ id: v.id, name: v.name })}
                         disabled={!!(linkedCounts[v.id])}
                         title={linkedCounts[v.id] ? t(`Ni možno izbrisati – ${linkedCounts[v.id]} vezanih emisij`, `Cannot delete – ${linkedCounts[v.id]} linked emission records`) : undefined}
-                        className="p-1.5 text-[#455451] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-[#455451] disabled:hover:bg-transparent">
+                        className="p-1.5 text-[#767676] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-[#767676] disabled:hover:bg-transparent">
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
@@ -411,19 +411,19 @@ export default function VehiclesPage() {
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
 
             {/* Modal header */}
-            <div className="sticky top-0 z-10 bg-white border-b border-[#e2e2e4] px-6 py-5 flex items-center justify-between rounded-t-2xl">
+            <div className="sticky top-0 z-10 bg-white border-b border-[#ececec] px-6 py-5 flex items-center justify-between rounded-t-2xl">
               <div>
                 <h2 className="text-lg font-bold text-[#031f18]">
                   {editingId ? t('Uredi vozilo', 'Edit vehicle') : t('Dodaj vozilo', 'Add vehicle')}
                 </h2>
-                <p className="text-xs text-[#455451] mt-0.5">
+                <p className="text-xs text-[#767676] mt-0.5">
                   {editingId
                     ? t('Posodobite podatke vozila', 'Update vehicle details')
                     : t('Vozila so vir direktnih emisij (Scope 1)', 'Vehicles are a source of direct emissions (Scope 1)')}
                 </p>
               </div>
               <button onClick={() => setShowModal(false)}
-                className="p-2 text-[#455451] hover:text-[#455451] hover:bg-[#f4f4f6] rounded-xl transition-colors">
+                className="p-2 text-[#767676] hover:text-[#767676] hover:bg-[#fafafa] rounded-xl transition-colors">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -444,7 +444,7 @@ export default function VehiclesPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-sm font-medium text-[#031f18] mb-1.5">
-                    {t('Znamka', 'Make')} <span className="text-[#455451] font-normal">({t('neobvezno', 'optional')})</span>
+                    {t('Znamka', 'Make')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span>
                   </label>
                   <input value={form.make} onChange={e => f('make', e.target.value)}
                     placeholder={t('npr. Volkswagen', 'e.g. Volkswagen')}
@@ -452,7 +452,7 @@ export default function VehiclesPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#031f18] mb-1.5">
-                    {t('Model', 'Model')} <span className="text-[#455451] font-normal">({t('neobvezno', 'optional')})</span>
+                    {t('Model', 'Model')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span>
                   </label>
                   <input value={form.model} onChange={e => f('model', e.target.value)}
                     placeholder={t('npr. Golf 2.0 TDI', 'e.g. Golf 2.0 TDI')}
@@ -492,7 +492,7 @@ export default function VehiclesPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-[#031f18] mb-1.5">
-                    {t('Registrska označba', 'Registration number')} <span className="text-[#455451] font-normal">({t('neobvezno', 'optional')})</span>
+                    {t('Registrska označba', 'Registration number')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span>
                   </label>
                   <input value={form.registration_number} onChange={e => f('registration_number', e.target.value)}
                     placeholder="LJ AB-123"
@@ -503,7 +503,7 @@ export default function VehiclesPage() {
               {/* Year */}
               <div>
                 <label className="block text-sm font-medium text-[#031f18] mb-1.5">
-                  {t('Letnik', 'Year of manufacture')} <span className="text-[#455451] font-normal">({t('neobvezno', 'optional')})</span>
+                  {t('Letnik', 'Year of manufacture')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span>
                 </label>
                 <input value={form.year_of_manufacture} onChange={e => f('year_of_manufacture', e.target.value)}
                   type="number" placeholder="2020" min="1990" max={new Date().getFullYear()}
@@ -513,7 +513,7 @@ export default function VehiclesPage() {
               {/* Location */}
               <div>
                 <label className="block text-sm font-medium text-[#031f18] mb-1.5">
-                  {t('Lokacija vozila', 'Vehicle location')} <span className="text-[#455451] font-normal">({t('neobvezno', 'optional')})</span>
+                  {t('Lokacija vozila', 'Vehicle location')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span>
                 </label>
                 <select value={form.location_id} onChange={e => f('location_id', e.target.value)} className={SELECT}>
                   <option value="">{t('— Izberi lokacijo —', '— Select location —')}</option>
@@ -529,11 +529,11 @@ export default function VehiclesPage() {
                   <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Status', 'Status')}</label>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => f('is_active', true)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-green-50 border-green-400 text-green-700' : 'border-[#e2e2e4] text-[#455451] hover:border-[#e2e2e4]'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-green-50 border-green-400 text-green-700' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
                       {t('Aktivno', 'Active')}
                     </button>
                     <button type="button" onClick={() => f('is_active', false)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${!form.is_active ? 'bg-[#f4f4f6] border-gray-400 text-[#031f18]' : 'border-[#e2e2e4] text-[#455451] hover:border-[#e2e2e4]'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${!form.is_active ? 'bg-[#fafafa] border-gray-400 text-[#031f18]' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
                       {t('Neaktivno', 'Inactive')}
                     </button>
                   </div>
@@ -543,12 +543,12 @@ export default function VehiclesPage() {
               {/* Notes */}
               <div>
                 <label className="block text-sm font-medium text-[#031f18] mb-1.5">
-                  {t('Opombe', 'Notes')} <span className="text-[#455451] font-normal">({t('neobvezno', 'optional')})</span>
+                  {t('Opombe', 'Notes')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span>
                 </label>
                 <textarea value={form.notes} onChange={e => f('notes', e.target.value)}
                   rows={2}
                   placeholder={t('Dodatne informacije o vozilu...', 'Additional vehicle information...')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 resize-none"
+                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 resize-none"
                 />
               </div>
 
@@ -558,13 +558,13 @@ export default function VehiclesPage() {
             </div>
 
             {/* Modal footer */}
-            <div className="sticky bottom-0 bg-white border-t border-[#e2e2e4] px-6 py-4 flex gap-3 rounded-b-2xl">
+            <div className="sticky bottom-0 bg-white border-t border-[#ececec] px-6 py-4 flex gap-3 rounded-b-2xl">
               <button onClick={() => setShowModal(false)}
-                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={handleSave} disabled={saving || !form.name.trim()}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#e5e5e7] disabled:text-[#455451] disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving
                   ? t('Shranjevanje...', 'Saving...')
                   : editingId

@@ -20,31 +20,31 @@ export default function AdminEquipmentPage() {
     setLoading(false)
   }
 
-  if (!selectedOrg) return <div className="p-8 text-sm text-[#455451]">Izberite podjetje.</div>
+  if (!selectedOrg) return <div className="p-8 text-sm text-[#767676]">Izberite podjetje.</div>
 
   return (
     <div className="p-4 lg:p-8">
       <div className="mb-6">
-        <p className="text-xs font-semibold text-[#455451] uppercase tracking-widest mb-1">{selectedOrg.name}</p>
+        <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">{selectedOrg.name}</p>
         <h1 className="text-2xl font-bold text-[#031f18]">Oprema</h1>
       </div>
       {loading ? (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl p-12 text-center text-sm text-[#455451]">Nalaganje...</div>
+        <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">Nalaganje...</div>
       ) : rows.length === 0 ? (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl p-12 text-center text-sm text-gray-300">Ni opreme.</div>
+        <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-gray-300">Ni opreme.</div>
       ) : (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl overflow-hidden">
+        <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden">
           <table className="w-full">
             <thead className="bg-[#fafafc]">
-              <tr className="border-b border-[#e2e2e4] bg-[#f9f9f9]/50">
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">Ime</th>
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">Kategorija</th>
-                <th className="text-left text-xs font-semibold text-[#455451] uppercase tracking-wider px-5 py-3">Status</th>
+              <tr className="border-b border-[#ececec] bg-[#f9f9f9]/50">
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">Ime</th>
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">Kategorija</th>
+                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">Status</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((r, i) => (
-                <tr key={r.id} className={cn('hover:bg-[#f9f9f9]', i !== 0 && 'border-t border-[#e2e2e4]')}>
+                <tr key={r.id} className={cn('hover:bg-[#f9f9f9]', i !== 0 && 'border-t border-[#ececec]')}>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
                       <div className="w-7 h-7 bg-amber-50 rounded-lg flex items-center justify-center shrink-0">
@@ -53,10 +53,10 @@ export default function AdminEquipmentPage() {
                       <span className="text-sm font-semibold text-[#031f18]">{r.name}</span>
                     </div>
                   </td>
-                  <td className="px-5 py-3.5 text-sm text-[#455451]">{r.category ?? r.fuel_type ?? '—'}</td>
+                  <td className="px-5 py-3.5 text-sm text-[#767676]">{r.category ?? r.fuel_type ?? '—'}</td>
                   <td className="px-5 py-3.5">
                     <span className={cn('px-2 py-0.5 rounded-full text-xs font-semibold',
-                      r.is_active !== false ? 'bg-green-100 text-green-700' : 'bg-[#f4f4f6] text-[#455451]')}>
+                      r.is_active !== false ? 'bg-green-100 text-green-700' : 'bg-[#fafafa] text-[#767676]')}>
                       {r.is_active !== false ? 'Aktivna' : 'Neaktivna'}
                     </span>
                   </td>

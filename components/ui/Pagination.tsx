@@ -16,15 +16,15 @@ export function Pagination({ page, totalPages, totalItems, pageSize, onPage }: P
   const to = Math.min(page * pageSize, totalItems)
 
   return (
-    <div className="flex items-center justify-between px-5 py-3 border-t border-[#e2e2e4] bg-white">
-      <p className="text-xs text-[#455451]">
+    <div className="flex items-center justify-between px-5 py-3 border-t border-[#ececec] bg-white">
+      <p className="text-xs text-[#767676]">
         {from}–{to} od {totalItems}
       </p>
       <div className="flex items-center gap-1">
         <button
           onClick={() => onPage(page - 1)}
           disabled={page === 1}
-          className="p-1.5 rounded-lg text-[#455451] hover:text-[#031f18] hover:bg-[#f4f4f6] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="p-1.5 rounded-lg text-[#767676] hover:text-[#031f18] hover:bg-[#fafafa] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
@@ -45,7 +45,7 @@ export function Pagination({ page, totalPages, totalItems, pageSize, onPage }: P
                 className={`min-w-[28px] h-7 px-1 text-xs rounded-lg font-medium transition-colors ${
                   p === page
                     ? 'bg-[#26a552] text-white'
-                    : 'text-[#455451] hover:bg-[#f4f4f6]'
+                    : 'text-[#767676] hover:bg-[#fafafa]'
                 }`}
               >
                 {p}
@@ -55,7 +55,7 @@ export function Pagination({ page, totalPages, totalItems, pageSize, onPage }: P
         <button
           onClick={() => onPage(page + 1)}
           disabled={page === totalPages}
-          className="p-1.5 rounded-lg text-[#455451] hover:text-[#031f18] hover:bg-[#f4f4f6] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="p-1.5 rounded-lg text-[#767676] hover:text-[#031f18] hover:bg-[#fafafa] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronRight className="h-4 w-4" />
         </button>

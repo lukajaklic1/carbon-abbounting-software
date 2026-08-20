@@ -71,9 +71,9 @@ export default function NewPeriodPage() {
                 return (
                   <button key={y} onClick={() => !taken && setYear(y)} disabled={taken}
                     className={`py-2.5 rounded-xl text-sm font-semibold border-2 transition-all ${
-                      taken ? 'border-[#e2e2e4] bg-[#f9f9f9] text-gray-300 cursor-not-allowed' :
+                      taken ? 'border-[#ececec] bg-[#f9f9f9] text-gray-300 cursor-not-allowed' :
                       year === y ? 'border-[#26a552] bg-[#edf7f1] text-[#26a552]' :
-                      'border-[#e2e2e4] bg-white text-[#031f18] hover:border-blue-300'
+                      'border-[#ececec] bg-white text-[#031f18] hover:border-blue-300'
                     }`}>
                     {y}
                     {taken && <span className="block text-[9px] font-normal mt-0.5">{t('že obstaja', 'exists')}</span>}
@@ -87,11 +87,11 @@ export default function NewPeriodPage() {
 
           <div className="flex gap-3 pt-2">
             <button onClick={() => router.back()}
-              className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+              className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
               {t('Prekliči', 'Cancel')}
             </button>
             <button onClick={handleCreate} disabled={loading}
-              className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#e5e5e7] disabled:text-[#455451] disabled:cursor-not-allowed rounded-xl transition-colors">
+              className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
               {loading ? t('Ustvarjanje...', 'Creating...') : `${t('Ustvari', 'Create')} ${year}`}
             </button>
           </div>

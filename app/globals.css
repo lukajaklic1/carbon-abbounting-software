@@ -4,6 +4,84 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ═══════════════════════════════════════════════════
+   MASTER COLOR TOKENS
+   Spremeni tukaj → se povsod v applikaciji posodobi
+   ═══════════════════════════════════════════════════ */
+:root {
+  /* --- Brand --- */
+  --brand:          #26a552;   /* primary green (buttons, active, links) */
+  --brand-hover:    #1e8a43;   /* hover state */
+  --brand-subtle:   #edf7f1;   /* light green bg (badges, highlights) */
+
+  /* --- Text --- */
+  --text-primary:   #0f0f10;   /* headings, primary labels */
+  --text-secondary: #767676;   /* secondary text, icons */
+  --text-muted:     #767676;   /* placeholders, counters */
+
+  /* --- Backgrounds --- */
+  --bg-page:        #f9f9f9;   /* page background */
+  --bg-sidebar:     #fafafa;   /* sidebar background */
+  --bg-hover:       #efefef;   /* hover state (sidebar items) */
+  --bg-selected:    #efefef;   /* selected/active state */
+  --bg-card:        #ffffff;   /* cards, panels */
+  --bg-table-head:  #fafafc;   /* table header rows */
+
+  /* --- Borders --- */
+  --border-color:   #ececec;   /* all borders */
+  --border-subtle:  #ececec;   /* subtle dividers */
+
+  /* --- Charts (4 greens + neutral) --- */
+  --chart-a:  #0e2016;
+  --chart-b:  #2f624a;
+  --chart-c:  #51a676;
+  --chart-d:  #add8a4;
+  --chart-e:  #6b6b6b;
+
+  /* --- Semantic --- */
+  --color-danger:   #ef4444;
+  --color-warning:  #f59e0b;
+  --color-success:  #26a552;
+
+  /* --- Radius --- */
+  --radius: 0.5rem;
+
+  /* ── Shadcn/Tailwind mappings (don't touch — reference tokens above) ── */
+  --primary:              var(--brand);
+  --primary-foreground:   #ffffff;
+  --background:           var(--bg-page);
+  --foreground:           var(--text-primary);
+  --card:                 var(--bg-card);
+  --card-foreground:      var(--text-primary);
+  --popover:              var(--bg-card);
+  --popover-foreground:   var(--text-primary);
+  --muted:                var(--bg-sidebar);
+  --muted-foreground:     var(--text-secondary);
+  --secondary:            var(--bg-sidebar);
+  --secondary-foreground: var(--text-primary);
+  --accent:               var(--brand-subtle);
+  --accent-foreground:    var(--brand-hover);
+  --border:               var(--border-color);
+  --input:                var(--bg-sidebar);
+  --ring:                 var(--brand);
+  --destructive:          var(--color-danger);
+  --chart-1:              var(--chart-a);
+  --chart-2:              var(--chart-b);
+  --chart-3:              var(--chart-c);
+  --chart-4:              var(--chart-d);
+  --chart-5:              var(--chart-e);
+
+  /* Sidebar */
+  --sidebar:                  var(--bg-sidebar);
+  --sidebar-foreground:       var(--text-primary);
+  --sidebar-primary:          var(--brand);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent:           var(--bg-selected);
+  --sidebar-accent-foreground: var(--text-primary);
+  --sidebar-border:           var(--border-color);
+  --sidebar-ring:             var(--brand);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -45,47 +123,10 @@
   --radius-xl: calc(var(--radius) * 1.4);
 }
 
-:root {
-  --primary: #26a552;
-  --primary-foreground: #ffffff;
-  --background: #f9f9f9;
-  --foreground: #031f18;
-  --card: #ffffff;
-  --card-foreground: #031f18;
-  --popover: #ffffff;
-  --popover-foreground: #031f18;
-  --muted: #f4f4f6;
-  --muted-foreground: #455451;
-  --secondary: #f4f4f6;
-  --secondary-foreground: #031f18;
-  --accent: #edf7f1;
-  --accent-foreground: #1a7a3e;
-  --border: #e2e2e4;
-  --input: #f4f4f6;
-  --ring: #26a552;
-  --destructive: #ef4444;
-  --chart-1: #0e2016;
-  --chart-2: #2f624a;
-  --chart-3: #51a676;
-  --chart-4: #add8a4;
-  --chart-5: #455451;
-  --radius: 0.5rem;
-
-  /* Sidebar */
-  --sidebar: #f4f4f6;
-  --sidebar-foreground: #031f18;
-  --sidebar-primary: #26a552;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #e5e5e7;
-  --sidebar-accent-foreground: #031f18;
-  --sidebar-border: #e2e2e4;
-  --sidebar-ring: #26a552;
-}
-
 @layer base {
   * { @apply border-border outline-ring/50; }
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   }
 }

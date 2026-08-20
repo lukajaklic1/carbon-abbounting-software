@@ -59,7 +59,7 @@ export default function NewLocationPage() {
 
         <div className="flex gap-3 pt-2">
           <button type="button" onClick={() => router.push('/app/locations')}
-            className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
             Cancel
           </button>
           <button type="submit" disabled={loading}

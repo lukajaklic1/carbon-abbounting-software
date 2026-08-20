@@ -62,36 +62,36 @@ function ScopeSection({ scope, label, sub, data, defaultOpen }: {
   ]
 
   return (
-    <div className="bg-white border border-[#e2e2e4] rounded-2xl overflow-hidden">
+    <div className="bg-white border border-[#ececec] rounded-2xl overflow-hidden">
       <button onClick={() => setOpen(v => !v)}
         className="w-full flex items-center justify-between px-6 py-5 hover:bg-[#f9f9f9] transition-colors">
         <div className="text-left">
           <p className="text-xl font-bold text-[#031f18]">{label}</p>
-          <p className="text-sm text-[#455451]">{sub}</p>
+          <p className="text-sm text-[#767676]">{sub}</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="text-right">
             <p className="text-lg font-bold text-[#031f18] tabular-nums">{fmtT(data.total)}</p>
-            <p className="text-xs text-[#455451]">Bruto tCO₂e</p>
+            <p className="text-xs text-[#767676]">Bruto tCO₂e</p>
           </div>
-          <ChevronDown className={cn('h-5 w-5 text-[#455451] transition-transform', open && 'rotate-180')} />
+          <ChevronDown className={cn('h-5 w-5 text-[#767676] transition-transform', open && 'rotate-180')} />
         </div>
       </button>
 
       {open && data.sources.length > 0 && (
-        <div className="border-t border-[#e2e2e4] px-6 py-4 space-y-4">
+        <div className="border-t border-[#ececec] px-6 py-4 space-y-4">
           {data.sources.map(src => (
             <div key={src.name} className="rounded-xl bg-[#f9f9f9] overflow-hidden">
               <button onClick={() => toggleSource(src.name)}
-                className="w-full flex items-center justify-between px-4 py-3 hover:bg-[#f4f4f6] transition-colors">
+                className="w-full flex items-center justify-between px-4 py-3 hover:bg-[#fafafa] transition-colors">
                 <p className="text-sm font-semibold text-[#031f18] text-left">{src.name}</p>
-                <ChevronDown className={cn('h-4 w-4 text-[#455451] shrink-0 transition-transform', openSources.has(src.name) && 'rotate-180')} />
+                <ChevronDown className={cn('h-4 w-4 text-[#767676] shrink-0 transition-transform', openSources.has(src.name) && 'rotate-180')} />
               </button>
               {openSources.has(src.name) && (
-                <div className="border-t border-[#e2e2e4]">
+                <div className="border-t border-[#ececec]">
                   {fields.map(f => (
-                    <div key={f.key} className="flex items-center justify-between px-4 py-2.5 border-b border-[#e2e2e4] last:border-0 bg-white">
-                      <p className="text-sm text-[#455451]">{f.label}</p>
+                    <div key={f.key} className="flex items-center justify-between px-4 py-2.5 border-b border-[#ececec] last:border-0 bg-white">
+                      <p className="text-sm text-[#767676]">{f.label}</p>
                       <p className="text-sm font-medium text-[#031f18] text-right max-w-[60%]">
                         {f.isEmission
                           ? `${fmtT(src.co2e_kg)} tCO₂e`
@@ -107,7 +107,7 @@ function ScopeSection({ scope, label, sub, data, defaultOpen }: {
       )}
 
       {open && data.sources.length === 0 && (
-        <div className="border-t border-[#e2e2e4] px-6 py-8 text-center text-sm text-[#455451]">
+        <div className="border-t border-[#ececec] px-6 py-8 text-center text-sm text-[#767676]">
           Ni vnosov za to poročevalsko leto.
         </div>
       )}
@@ -199,9 +199,9 @@ export default function ReportsPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
-          <p className="text-xs font-semibold text-[#455451] uppercase tracking-widest mb-1">GHG · {year}</p>
+          <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">GHG · {year}</p>
           <h1 className="text-2xl font-bold text-[#031f18]">{t('Poročilo o metodologiji GHG', 'GHG Methodology Report')}</h1>
-          <p className="text-sm text-[#455451] mt-1 max-w-lg">
+          <p className="text-sm text-[#767676] mt-1 max-w-lg">
             {t('Pregled metodologij in emisijskih faktorjev za izračun ogljičnega odtisa po GHG protokolu.', 'Overview of methodologies and emission factors used to calculate your carbon footprint per GHG Protocol.')}
           </p>
         </div>
@@ -227,23 +227,23 @@ export default function ReportsPage() {
       </div>
 
       {loading ? (
-        <div className="bg-white border border-[#e2e2e4] rounded-2xl p-12 text-center text-sm text-[#455451]">{t('Nalaganje...', 'Loading...')}</div>
+        <div className="bg-white border border-[#ececec] rounded-2xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : (
         <div className="space-y-4">
           {/* Reporting period */}
-          <div className="bg-white border border-[#e2e2e4] rounded-2xl p-6">
+          <div className="bg-white border border-[#ececec] rounded-2xl p-6">
             <p className="text-base font-bold text-[#031f18] mb-4">{t('Poročevalsko obdobje', 'Reporting Period')}</p>
             <div className="space-y-0">
-              <div className="flex items-center justify-between py-3 border-b border-[#e2e2e4]">
-                <p className="text-sm text-[#455451]">{t('Začetni datum', 'Start date')}</p>
+              <div className="flex items-center justify-between py-3 border-b border-[#ececec]">
+                <p className="text-sm text-[#767676]">{t('Začetni datum', 'Start date')}</p>
                 <p className="text-sm font-medium text-[#031f18]">{report?.period?.start ?? '—'}</p>
               </div>
-              <div className="flex items-center justify-between py-3 border-b border-[#e2e2e4]">
-                <p className="text-sm text-[#455451]">{t('Končni datum', 'End date')}</p>
+              <div className="flex items-center justify-between py-3 border-b border-[#ececec]">
+                <p className="text-sm text-[#767676]">{t('Končni datum', 'End date')}</p>
                 <p className="text-sm font-medium text-[#031f18]">{report?.period?.end ?? '—'}</p>
               </div>
               <div className="flex items-center justify-between py-3">
-                <p className="text-sm text-[#455451]">{t('Skupne emisije', 'Total emissions')}</p>
+                <p className="text-sm text-[#767676]">{t('Skupne emisije', 'Total emissions')}</p>
                 <p className="text-sm font-bold text-[#031f18] tabular-nums">{fmtT(grandTotal)} tCO₂e</p>
               </div>
             </div>

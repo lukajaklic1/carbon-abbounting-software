@@ -27,10 +27,10 @@ export function TopBar() {
   }
 
   return (
-    <header className="h-16 bg-white border-b border-[#e2e2e4] flex items-center justify-between px-6 shrink-0">
+    <header className="h-16 bg-white border-b border-[#ececec] flex items-center justify-between px-6 shrink-0">
       <div className="flex items-center gap-4">
         <div>
-          <p className="text-xs text-[#455451]">{t('Skupne emisije', 'Total emissions')}</p>
+          <p className="text-xs text-[#767676]">{t('Skupne emisije', 'Total emissions')}</p>
           <p className="text-sm font-bold text-[#26a552]">{formatCo2e(totalKg)}</p>
         </div>
       </div>
@@ -38,10 +38,10 @@ export function TopBar() {
       <div className="flex items-center gap-2">
         {/* Year selector — only shows real periods */}
         <DropdownMenu>
-          <DropdownMenuTrigger className="inline-flex items-center gap-2 h-8 px-3 text-sm font-medium text-[#031f18] bg-[#f9f9f9] hover:bg-[#f4f4f6] rounded-xl cursor-pointer transition-colors border border-[#e2e2e4] outline-none">
-            <span className="text-xs text-[#455451] font-normal">{t('Leto poročanja', 'Reporting year')}</span>
+          <DropdownMenuTrigger className="inline-flex items-center gap-2 h-8 px-3 text-sm font-medium text-[#031f18] bg-[#f9f9f9] hover:bg-[#fafafa] rounded-xl cursor-pointer transition-colors border border-[#ececec] outline-none">
+            <span className="text-xs text-[#767676] font-normal">{t('Leto poročanja', 'Reporting year')}</span>
             <span className="font-semibold text-[#031f18]">{displayYear}</span>
-            <ChevronDown className="h-3.5 w-3.5 text-[#455451]" />
+            <ChevronDown className="h-3.5 w-3.5 text-[#767676]" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="min-w-[140px]">
             {IS_MOCK ? (
@@ -60,7 +60,7 @@ export function TopBar() {
                 </DropdownMenuItem>
               ))
             ) : (
-              <DropdownMenuItem disabled className="text-[#455451] text-xs">
+              <DropdownMenuItem disabled className="text-[#767676] text-xs">
                 {t('Ni obdobij', 'No periods')}
               </DropdownMenuItem>
             )}

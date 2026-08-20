@@ -60,11 +60,11 @@ export default function EditLocationForm({ location }: { location: any }) {
         {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
         <div className="flex gap-3 pt-2">
           <button type="button" onClick={handleDelete} disabled={deleting}
-            className="px-3 py-2.5 text-sm font-medium text-red-600 bg-white border border-red-200 rounded-xl hover:bg-red-50 transition-colors disabled:bg-[#e5e5e7] disabled:text-[#455451] disabled:cursor-not-allowed">
+            className="px-3 py-2.5 text-sm font-medium text-red-600 bg-white border border-red-200 rounded-xl hover:bg-red-50 transition-colors disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed">
             <Trash2 className="h-4 w-4" />
           </button>
           <button type="button" onClick={() => router.push('/app/locations')}
-            className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
             Cancel
           </button>
           <button type="submit" disabled={loading}

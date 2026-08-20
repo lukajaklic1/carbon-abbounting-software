@@ -98,7 +98,7 @@ export default function AdminScope3Page() {
   if (isSuperAdmin === false) {
     return (
       <div className="p-8 text-center">
-        <p className="text-sm text-[#455451]">Nimate dostopa do tega področja.</p>
+        <p className="text-sm text-[#767676]">Nimate dostopa do tega področja.</p>
       </div>
     )
   }
@@ -106,28 +106,28 @@ export default function AdminScope3Page() {
   return (
     <div className="p-4 lg:p-8 max-w-5xl mx-auto">
       <div className="mb-6">
-        <p className="text-xs font-semibold text-[#455451] uppercase tracking-widest mb-1">Super Admin</p>
+        <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">Super Admin</p>
         <h1 className="text-2xl font-bold text-[#031f18]">Scope 3 — Oddane datoteke</h1>
-        <p className="text-sm text-[#455451] mt-0.5">Pregled oddanih podatkov strank in vnos izračunanih emisij.</p>
+        <p className="text-sm text-[#767676] mt-0.5">Pregled oddanih podatkov strank in vnos izračunanih emisij.</p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-white border border-[#e2e2e4] rounded-xl p-4 flex items-center gap-3">
+        <div className="bg-white border border-[#ececec] rounded-xl p-4 flex items-center gap-3">
           <div className="w-9 h-9 bg-amber-50 rounded-lg flex items-center justify-center shrink-0">
             <Clock className="h-4 w-4 text-amber-500" />
           </div>
           <div>
-            <p className="text-xs text-[#455451]">V pregledu</p>
+            <p className="text-xs text-[#767676]">V pregledu</p>
             <p className="text-lg font-bold text-[#031f18]">{inReviewCount}</p>
           </div>
         </div>
-        <div className="bg-white border border-[#e2e2e4] rounded-xl p-4 flex items-center gap-3">
+        <div className="bg-white border border-[#ececec] rounded-xl p-4 flex items-center gap-3">
           <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
             <Check className="h-4 w-4 text-green-600" />
           </div>
           <div>
-            <p className="text-xs text-[#455451]">Zaključeno</p>
+            <p className="text-xs text-[#767676]">Zaključeno</p>
             <p className="text-lg font-bold text-[#031f18]">{doneCount}</p>
           </div>
         </div>
@@ -138,7 +138,7 @@ export default function AdminScope3Page() {
         {(['all', 'in_review', 'done'] as const).map(f => (
           <button key={f} onClick={() => setFilterStatus(f)}
             className={cn('px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors',
-              filterStatus === f ? 'bg-gray-900 text-white' : 'bg-white border border-[#e2e2e4] text-[#455451] hover:bg-[#f9f9f9]'
+              filterStatus === f ? 'bg-gray-900 text-white' : 'bg-white border border-[#ececec] text-[#767676] hover:bg-[#f9f9f9]'
             )}>
             {f === 'all' ? 'Vse' : f === 'in_review' ? 'V pregledu' : 'Zaključeno'}
           </button>
@@ -148,13 +148,13 @@ export default function AdminScope3Page() {
       {error && <div className="mb-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">{error}</div>}
 
       {loading ? (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl p-12 text-center text-sm text-[#455451]">Nalaganje...</div>
+        <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">Nalaganje...</div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl p-12 text-center text-sm text-[#455451]">Ni oddanih podatkov.</div>
+        <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">Ni oddanih podatkov.</div>
       ) : (
-        <div className="bg-white border border-[#e2e2e4] rounded-xl overflow-hidden">
+        <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden">
           {filtered.map((sub, i) => (
-            <div key={sub.id} className={cn('px-5 py-4', i !== 0 && 'border-t border-[#e2e2e4]')}>
+            <div key={sub.id} className={cn('px-5 py-4', i !== 0 && 'border-t border-[#ececec]')}>
               <div className="flex items-center gap-4">
                 {/* Category number */}
                 <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold',
@@ -166,7 +166,7 @@ export default function AdminScope3Page() {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-[#031f18]">{CATEGORY_LABELS[sub.category_number]}</p>
-                  <p className="text-xs text-[#455451] mt-0.5">{sub.org_name} · {sub.period_year}</p>
+                  <p className="text-xs text-[#767676] mt-0.5">{sub.org_name} · {sub.period_year}</p>
                 </div>
 
                 {/* File link */}
@@ -202,7 +202,7 @@ export default function AdminScope3Page() {
                 )}
                 {sub.status === 'done' && (
                   <button onClick={() => reopen(sub)}
-                    className="px-3 py-1.5 text-xs font-semibold bg-white border border-[#e2e2e4] text-[#455451] rounded-lg hover:bg-[#f9f9f9] transition-colors shrink-0">
+                    className="px-3 py-1.5 text-xs font-semibold bg-white border border-[#ececec] text-[#767676] rounded-lg hover:bg-[#f9f9f9] transition-colors shrink-0">
                     Znova odpri
                   </button>
                 )}
@@ -211,7 +211,7 @@ export default function AdminScope3Page() {
               {/* CO2e input row */}
               {editing === sub.id && (
                 <div className="mt-3 ml-12 flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 bg-[#f9f9f9] border border-[#e2e2e4] rounded-lg px-3 py-2">
+                  <div className="flex items-center gap-1.5 bg-[#f9f9f9] border border-[#ececec] rounded-lg px-3 py-2">
                     <input
                       type="text"
                       value={co2eInput}
@@ -220,14 +220,14 @@ export default function AdminScope3Page() {
                       className="w-24 text-sm bg-transparent outline-none text-[#031f18] font-medium"
                       autoFocus
                     />
-                    <span className="text-xs text-[#455451]">tCO₂e</span>
+                    <span className="text-xs text-[#767676]">tCO₂e</span>
                   </div>
                   <button onClick={() => markDone(sub)} disabled={saving || !co2eInput}
                     className="px-3 py-2 text-xs font-semibold bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors">
                     {saving ? 'Shranjujem...' : 'Potrdi'}
                   </button>
                   <button onClick={() => { setEditing(null); setCo2eInput('') }}
-                    className="px-3 py-2 text-xs font-semibold text-[#455451] hover:text-[#031f18] rounded-lg hover:bg-[#f4f4f6] transition-colors">
+                    className="px-3 py-2 text-xs font-semibold text-[#767676] hover:text-[#031f18] rounded-lg hover:bg-[#fafafa] transition-colors">
                     Prekliči
                   </button>
                 </div>

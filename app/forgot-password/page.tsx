@@ -39,11 +39,11 @@ export default function ForgotPasswordPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-[#e2e2e4] rounded-2xl shadow-sm p-8">
+        <div className="bg-white border border-[#ececec] rounded-2xl shadow-sm p-8">
           {!sent ? (
             <>
               <h1 className="text-xl font-bold text-[#031f18] mb-1">Pozabljeno geslo</h1>
-              <p className="text-sm text-[#455451] mb-6">Vnesite e-poštni naslov in poslali vam bomo povezavo za ponastavitev gesla.</p>
+              <p className="text-sm text-[#767676] mb-6">Vnesite e-poštni naslov in poslali vam bomo povezavo za ponastavitev gesla.</p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -51,7 +51,7 @@ export default function ForgotPasswordPage() {
                   <input
                     type="email" value={email} onChange={e => setEmail(e.target.value)}
                     placeholder="vi@podjetje.si" required
-                    className="w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow"
+                    className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow"
                   />
                 </div>
 
@@ -69,14 +69,14 @@ export default function ForgotPasswordPage() {
                 <Mail className="h-5 w-5 text-green-600" />
               </div>
               <h2 className="text-base font-bold text-[#031f18] mb-1">Preverite e-pošto</h2>
-              <p className="text-sm text-[#455451] mb-1">Poslali smo povezavo za ponastavitev gesla na</p>
+              <p className="text-sm text-[#767676] mb-1">Poslali smo povezavo za ponastavitev gesla na</p>
               <p className="text-sm font-semibold text-[#031f18]">{email}</p>
             </div>
           )}
         </div>
 
         <div className="flex justify-center mt-5">
-          <Link href="/login" className="inline-flex items-center gap-1.5 text-sm text-[#455451] hover:text-[#031f18] transition-colors">
+          <Link href="/login" className="inline-flex items-center gap-1.5 text-sm text-[#767676] hover:text-[#031f18] transition-colors">
             <ArrowLeft className="h-3.5 w-3.5" /> Nazaj na prijavo
           </Link>
         </div>

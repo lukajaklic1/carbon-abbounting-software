@@ -42,7 +42,7 @@ export default function ResetPasswordPage() {
     setLoading(false)
   }
 
-  const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#e2e2e4] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
+  const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
 
   return (
     <div className="min-h-screen bg-[#f9fafb] flex items-center justify-center p-4">
@@ -58,19 +58,19 @@ export default function ResetPasswordPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-[#e2e2e4] rounded-2xl shadow-sm p-8">
+        <div className="bg-white border border-[#ececec] rounded-2xl shadow-sm p-8">
           {done ? (
             <div className="text-center py-2">
               <div className="w-12 h-12 bg-green-50 border border-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Check className="h-5 w-5 text-green-600" />
               </div>
               <h2 className="text-base font-bold text-[#031f18] mb-1">Geslo posodobljeno</h2>
-              <p className="text-sm text-[#455451]">Preusmerjamo vas na prijavo...</p>
+              <p className="text-sm text-[#767676]">Preusmerjamo vas na prijavo...</p>
             </div>
           ) : (
             <>
               <h1 className="text-xl font-bold text-[#031f18] mb-1">Novo geslo</h1>
-              <p className="text-sm text-[#455451] mb-6">Vnesite novo geslo za vaš račun.</p>
+              <p className="text-sm text-[#767676] mb-6">Vnesite novo geslo za vaš račun.</p>
 
               {!ready && (
                 <p className="text-xs text-amber-600 bg-amber-50 border border-amber-100 px-3 py-2 rounded-lg mb-4">
@@ -89,7 +89,7 @@ export default function ResetPasswordPage() {
                       className={INPUT + ' pr-10'}
                     />
                     <button type="button" onClick={() => setShowPass(!showPass)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#455451] hover:text-[#455451]">
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#767676] hover:text-[#767676]">
                       {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>

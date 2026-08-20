@@ -97,8 +97,8 @@ function getCookieLocale(): 'EN' | 'SL' {
   return m?.[1]?.toUpperCase() === 'EN' ? 'EN' : 'SL'
 }
 
-const INPUT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#e2e2e4] rounded-xl focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#e2e2e4] rounded-xl focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
+const INPUT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
 
 export default function OnboardingPage() {
   const router = useRouter()
@@ -175,22 +175,22 @@ export default function OnboardingPage() {
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                     done ? 'bg-green-500 text-white' :
                     active ? 'bg-[#26a552] text-white shadow-md shadow-blue-200' :
-                    'bg-white border-2 border-[#e2e2e4] text-[#455451]'
+                    'bg-white border-2 border-[#ececec] text-[#767676]'
                   }`}>
                     {done ? <Check className="h-4 w-4" strokeWidth={2.5} /> : num}
                   </div>
-                  <span className={`text-xs font-semibold ${active ? 'text-[#26a552]' : done ? 'text-green-600' : 'text-[#455451]'}`}>
+                  <span className={`text-xs font-semibold ${active ? 'text-[#26a552]' : done ? 'text-green-600' : 'text-[#767676]'}`}>
                     {t.steps[i]}
                   </span>
                 </div>
-                {i < 1 && <div className={`w-28 h-px mx-4 mb-5 ${step > num ? 'bg-green-400' : 'bg-[#e5e5e7]'}`} />}
+                {i < 1 && <div className={`w-28 h-px mx-4 mb-5 ${step > num ? 'bg-green-400' : 'bg-[#efefef]'}`} />}
               </div>
             )
           })}
         </div>
 
         {/* Card */}
-        <div className="bg-white border border-[#e2e2e4] rounded-2xl shadow-sm">
+        <div className="bg-white border border-[#ececec] rounded-2xl shadow-sm">
 
           {/* Step 1 */}
           {step === 1 && (
@@ -201,7 +201,7 @@ export default function OnboardingPage() {
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-[#031f18] leading-tight">{t.s1title}</h2>
-                  <p className="text-sm text-[#455451] mt-0.5">{t.s1sub}</p>
+                  <p className="text-sm text-[#767676] mt-0.5">{t.s1sub}</p>
                 </div>
               </div>
 
@@ -251,7 +251,7 @@ export default function OnboardingPage() {
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-[#031f18] leading-tight">{t.s2title}</h2>
-                  <p className="text-sm text-[#455451] mt-0.5">{t.s2sub(orgName)}</p>
+                  <p className="text-sm text-[#767676] mt-0.5">{t.s2sub(orgName)}</p>
                 </div>
               </div>
 
@@ -278,7 +278,7 @@ export default function OnboardingPage() {
 
               <div className="flex gap-3 mt-7">
                 <button onClick={() => setStep(1)}
-                  className="px-5 py-3 text-sm font-medium text-[#031f18] bg-white border border-[#e2e2e4] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+                  className="px-5 py-3 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
                   {t.back}
                 </button>
                 <button onClick={handleComplete}
@@ -301,12 +301,12 @@ export default function OnboardingPage() {
 
         {/* Footer */}
         <div className="mt-5 flex items-center justify-between px-1">
-          <p className="text-xs text-[#455451]">{t.footer}</p>
+          <p className="text-xs text-[#767676]">{t.footer}</p>
           <div className="flex gap-0.5">
             {(['SL', 'EN'] as const).map(l => (
               <button key={l} onClick={() => switchLocale(l)}
                 className={`text-xs font-semibold px-2.5 py-1 rounded-full transition-colors ${
-                  locale === l ? 'bg-[#26a552] text-white' : 'text-[#455451] hover:text-[#455451]'
+                  locale === l ? 'bg-[#26a552] text-white' : 'text-[#767676] hover:text-[#767676]'
                 }`}>
                 {l}
               </button>
