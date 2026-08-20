@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getHeatFactors, calcCo2eKg } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { Pagination } from '@/components/ui/Pagination'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { useEmissionCountersStore } from '@/stores/emissionCounters'
@@ -157,10 +158,8 @@ export default function Scope2HeatPage() {
       {loading ? (
         <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !locations.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
-          <Flame className="h-7 w-7 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-[#767676] mb-1">{t('Ni lokacij z nakupljeno toploto.', 'No locations with purchased heat.')}</p>
-          <p className="text-xs text-[#767676]">{t('Označite lokacijo kot "uporablja daljinsko toploto" v razdelku Lokacije.', 'Mark a location as "uses district heat" in the Locations section.')}</p>
+        <div className="bg-white border border-[#ececec] rounded-xl">
+          <EmptyState icon={Flame} title={t('Ni lokacij z daljinsko toploto', 'No locations with district heat')} subtitle={t('Označite lokacijo kot "uporablja daljinsko toploto" v razdelku Lokacije.', 'Mark a location as "uses district heat" in the Locations section.')} />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">

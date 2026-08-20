@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { mockLocations } from '@/lib/mock-data'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { Pagination } from '@/components/ui/Pagination'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { useEmissionCountersStore } from '@/stores/emissionCounters'
 import { usePeriodStore } from '@/stores/period'
 
@@ -208,7 +209,7 @@ export default function LocationsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Lokacije', 'Locations')}</h1>
-          <p className="text-sm font-light text-[#767676] mt-1">{t('Pisarne, tovarne, skladišča in druge nepremičnine, kjer organizacija deluje.', 'Offices, factories, warehouses and other premises where your organisation operates.')}</p>
+          <p className="text-sm text-[#767676] mt-1">{t('Pisarne, tovarne, skladišča in druge nepremičnine, kjer organizacija deluje.', 'Offices, factories, warehouses and other premises where your organisation operates.')}</p>
         </div>
         <button onClick={openNew}
           className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors">
@@ -252,13 +253,13 @@ export default function LocationsPage() {
       {loading ? (
         <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !locations.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
-          <MapPin className="h-7 w-7 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-[#767676] mb-2">{t('Ni lokacij.', 'No locations.')}</p>
-          <button onClick={openNew}
-            className="text-sm text-[#0f0f10] hover:text-[#0f0f10] font-medium transition-colors">
-            {t('Dodajte prvo lokacijo →', 'Add your first location →')}
-          </button>
+        <div className="bg-white border border-[#ececec] rounded-xl">
+          <EmptyState
+            icon={MapPin}
+            title={t('Ni lokacij', 'No locations')}
+            subtitle={t('Dodajte prvo lokacijo, da začnete evidentirati emisije.', 'Add your first location to start tracking emissions.')}
+            action={{ label: t('+ Nova lokacija', '+ New location'), onClick: openNew }}
+          />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">

@@ -142,7 +142,7 @@ export default function AnalyticsPage() {
       <div>
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">{t('Analitika', 'Analytics')} · {year}</p>
         <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Ogljični odtis', 'Carbon Footprint')}</h1>
-        <p className="text-sm font-light text-[#767676] mt-1">{t('Pregled celotnih emisij CO₂e po scopih, kategorijah in lokacijah za izbrano poročevalsko obdobje.', 'Overview of total CO₂e emissions by scope, category and location for the selected reporting period.')}</p>
+        <p className="text-sm text-[#767676] mt-1">{t('Pregled celotnih emisij CO₂e po scopih, kategorijah in lokacijah za izbrano poročevalsko obdobje.', 'Overview of total CO₂e emissions by scope, category and location for the selected reporting period.')}</p>
       </div>
 
       {/* Stat cards */}

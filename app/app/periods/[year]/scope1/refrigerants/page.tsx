@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { REFRIGERANT_FACTORS, calcCo2eKg } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { Pagination } from '@/components/ui/Pagination'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { useEmissionCountersStore } from '@/stores/emissionCounters'
@@ -169,10 +170,8 @@ export default function Scope1RefrigerantsPage() {
       {loading ? (
         <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !equipment.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
-          <Thermometer className="h-7 w-7 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-[#767676] mb-1">{t('Ni opreme s hladivi.', 'No refrigerant-using equipment.')}</p>
-          <p className="text-xs text-[#767676]">{t('Označite opremo kot "Uporablja hladiva" v razdelku Oprema.', 'Mark equipment as "Uses refrigerants" in the Equipment section.')}</p>
+        <div className="bg-white border border-[#ececec] rounded-xl">
+          <EmptyState icon={Thermometer} title={t('Ni opreme s hladivi', 'No refrigerant-using equipment')} subtitle={t('Označite opremo kot "Uporablja hladiva" v razdelku Oprema.', 'Mark equipment as "Uses refrigerants" in the Equipment section.')} />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">

@@ -154,7 +154,7 @@ export default function AdminReportsPage() {
         <div>
           <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">GHG · {selectedOrg.name} · {year}</p>
           <h1 className="text-2xl font-medium text-[#0f0f10]">Poročilo o metodologiji GHG</h1>
-          <p className="text-sm font-light text-[#767676] mt-1">Pregled metodologij in emisijskih faktorjev za izračun ogljičnega odtisa.</p>
+          <p className="text-sm text-[#767676] mt-1">Pregled metodologij in emisijskih faktorjev za izračun ogljičnega odtisa.</p>
         </div>
         <button
           onClick={async () => {

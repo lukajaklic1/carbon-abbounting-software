@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { mockEquipment, mockLocations } from '@/lib/mock-data'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { Pagination } from '@/components/ui/Pagination'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { useEmissionCountersStore } from '@/stores/emissionCounters'
 import { usePeriodStore } from '@/stores/period'
 
@@ -395,7 +396,7 @@ export default function EquipmentPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Oprema', 'Equipment')}</h1>
-          <p className="text-sm font-light text-[#767676] mt-1">{t('Kotli, generatorji, hladilniki in druga stacionarna oprema, ki porablja gorivo ali hladilne pline.', 'Boilers, generators, refrigeration units and other stationary equipment consuming fuel or refrigerants.')}</p>
+          <p className="text-sm text-[#767676] mt-1">{t('Kotli, generatorji, hladilniki in druga stacionarna oprema, ki porablja gorivo ali hladilne pline.', 'Boilers, generators, refrigeration units and other stationary equipment consuming fuel or refrigerants.')}</p>
         </div>
         <button onClick={openNew}
           className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors">
@@ -438,12 +439,13 @@ export default function EquipmentPage() {
       {loading ? (
         <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !equipment.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
-          <span className="text-3xl block text-center mb-3">⚙️</span>
-          <p className="text-sm text-[#767676] mb-2">{t('Ni opreme.', 'No equipment.')}</p>
-          <button onClick={openNew} className="text-sm text-[#0f0f10] hover:text-[#0f0f10] font-medium transition-colors">
-            {t('Dodajte prvo napravo →', 'Add your first device →')}
-          </button>
+        <div className="bg-white border border-[#ececec] rounded-xl">
+          <EmptyState
+            icon={Wrench}
+            title={t('Ni opreme', 'No equipment')}
+            subtitle={t('Dodajte napravo, da začnete evidentirati porabo goriva in emisije hladiv.', 'Add a device to start tracking fuel use and refrigerant emissions.')}
+            action={{ label: t('+ Nova oprema', '+ New equipment'), onClick: openNew }}
+          />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">

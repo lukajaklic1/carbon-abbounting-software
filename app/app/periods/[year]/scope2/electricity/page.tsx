@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getElectricityFactors, calcCo2eKg } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { Pagination } from '@/components/ui/Pagination'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { useEmissionCountersStore } from '@/stores/emissionCounters'
@@ -164,10 +165,12 @@ export default function Scope2ElectricityPage() {
       {loading ? (
         <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !locations.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
-          <Zap className="h-7 w-7 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-[#767676] mb-1">{t('Ni aktivnih lokacij.', 'No active locations.')}</p>
-          <p className="text-xs text-[#767676]">{t('Najprej dodajte lokacije v razdelku Lokacije.', 'First add locations in the Locations section.')}</p>
+        <div className="bg-white border border-[#ececec] rounded-xl">
+          <EmptyState
+            icon={Zap}
+            title={t('Ni aktivnih lokacij', 'No active locations')}
+            subtitle={t('Za evidentiranje elektrike najprej dodajte lokacije z vklopljeno elektriko.', 'To track electricity, first add locations with electricity enabled.')}
+          />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">

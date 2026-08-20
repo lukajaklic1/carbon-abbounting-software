@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getFuelFactors, calcCo2eKg } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { Pagination } from '@/components/ui/Pagination'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { useEmissionCountersStore } from '@/stores/emissionCounters'
@@ -138,7 +139,7 @@ export default function Scope1StationaryPage() {
       <div className="mb-6">
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">Scope 1 · {year}</p>
         <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Stacionarno zgorevanje – lokacije', 'Stationary combustion – locations')}</h1>
-        <p className="text-sm font-light text-[#767676] mt-1">{t('Poraba zemeljskega plina, kurilnega olja in drugih goriv za ogrevanje ter industrijsko zgorevanje po lokacijah.', 'Natural gas, heating oil and other fuels burned for heating and industrial processes at each location.')}</p>
+        <p className="text-sm text-[#767676] mt-1">{t('Poraba zemeljskega plina, kurilnega olja in drugih goriv za ogrevanje ter industrijsko zgorevanje po lokacijah.', 'Natural gas, heating oil and other fuels burned for heating and industrial processes at each location.')}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -165,10 +166,12 @@ export default function Scope1StationaryPage() {
       {loading ? (
         <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !locations.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
-          <Building2 className="h-7 w-7 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-[#767676] mb-1">{t('Ni aktivnih lokacij.', 'No active locations.')}</p>
-          <p className="text-xs text-[#767676]">{t('Najprej dodajte lokacije v razdelku Lokacije.', 'First add locations in the Locations section.')}</p>
+        <div className="bg-white border border-[#ececec] rounded-xl">
+          <EmptyState
+            icon={Building2}
+            title={t('Ni aktivnih lokacij', 'No active locations')}
+            subtitle={t('Za evidentiranje zemeljskega plina najprej dodajte lokacije z vklopljeno možnostjo zemeljskega plina.', 'To track natural gas, first add locations with natural gas enabled.')}
+          />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">

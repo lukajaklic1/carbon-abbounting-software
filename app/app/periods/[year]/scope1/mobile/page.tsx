@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getFuelFactors, calcCo2eKg } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { Pagination } from '@/components/ui/Pagination'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { useEmissionCountersStore } from '@/stores/emissionCounters'
@@ -170,10 +171,12 @@ export default function Scope1MobilePage() {
       {loading ? (
         <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !vehicles.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
-          <Car className="h-7 w-7 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-[#767676] mb-1">{t('Ni aktivnih vozil.', 'No active vehicles.')}</p>
-          <p className="text-xs text-[#767676]">{t('Najprej dodajte vozila v razdelku Vozila.', 'First add vehicles in the Vehicles section.')}</p>
+        <div className="bg-white border border-[#ececec] rounded-xl">
+          <EmptyState
+            icon={Car}
+            title={t('Ni aktivnih vozil', 'No active vehicles')}
+            subtitle={t('Za evidentiranje porabe goriva najprej dodajte vozila v razdelku Vozila.', 'To track fuel consumption, first add vehicles in the Vehicles section.')}
+          />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">

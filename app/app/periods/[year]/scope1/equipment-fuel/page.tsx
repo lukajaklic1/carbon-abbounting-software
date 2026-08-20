@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getFuelFactors, calcCo2eKg } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { Pagination } from '@/components/ui/Pagination'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { useEmissionCountersStore } from '@/stores/emissionCounters'
@@ -165,10 +166,8 @@ export default function Scope1EquipmentFuelPage() {
       {loading ? (
         <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !equipment.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
-          <Wrench className="h-7 w-7 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-[#767676] mb-1">{t('Ni opreme z gorivom.', 'No fuel-using equipment.')}</p>
-          <p className="text-xs text-[#767676]">{t('Označite opremo kot "Uporablja gorivo" v razdelku Oprema.', 'Mark equipment as "Uses fuel" in the Equipment section.')}</p>
+        <div className="bg-white border border-[#ececec] rounded-xl">
+          <EmptyState icon={Wrench} title={t('Ni opreme z gorivom', 'No fuel-using equipment')} subtitle={t('Označite opremo kot "Uporablja gorivo" v razdelku Oprema.', 'Mark equipment as "Uses fuel" in the Equipment section.')} />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">

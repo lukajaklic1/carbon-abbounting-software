@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { mockVehicles } from '@/lib/mock-data'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { Pagination } from '@/components/ui/Pagination'
+import { EmptyState } from '@/components/ui/EmptyState'
 import { useEmissionCountersStore } from '@/stores/emissionCounters'
 import { usePeriodStore } from '@/stores/period'
 
@@ -246,7 +247,7 @@ export default function VehiclesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Vozila', 'Vehicles')}</h1>
-          <p className="text-sm font-light text-[#767676] mt-1">{t('Osebna vozila, kombiji in tovornjaki v lasti ali najemu podjetja, ki porabljajo gorivo.', 'Company-owned or leased cars, vans and trucks that consume fuel.')}</p>
+          <p className="text-sm text-[#767676] mt-1">{t('Osebna vozila, kombiji in tovornjaki v lasti ali najemu podjetja, ki porabljajo gorivo.', 'Company-owned or leased cars, vans and trucks that consume fuel.')}</p>
         </div>
         <button onClick={openNew}
           className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors">
@@ -323,13 +324,13 @@ export default function VehiclesPage() {
           {t('Nalaganje...', 'Loading...')}
         </div>
       ) : !vehicles.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
-          <Car className="h-7 w-7 text-gray-300 mx-auto mb-3" />
-          <p className="text-sm text-[#767676] mb-2">{t('Ni vozil.', 'No vehicles.')}</p>
-          <button onClick={openNew}
-            className="text-sm text-[#0f0f10] hover:text-[#0f0f10] font-medium transition-colors">
-            {t('Dodajte prvo vozilo →', 'Add your first vehicle →')}
-          </button>
+        <div className="bg-white border border-[#ececec] rounded-xl">
+          <EmptyState
+            icon={Car}
+            title={t('Ni vozil', 'No vehicles')}
+            subtitle={t('Dodajte vozilo, da začnete evidentirati porabo goriva.', 'Add a vehicle to start tracking fuel consumption.')}
+            action={{ label: t('+ Novo vozilo', '+ New vehicle'), onClick: openNew }}
+          />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">
