@@ -137,8 +137,7 @@ export default function Scope1StationaryPage() {
     <div className="p-4 lg:p-8">
       <div className="mb-6">
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">Scope 1 · {year}</p>
-        <h1 className="text-2xl font-bold text-[#031f18]">{t('Stacionarno zgorevanje – lokacije', 'Stationary combustion – locations')}</h1>
-        <p className="text-sm text-[#767676] mt-0.5">{t('Direktne emisije iz ogrevanja in procesov', 'Direct emissions from heating and processes')}</p>
+        <h1 className="text-xl font-semibold text-[#0f0f10]">{t('Stacionarno zgorevanje – lokacije', 'Stationary combustion – locations')}</h1>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">

@@ -240,7 +240,7 @@ function SuperAdminSidebar() {
 
       {/* Bottom — same as regular sidebar */}
       <div className="border-t border-[#ececec] px-3 py-3 space-y-1 shrink-0">
-        <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl hover:bg-[#f9f9f9] transition-colors">
+        <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#f9f9f9] transition-colors">
           <div className="w-7 h-7 rounded-full bg-[#fafafa] border border-[#ececec] flex items-center justify-center shrink-0">
             <span className="text-[10px] font-semibold text-[#767676]">{userMeta.initials}</span>
           </div>

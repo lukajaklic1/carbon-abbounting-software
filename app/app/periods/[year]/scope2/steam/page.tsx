@@ -130,8 +130,7 @@ export default function Scope2SteamPage() {
     <div className="p-4 lg:p-8">
       <div className="mb-6">
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">Scope 2 · {year}</p>
-        <h1 className="text-2xl font-bold text-[#031f18]">{t('Para – lokacije', 'Purchased Steam – locations')}</h1>
-        <p className="text-sm text-[#767676] mt-0.5">{t('Posredne emisije iz nakupljene pare', 'Indirect emissions from purchased steam')}</p>
+        <h1 className="text-xl font-semibold text-[#0f0f10]">{t('Para – lokacije', 'Purchased Steam – locations')}</h1>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">

@@ -199,10 +199,7 @@ export default function TeamPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#031f18]">{t('Uporabniki', 'Users')}</h1>
-          <p className="text-sm text-[#767676] mt-0.5">
-            {activeCount} {t('aktivnih', 'active')}{invitedCount > 0 ? `, ${invitedCount} ${t('čakajočih povabil', 'pending invites')}` : ''}
-          </p>
+          <h1 className="text-xl font-semibold text-[#0f0f10]">{t('Uporabniki', 'Users')}</h1>
         </div>
         {isAdmin && (
           <button onClick={() => { setShowInvite(true); resetInviteForm() }}

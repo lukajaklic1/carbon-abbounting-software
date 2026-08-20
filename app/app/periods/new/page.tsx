@@ -70,7 +70,7 @@ export default function NewPeriodPage() {
                 const taken = takenYears.includes(y)
                 return (
                   <button key={y} onClick={() => !taken && setYear(y)} disabled={taken}
-                    className={`py-1.5 rounded-xl text-sm font-semibold border-2 transition-all ${
+                    className={`py-2 rounded-xl text-sm font-semibold border-2 transition-all ${
                       taken ? 'border-[#ececec] bg-[#f9f9f9] text-gray-300 cursor-not-allowed' :
                       year === y ? 'border-[#0f0f10] bg-[#efefef] text-[#0f0f10]' :
                       'border-[#ececec] bg-white text-[#031f18] hover:border-blue-300'

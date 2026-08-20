@@ -89,10 +89,7 @@ export default function DashboardPage() {
 
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-bold text-[#031f18]">{org?.name}</h1>
-        <p className="text-sm text-[#767676] mt-0.5">
-          {org?.industry ? (INDUSTRY_LABELS[org.industry] ?? org.industry) : ''} · {org?.country_code} · {displayYear}
-        </p>
+        <h1 className="text-xl font-semibold text-[#0f0f10]">{org?.name}</h1>
       </div>
 
       {/* Stats row */}
@@ -103,7 +100,7 @@ export default function DashboardPage() {
             <div key={s.label} className="bg-white border border-[#ececec] rounded-xl p-5 flex items-start justify-between">
               <div>
                 <p className="text-xs text-[#767676] mb-1">{s.label}</p>
-                <p className="text-2xl font-bold text-[#031f18]">{s.value}</p>
+                <p className="text-xl font-semibold text-[#0f0f10]">{s.value}</p>
                 <p className="text-xs text-[#767676] mt-0.5">{s.sub}</p>
               </div>
               <div className={`w-9 h-9 ${s.bg} rounded-lg flex items-center justify-center shrink-0`}>

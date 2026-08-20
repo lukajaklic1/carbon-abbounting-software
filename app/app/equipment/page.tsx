@@ -394,14 +394,10 @@ export default function EquipmentPage() {
     <div className="p-4 lg:p-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-[#031f18]">{t('Oprema', 'Equipment')}</h1>
-          <p className="text-sm text-[#767676] mt-0.5">
-            {equipment.length} {t(equipment.length === 1 ? 'naprava' : 'naprav', equipment.length === 1 ? 'device' : 'devices')}
-            {' · '}{t('Kotli, generatorji, hladilna tehnika in ostalo', 'Boilers, generators, refrigeration and more')}
-          </p>
+          <h1 className="text-xl font-semibold text-[#0f0f10]">{t('Oprema', 'Equipment')}</h1>
         </div>
         <button onClick={openNew}
-          className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-1.5 rounded-xl transition-colors">
+          className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors">
           <Plus className="h-4 w-4" />
           {t('Nova oprema', 'New equipment')}
         </button>

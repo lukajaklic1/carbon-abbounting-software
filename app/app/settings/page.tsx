@@ -146,12 +146,12 @@ export default function SettingsPage() {
   return (
     <div className="min-h-full py-10 px-8">
       <div className="max-w-2xl mx-auto space-y-6">
-        <h1 className="text-2xl font-bold text-[#031f18]">{t('Nastavitve', 'Settings')}</h1>
+        <h1 className="text-xl font-semibold text-[#0f0f10]">{t('Nastavitve', 'Settings')}</h1>
 
         {/* Company */}
         <Card title={t('Profil podjetja', 'Company profile')} icon={Building2}>
           {!isAdmin && (
-            <div className="mb-5 flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs px-3 py-1.5 rounded-xl">
+            <div className="mb-5 flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs px-3 py-2 rounded-xl">
               <AlertCircle className="h-3.5 w-3.5 shrink-0" />
               {t('Nastavitve podjetja lahko spreminja samo admin.', 'Only admins can change company settings.')}
             </div>
