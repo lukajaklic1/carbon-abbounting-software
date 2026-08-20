@@ -19,18 +19,18 @@ export function EmptyState({ icon: Icon, title, subtitle, action }: EmptyStatePr
       </div>
 
       {/* Title */}
-      <p className="text-[15px] font-semibold text-[#0f0f10] mb-1">{title}</p>
+      <p className="text-[15px] font-semibold text-[#0f0f10] mb-2">{title}</p>
 
       {/* Subtitle */}
       {subtitle && (
-        <p className="text-[13px] text-[#767676] max-w-xs">{subtitle}</p>
+        <p className="text-[13px] text-[#767676] max-w-[280px] leading-relaxed">{subtitle}</p>
       )}
 
       {/* Action */}
       {action && (
         <button
           onClick={action.onClick}
-          className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-medium text-[#0f0f10] bg-white border border-[#ececec] hover:bg-[#fafafa] px-4 py-2 rounded-xl transition-colors">
+          className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-[#0f0f10] bg-white border border-[#ececec] hover:bg-[#fafafa] px-4 py-2 rounded-xl transition-colors">
           {action.label}
         </button>
       )}
