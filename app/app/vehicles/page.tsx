@@ -289,30 +289,37 @@ export default function VehiclesPage() {
 
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-2 mb-4">
-        <select
-          value={filterType}
-          onChange={e => setFilterType(e.target.value)}
-          className="text-sm px-3 py-2 bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] text-[#767676]"
-        >
-          <option value="">{t('Vsi tipi', 'All types')}</option>
-          {VEHICLE_TYPES.map(vt => (
-            <option key={vt.value} value={vt.value}>{locale === 'EN' ? vt.en : vt.sl}</option>
-          ))}
-        </select>
-        {locations.length > 0 && (
+        <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+          <span className="text-[#767676]">{t('Tip:', 'Type:')}</span>
           <select
-            value={filterLocation}
-            onChange={e => setFilterLocation(e.target.value)}
-            className="text-sm px-3 py-2 bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] text-[#767676]"
+            value={filterType}
+            onChange={e => setFilterType(e.target.value)}
+            className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer"
           >
-            <option value="">{t('Vse lokacije', 'All locations')}</option>
-            {locations.map(loc => (
-              <option key={loc.id} value={loc.id}>{loc.name}</option>
+            <option value="">{t('Vsi', 'All')}</option>
+            {VEHICLE_TYPES.map(vt => (
+              <option key={vt.value} value={vt.value}>{locale === 'EN' ? vt.en : vt.sl}</option>
             ))}
           </select>
+        </label>
+        {locations.length > 0 && (
+          <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+            <span className="text-[#767676]">{t('Lokacija:', 'Location:')}</span>
+            <select
+              value={filterLocation}
+              onChange={e => setFilterLocation(e.target.value)}
+              className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer"
+            >
+              <option value="">{t('Vse', 'All')}</option>
+              {locations.map(loc => (
+                <option key={loc.id} value={loc.id}>{loc.name}</option>
+              ))}
+            </select>
+          </label>
         )}
         {(filterType || filterLocation) && (
-          <button onClick={() => { setFilterType(''); setFilterLocation('') }} className="text-xs text-[#767676] hover:text-[#767676]">
+          <button onClick={() => { setFilterType(''); setFilterLocation('') }}
+            className="h-8 px-3 text-[13px] text-[#767676] hover:text-[#0f0f10] transition-colors">
             {t('Počisti', 'Clear')}
           </button>
         )}
@@ -327,9 +334,9 @@ export default function VehiclesPage() {
         <div className="bg-white border border-[#ececec] rounded-xl">
           <EmptyState
             icon={Car}
-            title={t('Ni vozil', 'No vehicles')}
-            subtitle={t('Dodajte vozilo, da začnete evidentirati porabo goriva.', 'Add a vehicle to start tracking fuel consumption.')}
-            action={{ label: t('+ Novo vozilo', '+ New vehicle'), onClick: openNew }}
+            title={t('Zaenkrat še ni nobenih vozil', 'No vehicles yet')}
+            subtitle={t('Dodajte prvo vozilo, da začnete evidentirati porabo goriva in mobilne emisije.', 'Add your first vehicle to start tracking fuel consumption and mobile emissions.')}
+            action={{ label: t('+ Dodaj vozilo', '+ Add vehicle'), onClick: openNew }}
           />
         </div>
       ) : (

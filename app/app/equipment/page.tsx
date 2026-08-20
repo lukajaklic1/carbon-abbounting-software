@@ -442,9 +442,9 @@ export default function EquipmentPage() {
         <div className="bg-white border border-[#ececec] rounded-xl">
           <EmptyState
             icon={Wrench}
-            title={t('Ni opreme', 'No equipment')}
-            subtitle={t('Dodajte napravo, da začnete evidentirati porabo goriva in emisije hladiv.', 'Add a device to start tracking fuel use and refrigerant emissions.')}
-            action={{ label: t('+ Nova oprema', '+ New equipment'), onClick: openNew }}
+            title={t('Zaenkrat še ni nobene opreme', 'No equipment yet')}
+            subtitle={t('Dodajte kotel, generator, hladilnik ali drugo napravo, ki porablja gorivo ali hladilne pline.', 'Add a boiler, generator, refrigerator or other device that consumes fuel or refrigerants.')}
+            action={{ label: t('+ Dodaj opremo', '+ Add equipment'), onClick: openNew }}
           />
         </div>
       ) : (

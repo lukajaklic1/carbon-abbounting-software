@@ -256,9 +256,9 @@ export default function LocationsPage() {
         <div className="bg-white border border-[#ececec] rounded-xl">
           <EmptyState
             icon={MapPin}
-            title={t('Ni lokacij', 'No locations')}
-            subtitle={t('Dodajte prvo lokacijo, da začnete evidentirati emisije.', 'Add your first location to start tracking emissions.')}
-            action={{ label: t('+ Nova lokacija', '+ New location'), onClick: openNew }}
+            title={t('Zaenkrat še ni nobenih lokacij', 'No locations yet')}
+            subtitle={t('Dodajte prvo lokacijo — pisarno, tovarno ali skladišče — da začnete evidentirati emisije.', 'Add your first location — an office, factory or warehouse — to start tracking emissions.')}
+            action={{ label: t('+ Dodaj lokacijo', '+ Add location'), onClick: openNew }}
           />
         </div>
       ) : (
