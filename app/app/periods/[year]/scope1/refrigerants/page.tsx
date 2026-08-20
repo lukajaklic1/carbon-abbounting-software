@@ -142,7 +142,7 @@ export default function Scope1RefrigerantsPage() {
     <div className="p-4 lg:p-8">
       <div className="mb-6">
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">Scope 1 · {year}</p>
-        <h1 className="text-xl font-semibold text-[#0f0f10]">{t('Hladiva – oprema', 'Refrigerants – equipment')}</h1>
+        <h1 className="text-2xl font-semibold text-[#0f0f10]">{t('Hladiva – oprema', 'Refrigerants – equipment')}</h1>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">

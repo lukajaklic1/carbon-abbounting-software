@@ -153,7 +153,7 @@ export default function AdminReportsPage() {
       <div className="flex items-start justify-between mb-8 flex-wrap gap-3">
         <div>
           <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">GHG · {selectedOrg.name} · {year}</p>
-          <h1 className="text-xl font-semibold text-[#0f0f10]">Poročilo o metodologiji GHG</h1>
+          <h1 className="text-2xl font-semibold text-[#0f0f10]">Poročilo o metodologiji GHG</h1>
           <p className="text-sm text-[#767676] mt-1">Pregled metodologij in emisijskih faktorjev za izračun ogljičnega odtisa.</p>
         </div>
         <button

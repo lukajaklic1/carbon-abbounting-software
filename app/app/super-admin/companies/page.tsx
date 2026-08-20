@@ -50,7 +50,7 @@ export default function CompaniesPage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-[#0f0f10]">Podjetja</h1>
+        <h1 className="text-2xl font-semibold text-[#0f0f10]">Podjetja</h1>
       </div>
 
       {/* Filters */}

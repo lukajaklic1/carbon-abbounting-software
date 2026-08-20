@@ -83,7 +83,7 @@ export default function UsersPage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-[#0f0f10]">Uporabniki</h1>
+        <h1 className="text-2xl font-semibold text-[#0f0f10]">Uporabniki</h1>
       </div>
 
       <div className="flex gap-3 mb-4 flex-wrap">

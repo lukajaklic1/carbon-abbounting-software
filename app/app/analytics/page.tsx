@@ -141,7 +141,7 @@ export default function AnalyticsPage() {
       {/* Header */}
       <div>
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">{t('Analitika', 'Analytics')} · {year}</p>
-        <h1 className="text-xl font-semibold text-[#0f0f10]">{t('Ogljični odtis', 'Carbon Footprint')}</h1>
+        <h1 className="text-2xl font-semibold text-[#0f0f10]">{t('Ogljični odtis', 'Carbon Footprint')}</h1>
       </div>
 
       {/* Stat cards */}
@@ -161,7 +161,7 @@ export default function AnalyticsPage() {
                   <Icon className={cn('h-4 w-4', card.color)} />
                 </div>
               </div>
-              <p className="text-xl font-semibold text-[#0f0f10] tabular-nums">{loading ? '—' : card.value}</p>
+              <p className="text-2xl font-semibold text-[#0f0f10] tabular-nums">{loading ? '—' : card.value}</p>
               <p className="text-xs text-[#767676] mt-0.5">{card.sub}</p>
             </div>
           )

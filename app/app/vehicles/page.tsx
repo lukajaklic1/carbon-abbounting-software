@@ -245,7 +245,7 @@ export default function VehiclesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-xl font-semibold text-[#0f0f10]">{t('Vozila', 'Vehicles')}</h1>
+          <h1 className="text-2xl font-semibold text-[#0f0f10]">{t('Vozila', 'Vehicles')}</h1>
         </div>
         <button onClick={openNew}
           className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors">
