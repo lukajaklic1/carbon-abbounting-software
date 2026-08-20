@@ -97,8 +97,8 @@ function getCookieLocale(): 'EN' | 'SL' {
   return m?.[1]?.toUpperCase() === 'EN' ? 'EN' : 'SL'
 }
 
-const INPUT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
+const INPUT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] transition-shadow'
 
 export default function OnboardingPage() {
   const router = useRouter()
@@ -154,7 +154,7 @@ export default function OnboardingPage() {
 
         {/* Logo */}
         <div className="flex justify-center mb-10">
-          <div className="w-11 h-11 bg-[#26a552] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
+          <div className="w-11 h-11 bg-[#0f0f10] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
               <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
               <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>
@@ -173,13 +173,13 @@ export default function OnboardingPage() {
               <div key={i} className="flex items-center">
                 <div className="flex flex-col items-center gap-1.5">
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                    done ? 'bg-green-500 text-white' :
-                    active ? 'bg-[#26a552] text-white shadow-md shadow-blue-200' :
+                    done ? 'bg-[#f5f5f5]0 text-white' :
+                    active ? 'bg-[#0f0f10] text-white shadow-md shadow-blue-200' :
                     'bg-white border-2 border-[#ececec] text-[#767676]'
                   }`}>
                     {done ? <Check className="h-4 w-4" strokeWidth={2.5} /> : num}
                   </div>
-                  <span className={`text-xs font-semibold ${active ? 'text-[#26a552]' : done ? 'text-green-600' : 'text-[#767676]'}`}>
+                  <span className={`text-xs font-semibold ${active ? 'text-[#0f0f10]' : done ? 'text-[#0f0f10]' : 'text-[#767676]'}`}>
                     {t.steps[i]}
                   </span>
                 </div>
@@ -196,8 +196,8 @@ export default function OnboardingPage() {
           {step === 1 && (
             <div className="p-8">
               <div className="flex items-start gap-4 mb-6">
-                <div className="w-10 h-10 bg-[#edf7f1] rounded-xl flex items-center justify-center shrink-0">
-                  <Building2 className="h-5 w-5 text-[#26a552]" />
+                <div className="w-10 h-10 bg-[#efefef] rounded-xl flex items-center justify-center shrink-0">
+                  <Building2 className="h-5 w-5 text-[#0f0f10]" />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-[#031f18] leading-tight">{t.s1title}</h2>
@@ -236,7 +236,7 @@ export default function OnboardingPage() {
               </div>
 
               <button onClick={() => setStep(2)} disabled={!orgName.trim()}
-                className="w-full mt-7 bg-[#26a552] hover:bg-[#1e8a43] disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors">
+                className="w-full mt-7 bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors">
                 {t.continue}
               </button>
             </div>
@@ -246,8 +246,8 @@ export default function OnboardingPage() {
           {step === 2 && (
             <div className="p-8">
               <div className="flex items-start gap-4 mb-6">
-                <div className="w-10 h-10 bg-[#edf7f1] rounded-xl flex items-center justify-center shrink-0">
-                  <User className="h-5 w-5 text-[#26a552]" />
+                <div className="w-10 h-10 bg-[#efefef] rounded-xl flex items-center justify-center shrink-0">
+                  <User className="h-5 w-5 text-[#0f0f10]" />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-[#031f18] leading-tight">{t.s2title}</h2>
@@ -283,7 +283,7 @@ export default function OnboardingPage() {
                 </button>
                 <button onClick={handleComplete}
                   disabled={loading || !firstName.trim() || !lastName.trim()}
-                  className="flex-1 py-3 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:opacity-50 rounded-xl transition-colors">
+                  className="flex-1 py-3 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-50 rounded-xl transition-colors">
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
                       <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
@@ -306,7 +306,7 @@ export default function OnboardingPage() {
             {(['SL', 'EN'] as const).map(l => (
               <button key={l} onClick={() => switchLocale(l)}
                 className={`text-xs font-semibold px-2.5 py-1 rounded-full transition-colors ${
-                  locale === l ? 'bg-[#26a552] text-white' : 'text-[#767676] hover:text-[#767676]'
+                  locale === l ? 'bg-[#0f0f10] text-white' : 'text-[#767676] hover:text-[#767676]'
                 }`}>
                 {l}
               </button>

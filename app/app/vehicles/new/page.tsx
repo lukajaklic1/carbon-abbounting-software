@@ -66,7 +66,7 @@ export default function NewVehiclePage() {
             Cancel
           </button>
           <button type="submit" disabled={loading}
-            className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:opacity-60 rounded-xl transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-60 rounded-xl transition-colors">
             {loading ? 'Saving...' : 'Add Vehicle'}
           </button>
         </div>

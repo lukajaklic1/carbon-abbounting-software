@@ -16,8 +16,8 @@ const IS_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL
 const fuelColors: Record<string, string> = {
   diesel: 'bg-[#fafafa] text-[#767676]',
   petrol: 'bg-orange-50 text-orange-600',
-  electric: 'bg-green-50 text-green-600',
-  hybrid: 'bg-[#edf7f1] text-[#26a552]',
+  electric: 'bg-[#f5f5f5] text-[#0f0f10]',
+  hybrid: 'bg-[#efefef] text-[#0f0f10]',
   lpg: 'bg-yellow-50 text-yellow-600',
   cng: 'bg-cyan-50 text-cyan-600',
   unknown: 'bg-[#f9f9f9] text-[#767676]',
@@ -64,8 +64,8 @@ const EMPTY_FORM = {
 
 type VehicleForm = typeof EMPTY_FORM
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] transition-shadow'
 
 export default function VehiclesPage() {
   const { t, locale } = useLocale()
@@ -251,7 +251,7 @@ export default function VehiclesPage() {
           </p>
         </div>
         <button onClick={openNew}
-          className="inline-flex items-center gap-2 bg-[#26a552] hover:bg-[#1e8a43] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+          className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-1.5 rounded-xl transition-colors">
           <Plus className="h-4 w-4" />
           {t('Novo vozilo', 'New vehicle')}
         </button>
@@ -293,7 +293,7 @@ export default function VehiclesPage() {
         <select
           value={filterType}
           onChange={e => setFilterType(e.target.value)}
-          className="text-sm px-3 py-2 bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] text-[#767676]"
+          className="text-sm px-3 py-2 bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] text-[#767676]"
         >
           <option value="">{t('Vsi tipi', 'All types')}</option>
           {VEHICLE_TYPES.map(vt => (
@@ -304,7 +304,7 @@ export default function VehiclesPage() {
           <select
             value={filterLocation}
             onChange={e => setFilterLocation(e.target.value)}
-            className="text-sm px-3 py-2 bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] text-[#767676]"
+            className="text-sm px-3 py-2 bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] text-[#767676]"
           >
             <option value="">{t('Vse lokacije', 'All locations')}</option>
             {locations.map(loc => (
@@ -329,7 +329,7 @@ export default function VehiclesPage() {
           <Car className="h-7 w-7 text-gray-300 mx-auto mb-3" />
           <p className="text-sm text-[#767676] mb-2">{t('Ni vozil.', 'No vehicles.')}</p>
           <button onClick={openNew}
-            className="text-sm text-[#26a552] hover:text-[#1e8a43] font-medium transition-colors">
+            className="text-sm text-[#0f0f10] hover:text-[#0f0f10] font-medium transition-colors">
             {t('Dodajte prvo vozilo →', 'Add your first vehicle →')}
           </button>
         </div>
@@ -352,7 +352,7 @@ export default function VehiclesPage() {
                 <tr key={v.id} className={`hover:bg-[#f9f9f9] transition-colors ${i !== 0 ? 'border-t border-[#ececec]' : ''}`}>
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-[#edf7f1] rounded-lg flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 bg-[#efefef] rounded-lg flex items-center justify-center shrink-0">
                         <VehicleIcon type={v.vehicle_type} />
                       </div>
                       <div>
@@ -376,15 +376,15 @@ export default function VehiclesPage() {
                     {locations.find(l => l.id === v.location_id)?.name ?? '—'}
                   </td>
                   <td className="px-5 py-4">
-                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${v.is_active ? 'bg-green-50 text-green-700' : 'bg-[#fafafa] text-[#767676]'}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${v.is_active ? 'bg-green-500' : 'bg-gray-400'}`} />
+                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${v.is_active ? 'bg-[#f5f5f5] text-[#0f0f10]' : 'bg-[#fafafa] text-[#767676]'}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${v.is_active ? 'bg-[#f5f5f5]0' : 'bg-gray-400'}`} />
                       {v.is_active ? t('Aktivno', 'Active') : t('Neaktivno', 'Inactive')}
                     </span>
                   </td>
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-1 justify-end">
                       <button onClick={() => openEdit(v)}
-                        className="p-1.5 text-[#767676] hover:text-[#26a552] hover:bg-[#edf7f1] rounded-lg transition-colors">
+                        className="p-1.5 text-[#767676] hover:text-[#0f0f10] hover:bg-[#efefef] rounded-lg transition-colors">
                         <Pencil className="h-3.5 w-3.5" />
                       </button>
                       <button
@@ -529,7 +529,7 @@ export default function VehiclesPage() {
                   <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Status', 'Status')}</label>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => f('is_active', true)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-green-50 border-green-400 text-green-700' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-[#f5f5f5] border-[#ececec] text-[#0f0f10]' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
                       {t('Aktivno', 'Active')}
                     </button>
                     <button type="button" onClick={() => f('is_active', false)}
@@ -548,7 +548,7 @@ export default function VehiclesPage() {
                 <textarea value={form.notes} onChange={e => f('notes', e.target.value)}
                   rows={2}
                   placeholder={t('Dodatne informacije o vozilu...', 'Additional vehicle information...')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 resize-none"
+                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 resize-none"
                 />
               </div>
 
@@ -564,7 +564,7 @@ export default function VehiclesPage() {
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={handleSave} disabled={saving || !form.name.trim()}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving
                   ? t('Shranjevanje...', 'Saving...')
                   : editingId

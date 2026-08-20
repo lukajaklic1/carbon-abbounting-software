@@ -139,11 +139,11 @@ const CATEGORY_COLORS: Record<string, string> = {
   fuel:           'bg-orange-50 text-orange-600',
   refrigerants:   'bg-cyan-50 text-cyan-600',
   industrial_gas: 'bg-purple-50 text-purple-600',
-  multiple:       'bg-[#edf7f1] text-[#26a552]',
+  multiple:       'bg-[#efefef] text-[#0f0f10]',
 }
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow appearance-none cursor-pointer'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] transition-shadow appearance-none cursor-pointer'
 
 function getLabel(list: { value: string; sl: string; en: string }[], val: string, locale: string) {
   const item = list.find(x => x.value === val)
@@ -401,7 +401,7 @@ export default function EquipmentPage() {
           </p>
         </div>
         <button onClick={openNew}
-          className="inline-flex items-center gap-2 bg-[#26a552] hover:bg-[#1e8a43] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-colors">
+          className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-1.5 rounded-xl transition-colors">
           <Plus className="h-4 w-4" />
           {t('Nova oprema', 'New equipment')}
         </button>
@@ -444,7 +444,7 @@ export default function EquipmentPage() {
         <div className="bg-white border border-[#ececec] rounded-xl py-14 text-center">
           <span className="text-3xl block text-center mb-3">⚙️</span>
           <p className="text-sm text-[#767676] mb-2">{t('Ni opreme.', 'No equipment.')}</p>
-          <button onClick={openNew} className="text-sm text-[#26a552] hover:text-[#1e8a43] font-medium transition-colors">
+          <button onClick={openNew} className="text-sm text-[#0f0f10] hover:text-[#0f0f10] font-medium transition-colors">
             {t('Dodajte prvo napravo →', 'Add your first device →')}
           </button>
         </div>
@@ -500,15 +500,15 @@ export default function EquipmentPage() {
                     </td>
                     <td className="px-5 py-4 text-sm text-[#767676]">{eq.locations?.name ?? '—'}</td>
                     <td className="px-5 py-4">
-                      <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${eq.is_active ? 'bg-green-50 text-green-700' : 'bg-[#fafafa] text-[#767676]'}`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${eq.is_active ? 'bg-green-500' : 'bg-gray-400'}`} />
+                      <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${eq.is_active ? 'bg-[#f5f5f5] text-[#0f0f10]' : 'bg-[#fafafa] text-[#767676]'}`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${eq.is_active ? 'bg-[#f5f5f5]0' : 'bg-gray-400'}`} />
                         {eq.is_active ? t('Aktivno', 'Active') : t('Neaktivno', 'Inactive')}
                       </span>
                     </td>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-1 justify-end">
                         <button onClick={() => openEdit(eq)}
-                          className="p-1.5 text-[#767676] hover:text-[#26a552] hover:bg-[#edf7f1] rounded-lg transition-colors">
+                          className="p-1.5 text-[#767676] hover:text-[#0f0f10] hover:bg-[#efefef] rounded-lg transition-colors">
                           <Pencil className="h-3.5 w-3.5" />
                         </button>
                         <button
@@ -577,13 +577,13 @@ export default function EquipmentPage() {
                 <div className="space-y-3 mt-3">
 
                   {/* Fuel */}
-                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_fuel ? 'border-blue-500 bg-[#edf7f1]/40' : 'border-[#ececec] hover:border-[#ececec]'}`}>
+                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_fuel ? 'border-blue-500 bg-[#efefef]/40' : 'border-[#ececec] hover:border-[#ececec]'}`}>
                     <input
                       type="radio"
                       name="equipment_category"
                       checked={form.uses_fuel}
                       onChange={() => setForm(prev => ({ ...prev, uses_fuel: true, uses_refrigerants: false, uses_industrial_gases: false }))}
-                      className="mt-0.5 h-4 w-4 accent-[#26a552] shrink-0"
+                      className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
                     />
                     <div>
                       <p className="text-sm font-semibold text-[#031f18]">{t('Ta oprema porablja gorivo', 'This equipment consumes fuel')}</p>
@@ -597,13 +597,13 @@ export default function EquipmentPage() {
                   </label>
 
                   {/* Refrigerants */}
-                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_refrigerants ? 'border-blue-500 bg-[#edf7f1]/40' : 'border-[#ececec] hover:border-[#ececec]'}`}>
+                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_refrigerants ? 'border-blue-500 bg-[#efefef]/40' : 'border-[#ececec] hover:border-[#ececec]'}`}>
                     <input
                       type="radio"
                       name="equipment_category"
                       checked={form.uses_refrigerants}
                       onChange={() => setForm(prev => ({ ...prev, uses_fuel: false, uses_refrigerants: true, uses_industrial_gases: false }))}
-                      className="mt-0.5 h-4 w-4 accent-[#26a552] shrink-0"
+                      className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
                     />
                     <div>
                       <p className="text-sm font-semibold text-[#031f18]">{t('Ta oprema uporablja hladiva', 'This equipment uses refrigerants')}</p>
@@ -617,13 +617,13 @@ export default function EquipmentPage() {
                   </label>
 
                   {/* Industrial gases */}
-                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_industrial_gases ? 'border-blue-500 bg-[#edf7f1]/40' : 'border-[#ececec] hover:border-[#ececec]'}`}>
+                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_industrial_gases ? 'border-blue-500 bg-[#efefef]/40' : 'border-[#ececec] hover:border-[#ececec]'}`}>
                     <input
                       type="radio"
                       name="equipment_category"
                       checked={form.uses_industrial_gases}
                       onChange={() => setForm(prev => ({ ...prev, uses_fuel: false, uses_refrigerants: false, uses_industrial_gases: true }))}
-                      className="mt-0.5 h-4 w-4 accent-[#26a552] shrink-0"
+                      className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
                     />
                     <div>
                       <p className="text-sm font-semibold text-[#031f18]">{t('Ta oprema uporablja industrijske pline', 'This equipment uses industrial gases')}</p>
@@ -753,7 +753,7 @@ export default function EquipmentPage() {
                   <label className="block text-sm font-semibold text-[#031f18] mb-1.5">{t('Status', 'Status')}</label>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => f('is_active', true)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-green-50 border-green-400 text-green-700' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-[#f5f5f5] border-[#ececec] text-[#0f0f10]' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
                       {t('Aktivno', 'Active')}
                     </button>
                     <button type="button" onClick={() => f('is_active', false)}
@@ -774,7 +774,7 @@ export default function EquipmentPage() {
                   onChange={e => f('notes', e.target.value)}
                   rows={2}
                   placeholder={t('Dodatne informacije o napravi...', 'Additional device information...')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 resize-none"
+                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 resize-none"
                 />
               </div>
 
@@ -789,7 +789,7 @@ export default function EquipmentPage() {
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={handleSave} disabled={saving || !form.name.trim() || (!form.uses_fuel && !form.uses_refrigerants && !form.uses_industrial_gases)}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving
                   ? t('Shranjevanje...', 'Saving...')
                   : editingId ? t('Shrani spremembe', 'Save changes') : t('Dodaj opremo', 'Add equipment')}

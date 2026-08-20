@@ -74,7 +74,7 @@ export default function UsersPage() {
 
   const roleBadge = (role: string, isSA: boolean) => {
     if (isSA) return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">Super admin</span>
-    if (role === 'admin') return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-[#d4eddf] text-[#1e8a43]">Admin</span>
+    if (role === 'admin') return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-[#d4eddf] text-[#0f0f10]">Admin</span>
     return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-[#fafafa] text-[#767676]">Uporabnik</span>
   }
 
@@ -131,7 +131,7 @@ export default function UsersPage() {
                 <td className="px-5 py-3.5 text-sm text-[#767676]">{fmt(u.created_at)}</td>
                 <td className="px-5 py-3.5">
                   <span className={cn('px-2 py-0.5 rounded-full text-xs font-semibold',
-                    u.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-[#fafafa] text-[#767676]')}>
+                    u.status === 'active' ? 'bg-[#efefef] text-[#0f0f10]' : 'bg-[#fafafa] text-[#767676]')}>
                     {u.status === 'active' ? 'Aktiven' : u.status}
                   </span>
                 </td>

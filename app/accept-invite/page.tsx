@@ -41,7 +41,7 @@ export default function AcceptInvitePage() {
   return (
     <div className="min-h-screen bg-[#f7f8fa] flex items-center justify-center">
       <div className="bg-white border border-[#ececec] rounded-2xl shadow-sm p-10 text-center max-w-sm w-full">
-        <div className="w-12 h-12 bg-[#26a552] rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-blue-100">
+        <div className="w-12 h-12 bg-[#0f0f10] rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-blue-100">
           <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
             <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
             <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>

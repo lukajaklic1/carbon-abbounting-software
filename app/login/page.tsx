@@ -94,7 +94,7 @@ export default function LoginPage() {
 
       {/* Logo */}
       <div className="mb-6">
-        <div className="w-14 h-14 bg-[#26a552] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
+        <div className="w-14 h-14 bg-[#0f0f10] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
             {/* top face */}
             <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
@@ -123,7 +123,7 @@ export default function LoginPage() {
             <input
               type="email" value={email} onChange={e => setEmail(e.target.value)} required
               placeholder={t.placeholder_email}
-              className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] focus:bg-white placeholder:text-gray-300"
+              className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] focus:bg-white placeholder:text-gray-300"
             />
           </div>
           <div>
@@ -133,7 +133,7 @@ export default function LoginPage() {
                 type={showPassword ? 'text' : 'password'}
                 value={password} onChange={e => setPassword(e.target.value)} required
                 placeholder={t.placeholder_password}
-                className="w-full px-3 py-2 pr-10 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] focus:bg-white placeholder:text-gray-300"
+                className="w-full px-3 py-2 pr-10 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] focus:bg-white placeholder:text-gray-300"
               />
               <button type="button" onClick={() => setShowPassword(v => !v)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#767676] hover:text-[#767676]">
@@ -143,7 +143,7 @@ export default function LoginPage() {
           </div>
 
           <div className="flex justify-end -mt-1">
-            <Link href="/forgot-password" className="text-xs text-[#26a552] hover:underline">
+            <Link href="/forgot-password" className="text-xs text-[#0f0f10] hover:underline">
               {locale === 'SL' ? 'Pozabljeno geslo?' : 'Forgot password?'}
             </Link>
           </div>
@@ -153,7 +153,7 @@ export default function LoginPage() {
           )}
 
           <button type="submit" disabled={loading}
-            className="w-full bg-[#26a552] hover:bg-[#1e8a43] disabled:opacity-60 text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors">
+            className="w-full bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-60 text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors">
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
@@ -171,13 +171,13 @@ export default function LoginPage() {
       <div className="mt-5 flex items-center justify-between w-full max-w-[360px]">
         <p className="text-sm text-[#767676]">
           {t.noAccount}{' '}
-          <Link href="/register" className="text-[#26a552] hover:underline font-semibold">{t.createOne}</Link>
+          <Link href="/register" className="text-[#0f0f10] hover:underline font-semibold">{t.createOne}</Link>
         </p>
         <div className="flex gap-1">
           {(['EN', 'SL'] as const).map(l => (
             <button key={l} onClick={() => switchLocale(l)}
               className={`text-xs font-semibold px-2.5 py-1 rounded-full transition-colors ${
-                locale === l ? 'bg-[#26a552] text-white' : 'text-[#767676] hover:text-[#767676]'
+                locale === l ? 'bg-[#0f0f10] text-white' : 'text-[#767676] hover:text-[#767676]'
               }`}>
               {l}
             </button>

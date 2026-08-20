@@ -12,8 +12,8 @@ import { useEmissionCountersStore } from '@/stores/emissionCounters'
 import { parseQty, fmtQty } from '@/lib/utils/format'
 
 const PAGE_SIZE = 20
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] transition-shadow'
 
 const STATIONARY_FUELS = ['natural_gas', 'heating_oil', 'lpg', 'diesel', 'wood_chips'] as const
 const EMPTY_FORM = { fuel_type: 'natural_gas', quantity: '' }
@@ -152,8 +152,8 @@ export default function Scope1StationaryPage() {
           </div>
         </div>
         <div className="bg-white border border-[#ececec] rounded-xl p-4 flex items-center gap-3">
-          <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${done === total && total > 0 ? 'bg-green-50' : 'bg-amber-50'}`}>
-            <Check className={`h-4 w-4 ${done === total && total > 0 ? 'text-green-600' : 'text-amber-500'}`} />
+          <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${done === total && total > 0 ? 'bg-[#f5f5f5]' : 'bg-amber-50'}`}>
+            <Check className={`h-4 w-4 ${done === total && total > 0 ? 'text-[#0f0f10]' : 'text-amber-500'}`} />
           </div>
           <div>
             <p className="text-xs text-[#767676]">{t('Dokončano', 'Completed')}</p>
@@ -207,13 +207,13 @@ export default function Scope1StationaryPage() {
                     </td>
                     <td className="px-5 py-4">
                       {entry
-                        ? <span className="text-sm font-semibold text-green-700">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
+                        ? <span className="text-sm font-semibold text-[#0f0f10]">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
                         : <span className="text-gray-300 text-sm">—</span>}
                     </td>
                     <td className="px-5 py-4">
                       {entry ? (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full bg-green-50 text-green-700">
-                          <span className="w-1.5 h-1.5 rounded-full bg-green-500" />{t('Podatki vneseni', 'Data entered')}
+                        <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full bg-[#f5f5f5] text-[#0f0f10]">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#f5f5f5]0" />{t('Podatki vneseni', 'Data entered')}
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-700">
@@ -231,7 +231,7 @@ export default function Scope1StationaryPage() {
                           </button>
                         ) : (
                           <button onClick={() => openAdd(loc)}
-                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#26a552] hover:text-[#1e8a43] px-3 py-1.5 bg-[#edf7f1] hover:bg-[#d4eddf] rounded-lg transition-colors">
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#0f0f10] hover:text-[#0f0f10] px-3 py-1.5 bg-[#efefef] hover:bg-[#d4eddf] rounded-lg transition-colors">
                             <Plus className="h-3 w-3" />{t('Dodaj emisije', 'Add emission data')}
                           </button>
                         )}
@@ -284,10 +284,10 @@ export default function Scope1StationaryPage() {
                 </div>
               </div>
               {preview !== null && (
-                <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3 flex items-center gap-3">
-                  <Leaf className="h-4 w-4 text-green-600 shrink-0" />
+                <div className="bg-[#f5f5f5] border border-green-100 rounded-xl px-4 py-3 flex items-center gap-3">
+                  <Leaf className="h-4 w-4 text-[#0f0f10] shrink-0" />
                   <div>
-                    <p className="text-xs text-green-700">{t('Izračunane emisije', 'Calculated emissions')}</p>
+                    <p className="text-xs text-[#0f0f10]">{t('Izračunane emisije', 'Calculated emissions')}</p>
                     <p className="text-base font-bold text-green-800">{(preview / 1000).toFixed(2).replace('.', ',')} tCO₂e</p>
                   </div>
                 </div>
@@ -303,7 +303,7 @@ export default function Scope1StationaryPage() {
               )}
               <button onClick={() => setShowModal(false)} className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">{t('Prekliči', 'Cancel')}</button>
               <button onClick={handleSave} disabled={saving || !form.quantity || parseQty(form.quantity) < 0}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : entriesMap[activeLocation.id] ? t('Shrani', 'Save') : t('Dodaj vnos', 'Add entry')}
               </button>
             </div>

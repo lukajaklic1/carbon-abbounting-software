@@ -31,7 +31,7 @@ export function TopBar() {
       <div className="flex items-center gap-4">
         <div>
           <p className="text-xs text-[#767676]">{t('Skupne emisije', 'Total emissions')}</p>
-          <p className="text-sm font-bold text-[#26a552]">{formatCo2e(totalKg)}</p>
+          <p className="text-sm font-bold text-[#0f0f10]">{formatCo2e(totalKg)}</p>
         </div>
       </div>
 
@@ -47,16 +47,16 @@ export function TopBar() {
             {IS_MOCK ? (
               [2024, 2025].map(y => (
                 <DropdownMenuItem key={y} onClick={() => handleSelectYear(y)}
-                  className={y === selectedYear ? 'font-semibold text-[#26a552]' : ''}>
+                  className={y === selectedYear ? 'font-semibold text-[#0f0f10]' : ''}>
                   {y}
                 </DropdownMenuItem>
               ))
             ) : availablePeriods.length > 0 ? (
               availablePeriods.map(p => (
                 <DropdownMenuItem key={p.year} onClick={() => handleSelectYear(p.year)}
-                  className={p.year === selectedYear ? 'font-semibold text-[#26a552]' : ''}>
+                  className={p.year === selectedYear ? 'font-semibold text-[#0f0f10]' : ''}>
                   {p.year}
-                  {p.status === 'completed' && <span className="ml-auto text-xs text-green-500">✓</span>}
+                  {p.status === 'completed' && <span className="ml-auto text-xs text-[#0f0f10]">✓</span>}
                 </DropdownMenuItem>
               ))
             ) : (
@@ -68,7 +68,7 @@ export function TopBar() {
               <>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => router.push('/app/periods/new')}
-                  className="text-[#26a552] font-medium">
+                  className="text-[#0f0f10] font-medium">
                   <Plus className="h-3.5 w-3.5 mr-1.5" />
                   {t('Dodaj leto', 'Add year')}
                 </DropdownMenuItem>

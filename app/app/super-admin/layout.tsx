@@ -99,13 +99,13 @@ function NavItem({ href, label, icon: Icon, counter, entityOnly, exact }: {
   return (
     <Link href={href} className={cn(
       'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold transition-colors',
-      active ? 'bg-[#edf7f1] text-[#26a552]' : 'text-[#767676] hover:bg-[#f9f9f9] hover:text-[#031f18]'
+      active ? 'bg-[#efefef] text-[#0f0f10]' : 'text-[#767676] hover:bg-[#f9f9f9] hover:text-[#031f18]'
     )}>
-      <Icon className={cn('h-4 w-4 shrink-0', active ? 'text-[#26a552]' : 'text-[#767676]')} />
+      <Icon className={cn('h-4 w-4 shrink-0', active ? 'text-[#0f0f10]' : 'text-[#767676]')} />
       <span className="truncate flex-1">{label}</span>
       {counter !== undefined && (
         <span className={cn('text-[10px] font-normal tabular-nums shrink-0 tracking-tight',
-          allDone ? 'text-green-500' : active ? 'text-[#51a676]' : 'text-[#767676]')}>
+          allDone ? 'text-[#0f0f10]' : active ? 'text-[#51a676]' : 'text-[#767676]')}>
           {entityOnly ? counter.total : `${counter.done}/${counter.total}`}
         </span>
       )}
@@ -158,7 +158,7 @@ function SuperAdminSidebar() {
     <aside className="flex flex-col h-full w-[220px] bg-white border-r border-[#ececec] shrink-0">
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-5 h-16 border-b border-[#ececec] shrink-0">
-        <div className="w-8 h-8 bg-[#26a552] rounded-xl flex items-center justify-center shrink-0">
+        <div className="w-8 h-8 bg-[#0f0f10] rounded-xl flex items-center justify-center shrink-0">
           <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
             <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
             <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>
@@ -167,7 +167,7 @@ function SuperAdminSidebar() {
         </div>
         <div>
           <span className="font-bold text-[#031f18] text-sm leading-tight block">CarbonTrack</span>
-          <span className="text-[10px] text-[#26a552] font-semibold">Super Admin</span>
+          <span className="text-[10px] text-[#0f0f10] font-semibold">Super Admin</span>
         </div>
       </div>
 
@@ -240,7 +240,7 @@ function SuperAdminSidebar() {
 
       {/* Bottom — same as regular sidebar */}
       <div className="border-t border-[#ececec] px-3 py-3 space-y-1 shrink-0">
-        <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#f9f9f9] transition-colors">
+        <div className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl hover:bg-[#f9f9f9] transition-colors">
           <div className="w-7 h-7 rounded-full bg-[#fafafa] border border-[#ececec] flex items-center justify-center shrink-0">
             <span className="text-[10px] font-semibold text-[#767676]">{userMeta.initials}</span>
           </div>

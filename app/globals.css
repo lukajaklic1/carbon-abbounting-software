@@ -10,9 +10,9 @@
    ═══════════════════════════════════════════════════ */
 :root {
   /* --- Brand --- */
-  --brand:          #26a552;   /* primary green (buttons, active, links) */
-  --brand-hover:    #1e8a43;   /* hover state */
-  --brand-subtle:   #edf7f1;   /* light green bg (badges, highlights) */
+  --brand:          #0f0f10;   /* primary (buttons, active, links) */
+  --brand-hover:    #2a2a2b;   /* hover state */
+  --brand-subtle:   #efefef;   /* subtle bg (badges, highlights) */
 
   /* --- Text --- */
   --text-primary:   #0f0f10;   /* headings, primary labels */
@@ -59,8 +59,8 @@
   --muted-foreground:     var(--text-secondary);
   --secondary:            var(--bg-sidebar);
   --secondary-foreground: var(--text-primary);
-  --accent:               var(--brand-subtle);
-  --accent-foreground:    var(--brand-hover);
+  --accent:               var(--bg-hover);
+  --accent-foreground:    var(--text-primary);
   --border:               var(--border-color);
   --input:                var(--bg-sidebar);
   --ring:                 var(--brand);

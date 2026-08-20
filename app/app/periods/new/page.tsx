@@ -56,9 +56,9 @@ export default function NewPeriodPage() {
     <div className="max-w-lg mx-auto p-6">
       <FormCard title={t('Novo leto poročanja', 'New reporting year')} backHref="/app/dashboard">
         <div className="p-6 space-y-5">
-          <div className="flex items-center gap-3 p-4 bg-[#edf7f1] border border-blue-100 rounded-xl">
-            <CalendarDays className="h-5 w-5 text-[#26a552] shrink-0" />
-            <p className="text-sm text-[#1e8a43]">
+          <div className="flex items-center gap-3 p-4 bg-[#efefef] border border-blue-100 rounded-xl">
+            <CalendarDays className="h-5 w-5 text-[#0f0f10] shrink-0" />
+            <p className="text-sm text-[#0f0f10]">
               {t('Vsako leto poročanja je ločen nabor podatkov o emisijah.', 'Each reporting year is a separate set of emissions data.')}
             </p>
           </div>
@@ -70,9 +70,9 @@ export default function NewPeriodPage() {
                 const taken = takenYears.includes(y)
                 return (
                   <button key={y} onClick={() => !taken && setYear(y)} disabled={taken}
-                    className={`py-2.5 rounded-xl text-sm font-semibold border-2 transition-all ${
+                    className={`py-1.5 rounded-xl text-sm font-semibold border-2 transition-all ${
                       taken ? 'border-[#ececec] bg-[#f9f9f9] text-gray-300 cursor-not-allowed' :
-                      year === y ? 'border-[#26a552] bg-[#edf7f1] text-[#26a552]' :
+                      year === y ? 'border-[#0f0f10] bg-[#efefef] text-[#0f0f10]' :
                       'border-[#ececec] bg-white text-[#031f18] hover:border-blue-300'
                     }`}>
                     {y}
@@ -91,7 +91,7 @@ export default function NewPeriodPage() {
               {t('Prekliči', 'Cancel')}
             </button>
             <button onClick={handleCreate} disabled={loading}
-              className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
+              className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
               {loading ? t('Ustvarjanje...', 'Creating...') : `${t('Ustvari', 'Create')} ${year}`}
             </button>
           </div>

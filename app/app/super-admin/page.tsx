@@ -64,8 +64,8 @@ export default function SuperAdminDashboard() {
   }
 
   const cards = [
-    { label: 'Skupaj podjetij', value: stats.orgs, icon: Building2, color: 'text-[#26a552]', bg: 'bg-[#edf7f1]' },
-    { label: 'Aktivni uporabniki', value: stats.users, icon: Users, color: 'text-green-600', bg: 'bg-green-50' },
+    { label: 'Skupaj podjetij', value: stats.orgs, icon: Building2, color: 'text-[#0f0f10]', bg: 'bg-[#efefef]' },
+    { label: 'Aktivni uporabniki', value: stats.users, icon: Users, color: 'text-[#0f0f10]', bg: 'bg-[#f5f5f5]' },
     { label: 'Nova podjetja ta mesec', value: stats.newOrgs, icon: TrendingUp, color: 'text-amber-500', bg: 'bg-amber-50' },
     { label: 'Novi uporabniki ta mesec', value: stats.newUsers, icon: UserPlus, color: 'text-orange-500', bg: 'bg-orange-50' },
   ]
@@ -97,7 +97,7 @@ export default function SuperAdminDashboard() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <TrendCard title="Rast podjetij" data={orgTrend} color="#26a552" total={stats.orgs} />
+        <TrendCard title="Rast podjetij" data={orgTrend} color="#0f0f10" total={stats.orgs} />
         <TrendCard title="Rast uporabnikov" data={userTrend} color="#10b981" total={stats.users} />
       </div>
     </div>

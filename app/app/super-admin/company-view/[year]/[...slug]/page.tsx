@@ -129,8 +129,8 @@ export default function CompanyViewSectionPage() {
       {/* Summary card */}
       <div className="mb-6">
         <div className="inline-flex items-center gap-3 bg-white border border-[#ececec] rounded-xl px-5 py-4">
-          <div className="w-9 h-9 bg-[#edf7f1] rounded-lg flex items-center justify-center shrink-0">
-            <svg className="h-4 w-4 text-[#26a552]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <div className="w-9 h-9 bg-[#efefef] rounded-lg flex items-center justify-center shrink-0">
+            <svg className="h-4 w-4 text-[#0f0f10]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18" />
             </svg>
           </div>
@@ -186,7 +186,7 @@ export default function CompanyViewSectionPage() {
                   </td>
                   <td className="px-5 py-4">
                     {row.co2e_kg != null ? (
-                      <span className="text-sm font-semibold text-green-700">{fmtCo2e(row.co2e_kg)}</span>
+                      <span className="text-sm font-semibold text-[#0f0f10]">{fmtCo2e(row.co2e_kg)}</span>
                     ) : (
                       <span className="text-gray-300 text-sm">—</span>
                     )}

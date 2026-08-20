@@ -148,8 +148,8 @@ export default function AnalyticsPage() {
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: t('Skupaj', 'Total'), value: fmtT(total), sub: 'tCO₂e', icon: Leaf, color: 'text-green-600', bg: 'bg-green-50' },
-          { label: 'Scope 1', value: fmtT(scopeData?.scope1_kg ?? 0), sub: `${pct(scopeData?.scope1_kg ?? 0)}%`, icon: Flame, color: 'text-[#26a552]', bg: 'bg-[#edf7f1]' },
+          { label: t('Skupaj', 'Total'), value: fmtT(total), sub: 'tCO₂e', icon: Leaf, color: 'text-[#0f0f10]', bg: 'bg-[#f5f5f5]' },
+          { label: 'Scope 1', value: fmtT(scopeData?.scope1_kg ?? 0), sub: `${pct(scopeData?.scope1_kg ?? 0)}%`, icon: Flame, color: 'text-[#0f0f10]', bg: 'bg-[#efefef]' },
           { label: 'Scope 2', value: fmtT(scopeData?.scope2_kg ?? 0), sub: `${pct(scopeData?.scope2_kg ?? 0)}%`, icon: Zap, color: 'text-amber-500', bg: 'bg-amber-50' },
           { label: 'Scope 3', value: fmtT(scopeData?.scope3_kg ?? 0), sub: `${pct(scopeData?.scope3_kg ?? 0)}%`, icon: Wind, color: 'text-emerald-600', bg: 'bg-emerald-50' },
         ].map(card => {
@@ -187,7 +187,7 @@ export default function AnalyticsPage() {
                 />
                 <Bar dataKey="emisije" radius={[6, 6, 0, 0]}>
                   {yearChartData.map((entry, i) => (
-                    <Cell key={i} fill={entry.year === String(year) ? '#26a552' : '#bfdbfe'} />
+                    <Cell key={i} fill={entry.year === String(year) ? '#0f0f10' : '#bfdbfe'} />
                   ))}
                 </Bar>
               </BarChart>

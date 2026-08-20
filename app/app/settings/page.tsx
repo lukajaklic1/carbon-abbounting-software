@@ -6,8 +6,8 @@ import { useOrganizationStore } from '@/stores/organization'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { Check, AlertCircle, Building2, User } from 'lucide-react'
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] transition-shadow'
 
 const INDUSTRIES = [
   { value: 'manufacturing', sl: 'Predelovalna industrija', en: 'Manufacturing' },
@@ -62,8 +62,8 @@ function Card({ title, icon: Icon, children }: { title: string; icon: React.Elem
   return (
     <div className="bg-white border border-[#ececec] rounded-2xl overflow-hidden">
       <div className="px-8 py-5 border-b border-[#ececec] flex items-center gap-3">
-        <div className="w-8 h-8 bg-[#edf7f1] rounded-lg flex items-center justify-center shrink-0">
-          <Icon className="h-4 w-4 text-[#26a552]" />
+        <div className="w-8 h-8 bg-[#efefef] rounded-lg flex items-center justify-center shrink-0">
+          <Icon className="h-4 w-4 text-[#0f0f10]" />
         </div>
         <h2 className="text-sm font-semibold text-[#031f18]">{title}</h2>
       </div>
@@ -151,7 +151,7 @@ export default function SettingsPage() {
         {/* Company */}
         <Card title={t('Profil podjetja', 'Company profile')} icon={Building2}>
           {!isAdmin && (
-            <div className="mb-5 flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs px-3 py-2.5 rounded-xl">
+            <div className="mb-5 flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs px-3 py-1.5 rounded-xl">
               <AlertCircle className="h-3.5 w-3.5 shrink-0" />
               {t('Nastavitve podjetja lahko spreminja samo admin.', 'Only admins can change company settings.')}
             </div>
@@ -185,7 +185,7 @@ export default function SettingsPage() {
             {isAdmin && (
               <div className="flex justify-end pt-1">
                 <button onClick={saveOrg} disabled={savingOrg || !orgName.trim()}
-                  className="px-6 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
+                  className="px-6 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
                   {savingOrg ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
                 </button>
               </div>
@@ -210,7 +210,7 @@ export default function SettingsPage() {
 
             <div className="flex justify-end pt-1">
               <button onClick={saveProfile} disabled={savingProfile}
-                className="px-6 py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="px-6 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
                 {savingProfile ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
               </button>
             </div>

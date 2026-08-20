@@ -56,7 +56,7 @@ export default function AdminEquipmentPage() {
                   <td className="px-5 py-3.5 text-sm text-[#767676]">{r.category ?? r.fuel_type ?? '—'}</td>
                   <td className="px-5 py-3.5">
                     <span className={cn('px-2 py-0.5 rounded-full text-xs font-semibold',
-                      r.is_active !== false ? 'bg-green-100 text-green-700' : 'bg-[#fafafa] text-[#767676]')}>
+                      r.is_active !== false ? 'bg-[#efefef] text-[#0f0f10]' : 'bg-[#fafafa] text-[#767676]')}>
                       {r.is_active !== false ? 'Aktivna' : 'Neaktivna'}
                     </span>
                   </td>

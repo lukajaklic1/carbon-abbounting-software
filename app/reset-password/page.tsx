@@ -42,14 +42,14 @@ export default function ResetPasswordPage() {
     setLoading(false)
   }
 
-  const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
+  const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
 
   return (
     <div className="min-h-screen bg-[#f9fafb] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <div className="w-12 h-12 bg-[#26a552] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
+          <div className="w-12 h-12 bg-[#0f0f10] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
               <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
               <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>
@@ -61,8 +61,8 @@ export default function ResetPasswordPage() {
         <div className="bg-white border border-[#ececec] rounded-2xl shadow-sm p-8">
           {done ? (
             <div className="text-center py-2">
-              <div className="w-12 h-12 bg-green-50 border border-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check className="h-5 w-5 text-green-600" />
+              <div className="w-12 h-12 bg-[#f5f5f5] border border-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Check className="h-5 w-5 text-[#0f0f10]" />
               </div>
               <h2 className="text-base font-bold text-[#031f18] mb-1">Geslo posodobljeno</h2>
               <p className="text-sm text-[#767676]">Preusmerjamo vas na prijavo...</p>
@@ -108,7 +108,7 @@ export default function ResetPasswordPage() {
                 {error && <p className="text-xs text-red-500">{error}</p>}
 
                 <button type="submit" disabled={loading || !password || !confirm || !ready}
-                  className="w-full py-2.5 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:opacity-50 rounded-lg transition-colors">
+                  className="w-full py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-50 rounded-lg transition-colors">
                   {loading ? 'Shranjevanje...' : 'Nastavi novo geslo'}
                 </button>
               </form>

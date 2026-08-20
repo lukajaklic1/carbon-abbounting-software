@@ -53,8 +53,8 @@ export default function AdminVehiclesPage() {
                 <tr key={r.id} className={cn('hover:bg-[#f9f9f9]', i !== 0 && 'border-t border-[#ececec]')}>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 bg-[#edf7f1] rounded-lg flex items-center justify-center shrink-0">
-                        <Car className="h-3.5 w-3.5 text-[#26a552]" />
+                      <div className="w-7 h-7 bg-[#efefef] rounded-lg flex items-center justify-center shrink-0">
+                        <Car className="h-3.5 w-3.5 text-[#0f0f10]" />
                       </div>
                       <span className="text-sm font-semibold text-[#031f18]">{r.name}</span>
                     </div>
@@ -63,7 +63,7 @@ export default function AdminVehiclesPage() {
                   <td className="px-5 py-3.5 text-sm text-[#767676]">{r.fuel_type ?? '—'}</td>
                   <td className="px-5 py-3.5">
                     <span className={cn('px-2 py-0.5 rounded-full text-xs font-semibold',
-                      r.is_active ? 'bg-green-100 text-green-700' : 'bg-[#fafafa] text-[#767676]')}>
+                      r.is_active ? 'bg-[#efefef] text-[#0f0f10]' : 'bg-[#fafafa] text-[#767676]')}>
                       {r.is_active ? 'Aktivno' : 'Neaktivno'}
                     </span>
                   </td>

@@ -86,7 +86,7 @@ export default function CompaniesPage() {
                 <td className="px-5 py-3.5 text-sm text-[#767676]">{fmt(c.created_at)}</td>
                 <td className="px-5 py-3.5 text-sm text-[#767676]">{c.member_count} {c.member_count === 1 ? 'uporabnik' : 'uporabnika'}</td>
                 <td className="px-5 py-3.5">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-green-100 text-green-700">Aktivno</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-[#efefef] text-[#0f0f10]">Aktivno</span>
                 </td>
               </tr>
             ))}

@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import {
   MapPin, Car, BarChart2, FileText, Flame, Zap, Thermometer,
   FlaskConical, Settings, LogOut, Users, ChevronDown, ChevronRight,
-  Wrench, Wind, Package, PanelLeft, ChevronLeft,
+  Wrench, Wind, Package, PanelLeft, ChevronLeft, Home,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useOrganizationStore } from '@/stores/organization'
@@ -23,9 +23,9 @@ function CarboniqIcon({ size = 32 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       {/* Grey chevron — behind */}
-      <path d="M16 6L10 12L16 18" stroke="#c0c0c0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 6L8 12L14 18" stroke="#c0c0c0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
       {/* Black chevron — front */}
-      <path d="M12 6L6 12L12 18" stroke="#0f0f10" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 6L4 12L10 18" stroke="#0f0f10" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -110,11 +110,11 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
   ]
 
   return (
-    <aside className={`flex flex-col h-full shrink-0 transition-all duration-200 ${collapsed ? 'w-[56px]' : 'w-[228px]'}`}
+    <aside className={`flex flex-col h-full shrink-0 transition-all duration-200 ${collapsed ? 'w-[56px]' : 'w-[264px]'}`}
       style={{ background: 'var(--bg-sidebar)', borderRight: '1px solid var(--border-color)' }}>
 
       {/* ── Logo ── */}
-      <div className="flex items-center h-14 lg:h-16 shrink-0 px-3 gap-0.5"
+      <div className="flex items-center h-12 lg:h-14 shrink-0 px-3 gap-0"
         style={{ borderBottom: '1px solid var(--border-color)' }}>
         {/* Icon always visible */}
         <div className="shrink-0">
@@ -140,40 +140,15 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
       </div>
 
       {/* ── Org + year ── */}
-      {!collapsed && <div className="px-3 pt-3 pb-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-        <div className="text-[11px] font-medium px-2 mb-1.5 truncate"
-          style={{ color: 'var(--text-muted)' }}>{orgName}</div>
-
-        {/* Year pill */}
-        <div className="relative">
-          <button onClick={() => setYearOpen(v => !v)}
-            className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-[13px] transition-colors text-left"
-            style={{ color: 'var(--text-secondary)' }}
-            onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-hover)')}
-            onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-            <span style={{ color: 'var(--text-muted)', fontSize: '12px' }}>{t('Leto', 'Year')}</span>
-            <span className="font-semibold ml-auto" style={{ color: 'var(--text-primary)' }}>{selectedYear ?? '—'}</span>
-            <ChevronDown className="h-3 w-3 shrink-0" style={{ color: 'var(--text-muted)' }} />
-          </button>
-          {yearOpen && (
-            <div className="absolute left-0 right-0 top-full mt-1 rounded-xl py-1 z-50 shadow-lg"
-              style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)' }}>
-              {(IS_MOCK ? [2024, 2025] : availablePeriods.map(p => p.year)).map(y => (
-                <button key={y} onClick={() => handleSelectYear(Number(y))}
-                  className="w-full text-left px-3 py-1.5 text-[13px] transition-colors"
-                  style={{ color: y === selectedYear ? 'var(--brand)' : 'var(--text-primary)', fontWeight: y === selectedYear ? 600 : 400 }}
-                  onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-hover)')}
-                  onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-                  {y}
-                </button>
-              ))}
-            </div>
-          )}
+      {!collapsed && <div className="px-3 py-2" style={{ borderBottom: '1px solid var(--border-color)' }}>
+        <div className="flex items-center w-full px-3 py-1.5 rounded-xl text-[14px] font-medium truncate"
+          style={{ background: '#ffffff', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
+          {orgName}
         </div>
       </div>}
 
       {/* ── Nav ── */}
-      <nav className="flex-1 px-3 py-2 overflow-y-auto">
+      <nav className="flex-1 px-3 py-2 overflow-y-auto flex flex-col gap-0.5">
 
         {!collapsed && <SectionLabel label={t('Moja organizacija', 'My organisation')} open={openOrg} onToggle={() => setOpenOrg(v => !v)} />}
         {(collapsed || openOrg) && mainItems.map(i => (
@@ -253,16 +228,19 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
 }
 
 /* ─── Section label (ElevenLabs "Pinned" style) ─── */
-function SectionLabel({ label, open, onToggle }: { label: string; open: boolean; onToggle: () => void }) {
+function SectionLabel({ label, open, onToggle, icon: Icon }: {
+  label: string; open: boolean; onToggle: () => void; icon?: React.ElementType
+}) {
   return (
     <button onClick={onToggle}
-      className="w-full flex items-center gap-1 px-2 py-1.5 mt-2 rounded-md transition-colors group"
+      className="w-full flex items-center gap-2.5 px-2 py-[7px] mt-1 mx-1 rounded-xl transition-colors group"
       onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-hover)')}
       onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
+      {Icon && <Icon className="h-[17px] w-[17px] shrink-0" style={{ color: 'var(--text-muted)' }} />}
+      <span className="text-[14px] font-medium flex-1 text-left" style={{ color: 'var(--text-primary)' }}>{label}</span>
       {open
         ? <ChevronDown className="h-3 w-3 shrink-0" style={{ color: 'var(--text-muted)' }} />
         : <ChevronRight className="h-3 w-3 shrink-0" style={{ color: 'var(--text-muted)' }} />}
-      <span className="text-[11px] font-medium" style={{ color: 'var(--text-muted)' }}>{label}</span>
     </button>
   )
 }
@@ -276,18 +254,18 @@ function NavItem({ href, label, icon: Icon, active, counter, entityOnly, collaps
   return (
     <Link href={href}
       title={collapsed ? label : undefined}
-      className={`flex items-center gap-2.5 px-2 py-[7px] rounded-lg text-[13px] transition-colors group ${collapsed ? 'justify-center' : ''}`}
+      className={`flex items-center gap-2.5 px-2 py-[5px] mx-1 rounded-xl text-[14px] transition-colors group ${collapsed ? 'justify-center' : ''}`}
       style={active
         ? { background: 'var(--bg-selected)', color: 'var(--text-primary)', fontWeight: 500 }
-        : { color: 'var(--text-secondary)', fontWeight: 400 }}
+        : { color: 'var(--text-primary)', fontWeight: 500 }}
       onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.background = 'var(--bg-hover)' }}
       onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.background = 'transparent' }}>
-      <Icon className="h-[15px] w-[15px] shrink-0"
+      <Icon className="h-[17px] w-[17px] shrink-0"
         style={{ color: active ? 'var(--text-primary)' : 'var(--text-muted)' }} />
       {!collapsed && <span className="truncate flex-1">{label}</span>}
       {!collapsed && counter !== undefined && (
-        <span className="text-[10px] tabular-nums shrink-0"
-          style={{ color: allDone ? 'var(--brand)' : 'var(--text-muted)', fontWeight: allDone ? 600 : 400 }}>
+        <span className="text-[12px] tabular-nums shrink-0"
+          style={{ color: allDone ? 'var(--brand)' : 'var(--text-muted)', fontWeight: 500 }}>
           {entityOnly ? counter.total : `${counter.done}/${counter.total}`}
         </span>
       )}

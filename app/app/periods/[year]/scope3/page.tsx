@@ -192,8 +192,8 @@ export default function Scope3Page() {
           </div>
         </div>
         <div className="bg-white border border-[#ececec] rounded-xl p-4 flex items-center gap-3">
-          <div className="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
-            <Check className="h-4 w-4 text-green-600" />
+          <div className="w-9 h-9 bg-[#f5f5f5] rounded-lg flex items-center justify-center shrink-0">
+            <Check className="h-4 w-4 text-[#0f0f10]" />
           </div>
           <div>
             <p className="text-xs text-[#767676]">{t('Zaključeno', 'Completed')}</p>
@@ -230,7 +230,7 @@ export default function Scope3Page() {
               <div key={cat.number} className={cn('flex items-center gap-4 px-5 py-3.5', i !== 0 && 'border-t border-[#ececec]', 'hover:bg-[#f9f9f9]/50 transition-colors')}>
                 {/* Number */}
                 <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold',
-                  isDone ? 'bg-green-50 text-green-600' : isInReview ? 'bg-amber-50 text-amber-600' : 'bg-[#fafafa] text-[#767676]'
+                  isDone ? 'bg-[#f5f5f5] text-[#0f0f10]' : isInReview ? 'bg-amber-50 text-amber-600' : 'bg-[#fafafa] text-[#767676]'
                 )}>
                   {cat.number}
                 </div>
@@ -240,7 +240,7 @@ export default function Scope3Page() {
                   <p className="text-sm font-semibold text-[#031f18] shrink-0">{t(cat.label_sl, cat.label_en)}</p>
                   {sub?.file_name && (
                     <a href={sub.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#fafafa] hover:bg-[#edf7f1] hover:text-[#26a552] text-[#767676] transition-colors shrink min-w-0 max-w-[200px]">
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#fafafa] hover:bg-[#efefef] hover:text-[#0f0f10] text-[#767676] transition-colors shrink min-w-0 max-w-[200px]">
                       <Download className="h-3 w-3 shrink-0" />
                       <span className="text-xs font-medium truncate">{sub.file_name}</span>
                     </a>
@@ -260,7 +260,7 @@ export default function Scope3Page() {
                 {/* Badge */}
                 <div className="shrink-0">
                   {isDone && (
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700 border border-green-200">
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-[#efefef] text-[#0f0f10] border border-[#ececec]">
                       <Check className="h-3 w-3" />
                       {t('Zaključeno', 'Done')}
                     </span>
@@ -277,7 +277,7 @@ export default function Scope3Page() {
                 {!sub && (
                   <button
                     onClick={() => openModal(cat)}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0 bg-[#26a552] text-white hover:bg-[#1e8a43]"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0 bg-[#0f0f10] text-white hover:bg-[#2a2a2b]"
                   >
                     <Upload className="h-3 w-3" />
                     {t('Naloži podatke', 'Upload data')}
@@ -310,8 +310,8 @@ export default function Scope3Page() {
             <div className="px-6 py-5">
               {modal.selectedFile ? (
                 /* File selected state */
-                <div className="border-2 border-dashed border-green-300 bg-green-50 rounded-xl p-6 text-center">
-                  <FileText className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                <div className="border-2 border-dashed border-green-300 bg-[#f5f5f5] rounded-xl p-6 text-center">
+                  <FileText className="h-8 w-8 text-[#0f0f10] mx-auto mb-2" />
                   <p className="text-sm font-semibold text-[#031f18] mb-0.5">{modal.selectedFile.name}</p>
                   <p className="text-xs text-[#767676] mb-4">{(modal.selectedFile.size / 1024).toFixed(0)} KB</p>
                   <div className="flex items-center justify-center gap-2">
@@ -343,7 +343,7 @@ export default function Scope3Page() {
                     <span className="text-xs text-[#767676] truncate">{t('Obstoječa', 'Existing')}: {modal.existing.file_name}</span>
                   </div>
                   <a href={modal.existing.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
-                    className="text-xs text-[#26a552] hover:underline shrink-0 ml-2">
+                    className="text-xs text-[#0f0f10] hover:underline shrink-0 ml-2">
                     {t('Prenesi', 'Download')}
                   </a>
                 </div>
@@ -367,7 +367,7 @@ export default function Scope3Page() {
                   'px-5 py-2 text-sm font-semibold rounded-lg transition-colors',
                   !modal.selectedFile || modal.uploading
                     ? 'bg-[#fafafa] text-[#767676] cursor-not-allowed'
-                    : 'bg-[#26a552] text-white hover:bg-[#1e8a43]'
+                    : 'bg-[#0f0f10] text-white hover:bg-[#2a2a2b]'
                 )}
               >
                 {modal.uploading ? t('Pošiljanje...', 'Submitting...') : t('Pošlji v pregled', 'Submit for Review')}

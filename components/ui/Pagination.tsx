@@ -44,7 +44,7 @@ export function Pagination({ page, totalPages, totalItems, pageSize, onPage }: P
                 onClick={() => onPage(p as number)}
                 className={`min-w-[28px] h-7 px-1 text-xs rounded-lg font-medium transition-colors ${
                   p === page
-                    ? 'bg-[#26a552] text-white'
+                    ? 'bg-[#0f0f10] text-white'
                     : 'text-[#767676] hover:bg-[#fafafa]'
                 }`}
               >

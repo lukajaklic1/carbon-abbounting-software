@@ -21,8 +21,8 @@ type Member = {
   isOwner?: boolean
 }
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#26a552] focus:shadow-[0_0_0_2px_#26a55233] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] transition-shadow'
 
 export default function TeamPage() {
   const { t } = useLocale()
@@ -206,7 +206,7 @@ export default function TeamPage() {
         </div>
         {isAdmin && (
           <button onClick={() => { setShowInvite(true); resetInviteForm() }}
-            className="inline-flex items-center gap-2 bg-[#26a552] hover:bg-[#1e8a43] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+            className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
             <Plus className="h-4 w-4" /> {t('Dodaj uporabnika', 'Add user')}
           </button>
         )}
@@ -249,12 +249,12 @@ export default function TeamPage() {
 
               <label className="flex items-center gap-2.5 cursor-pointer select-none">
                 <input type="checkbox" checked={inviteAsAdmin} onChange={e => setInviteAsAdmin(e.target.checked)}
-                  className="w-4 h-4 rounded border-[#ececec] text-[#26a552] focus:ring-blue-600 focus:ring-1" />
+                  className="w-4 h-4 rounded border-[#ececec] text-[#0f0f10] focus:ring-blue-600 focus:ring-1" />
                 <span className="text-sm text-[#031f18]">{t('Povabi kot administratorja', 'Invite as administrator')}</span>
               </label>
 
               {inviteMsg && (
-                <p className={`text-xs px-3 py-2 rounded-lg ${inviteMsg.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-600'}`}>{inviteMsg.text}</p>
+                <p className={`text-xs px-3 py-2 rounded-lg ${inviteMsg.type === 'success' ? 'bg-[#f5f5f5] text-[#0f0f10]' : 'bg-red-50 text-red-600'}`}>{inviteMsg.text}</p>
               )}
             </div>
 
@@ -264,7 +264,7 @@ export default function TeamPage() {
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={sendInvite} disabled={inviting || !inviteEmail.trim()}
-                className="px-5 py-2 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-lg transition-colors">
+                className="px-5 py-2 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-lg transition-colors">
                 {inviting ? t('Pošiljanje...', 'Sending...') : t('Pošlji povabilo', 'Send invite')}
               </button>
             </div>
@@ -312,14 +312,14 @@ export default function TeamPage() {
                     {/* Role */}
                     <td className="px-6 py-3.5">
                       {m.role === 'admin'
-                        ? <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#edf7f1] text-[#1e8a43] px-2.5 py-1 rounded-full">Administrator</span>
+                        ? <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#efefef] text-[#0f0f10] px-2.5 py-1 rounded-full">Administrator</span>
                         : <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#fafafa] text-[#767676] px-2.5 py-1 rounded-full"><UserCheck className="h-3 w-3" /> {t('Član', 'Member')}</span>
                       }
                     </td>
 
                     {/* Status */}
                     <td className="px-6 py-3.5">
-                      {m.status === 'active' && <span className="inline-flex items-center gap-1 text-xs font-medium bg-green-50 text-green-700 px-2.5 py-1 rounded-full">{t('Aktiven', 'Active')}</span>}
+                      {m.status === 'active' && <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#f5f5f5] text-[#0f0f10] px-2.5 py-1 rounded-full">{t('Aktiven', 'Active')}</span>}
                       {m.status === 'invited' && (
                         <button onClick={() => resendInvite(m.invited_email!)}
                           className="inline-flex items-center gap-1 text-xs font-medium bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full hover:bg-amber-100 transition-colors">
@@ -334,7 +334,7 @@ export default function TeamPage() {
                       <div className="flex items-center gap-1 justify-end">
                         {canEdit && (
                           <button onClick={() => { setEditMember(m); setEditRole(m.role); setEditFirstName(m.first_name ?? ''); setEditLastName(m.last_name ?? '') }}
-                            className="p-1.5 text-[#767676] hover:text-[#26a552] hover:bg-[#edf7f1] rounded-lg transition-colors" title={t('Uredi', 'Edit')}>
+                            className="p-1.5 text-[#767676] hover:text-[#0f0f10] hover:bg-[#efefef] rounded-lg transition-colors" title={t('Uredi', 'Edit')}>
                             <Pencil className="h-3.5 w-3.5" />
                           </button>
                         )}
@@ -363,7 +363,7 @@ export default function TeamPage() {
               <button onClick={() => setEditMember(null)} className="p-1 text-[#767676] hover:text-[#767676] rounded-lg"><X className="h-4 w-4" /></button>
             </div>
             <div className="flex items-center gap-3 mb-5 p-3 bg-[#f9f9f9] rounded-xl">
-              <div className="w-9 h-9 rounded-full bg-[#edf7f1] border border-blue-100 flex items-center justify-center text-xs font-bold text-[#26a552] shrink-0">
+              <div className="w-9 h-9 rounded-full bg-[#efefef] border border-blue-100 flex items-center justify-center text-xs font-bold text-[#0f0f10] shrink-0">
                 {initials(editMember)}
               </div>
               <div>
@@ -398,7 +398,7 @@ export default function TeamPage() {
             )}
             <div className="flex gap-2 justify-end">
               <button onClick={() => setEditMember(null)} className="px-4 py-2 text-sm font-medium text-[#767676] hover:bg-[#fafafa] rounded-lg transition-colors">{t('Prekliči', 'Cancel')}</button>
-              <button onClick={saveEdit} disabled={saving} className="px-4 py-2 text-sm font-semibold text-white bg-[#26a552] hover:bg-[#1e8a43] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-lg transition-colors">
+              <button onClick={saveEdit} disabled={saving} className="px-4 py-2 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-lg transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
               </button>
             </div>
