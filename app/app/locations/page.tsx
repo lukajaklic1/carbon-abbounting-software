@@ -227,7 +227,7 @@ export default function LocationsPage() {
 
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-2 mb-4">
-        <div className="inline-flex items-center gap-2 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] min-w-[180px]">
+        <div className="inline-flex items-center gap-2 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] min-w-[180px]">
           <Search className="h-3.5 w-3.5 text-[#767676] shrink-0" />
           <input
             value={search} onChange={e => { setSearch(e.target.value); setPage(1) }}
@@ -235,7 +235,7 @@ export default function LocationsPage() {
             className="flex-1 bg-transparent focus:outline-none text-[#0f0f10] placeholder:text-[#b0b0b0] text-[13px]"
           />
         </div>
-        <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+        <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
           <span className="text-[#767676]">{t('Tip:', 'Type:')}</span>
           <select value={filterType} onChange={e => { setFilterType(e.target.value); setPage(1) }}
             className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
@@ -243,7 +243,7 @@ export default function LocationsPage() {
             {LOCATION_TYPES.map(lt => <option key={lt.value} value={lt.value}>{lt.sl}</option>)}
           </select>
         </label>
-        <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+        <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
           <span className="text-[#767676]">{t('Status:', 'Status:')}</span>
           <select value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1) }}
             className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
@@ -254,7 +254,7 @@ export default function LocationsPage() {
         </label>
         {(search || filterType || filterStatus) && (
           <button onClick={() => { setSearch(''); setFilterType(''); setFilterStatus(''); setPage(1) }}
-            className="h-8 px-3 text-[13px] font-medium text-[#767676] bg-white border border-[#ececec] rounded-xl hover:bg-[#fafafa] transition-colors">
+            className="h-9 px-3 text-[13px] font-medium text-[#767676] bg-white border border-[#ececec] rounded-xl hover:bg-[#fafafa] transition-colors">
             {t('Počisti', 'Clear')}
           </button>
         )}

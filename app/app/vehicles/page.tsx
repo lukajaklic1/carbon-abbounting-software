@@ -76,6 +76,7 @@ export default function VehiclesPage() {
   const [locations, setLocations] = useState<any[]>([])
   const [filterLocation, setFilterLocation] = useState('')
   const [filterType, setFilterType] = useState('')
+  const [filterFuel, setFilterFuel] = useState('')
   const [search, setSearch] = useState('')
   const [filterStatus, setFilterStatus] = useState('')
   const [loading, setLoading] = useState(true)
@@ -228,6 +229,7 @@ export default function VehiclesPage() {
     .filter(v => !search || v.name?.toLowerCase().includes(search.toLowerCase()) || v.make?.toLowerCase().includes(search.toLowerCase()) || v.model?.toLowerCase().includes(search.toLowerCase()) || v.registration_number?.toLowerCase().includes(search.toLowerCase()))
     .filter(v => !filterLocation || v.location_id === filterLocation)
     .filter(v => !filterType || v.vehicle_type === filterType)
+    .filter(v => !filterFuel || v.fuel_type === filterFuel)
     .filter(v => filterStatus === '' ? true : filterStatus === 'active' ? v.is_active : !v.is_active)
 
   const totalPages = Math.ceil(filteredVehicles.length / PAGE_SIZE)
@@ -293,13 +295,13 @@ export default function VehiclesPage() {
 
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-2 mb-4">
-        <div className="inline-flex items-center gap-2 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] min-w-[180px]">
+        <div className="inline-flex items-center gap-2 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] min-w-[180px]">
           <Search className="h-3.5 w-3.5 text-[#767676] shrink-0" />
           <input value={search} onChange={e => { setSearch(e.target.value); setPage(1) }}
             placeholder={t('Iskanje...', 'Search...')}
             className="flex-1 bg-transparent focus:outline-none text-[#0f0f10] placeholder:text-[#b0b0b0] text-[13px]" />
         </div>
-        <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+        <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
           <span className="text-[#767676]">{t('Tip:', 'Type:')}</span>
           <select value={filterType} onChange={e => { setFilterType(e.target.value); setPage(1) }}
             className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
@@ -307,8 +309,16 @@ export default function VehiclesPage() {
             {VEHICLE_TYPES.map(vt => <option key={vt.value} value={vt.value}>{locale === 'EN' ? vt.en : vt.sl}</option>)}
           </select>
         </label>
+        <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+          <span className="text-[#767676]">{t('Gorivo:', 'Fuel:')}</span>
+          <select value={filterFuel} onChange={e => { setFilterFuel(e.target.value); setPage(1) }}
+            className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
+            <option value="">{t('Vsi', 'All')}</option>
+            {FUEL_TYPES.map(ft => <option key={ft.value} value={ft.value}>{locale === 'EN' ? ft.en : ft.sl}</option>)}
+          </select>
+        </label>
         {locations.length > 0 && (
-          <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+          <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
             <span className="text-[#767676]">{t('Lokacija:', 'Location:')}</span>
             <select value={filterLocation} onChange={e => { setFilterLocation(e.target.value); setPage(1) }}
               className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
@@ -317,7 +327,7 @@ export default function VehiclesPage() {
             </select>
           </label>
         )}
-        <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
+        <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] transition-colors">
           <span className="text-[#767676]">{t('Status:', 'Status:')}</span>
           <select value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1) }}
             className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
@@ -326,9 +336,9 @@ export default function VehiclesPage() {
             <option value="inactive">{t('Neaktivno', 'Inactive')}</option>
           </select>
         </label>
-        {(search || filterType || filterLocation || filterStatus) && (
-          <button onClick={() => { setSearch(''); setFilterType(''); setFilterLocation(''); setFilterStatus(''); setPage(1) }}
-            className="h-8 px-3 text-[13px] font-medium text-[#767676] bg-white border border-[#ececec] rounded-xl hover:bg-[#fafafa] transition-colors">
+        {(search || filterType || filterFuel || filterLocation || filterStatus) && (
+          <button onClick={() => { setSearch(''); setFilterType(''); setFilterFuel(''); setFilterLocation(''); setFilterStatus(''); setPage(1) }}
+            className="h-9 px-3 text-[13px] font-medium text-[#767676] bg-white border border-[#ececec] rounded-xl hover:bg-[#fafafa] transition-colors">
             {t('Počisti', 'Clear')}
           </button>
         )}
