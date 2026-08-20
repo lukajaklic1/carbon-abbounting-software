@@ -107,7 +107,7 @@ export default function AdminScope3Page() {
     <div className="p-4 lg:p-8 max-w-5xl mx-auto">
       <div className="mb-6">
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">Super Admin</p>
-        <h1 className="text-2xl font-semibold text-[#0f0f10]">Scope 3 — Oddane datoteke</h1>
+        <h1 className="text-2xl font-medium text-[#0f0f10]">Scope 3 — Oddane datoteke</h1>
       </div>
 
       {/* Stats */}

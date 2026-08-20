@@ -176,7 +176,7 @@ export default function Scope3Page() {
       {/* Header */}
       <div className="mb-6">
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">Scope 3 · {year}</p>
-        <h1 className="text-2xl font-semibold text-[#0f0f10]">{t('Posredne emisije vrednostne verige', 'Value Chain Indirect Emissions')}</h1>
+        <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Posredne emisije vrednostne verige', 'Value Chain Indirect Emissions')}</h1>
       </div>
 
       {/* Stats */}

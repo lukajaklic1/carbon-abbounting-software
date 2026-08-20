@@ -89,7 +89,7 @@ export default function DashboardPage() {
 
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-semibold text-[#0f0f10]">{org?.name}</h1>
+        <h1 className="text-2xl font-medium text-[#0f0f10]">{org?.name}</h1>
       </div>
 
       {/* Stats row */}
@@ -100,7 +100,7 @@ export default function DashboardPage() {
             <div key={s.label} className="bg-white border border-[#ececec] rounded-xl p-5 flex items-start justify-between">
               <div>
                 <p className="text-xs text-[#767676] mb-1">{s.label}</p>
-                <p className="text-2xl font-semibold text-[#0f0f10]">{s.value}</p>
+                <p className="text-2xl font-medium text-[#0f0f10]">{s.value}</p>
                 <p className="text-xs text-[#767676] mt-0.5">{s.sub}</p>
               </div>
               <div className={`w-9 h-9 ${s.bg} rounded-lg flex items-center justify-center shrink-0`}>

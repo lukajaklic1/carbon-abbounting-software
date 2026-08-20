@@ -200,7 +200,7 @@ export default function ReportsPage() {
       <div className="flex items-start justify-between mb-8">
         <div>
           <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">GHG · {year}</p>
-          <h1 className="text-2xl font-semibold text-[#0f0f10]">{t('Poročilo o metodologiji GHG', 'GHG Methodology Report')}</h1>
+          <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Poročilo o metodologiji GHG', 'GHG Methodology Report')}</h1>
           <p className="text-sm text-[#767676] mt-1 max-w-lg">
             {t('Pregled metodologij in emisijskih faktorjev za izračun ogljičnega odtisa po GHG protokolu.', 'Overview of methodologies and emission factors used to calculate your carbon footprint per GHG Protocol.')}
           </p>

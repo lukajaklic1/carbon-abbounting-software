@@ -146,7 +146,7 @@ export default function SettingsPage() {
   return (
     <div className="min-h-full py-10 px-8">
       <div className="max-w-2xl mx-auto space-y-6">
-        <h1 className="text-2xl font-semibold text-[#0f0f10]">{t('Nastavitve', 'Settings')}</h1>
+        <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Nastavitve', 'Settings')}</h1>
 
         {/* Company */}
         <Card title={t('Profil podjetja', 'Company profile')} icon={Building2}>

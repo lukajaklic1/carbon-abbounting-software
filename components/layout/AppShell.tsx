@@ -143,7 +143,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <LocaleProvider>
-      <div className="flex h-screen bg-[#f7f8fa] overflow-hidden">
+      <div className="flex h-screen bg-white overflow-hidden">
         <OrgLoader />
 
         {/* Desktop sidebar */}

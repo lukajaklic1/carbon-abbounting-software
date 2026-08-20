@@ -123,7 +123,7 @@ export default function CompanyViewSectionPage() {
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">
           {cfg.scope} · {selectedOrg.name} · {year}
         </p>
-        <h1 className="text-2xl font-semibold text-[#0f0f10]">{cfg.title}</h1>
+        <h1 className="text-2xl font-medium text-[#0f0f10]">{cfg.title}</h1>
       </div>
 
       {/* Summary card */}

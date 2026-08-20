@@ -26,7 +26,7 @@ export default function AdminLocationsPage() {
     <div className="p-4 lg:p-8">
       <div className="mb-6">
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">{selectedOrg.name}</p>
-        <h1 className="text-2xl font-semibold text-[#0f0f10]">Lokacije</h1>
+        <h1 className="text-2xl font-medium text-[#0f0f10]">Lokacije</h1>
       </div>
       {loading ? (
         <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">Nalaganje...</div>

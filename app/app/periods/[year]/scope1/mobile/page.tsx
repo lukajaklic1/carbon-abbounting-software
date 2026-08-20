@@ -143,7 +143,7 @@ export default function Scope1MobilePage() {
     <div className="p-4 lg:p-8">
       <div className="mb-6">
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">Scope 1 · {year}</p>
-        <h1 className="text-2xl font-semibold text-[#0f0f10]">{t('Poraba goriva – vozila', 'Vehicle fuel consumption')}</h1>
+        <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Poraba goriva – vozila', 'Vehicle fuel consumption')}</h1>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">

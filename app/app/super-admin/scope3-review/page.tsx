@@ -97,7 +97,7 @@ export default function Scope3ReviewPage() {
     <div className="p-4 lg:p-8 max-w-5xl">
       <div className="mb-6">
         <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">Scope 3 · {selectedOrg.name}</p>
-        <h1 className="text-2xl font-semibold text-[#0f0f10]">Scope 3 — Pregled oddanih datotek</h1>
+        <h1 className="text-2xl font-medium text-[#0f0f10]">Scope 3 — Pregled oddanih datotek</h1>
       </div>
 
       {/* Stats */}
