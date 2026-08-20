@@ -23,7 +23,7 @@ export function EmptyState({ icon: Icon, title, subtitle, action }: EmptyStatePr
 
       {/* Subtitle */}
       {subtitle && (
-        <p className="text-[13px] text-[#767676] max-w-[280px] leading-relaxed">{subtitle}</p>
+        <p className="text-[15px] text-[#767676] max-w-[280px] leading-relaxed">{subtitle}</p>
       )}
 
       {/* Action */}
