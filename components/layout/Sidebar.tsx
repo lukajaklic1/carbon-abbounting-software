@@ -110,7 +110,7 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
   ]
 
   return (
-    <aside className={`flex flex-col h-full shrink-0 transition-all duration-200 ${collapsed ? 'w-[56px]' : 'w-[288px]'}`}
+    <aside className={`flex flex-col h-full shrink-0 overflow-x-hidden transition-all duration-200 ${collapsed ? 'w-[56px]' : 'w-[264px]'}`}
       style={{ background: 'var(--bg-sidebar)', borderRight: '1px solid var(--border-color)' }}>
 
       {/* ── Logo ── */}
