@@ -135,7 +135,7 @@ export function GhgPdfDocument({ orgName, year, period, scope1, scope2, scope3 }
             { label: 'Scope 2', value: fmtT(scope2.total), unit: 'tCO₂e' },
             { label: 'Scope 3', value: fmtT(scope3.total), unit: 'tCO₂e' },
           ].map((box, i) => (
-            <View key={i} style={[s.statBox, i === 3 && { marginRight: 0 }]}>
+            <View key={i} style={[s.statBox, i === 3 ? { marginRight: 0 } : {}]}>
               <Text style={s.statLabel}>{box.label}</Text>
               <Text style={s.statValue}>{box.value}</Text>
               <Text style={s.statUnit}>{box.unit}</Text>
