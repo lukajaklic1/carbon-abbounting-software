@@ -343,9 +343,8 @@ export default function VehiclesPage() {
         <div className="bg-white border border-[#ececec] rounded-xl">
           <EmptyState
             icon={Car}
-            title={t('Zaenkrat še ni nobenih vozil', 'No vehicles yet')}
-            subtitle={t('Dodajte prvo vozilo, da začnete evidentirati porabo goriva in mobilne emisije.', 'Add your first vehicle to start tracking fuel consumption and mobile emissions.')}
-            action={{ label: t('+ Dodaj vozilo', '+ Add vehicle'), onClick: openNew }}
+            title={t('Ni vozil.', 'No vehicles.')}
+            subtitle={t('Dodajte prvo vozilo.', 'Add your first vehicle.')}
           />
         </div>
       ) : (

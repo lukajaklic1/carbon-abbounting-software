@@ -297,8 +297,8 @@ export default function LocationsPage() {
       ) : !filtered.length ? (
         <div className="bg-white border border-[#ececec] rounded-xl">
           {locations.length === 0
-            ? <EmptyState icon={MapPin} title={t('Zaenkrat še ni nobenih lokacij', 'No locations yet')} subtitle={t('Dodajte prvo lokacijo — pisarno, tovarno ali skladišče — da začnete evidentirati emisije.', 'Add your first location — an office, factory or warehouse — to start tracking emissions.')} action={{ label: t('+ Dodaj lokacijo', '+ Add location'), onClick: openNew }} />
-            : <EmptyState icon={Search} title={t('Ni zadetkov', 'No results')} subtitle={t('Poskusite spremeniti iskanje ali filtre.', 'Try changing your search or filters.')} />
+            ? <EmptyState icon={MapPin} title={t('Ni lokacij.', 'No locations.')} subtitle={t('Dodajte prvo lokacijo.', 'Add your first location.')} />
+            : <EmptyState icon={Search} title={t('Ni zadetkov.', 'No results.')} subtitle={t('Poskusite spremeniti iskanje ali filtre.', 'Try changing your search or filters.')} />
           }
         </div>
       ) : (

@@ -486,14 +486,13 @@ export default function EquipmentPage() {
         <div className="bg-white border border-[#ececec] rounded-xl">
           <EmptyState
             icon={Wrench}
-            title={t('Zaenkrat še ni nobene opreme', 'No equipment yet')}
-            subtitle={t('Dodajte kotel, generator, hladilnik ali drugo napravo, ki porablja gorivo ali hladilne pline.', 'Add a boiler, generator, refrigerator or other device that consumes fuel or refrigerants.')}
-            action={{ label: t('+ Dodaj opremo', '+ Add equipment'), onClick: openNew }}
+            title={t('Ni opreme.', 'No equipment.')}
+            subtitle={t('Dodajte prvo napravo.', 'Add your first device.')}
           />
         </div>
       ) : !filtered.length ? (
         <div className="bg-white border border-[#ececec] rounded-xl">
-          <EmptyState icon={Search} title={t('Ni zadetkov', 'No results')} subtitle={t('Poskusite spremeniti iskanje ali filtre.', 'Try changing your search or filters.')} />
+          <EmptyState icon={Search} title={t('Ni zadetkov.', 'No results.')} subtitle={t('Poskusite spremeniti iskanje ali filtre.', 'Try changing your search or filters.')} />
         </div>
       ) : (
         <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">
