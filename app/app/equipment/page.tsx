@@ -487,7 +487,7 @@ export default function EquipmentPage() {
           <EmptyState
             icon={Wrench}
             title={t('Ni opreme', 'No equipment')}
-            subtitle={t('Dodajte prvo napravo', 'Add your first device')}
+            subtitle={t('Dodajte prvi kos opreme', 'Add your first piece of equipment')}
           />
         </div>
       ) : !filtered.length ? (
