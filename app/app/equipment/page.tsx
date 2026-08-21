@@ -507,10 +507,10 @@ export default function EquipmentPage() {
           <EmptyState icon={Search} title={t('Ni zadetkov', 'No results')} subtitle={t('Poskusite spremeniti iskanje ali filtre', 'Try changing your search or filters')} />
         </div>
       ) : (
-        <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">
+        <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[#fafafc]">
-              <tr className="border-b border-[#ececec] bg-[#f9f9f9]/50">
+            <thead>
+              <tr className="border-b border-[#ececec]">
                 <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Naprava', 'Device')}</th>
                 <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Kategorija', 'Category')}</th>
                 <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Energent', 'Fuel / substance')}</th>
