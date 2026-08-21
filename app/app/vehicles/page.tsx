@@ -362,12 +362,12 @@ export default function VehiclesPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-[#ececec]">
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Vozilo', 'Vehicle')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Tip', 'Type')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Gorivo', 'Fuel')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Lastništvo', 'Ownership')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Lokacija', 'Location')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Status', 'Status')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Vozilo', 'Vehicle')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Tip', 'Type')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Gorivo', 'Fuel')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Lastništvo', 'Ownership')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Lokacija', 'Location')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Status', 'Status')}</th>
                 <th className="px-5 py-3" />
               </tr>
             </thead>

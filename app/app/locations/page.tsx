@@ -306,11 +306,11 @@ export default function LocationsPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-[#ececec]">
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Ime lokacije', 'Location name')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Naslov', 'Address')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Tip', 'Type')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Površina', 'Floor area')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Status', 'Status')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Ime lokacije', 'Location name')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Naslov', 'Address')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Tip', 'Type')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Površina', 'Floor area')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Status', 'Status')}</th>
                 <th className="px-5 py-3"></th>
               </tr>
             </thead>

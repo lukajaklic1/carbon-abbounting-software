@@ -511,11 +511,11 @@ export default function EquipmentPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-[#ececec]">
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Naprava', 'Device')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Kategorija', 'Category')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Energent', 'Fuel / substance')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Lokacija', 'Location')}</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{t('Status', 'Status')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Naprava', 'Device')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Kategorija', 'Category')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Energent', 'Fuel / substance')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Lokacija', 'Location')}</th>
+                <th className="text-left text-xs font-medium text-[#767676] px-5 py-3">{t('Status', 'Status')}</th>
                 <th className="px-5 py-3" />
               </tr>
             </thead>
