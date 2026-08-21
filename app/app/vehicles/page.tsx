@@ -400,8 +400,8 @@ export default function VehiclesPage() {
                     {locations.find(l => l.id === v.location_id)?.name ?? '—'}
                   </td>
                   <td className="px-5 py-4">
-                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${v.is_active ? 'bg-[#f5f5f5] text-[#0f0f10]' : 'bg-[#fafafa] text-[#767676]'}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${v.is_active ? 'bg-[#f5f5f5]0' : 'bg-gray-400'}`} />
+                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${v.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-[#fafafa] text-[#767676]'}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${v.is_active ? 'bg-emerald-500' : 'bg-gray-400'}`} />
                       {v.is_active ? t('Aktivno', 'Active') : t('Neaktivno', 'Inactive')}
                     </span>
                   </td>

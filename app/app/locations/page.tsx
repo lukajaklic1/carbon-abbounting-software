@@ -332,7 +332,7 @@ export default function LocationsPage() {
                     {[loc.address, loc.city, loc.postal_code].filter(Boolean).join(', ') || '—'}
                   </td>
                   <td className="px-5 py-4">
-                    <span className="text-xs bg-[#fafafa] text-[#767676] px-2 py-1 rounded-lg font-medium">
+                    <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-lg font-medium">
                       {(() => { const lt = LOCATION_TYPES.find(lt => lt.value === loc.location_type); return lt ? t(lt.sl, lt.en) : '—' })()}
                     </span>
                   </td>
@@ -340,8 +340,8 @@ export default function LocationsPage() {
                     {loc.floor_area_m2 ? `${loc.floor_area_m2} m²` : '—'}
                   </td>
                   <td className="px-5 py-4">
-                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${loc.is_active ? 'bg-[#f5f5f5] text-[#0f0f10]' : 'bg-[#fafafa] text-[#767676]'}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${loc.is_active ? 'bg-[#f5f5f5]0' : 'bg-gray-400'}`} />
+                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${loc.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-[#fafafa] text-[#767676]'}`}>
+                      <span className={`w-1.5 h-1.5 rounded-full ${loc.is_active ? 'bg-emerald-500' : 'bg-gray-400'}`} />
                       {loc.is_active ? t('Aktivno', 'Active') : t('Neaktivno', 'Inactive')}
                     </span>
                   </td>
