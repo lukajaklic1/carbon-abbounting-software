@@ -324,7 +324,7 @@ export default function LocationsPage() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-[#031f18]">{loc.name}</p>
-                        <p className="text-xs text-[#767676]">{COUNTRIES.find(c => c.value === loc.country_code)?.label ?? loc.country_code}</p>
+                        <p className="text-sm text-[#767676]">{COUNTRIES.find(c => c.value === loc.country_code)?.label ?? loc.country_code}</p>
                       </div>
                     </div>
                   </td>
