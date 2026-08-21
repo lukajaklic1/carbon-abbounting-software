@@ -363,7 +363,7 @@ export default function EquipmentPage() {
       dryer: '🌀',    // spinning drum
       flare: '💨',
       furnace: '⚙️',
-      generator: '⚡',
+      generator: '⚙️',
       heater: '🌡️',
       incinerator: '⚙️',
       ice: '⚙️',      // internal combustion engine = gear
