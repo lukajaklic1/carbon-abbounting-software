@@ -539,7 +539,7 @@ export default function EquipmentPage() {
                     <td className="px-5 py-4">
                       <div className="flex flex-wrap gap-1">
                         {badges.length === 0 ? (
-                          <span className="text-xs text-[#767676]">—</span>
+                          <span className="text-sm text-[#767676]">—</span>
                         ) : badges.map(b => (
                           <span key={b.key} className={`text-xs font-medium px-2 py-0.5 rounded-full ${badgeColors[b.key]}`}>
                             {locale === 'EN' ? b.en : b.sl}

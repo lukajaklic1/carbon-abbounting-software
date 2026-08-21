@@ -381,7 +381,7 @@ export default function VehiclesPage() {
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-[#031f18]">{v.name}</p>
-                        <p className="text-xs text-[#767676]">
+                        <p className="text-sm text-[#767676]">
                           {[v.make, v.model].filter(Boolean).join(' ')}
                           {v.registration_number && <span className="ml-1 text-gray-300">·</span>}
                           {v.registration_number && <span className="ml-1">{v.registration_number}</span>}
