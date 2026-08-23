@@ -224,7 +224,7 @@ export default function Scope3Page() {
             const isInReview = sub?.status === 'in_review'
 
             return (
-              <div key={cat.number} className={cn('flex items-center gap-4 px-5 py-3.5', i !== 0 && 'border-t border-gray-100', 'hover:bg-gray-50/50 transition-colors')}>
+              <div key={cat.number} className={cn('flex items-center gap-4 px-5 py-3.5', i !== 0 && 'border-t border-gray-200', 'hover:bg-gray-50/50 transition-colors')}>
                 {/* Number */}
                 <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-semibold',
                   isDone ? 'bg-gray-100 text-gray-700' : isInReview ? 'bg-amber-50 text-amber-600' : 'bg-gray-50 text-gray-400'
