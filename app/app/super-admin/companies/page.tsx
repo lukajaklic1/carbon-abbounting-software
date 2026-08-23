@@ -11,6 +11,7 @@ type Company = {
   created_at: string
   member_count: number
   is_active: boolean
+  upgrade_requested_at: string | null
 }
 
 export default function CompaniesPage() {
@@ -25,7 +26,7 @@ export default function CompaniesPage() {
     setLoading(true)
     try {
       const supabase = createClient()
-      const { data: orgs } = await supabase.from('organizations').select('id, name, created_at, is_active').order('created_at', { ascending: false })
+      const { data: orgs } = await supabase.from('organizations').select('id, name, created_at, is_active, upgrade_requested_at').order('created_at', { ascending: false })
       const { data: members } = await supabase.from('organization_members').select('organization_id, status')
 
       const countMap: Record<string, number> = {}
@@ -39,6 +40,7 @@ export default function CompaniesPage() {
         created_at: o.created_at,
         member_count: countMap[o.id] ?? 0,
         is_active: o.is_active ?? false,
+        upgrade_requested_at: o.upgrade_requested_at ?? null,
       })))
     } catch (e) { console.error(e) }
     setLoading(false)
@@ -80,6 +82,7 @@ export default function CompaniesPage() {
                 <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">Podjetje</th>
                 <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">Registrirano</th>
                 <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">Uporabniki</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">Zahteva</th>
                 <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">Plačnik</th>
               </tr>
             </thead>
@@ -93,6 +96,15 @@ export default function CompaniesPage() {
                   <td className="px-5 py-3.5 text-sm font-medium text-gray-900">{c.name}</td>
                   <td className="px-5 py-3.5 text-sm text-gray-500">{fmt(c.created_at)}</td>
                   <td className="px-5 py-3.5 text-sm text-gray-500">{c.member_count} {c.member_count === 1 ? 'uporabnik' : 'uporabnika'}</td>
+                  <td className="px-5 py-3.5">
+                    {c.upgrade_requested_at ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#fff3bf',border:'1px solid #ffe066',color:'#e67700'}}>
+                        Zahteva · {fmt(c.upgrade_requested_at)}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-gray-300">—</span>
+                    )}
+                  </td>
                   <td className="px-5 py-3.5">
                     <button
                       onClick={() => toggleActive(c.id, c.is_active)}
