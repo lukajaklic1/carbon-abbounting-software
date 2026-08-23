@@ -21,9 +21,9 @@ const IS_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL
 /* ─── Logo ─── */
 function CarboniqIcon({ size = 20 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <path d="M14 6L8 12L14 18" stroke="#9ca3af" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M10 6L4 12L10 18" stroke="#111827" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
+      <polyline points="26,6 10,20 26,34" stroke="#111111" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round" />
+      <polyline points="33,6 17,20 33,34" stroke="#111111" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.3" />
     </svg>
   )
 }
@@ -115,11 +115,11 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
       <div className="h-[57px] px-4 border-b border-gray-200 flex items-center justify-between shrink-0">
         {!collapsed && (
           <div className="flex items-center gap-2">
-            <CarboniqIcon size={24} />
-            <span className="font-semibold text-base text-gray-900 tracking-tight">Carboniqdesk</span>
+            <CarboniqIcon size={28} />
+            <span className="font-semibold text-xl text-gray-900 tracking-tight">Carboniqdesk</span>
           </div>
         )}
-        {collapsed && <CarboniqIcon size={24} />}
+        {collapsed && <CarboniqIcon size={28} />}
         {!collapsed && onToggleCollapse && (
           <button onClick={onToggleCollapse}
             className="p-1.5 rounded-md text-gray-400 hover:text-gray-700 hover:bg-[#f6f6f6] transition-colors">
