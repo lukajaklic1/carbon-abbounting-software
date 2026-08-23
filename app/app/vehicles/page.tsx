@@ -86,6 +86,7 @@ export default function VehiclesPage() {
   const [filterStatus, setFilterStatus] = useState('')
   const [loading, setLoading] = useState(true)
   const [linkedCounts, setLinkedCounts] = useState<Record<string, number>>({})
+  const [inReportIds, setInReportIds] = useState<Set<string>>(new Set())
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null)
   const [showModal, setShowModal] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -124,10 +125,14 @@ export default function VehiclesPage() {
 
       const ids = (data ?? []).map((v: any) => v.id)
       if (ids.length > 0) {
-        const { data: d1 } = await supabase.from('scope1_mobile').select('vehicle_id').in('vehicle_id', ids)
+        const [{ data: d1 }, { data: pvRows }] = await Promise.all([
+          supabase.from('scope1_mobile').select('vehicle_id').in('vehicle_id', ids),
+          supabase.from('period_vehicles').select('vehicle_id').in('vehicle_id', ids),
+        ])
         const counts: Record<string, number> = {}
         ;(d1 ?? []).forEach((r: any) => { counts[r.vehicle_id] = (counts[r.vehicle_id] ?? 0) + 1 })
         setLinkedCounts(counts)
+        setInReportIds(new Set((pvRows ?? []).map((r: any) => r.vehicle_id)))
       }
     } catch { setVehicles(mockVehicles) }
     setLoading(false)
@@ -410,8 +415,8 @@ export default function VehiclesPage() {
                       </button>
                       <button
                         onClick={() => setConfirmDelete({ id: v.id, name: v.name })}
-                        disabled={!!(linkedCounts[v.id])}
-                        title={linkedCounts[v.id] ? t(`Ni možno izbrisati – ${linkedCounts[v.id]} vezanih emisij`, `Cannot delete – ${linkedCounts[v.id]} linked emission records`) : undefined}
+                        disabled={inReportIds.has(v.id) || !!(linkedCounts[v.id])}
+                        title={inReportIds.has(v.id) ? t('Vozilo je dodano poročilu. Najprej ga odstranite iz poročila.', 'Vehicle is added to a report. Remove it from the report first.') : linkedCounts[v.id] ? t(`Ni možno izbrisati – ${linkedCounts[v.id]} vezanih emisij`, `Cannot delete – ${linkedCounts[v.id]} linked emission records`) : undefined}
                         className="p-1.5 text-[#767676] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-[#767676] disabled:hover:bg-transparent">
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>

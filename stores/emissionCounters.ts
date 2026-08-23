@@ -23,7 +23,7 @@ export const useEmissionCountersStore = create<EmissionCountersState>((set) => (
       const pid = period?.id ?? null
 
       const [
-        { count: locCount }, { count: vehCount }, { count: equCount },
+        { count: locCount }, { count: vehCount }, { count: periodVehCount }, { count: equCount },
         { count: equFuelCount }, { count: equRefCount }, { count: equGasCount },
         { count: statCount }, { count: mobCount }, { count: efCount },
         { count: refCount }, { count: gasCount }, { count: elecCount },
@@ -33,6 +33,7 @@ export const useEmissionCountersStore = create<EmissionCountersState>((set) => (
       ] = await Promise.all([
         supabase.from('locations').select('*', { count: 'exact', head: true }).eq('organization_id', org.id).eq('is_active', true),
         supabase.from('vehicles').select('*', { count: 'exact', head: true }).eq('organization_id', org.id).eq('is_active', true),
+        pid ? supabase.from('period_vehicles').select('*', { count: 'exact', head: true }).eq('organization_id', org.id).eq('reporting_period_id', pid) : Promise.resolve({ count: 0 }),
         supabase.from('equipment').select('*', { count: 'exact', head: true }).eq('organization_id', org.id).eq('is_active', true),
         supabase.from('equipment').select('*', { count: 'exact', head: true }).eq('organization_id', org.id).eq('is_active', true).eq('uses_fuel', true),
         supabase.from('equipment').select('*', { count: 'exact', head: true }).eq('organization_id', org.id).eq('is_active', true).eq('uses_refrigerants', true),
@@ -59,7 +60,7 @@ export const useEmissionCountersStore = create<EmissionCountersState>((set) => (
           '/app/vehicles':  { done: vehCount ?? 0, total: vehCount ?? 0 },
           '/app/equipment': { done: equCount ?? 0, total: equCount ?? 0 },
           [`/app/periods/${year}/scope1/stationary`]:       { done: statCount ?? 0, total: locGasCount ?? 0 },
-          [`/app/periods/${year}/scope1/mobile`]:           { done: mobCount ?? 0,  total: vehCount ?? 0 },
+          [`/app/periods/${year}/scope1/mobile`]:           { done: mobCount ?? 0,  total: periodVehCount ?? 0 },
           [`/app/periods/${year}/scope1/equipment-fuel`]:   { done: efCount ?? 0,   total: equFuelCount ?? 0 },
           [`/app/periods/${year}/scope1/refrigerants`]:     { done: refCount ?? 0,  total: equRefCount ?? 0 },
           [`/app/periods/${year}/scope1/industrial-gases`]: { done: gasCount ?? 0,  total: equGasCount ?? 0 },
