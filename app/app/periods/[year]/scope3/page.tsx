@@ -58,6 +58,7 @@ export default function Scope3Page() {
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [modal, setModal] = useState<ModalState | null>(null)
+  const [upgradeToast, setUpgradeToast] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const modalFileRef = useRef<HTMLInputElement>(null)
 
@@ -260,18 +261,23 @@ export default function Scope3Page() {
 
                 {/* Upload button */}
                 {!sub && (
-                  <button
-                    onClick={() => isPaid && openModal(cat)}
-                    disabled={!isPaid}
-                    title={!isPaid ? t('Na voljo za plačnike', 'Available for paid accounts') : undefined}
-                    className={cn(
-                      'inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-lg transition-colors shrink-0',
-                      isPaid ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                    )}
-                  >
-                    {isPaid ? <Upload className="h-3.5 w-3.5" /> : <Lock className="h-3.5 w-3.5" />}
-                    {t('Naloži podatke', 'Upload data')}
-                  </button>
+                  isPaid ? (
+                    <button
+                      onClick={() => openModal(cat)}
+                      className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-lg transition-colors shrink-0 bg-blue-600 text-white hover:bg-blue-700"
+                    >
+                      <Upload className="h-3.5 w-3.5" />
+                      {t('Naloži podatke', 'Upload data')}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => { setUpgradeToast(true); setTimeout(() => setUpgradeToast(false), 4000) }}
+                      className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-lg transition-colors shrink-0 border border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100"
+                    >
+                      <Lock className="h-3.5 w-3.5" />
+                      {t('Nadgradi za nalaganje', 'Upgrade to upload')}
+                    </button>
+                  )
                 )}
               </div>
             )
@@ -365,6 +371,14 @@ export default function Scope3Page() {
         </div>
       )}
       </div>
+
+      {/* Upgrade toast */}
+      {upgradeToast && (
+        <div className="fixed bottom-6 right-6 z-50 bg-gray-900 text-white text-sm font-medium px-4 py-3 rounded-xl shadow-lg flex items-center gap-2">
+          <Lock className="h-4 w-4 text-amber-400" />
+          {t('Zahteva za nadgradnjo je bila poslana.', 'Upgrade request sent.')}
+        </div>
+      )}
     </div>
   )
 }

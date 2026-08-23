@@ -104,6 +104,7 @@ export default function SuperAdminDashboard() {
         <TrendCard title="Rast podjetij" data={orgTrend} color="#0f0f10" total={stats.orgs} />
         <TrendCard title="Rast uporabnikov" data={userTrend} color="#10b981" total={stats.users} />
       </div>
+      </div>
     </div>
   )
 }
@@ -130,8 +131,6 @@ function TrendCard({ title, data, color, total }: { title: string; data: MonthPo
             fill={`url(#grad-${color})`} dot={false} activeDot={{ r: 4, fill: color }} />
         </AreaChart>
       </ResponsiveContainer>
-      </div>
-      </div>
     </div>
   )
 }

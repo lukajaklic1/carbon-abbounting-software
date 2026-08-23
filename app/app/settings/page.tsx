@@ -225,7 +225,6 @@ export default function SettingsPage() {
       </div>
       <ToastNotification toast={toast} onClose={() => setToast(null)} />
       </div>
-      </div>
     </div>
   )
 }
