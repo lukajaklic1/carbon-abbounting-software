@@ -9,6 +9,5 @@ export function kgToTonnes(kg: number): number {
 export function formatCo2e(kg: number): string {
   const tonnes = kgToTonnes(kg)
   if (tonnes >= 1000) return `${(tonnes / 1000).toFixed(2)} ktCO₂e`
-  if (tonnes >= 1) return `${tonnes.toFixed(2)} tCO₂e`
-  return `${kg.toFixed(2)} kg CO₂e`
+  return `${tonnes.toFixed(2)} tCO₂e`
 }

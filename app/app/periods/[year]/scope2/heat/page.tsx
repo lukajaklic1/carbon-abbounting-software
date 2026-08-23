@@ -28,6 +28,7 @@ export default function Scope2HeatPage() {
   const refreshCounters = useEmissionCountersStore(s => s.refresh)
 
   const [allLocations, setAllLocations] = useState<any[]>([])
+  const [reportLocationsAll, setReportLocationsAll] = useState<any[]>([])
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [periodLocMap, setPeriodLocMap] = useState<Record<string, string>>({})
   const [orgId, setOrgId] = useState<string | null>(null)
@@ -85,6 +86,11 @@ export default function Scope2HeatPage() {
       thisPl.forEach((r: any) => { plMap[r.location_id] = r.id })
       setPeriodLocMap(plMap)
       setSelectedIds(new Set(Object.keys(plMap)))
+      const reportLocIds = thisPl.map((r: any) => r.location_id)
+      if (reportLocIds.length > 0) {
+        const { data: reportLocs } = await supabase.from('locations').select('id, name, address, is_active').in('id', reportLocIds)
+        setReportLocationsAll(reportLocs ?? [])
+      } else { setReportLocationsAll([]) }
       const map: Record<string, any> = {}
       if (pd && ents) ents.filter((e: any) => e.reporting_period_id === pd.id).forEach((e: any) => { map[e.location_id] = e })
       setEntriesMap(map)
@@ -151,7 +157,7 @@ export default function Scope2HeatPage() {
 
   const f = (key: keyof EntryForm, val: any) => setForm(prev => ({ ...prev, [key]: val }))
   const preview = co2ePreview()
-  const reportLocations = allLocations.filter(l => selectedIds.has(l.id))
+  const reportLocations = reportLocationsAll
   const totalCo2e = reportLocations.reduce((s: number, l: any) => s + (entriesMap[l.id]?.co2e_kg ?? 0), 0)
   const done = reportLocations.filter(l => entriesMap[l.id]).length
   const total = reportLocations.length
@@ -183,7 +189,7 @@ export default function Scope2HeatPage() {
             <div className="flex-1 overflow-auto">
       {loading ? (
         <div className="p-12 text-center text-sm text-gray-500">{t('Nalaganje...', 'Loading...')}</div>
-      ) : allLocations.length === 0 ? (
+      ) : reportLocations.length === 0 && allLocations.length === 0 ? (
         <EmptyState icon={Flame} title={t('Ni lokacij z daljinsko toploto', 'No locations with district heat')} subtitle={t('Dodajte lokacijo, ki uporablja daljinsko toploto.', 'Add a location that uses district heat.')} />
       ) : reportLocations.length === 0 ? (
         <EmptyState icon={Settings2} title={t('Ni izbranih lokacij', 'No locations selected')} subtitle={t('Kliknite »Izberi lokacije« da dodate lokacije v poročilo.', 'Click "Select locations" to add locations to the report.')} />
@@ -271,33 +277,39 @@ export default function Scope2HeatPage() {
               <button onClick={() => setShowSelect(false)} className="text-gray-400 hover:text-gray-600"><X className="h-4 w-4" /></button>
             </div>
             <div className="flex-1 overflow-y-auto px-2 py-3 space-y-1.5">
-              {allLocations.length === 0 ? (
-                <p className="px-6 py-8 text-sm text-center text-gray-500">{t('Ni lokacij.', 'No locations.')}</p>
-              ) : allLocations.map(loc => {
-                const checked = draftIds.has(loc.id)
-                const hasData = !!entriesMap[loc.id]
-                const locked = checked && hasData
-                return (
-                  <div key={loc.id} className="rounded-xl border transition-all overflow-hidden" style={{ borderColor: checked ? '#215bcf' : '#e5e7eb' }}>
-                    <label className="flex items-center gap-3 px-4 py-3 cursor-pointer" style={{ backgroundColor: checked ? '#f0f5ff' : '#fff' }}>
-                      <input type="checkbox" checked={checked} onChange={() => toggleDraft(loc.id)} disabled={locked} className="w-4 h-4 rounded border-gray-300 accent-[#215bcf] cursor-pointer shrink-0 disabled:cursor-not-allowed" />
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border" style={{ backgroundColor: checked ? '#e5eeff' : '#f3f4f6', borderColor: checked ? '#c7d9ff' : '#e5e7eb' }}>
-                        <Building2 className={`w-3.5 h-3.5 ${checked ? 'text-[#215bcf]' : 'text-gray-400'}`} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-gray-900 truncate">{loc.name}</p>
-                        {loc.address && <p className="text-xs text-gray-500 truncate">{loc.address}</p>}
-                      </div>
-                    </label>
-                    {locked && (
-                      <div className="px-4 py-2 border-t flex items-center gap-1.5" style={{ borderColor: '#dbeafe', backgroundColor: '#eff6ff' }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#215bcf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                        <p className="text-xs text-[#215bcf]">{t('Lokacija ima vnesene emisije. Najprej izbrišite podatke o emisijah.', 'Location has emission data. Delete it first.')}</p>
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
+              {(() => {
+                const inactiveSelected = reportLocationsAll.filter(l => l.is_active === false && draftIds.has(l.id))
+                const inactiveIds = new Set(inactiveSelected.map((l: any) => l.id))
+                const modalList = [...inactiveSelected, ...allLocations.filter(l => !inactiveIds.has(l.id))]
+                if (modalList.length === 0) return <p className="px-6 py-8 text-sm text-center text-gray-500">{t('Ni lokacij.', 'No locations.')}</p>
+                return modalList.map(loc => {
+                  const checked = draftIds.has(loc.id)
+                  const hasData = !!entriesMap[loc.id]
+                  const locked = checked && hasData
+                  const inactive = inactiveIds.has(loc.id)
+                  return (
+                    <div key={loc.id} className={`rounded-xl border transition-all overflow-hidden ${inactive ? 'opacity-60' : ''}`} style={{ borderColor: checked ? '#215bcf' : '#e5e7eb' }}>
+                      <label className="flex items-center gap-3 px-4 py-3 cursor-pointer" style={{ backgroundColor: checked ? '#f0f5ff' : '#fff' }}>
+                        <input type="checkbox" checked={checked} onChange={() => toggleDraft(loc.id)} disabled={locked} className="w-4 h-4 rounded border-gray-300 accent-[#215bcf] cursor-pointer shrink-0 disabled:cursor-not-allowed" />
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border" style={{ backgroundColor: checked ? '#e5eeff' : '#f3f4f6', borderColor: checked ? '#c7d9ff' : '#e5e7eb' }}>
+                          <Building2 className={`w-3.5 h-3.5 ${checked ? 'text-[#215bcf]' : 'text-gray-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-gray-900 truncate">{loc.name}</p>
+                          {loc.address && <p className="text-xs text-gray-500 truncate">{loc.address}</p>}
+                          {inactive && <p className="text-xs text-amber-600 font-medium">{t('Neaktivna', 'Inactive')}</p>}
+                        </div>
+                      </label>
+                      {locked && (
+                        <div className="px-4 py-2 border-t flex items-center gap-1.5" style={{ borderColor: '#dbeafe', backgroundColor: '#eff6ff' }}>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#215bcf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                          <p className="text-xs text-[#215bcf]">{t('Lokacija ima vnesene emisije. Najprej izbrišite podatke o emisijah.', 'Location has emission data. Delete it first.')}</p>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })
+              })()}
             </div>
             <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
               <p className="text-xs text-gray-500">{draftIds.size} {t('izbranih', 'selected')}</p>

@@ -485,19 +485,35 @@ export default function VehiclesPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-gray-500 mb-1">{t('Tip vozila', 'Vehicle type')}</label>
-                  <select value={form.vehicle_type} onChange={e => f('vehicle_type', e.target.value)} className={SELECT}>
+                  <select value={form.vehicle_type} onChange={e => f('vehicle_type', e.target.value)}
+                    disabled={!!(editingId && inReportIds.has(editingId))}
+                    className={SELECT + (editingId && inReportIds.has(editingId) ? ' opacity-60 cursor-not-allowed bg-gray-50' : '')}>
                     {VEHICLE_TYPES.map(vt => (
                       <option key={vt.value} value={vt.value}>{locale === 'EN' ? vt.en : vt.sl}</option>
                     ))}
                   </select>
+                  {editingId && inReportIds.has(editingId) && (
+                    <p className="mt-1.5 text-xs text-[#215bcf] flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      {t('Vozilo je v poročilu. Tipa ni mogoče spremeniti.', 'Vehicle is in a report. Type cannot be changed.')}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-gray-500 mb-1">{t('Gorivo', 'Fuel type')}</label>
-                  <select value={form.fuel_type} onChange={e => f('fuel_type', e.target.value)} className={SELECT}>
+                  <select value={form.fuel_type} onChange={e => f('fuel_type', e.target.value)}
+                    disabled={!!(editingId && inReportIds.has(editingId))}
+                    className={SELECT + (editingId && inReportIds.has(editingId) ? ' opacity-60 cursor-not-allowed bg-gray-50' : '')}>
                     {FUEL_TYPES.map(ft => (
                       <option key={ft.value} value={ft.value}>{locale === 'EN' ? ft.en : ft.sl}</option>
                     ))}
                   </select>
+                  {editingId && inReportIds.has(editingId) && (
+                    <p className="mt-1.5 text-xs text-[#215bcf] flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      {t('Vozilo je v poročilu. Goriva ni mogoče spremeniti.', 'Vehicle is in a report. Fuel type cannot be changed.')}
+                    </p>
+                  )}
                 </div>
               </div>
 

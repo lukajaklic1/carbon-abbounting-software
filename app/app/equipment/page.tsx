@@ -203,6 +203,7 @@ export default function EquipmentPage() {
   const [filterFuelType, setFilterFuelType] = useState('')
   const [filterStatus, setFilterStatus] = useState('')
   const [activeTab, setActiveTab] = useState<'list' | 'guide'>('list')
+  const [inReportIds, setInReportIds] = useState<Set<string>>(new Set())
 
   useEffect(() => { load() }, [])
 
@@ -229,16 +230,18 @@ export default function EquipmentPage() {
 
       const ids = (eq ?? []).map((e: any) => e.id)
       if (ids.length > 0) {
-        const [{ data: d1 }, { data: d2 }, { data: d3 }] = await Promise.all([
+        const [{ data: d1 }, { data: d2 }, { data: d3 }, { data: peData }] = await Promise.all([
           supabase.from('scope1_equipment_fuel').select('equipment_id').in('equipment_id', ids),
           supabase.from('scope1_refrigerants').select('equipment_id').in('equipment_id', ids),
           supabase.from('scope1_industrial_gases').select('equipment_id').in('equipment_id', ids),
+          supabase.from('period_equipment').select('equipment_id').in('equipment_id', ids),
         ])
         const counts: Record<string, number> = {}
         ;[...(d1 ?? []), ...(d2 ?? []), ...(d3 ?? [])].forEach((r: any) => {
           counts[r.equipment_id] = (counts[r.equipment_id] ?? 0) + 1
         })
         setLinkedCounts(counts)
+        setInReportIds(new Set((peData ?? []).map((r: any) => r.equipment_id)))
       }
     } catch { setEquipment(mockEquipment); setLocations(mockLocations) }
     setLoading(false)
@@ -621,8 +624,8 @@ export default function EquipmentPage() {
                         </button>
                         <button
                           onClick={() => setConfirmDelete({ id: eq.id, name: eq.name })}
-                          disabled={!!(linkedCounts[eq.id])}
-                          title={linkedCounts[eq.id] ? t(`Ni možno izbrisati – ${linkedCounts[eq.id]} vezanih emisij`, `Cannot delete – ${linkedCounts[eq.id]} linked emission records`) : undefined}
+                          disabled={inReportIds.has(eq.id) || !!(linkedCounts[eq.id])}
+                          title={inReportIds.has(eq.id) ? t('Oprema je dodana poročilu. Najprej jo odstranite iz poročila.', 'Equipment is in a report. Remove it from the report first.') : linkedCounts[eq.id] ? t(`Ni možno izbrisati – ${linkedCounts[eq.id]} vezanih emisij`, `Cannot delete – ${linkedCounts[eq.id]} linked emission records`) : undefined}
                           className="p-1.5 text-[#767676] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-[#767676] disabled:hover:bg-transparent">
                           <Trash2 className="h-3.5 w-3.5" />
                         </button>
@@ -679,16 +682,23 @@ export default function EquipmentPage() {
                 <label className="block text-xs font-medium text-gray-500 mb-1">
                   {t('Izberite ustrezno. Podatke lahko kadarkoli posodobite.', 'Please select the following that apply. You can always update these later.')} <span className="text-red-400">*</span>
                 </label>
+                {editingId && inReportIds.has(editingId) && (
+                  <p className="mt-1 mb-2 text-xs text-[#215bcf] flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    {t('Oprema je v poročilu. Kategorije ni mogoče spremeniti.', 'Equipment is in a report. Category cannot be changed.')}
+                  </p>
+                )}
                 <div className="space-y-3 mt-3">
 
                   {/* Fuel */}
-                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_fuel ? 'border-blue-500 bg-[#efefef]/40' : 'border-gray-200 hover:border-gray-200'}`}>
+                  <label className={`flex items-start gap-3 p-4 rounded-xl border transition-colors ${editingId && inReportIds.has(editingId) ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'} ${form.uses_fuel ? 'border-blue-500 bg-[#efefef]/40' : 'border-gray-200 hover:border-gray-200'}`}>
                     <input
                       type="radio"
                       name="equipment_category"
                       checked={form.uses_fuel}
-                      onChange={() => setForm(prev => ({ ...prev, uses_fuel: true, uses_refrigerants: false, uses_industrial_gases: false }))}
-                      className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
+                      onChange={() => { if (!(editingId && inReportIds.has(editingId))) setForm(prev => ({ ...prev, uses_fuel: true, uses_refrigerants: false, uses_industrial_gases: false })) }}
+                      disabled={!!(editingId && inReportIds.has(editingId))}
+                      className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0 disabled:cursor-not-allowed"
                     />
                     <div>
                       <p className="text-xs font-medium text-gray-500">{t('Ta oprema porablja gorivo', 'This equipment consumes fuel')}</p>
@@ -702,13 +712,14 @@ export default function EquipmentPage() {
                   </label>
 
                   {/* Refrigerants */}
-                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_refrigerants ? 'border-blue-500 bg-[#efefef]/40' : 'border-gray-200 hover:border-gray-200'}`}>
+                  <label className={`flex items-start gap-3 p-4 rounded-xl border transition-colors ${editingId && inReportIds.has(editingId) ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'} ${form.uses_refrigerants ? 'border-blue-500 bg-[#efefef]/40' : 'border-gray-200 hover:border-gray-200'}`}>
                     <input
                       type="radio"
                       name="equipment_category"
                       checked={form.uses_refrigerants}
-                      onChange={() => setForm(prev => ({ ...prev, uses_fuel: false, uses_refrigerants: true, uses_industrial_gases: false }))}
-                      className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
+                      onChange={() => { if (!(editingId && inReportIds.has(editingId))) setForm(prev => ({ ...prev, uses_fuel: false, uses_refrigerants: true, uses_industrial_gases: false })) }}
+                      disabled={!!(editingId && inReportIds.has(editingId))}
+                      className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0 disabled:cursor-not-allowed"
                     />
                     <div>
                       <p className="text-xs font-medium text-gray-500">{t('Ta oprema uporablja hladiva', 'This equipment uses refrigerants')}</p>
@@ -722,13 +733,14 @@ export default function EquipmentPage() {
                   </label>
 
                   {/* Industrial gases */}
-                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_industrial_gases ? 'border-blue-500 bg-[#efefef]/40' : 'border-gray-200 hover:border-gray-200'}`}>
+                  <label className={`flex items-start gap-3 p-4 rounded-xl border transition-colors ${editingId && inReportIds.has(editingId) ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'} ${form.uses_industrial_gases ? 'border-blue-500 bg-[#efefef]/40' : 'border-gray-200 hover:border-gray-200'}`}>
                     <input
                       type="radio"
                       name="equipment_category"
                       checked={form.uses_industrial_gases}
-                      onChange={() => setForm(prev => ({ ...prev, uses_fuel: false, uses_refrigerants: false, uses_industrial_gases: true }))}
-                      className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
+                      onChange={() => { if (!(editingId && inReportIds.has(editingId))) setForm(prev => ({ ...prev, uses_fuel: false, uses_refrigerants: false, uses_industrial_gases: true })) }}
+                      disabled={!!(editingId && inReportIds.has(editingId))}
+                      className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0 disabled:cursor-not-allowed"
                     />
                     <div>
                       <p className="text-xs font-medium text-gray-500">{t('Ta oprema uporablja industrijske pline', 'This equipment uses industrial gases')}</p>
@@ -772,11 +784,19 @@ export default function EquipmentPage() {
                     <label className="block text-xs font-medium text-gray-500 mb-1">
                       {t('Kateri energent uporablja ta oprema?', 'What fuel does this equipment use?')} <span className="text-red-400">*</span>
                     </label>
-                    <select value={form.fuel_type} onChange={e => f('fuel_type', e.target.value)} className={SELECT}>
+                    <select value={form.fuel_type} onChange={e => f('fuel_type', e.target.value)}
+                      disabled={!!(editingId && inReportIds.has(editingId))}
+                      className={SELECT + (editingId && inReportIds.has(editingId) ? ' opacity-60 cursor-not-allowed bg-gray-50' : '')}>
                       {FUEL_TYPES.map(ft => (
                         <option key={ft.value} value={ft.value}>{locale === 'EN' ? ft.en : ft.sl}</option>
                       ))}
                     </select>
+                    {editingId && inReportIds.has(editingId) && (
+                      <p className="mt-1.5 text-xs text-[#215bcf] flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        {t('Oprema je v poročilu. Energenta ni mogoče spremeniti.', 'Equipment is in a report. Fuel type cannot be changed.')}
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
@@ -798,11 +818,19 @@ export default function EquipmentPage() {
                     <label className="block text-xs font-medium text-gray-500 mb-1">
                       {t('Katero hladivo uporablja ta oprema?', 'Which refrigerant does this equipment use?')} <span className="text-red-400">*</span>
                     </label>
-                    <select value={form.refrigerant_type} onChange={e => f('refrigerant_type', e.target.value)} className={SELECT}>
+                    <select value={form.refrigerant_type} onChange={e => f('refrigerant_type', e.target.value)}
+                      disabled={!!(editingId && inReportIds.has(editingId))}
+                      className={SELECT + (editingId && inReportIds.has(editingId) ? ' opacity-60 cursor-not-allowed bg-gray-50' : '')}>
                       {REFRIGERANT_TYPES.map(rt => (
                         <option key={rt.value} value={rt.value}>{locale === 'EN' ? rt.en : rt.sl}</option>
                       ))}
                     </select>
+                    {editingId && inReportIds.has(editingId) && (
+                      <p className="mt-1.5 text-xs text-[#215bcf] flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        {t('Oprema je v poročilu. Hladiva ni mogoče spremeniti.', 'Equipment is in a report. Refrigerant type cannot be changed.')}
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
@@ -824,11 +852,19 @@ export default function EquipmentPage() {
                     <label className="block text-xs font-medium text-gray-500 mb-1">
                       {t('Kateri industrijski plin uporablja ta oprema?', 'Which industrial gas does this equipment use?')} <span className="text-red-400">*</span>
                     </label>
-                    <select value={form.industrial_gas_type} onChange={e => f('industrial_gas_type', e.target.value)} className={SELECT}>
+                    <select value={form.industrial_gas_type} onChange={e => f('industrial_gas_type', e.target.value)}
+                      disabled={!!(editingId && inReportIds.has(editingId))}
+                      className={SELECT + (editingId && inReportIds.has(editingId) ? ' opacity-60 cursor-not-allowed bg-gray-50' : '')}>
                       {INDUSTRIAL_GAS_TYPES.map(gt => (
                         <option key={gt.value} value={gt.value}>{locale === 'EN' ? gt.en : gt.sl}</option>
                       ))}
                     </select>
+                    {editingId && inReportIds.has(editingId) && (
+                      <p className="mt-1.5 text-xs text-[#215bcf] flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        {t('Oprema je v poročilu. Plina ni mogoče spremeniti.', 'Equipment is in a report. Gas type cannot be changed.')}
+                      </p>
+                    )}
                   </div>
                 </div>
               )}

@@ -10,8 +10,8 @@ import {
 } from 'recharts'
 import { cn } from '@/lib/utils'
 
-const SCOPE_COLORS = ['#2f624a', '#51a676', '#add8a4']
-const SOURCE_COLORS = ['#0e2016','#2f624a','#51a676','#add8a4','#767676','#1a4d2e','#6dbf8a','#3d8a5e','#8fcfaa']
+const SCOPE_COLORS = ['#3b82f6', '#60a5fa', '#93c5fd']
+const SOURCE_COLORS = ['#1d4ed8','#2563eb','#3b82f6','#60a5fa','#93c5fd','#bfdbfe','#1e40af','#3b82f6','#60a5fa']
 
 type Period = { id: string; year: number; total_co2e_kg: number }
 
@@ -148,10 +148,10 @@ export default function AnalyticsPage() {
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: t('Skupne emisije', 'Total emissions'), value: fmtT(total), icon: IconAtom2, iconColor: '#215bcf', bg: '#e5eeff' },
-          { label: t('Obseg 1', 'Scope 1'), value: fmtT(scopeData?.scope1_kg ?? 0), icon: IconEngine, iconColor: '#098259', bg: '#e0fced' },
-          { label: t('Obseg 2', 'Scope 2'), value: fmtT(scopeData?.scope2_kg ?? 0), icon: IconPlugConnected, iconColor: '#215bcf', bg: '#e5eeff' },
-          { label: t('Obseg 3', 'Scope 3'), value: fmtT(scopeData?.scope3_kg ?? 0), icon: IconTruckDelivery, iconColor: '#098259', bg: '#e0fced' },
+          { label: t('Skupne emisije', 'Total emissions'), value: fmtT(total), icon: IconAtom2, iconColor: '#2563eb', bg: '#eff6ff' },
+          { label: t('Obseg 1', 'Scope 1'), value: fmtT(scopeData?.scope1_kg ?? 0), icon: IconEngine, iconColor: '#2563eb', bg: '#eff6ff' },
+          { label: t('Obseg 2', 'Scope 2'), value: fmtT(scopeData?.scope2_kg ?? 0), icon: IconPlugConnected, iconColor: '#2563eb', bg: '#eff6ff' },
+          { label: t('Obseg 3', 'Scope 3'), value: fmtT(scopeData?.scope3_kg ?? 0), icon: IconTruckDelivery, iconColor: '#2563eb', bg: '#eff6ff' },
         ].map(card => {
           const Icon = card.icon
           return (
@@ -184,7 +184,7 @@ export default function AnalyticsPage() {
                 />
                 <Bar dataKey="emisije" radius={[6, 6, 0, 0]}>
                   {yearChartData.map((entry, i) => (
-                    <Cell key={i} fill={entry.year === String(year) ? '#2563eb' : '#bfdbfe'} />
+                    <Cell key={i} fill={entry.year === String(year) ? '#3b82f6' : '#93c5fd'} />
                   ))}
                 </Bar>
               </BarChart>
@@ -209,7 +209,7 @@ export default function AnalyticsPage() {
                 />
                 <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                   {scopeChartData.map((entry, i) => (
-                    <Cell key={i} fill={['#2563eb', '#bfdbfe', '#93c5fd'][i % 3]} />
+                    <Cell key={i} fill={['#3b82f6', '#60a5fa', '#93c5fd'][i % 3]} />
                   ))}
                 </Bar>
               </BarChart>

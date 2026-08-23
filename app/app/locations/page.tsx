@@ -64,6 +64,7 @@ export default function LocationsPage() {
   const [loading, setLoading] = useState(true)
   const [linkedCounts, setLinkedCounts] = useState<Record<string, number>>({})
   const [linkedDetail, setLinkedDetail] = useState<Record<string, { vehicles: number; equipment: number; emissions: number }>>({})
+  const [lockedScopes, setLockedScopes] = useState<Record<string, string[]>>({})
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null)
   const [showModal, setShowModal] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -92,7 +93,7 @@ export default function LocationsPage() {
 
       const ids = (data ?? []).map((l: any) => l.id)
       if (ids.length > 0) {
-        const [s1a, s1b, s1c, s1d, s1e, s2a, s2b, s2c, s2d, eqRes, vRes] = await Promise.all([
+        const [s1a, s1b, s1c, s1d, s1e, s2a, s2b, s2c, s2d, eqRes, vRes, plRes] = await Promise.all([
           supabase.from('scope1_stationary').select('location_id').in('location_id', ids),
           supabase.from('scope1_mobile').select('location_id').in('location_id', ids),
           supabase.from('scope1_equipment_fuel').select('location_id').in('location_id', ids),
@@ -104,6 +105,7 @@ export default function LocationsPage() {
           supabase.from('scope2_cooling').select('location_id').in('location_id', ids),
           supabase.from('equipment').select('location_id').in('location_id', ids),
           supabase.from('vehicles').select('location_id').in('location_id', ids),
+          supabase.from('period_locations').select('location_id, scope_type').in('location_id', ids),
         ])
         const counts: Record<string, number> = {}
         const detail: Record<string, { vehicles: number; equipment: number; emissions: number }> = {}
@@ -116,6 +118,12 @@ export default function LocationsPage() {
         ;(vRes.data ?? []).forEach((r: any) => { if (r.location_id) { bump(r.location_id); d(r.location_id).vehicles++ } })
         setLinkedCounts(counts)
         setLinkedDetail(detail)
+        const locked: Record<string, string[]> = {}
+        ;(plRes.data ?? []).forEach((r: any) => {
+          if (!locked[r.location_id]) locked[r.location_id] = []
+          if (!locked[r.location_id].includes(r.scope_type)) locked[r.location_id].push(r.scope_type)
+        })
+        setLockedScopes(locked)
       }
     } catch { setLocations(mockLocations) }
     setLoading(false)
@@ -484,24 +492,43 @@ export default function LocationsPage() {
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-2">{t('Energenti na tej lokaciji', 'Utilities at this location')}</label>
                 <div className="space-y-2">
-                  {UTILITIES.map(u => (
-                    <label key={u.key} className="flex items-start gap-3 p-3 rounded-xl border border-gray-200 hover:border-blue-200 hover:bg-gray-100/30 cursor-pointer transition-colors group">
-                      <div className="relative mt-0.5 shrink-0">
-                        <input type="checkbox"
-                          checked={!!(form as any)[u.key]}
-                          onChange={e => f(u.key as keyof LocationForm, e.target.checked)}
-                          className="sr-only" />
-                        <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-                          (form as any)[u.key] ? 'bg-blue-600 border-blue-600' : 'border-gray-200'
-                        }`}>
-                          {(form as any)[u.key] && <Check className="w-2.5 h-2.5 text-white" />}
-                        </div>
+                  {UTILITIES.map(u => {
+                    const SCOPE_MAP: Record<string, string> = {
+                      uses_natural_gas: 'stationary',
+                      uses_electricity: 'electricity',
+                      uses_heat: 'heat',
+                      uses_steam: 'steam',
+                      uses_cooling: 'cooling',
+                    }
+                    const isLocked = !!(editingId && lockedScopes[editingId]?.includes(SCOPE_MAP[u.key]))
+                    return (
+                      <div key={u.key}>
+                        <label className={`flex items-start gap-3 p-3 rounded-xl border transition-colors ${isLocked ? 'border-blue-200 bg-blue-50/40 cursor-not-allowed' : 'border-gray-200 hover:border-blue-200 hover:bg-gray-100/30 cursor-pointer'} group`}>
+                          <div className="relative mt-0.5 shrink-0">
+                            <input type="checkbox"
+                              checked={!!(form as any)[u.key]}
+                              onChange={e => { if (!isLocked) f(u.key as keyof LocationForm, e.target.checked) }}
+                              disabled={isLocked}
+                              className="sr-only" />
+                            <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
+                              (form as any)[u.key] ? 'bg-blue-600 border-blue-600' : 'border-gray-200'
+                            } ${isLocked ? 'opacity-60' : ''}`}>
+                              {(form as any)[u.key] && <Check className="w-2.5 h-2.5 text-white" />}
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-xs font-medium text-gray-500">{u.label}</p>
+                          </div>
+                        </label>
+                        {isLocked && (
+                          <p className="mt-1 ml-1 text-xs text-[#215bcf] flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            {t('Lokacija je v poročilu za ta energent. Energenta ni mogoče odstraniti.', 'Location is in a report for this utility. Cannot remove.')}
+                          </p>
+                        )}
                       </div>
-                      <div>
-                        <p className="text-xs font-medium text-gray-500">{u.label}</p>
-                      </div>
-                    </label>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
 

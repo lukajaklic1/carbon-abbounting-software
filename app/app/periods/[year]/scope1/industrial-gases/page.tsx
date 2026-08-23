@@ -29,6 +29,7 @@ export default function Scope1IndustrialGasesPage() {
   const refreshCounters = useEmissionCountersStore(s => s.refresh)
 
   const [allEquipment, setAllEquipment] = useState<any[]>([])
+  const [reportEquipmentAll, setReportEquipmentAll] = useState<any[]>([])
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [periodEquMap, setPeriodEquMap] = useState<Record<string, string>>({})
   const [orgId, setOrgId] = useState<string | null>(null)
@@ -76,7 +77,7 @@ export default function Scope1IndustrialGasesPage() {
       const [{ data: pd }, { data: equip }, { data: peRows }, { data: ents }] = await Promise.all([
         supabase.from('reporting_periods').select('*').eq('organization_id', org.id).eq('year', year).single(),
         supabase.from('equipment').select('id, name, industrial_gas_type').eq('organization_id', org.id).eq('is_active', true).eq('uses_industrial_gases', true).order('name'),
-        supabase.from('period_equipment').select('id, equipment_id, reporting_period_id').eq('organization_id', org.id).eq('scope_type', 'industrial_gases'),
+        supabase.from('period_equipment').select('id, equipment_id, reporting_period_id, equipment(id, name, industrial_gas_type, is_active)').eq('organization_id', org.id).eq('scope_type', 'industrial_gases'),
         supabase.from('scope1_industrial_gases').select('*').eq('organization_id', org.id),
       ])
 
@@ -88,6 +89,7 @@ export default function Scope1IndustrialGasesPage() {
       thisPe.forEach((r: any) => { peMap[r.equipment_id] = r.id })
       setPeriodEquMap(peMap)
       setSelectedIds(new Set(Object.keys(peMap)))
+      setReportEquipmentAll(thisPe.map((r: any) => r.equipment).filter(Boolean))
       const map: Record<string, any> = {}
       if (pd && ents) ents.filter((e: any) => e.reporting_period_id === pd.id).forEach((e: any) => { map[e.equipment_id] = e })
       setEntriesMap(map)
@@ -159,7 +161,7 @@ export default function Scope1IndustrialGasesPage() {
 
   const f = (key: keyof EntryForm, val: any) => setForm(prev => ({ ...prev, [key]: val }))
   const preview = co2ePreview()
-  const reportEquipment = allEquipment.filter(e => selectedIds.has(e.id))
+  const reportEquipment = reportEquipmentAll
   const totalCo2e = reportEquipment.reduce((s: number, e: any) => s + (entriesMap[e.id]?.co2e_kg ?? 0), 0)
   const done = reportEquipment.filter(e => entriesMap[e.id]).length
   const total = reportEquipment.length
@@ -191,7 +193,7 @@ export default function Scope1IndustrialGasesPage() {
       <div className="flex-1 overflow-auto">
       {loading ? (
         <div className="p-12 text-center text-sm text-gray-500">{t('Nalaganje...', 'Loading...')}</div>
-      ) : allEquipment.length === 0 ? (
+      ) : reportEquipment.length === 0 && allEquipment.length === 0 ? (
         <EmptyState iconNode={<IconFireExtinguisher size={32} />} title={t('Ni opreme z industrijskimi plini', 'No industrial gas equipment')} subtitle={t('Dodajte opremo, ki vsebuje industrijske pline.', 'Add equipment that contains industrial gases.')} />
       ) : reportEquipment.length === 0 ? (
         <EmptyState icon={Settings2} title={t('Ni izbrane opreme', 'No equipment selected')} subtitle={t('Kliknite »Izberi opremo« da dodate opremo v poročilo.', 'Click "Select equipment" to add equipment to the report.')} />
@@ -288,33 +290,39 @@ export default function Scope1IndustrialGasesPage() {
               <button onClick={() => setShowSelect(false)} className="text-gray-400 hover:text-gray-600"><X className="h-4 w-4" /></button>
             </div>
             <div className="flex-1 overflow-y-auto px-2 py-3 space-y-1.5">
-              {allEquipment.length === 0 ? (
-                <p className="px-6 py-8 text-sm text-center text-gray-500">{t('Ni opreme.', 'No equipment.')}</p>
-              ) : allEquipment.map(item => {
-                const checked = draftIds.has(item.id)
-                const hasData = !!entriesMap[item.id]
-                const locked = checked && hasData
-                return (
-                  <div key={item.id} className="rounded-xl border transition-all overflow-hidden" style={{ borderColor: checked ? '#215bcf' : '#e5e7eb' }}>
-                    <label className="flex items-center gap-3 px-4 py-3 cursor-pointer" style={{ backgroundColor: checked ? '#f0f5ff' : '#fff' }}>
-                      <input type="checkbox" checked={checked} onChange={() => toggleDraft(item.id)} disabled={locked} className="w-4 h-4 rounded border-gray-300 accent-[#215bcf] cursor-pointer shrink-0 disabled:cursor-not-allowed" />
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border" style={{ backgroundColor: checked ? '#e5eeff' : '#f3f4f6', borderColor: checked ? '#c7d9ff' : '#e5e7eb' }}>
-                        <FlaskConical className={`w-3.5 h-3.5 ${checked ? 'text-[#215bcf]' : 'text-gray-400'}`} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-gray-900 truncate">{item.name}</p>
-                        {item.industrial_gas_type && <p className="text-xs text-gray-500 truncate">{item.industrial_gas_type}</p>}
-                      </div>
-                    </label>
-                    {locked && (
-                      <div className="px-4 py-2 border-t flex items-center gap-1.5" style={{ borderColor: '#dbeafe', backgroundColor: '#eff6ff' }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#215bcf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                        <p className="text-xs text-[#215bcf]">{t('Oprema ima vnesene emisije. Najprej izbrišite podatke o emisijah.', 'Equipment has emission data. Delete it first.')}</p>
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
+              {(() => {
+                const inactiveSelected = reportEquipmentAll.filter(e => e.is_active === false && draftIds.has(e.id))
+                const inactiveIds = new Set(inactiveSelected.map((e: any) => e.id))
+                const modalList = [...inactiveSelected, ...allEquipment.filter(e => !inactiveIds.has(e.id))]
+                if (modalList.length === 0) return <p className="px-6 py-8 text-sm text-center text-gray-500">{t('Ni opreme.', 'No equipment.')}</p>
+                return modalList.map(item => {
+                  const checked = draftIds.has(item.id)
+                  const hasData = !!entriesMap[item.id]
+                  const locked = checked && hasData
+                  const inactive = inactiveIds.has(item.id)
+                  return (
+                    <div key={item.id} className={`rounded-xl border transition-all overflow-hidden ${inactive ? 'opacity-60' : ''}`} style={{ borderColor: checked ? '#215bcf' : '#e5e7eb' }}>
+                      <label className="flex items-center gap-3 px-4 py-3 cursor-pointer" style={{ backgroundColor: checked ? '#f0f5ff' : '#fff' }}>
+                        <input type="checkbox" checked={checked} onChange={() => toggleDraft(item.id)} disabled={locked} className="w-4 h-4 rounded border-gray-300 accent-[#215bcf] cursor-pointer shrink-0 disabled:cursor-not-allowed" />
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border" style={{ backgroundColor: checked ? '#e5eeff' : '#f3f4f6', borderColor: checked ? '#c7d9ff' : '#e5e7eb' }}>
+                          <FlaskConical className={`w-3.5 h-3.5 ${checked ? 'text-[#215bcf]' : 'text-gray-400'}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-semibold text-gray-900 truncate">{item.name}</p>
+                          {item.industrial_gas_type && <p className="text-xs text-gray-500 truncate">{item.industrial_gas_type}</p>}
+                          {inactive && <p className="text-xs text-amber-600 font-medium">{t('Neaktivna', 'Inactive')}</p>}
+                        </div>
+                      </label>
+                      {locked && (
+                        <div className="px-4 py-2 border-t flex items-center gap-1.5" style={{ borderColor: '#dbeafe', backgroundColor: '#eff6ff' }}>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#215bcf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                          <p className="text-xs text-[#215bcf]">{t('Oprema ima vnesene emisije. Najprej izbrišite podatke o emisijah.', 'Equipment has emission data. Delete it first.')}</p>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })
+              })()}
             </div>
             <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
               <p className="text-xs text-gray-500">{draftIds.size} {t('izbranih', 'selected')}</p>

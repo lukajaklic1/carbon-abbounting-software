@@ -24,6 +24,7 @@ export default function Scope1MobilePage() {
   const refreshCounters = useEmissionCountersStore(s => s.refresh)
 
   const [allVehicles, setAllVehicles] = useState<any[]>([])
+  const [reportVehiclesAll, setReportVehiclesAll] = useState<any[]>([])
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())   // in report
   const [periodVehicleMap, setPeriodVehicleMap] = useState<Record<string, string>>({}) // vehicle_id → period_vehicles.id
   const [entriesMap, setEntriesMap] = useState<Record<string, any>>({})
@@ -70,6 +71,15 @@ export default function Scope1MobilePage() {
       thisPv.forEach((r: any) => { pvMap[r.vehicle_id] = r.id })
       setPeriodVehicleMap(pvMap)
       setSelectedIds(new Set(Object.keys(pvMap)))
+
+      // Fetch all report vehicles (including inactive) separately
+      const reportVehIds = thisPv.map((r: any) => r.vehicle_id)
+      if (reportVehIds.length > 0) {
+        const { data: reportVehs } = await supabase.from('vehicles').select('id, name, make, model, fuel_type, vehicle_type, year_of_manufacture, is_active').in('id', reportVehIds)
+        setReportVehiclesAll(reportVehs ?? [])
+      } else {
+        setReportVehiclesAll([])
+      }
 
       const entMap: Record<string, any> = {}
       if (pd && ents) ents.filter((e: any) => e.reporting_period_id === pd.id).forEach((e: any) => { entMap[e.vehicle_id] = e })
@@ -164,7 +174,7 @@ export default function Scope1MobilePage() {
   }
 
   const preview = co2ePreview()
-  const reportVehicles = allVehicles.filter(v => selectedIds.has(v.id))
+  const reportVehicles = reportVehiclesAll
   const totalCo2e = reportVehicles.reduce((s, v) => s + (entriesMap[v.id]?.co2e_kg ?? 0), 0)
   const done = reportVehicles.filter(v => entriesMap[v.id]).length
   const total = reportVehicles.length
@@ -197,7 +207,7 @@ export default function Scope1MobilePage() {
       <div className="flex-1 overflow-auto">
         {loading ? (
           <div className="p-12 text-center text-sm text-gray-500">{t('Nalaganje...', 'Loading...')}</div>
-        ) : allVehicles.length === 0 ? (
+        ) : reportVehicles.length === 0 && allVehicles.length === 0 ? (
           <EmptyState icon={Car}
             title={t('Ni aktivnih vozil', 'No active vehicles')}
             subtitle={t('Dodajte vozilo v razdelku Vozila.', 'Add a vehicle in the Vehicles section.')} />
@@ -287,35 +297,36 @@ export default function Scope1MobilePage() {
             </div>
             {/* Vehicle list */}
             <div className="flex-1 overflow-y-auto px-2 py-3 space-y-1.5">
-              {allVehicles.length === 0 ? (
-                <p className="px-6 py-8 text-sm text-center text-gray-500">{t('Ni aktivnih vozil.', 'No active vehicles.')}</p>
-              ) : (
-                allVehicles.map(v => {
+              {(() => {
+                const inactiveSelected = reportVehiclesAll.filter(v => v.is_active === false && draftIds.has(v.id))
+                const inactiveIds = new Set(inactiveSelected.map((v: any) => v.id))
+                const modalList = [...inactiveSelected, ...allVehicles.filter(v => !inactiveIds.has(v.id))]
+                if (modalList.length === 0) return <p className="px-6 py-8 text-sm text-center text-gray-500">{t('Ni aktivnih vozil.', 'No active vehicles.')}</p>
+                return modalList.map(v => {
                   const Icon = VEHICLE_ICON[v.vehicle_type] ?? Car
                   const checked = draftIds.has(v.id)
                   const hasData = !!entriesMap[v.id]
                   const locked = checked && hasData
+                  const inactive = inactiveIds.has(v.id)
                   const fuelLabel = t(FUEL_FACTORS[v.fuel_type]?.label_sl ?? v.fuel_type, FUEL_FACTORS[v.fuel_type]?.label_en ?? v.fuel_type)
                   const subtitle = [v.make, v.model].filter(Boolean).join(' ') || null
                   return (
-                    <div key={v.id} className="rounded-xl border transition-all overflow-hidden"
+                    <div key={v.id} className={`rounded-xl border transition-all overflow-hidden ${inactive ? 'opacity-60' : ''}`}
                         style={{ borderColor: checked ? '#215bcf' : '#e5e7eb' }}>
                       <label className="flex items-center gap-3 px-4 py-3 cursor-pointer transition-all"
                         style={{ backgroundColor: checked ? '#f0f5ff' : '#fff' }}>
                       <input type="checkbox" checked={checked} onChange={() => toggleDraft(v.id)}
                         disabled={locked}
                         className="w-4 h-4 rounded border-gray-300 accent-[#215bcf] cursor-pointer shrink-0 disabled:cursor-not-allowed" />
-                      {/* Vehicle icon card */}
                       <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border"
                         style={{ backgroundColor: checked ? '#e5eeff' : '#f3f4f6', borderColor: checked ? '#c7d9ff' : '#e5e7eb' }}>
                         <Icon className={`w-4 h-4 ${checked ? 'text-[#215bcf]' : 'text-gray-400'}`} />
                       </div>
-                      {/* Info */}
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-gray-900 truncate">{v.name}</p>
                         {subtitle && <p className="text-xs text-gray-500 truncate">{subtitle}{v.year_of_manufacture ? ` · ${v.year_of_manufacture}` : ''}</p>}
+                        {inactive && <p className="text-xs text-amber-600 font-medium">{t('Neaktivno', 'Inactive')}</p>}
                       </div>
-                      {/* Fuel badge */}
                       <span className="text-xs font-medium px-2 py-0.5 rounded-md shrink-0"
                         style={{ backgroundColor: checked ? '#e5eeff' : '#f3f4f6', color: checked ? '#215bcf' : '#6b7280' }}>
                         {fuelLabel}
@@ -330,7 +341,7 @@ export default function Scope1MobilePage() {
                     </div>
                   )
                 })
-              )}
+              })()}
             </div>
             {/* Modal footer */}
             <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
