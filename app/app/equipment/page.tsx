@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Wrench, Plus, Pencil, Trash2, X, Search } from 'lucide-react'
+import { IconEngine, IconAirConditioning, IconFireExtinguisher } from '@tabler/icons-react'
 import { createClient } from '@/lib/supabase/client'
 import { mockEquipment, mockLocations } from '@/lib/mock-data'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
@@ -143,8 +144,8 @@ const CATEGORY_COLORS: Record<string, string> = {
   multiple:       'bg-[#efefef] text-[#0f0f10]',
 }
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] transition-shadow appearance-none cursor-pointer'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] transition-shadow appearance-none cursor-pointer'
 
 function getLabel(list: { value: string; sl: string; en: string }[], val: string, locale: string) {
   const item = list.find(x => x.value === val)
@@ -253,6 +254,10 @@ export default function EquipmentPage() {
       setError(t('Naziv opreme je obvezen.', 'Equipment name is required.'))
       return
     }
+    if (!form.location_id) {
+      setError(t('Lokacija je obvezna.', 'Location is required.'))
+      return
+    }
     if (!form.uses_fuel && !form.uses_refrigerants && !form.uses_industrial_gases) {
       setError(t('Izberite vsaj eno kategorijo (gorivo, hladiva ali industrijski plini).', 'Select at least one category (fuel, refrigerants, or industrial gases).'))
       return
@@ -318,6 +323,7 @@ export default function EquipmentPage() {
       await supabase.from('equipment').update({ is_active: false }).eq('id', id)
       setEquipment(prev => prev.filter(e => e.id !== id))
       setLinkedCounts(prev => { const n = { ...prev }; delete n[id]; return n })
+      if (selectedYear) refreshCounters(selectedYear)
     } catch {}
   }
 
@@ -350,66 +356,23 @@ export default function EquipmentPage() {
     return parts.join(' · ')
   }
 
-  const badgeColors: Record<string, string> = {
-    fuel: 'bg-orange-50 text-orange-600',
-    refrigerants: 'bg-cyan-50 text-cyan-600',
-    industrial_gas: 'bg-purple-50 text-purple-600',
-  }
-
-  function EquipmentEmoji({ eq }: { eq: any }) {
-    const fuelEmoji: Record<string, string> = {
-      boiler: '♨️',   // steam/boiler
-      burner: '♨️',
-      dryer: '🌀',    // spinning drum
-      flare: '💨',
-      furnace: '⚙️',
-      generator: '⚙️',
-      heater: '🌡️',
-      incinerator: '⚙️',
-      ice: '⚙️',      // internal combustion engine = gear
-      kiln: '⚙️',
-      open_burning: '💨',
-      oven: '⚙️',
-      thermal_oxidizer: '⚙️',
-      turbine: '🌀',
-      other: '⚙️',
-    }
-    const refrigEmoji: Record<string, string> = {
-      chillers: '❄️',
-      domestic_refrigeration: '❄️',
-      industrial_refrigeration: '❄️',
-      commercial_refrigeration: '❄️',
-      mobile_ac: '❄️',
-      residential_ac: '❄️',
-      standalone_commercial: '❄️',
-      transport_refrigeration: '❄️',
-      other: '❄️',
-    }
-    const gasEmoji: Record<string, string> = {
-      fixed_fire_suppression: '🧯',
-      portable_fire_suppression: '🧯',
-      other: '⚗️',
-    }
-    const emoji = eq.uses_fuel
-      ? (fuelEmoji[eq.fuel_equipment_type] ?? '⚙️')
-      : eq.uses_refrigerants
-      ? (refrigEmoji[eq.refrigerant_equipment_type] ?? '❄️')
-      : eq.uses_industrial_gases
-      ? (gasEmoji[eq.industrial_gas_equipment_type] ?? '⚗️')
-      : '⚙️'
-    return <span className="text-lg leading-none">{emoji}</span>
+  function EquipmentIcon({ eq }: { eq: any }) {
+    if (eq.uses_refrigerants) return <IconAirConditioning size={14} style={{color:'#215bcf'}} stroke={1.5} />
+    if (eq.uses_industrial_gases) return <IconFireExtinguisher size={14} style={{color:'#215bcf'}} stroke={1.5} />
+    return <IconEngine size={14} style={{color:'#215bcf'}} stroke={1.5} />
   }
 
   return (
-    <div className="p-4 lg:p-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-        <div>
-          <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Oprema', 'Equipment')}</h1>
-          <p className="text-sm text-[#767676] mt-1">{t('Kotli, generatorji, hladilniki in druga stacionarna oprema, ki porablja gorivo ali hladilne pline.', 'Boilers, generators, refrigeration units and other stationary equipment consuming fuel or refrigerants.')}</p>
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <div className="flex items-baseline gap-3 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Oprema', 'Equipment')}</h1>
+          <p className="text-sm text-gray-500 truncate">{t('Kotli, generatorji, hladilniki in druga stacionarna oprema, ki porablja gorivo ali hladilne pline.', 'Boilers, generators, refrigeration units and other stationary equipment consuming fuel or refrigerants.')}</p>
         </div>
         <button onClick={openNew}
-          className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors">
-          <Plus className="h-4 w-4" />
+          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+          <Plus className="h-3.5 w-3.5" />
           {t('Nova oprema', 'New equipment')}
         </button>
       </div>
@@ -417,14 +380,14 @@ export default function EquipmentPage() {
       {/* Confirm delete modal */}
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setConfirmDelete(null)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 space-y-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setConfirmDelete(null)} />
+          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 space-y-4">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center shrink-0">
                 <Trash2 className="h-5 w-5 text-red-500" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-[#031f18]">{t('Izbriši opremo', 'Delete equipment')}</h3>
+                <h3 className="text-base font-semibold text-gray-900">{t('Izbriši opremo', 'Delete equipment')}</h3>
                 <p className="text-sm text-[#767676] mt-0.5">
                   {t(`Ali ste prepričani, da želite izbrisati "${confirmDelete.name}"? Tega dejanja ni mogoče razveljaviti.`,
                      `Are you sure you want to delete "${confirmDelete.name}"? This action cannot be undone.`)}
@@ -433,7 +396,7 @@ export default function EquipmentPage() {
             </div>
             <div className="flex gap-3 pt-1">
               <button onClick={() => setConfirmDelete(null)}
-                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-gray-200 rounded-xl hover:bg-[#f9f9f9] transition-colors">
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={confirmAndDelete}
@@ -447,14 +410,14 @@ export default function EquipmentPage() {
 
       {/* Filters */}
       {!loading && (
-        <div className="flex flex-wrap items-center gap-2 mb-4">
-          <div className="inline-flex items-center gap-2 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] min-w-[180px] focus-within:border-[#0f0f10] transition-colors">
+        <div className="flex flex-wrap items-center gap-2 px-6 py-3.5 border-b border-gray-200">
+          <div className="inline-flex items-center gap-2 h-9 px-3 bg-white border border-gray-200 rounded-xl text-[13px] min-w-[180px] focus-within:border-[#0f0f10] transition-colors">
             <Search className="h-3.5 w-3.5 text-[#767676] shrink-0" />
             <input value={search} onChange={e => { setSearch(e.target.value); setPage(1) }}
               placeholder={t('Iskanje...', 'Search...')}
               className="flex-1 bg-transparent focus:outline-none text-[#0f0f10] placeholder:text-[#767676] text-[13px]" />
           </div>
-          <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] has-[:focus]:border-[#0f0f10] transition-colors">
+          <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-gray-200 rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] has-[:focus]:border-[#0f0f10] transition-colors">
             <span className="text-[#767676]">{t('Kategorija:', 'Category:')}</span>
             <select value={filterCategory} onChange={e => { setFilterCategory(e.target.value); setFilterFuelType(''); setPage(1) }}
               className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
@@ -464,7 +427,7 @@ export default function EquipmentPage() {
               <option value="industrial_gas">{t('Ind. plini', 'Industrial gases')}</option>
             </select>
           </label>
-          <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] has-[:focus]:border-[#0f0f10] transition-colors">
+          <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-gray-200 rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] has-[:focus]:border-[#0f0f10] transition-colors">
             <span className="text-[#767676]">{t('Energent:', 'Substance:')}</span>
             <select value={filterFuelType} onChange={e => { setFilterFuelType(e.target.value); setPage(1) }}
               className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
@@ -474,7 +437,7 @@ export default function EquipmentPage() {
               {(!filterCategory || filterCategory === 'industrial_gas') && INDUSTRIAL_GAS_TYPES.map(gt => <option key={gt.value} value={gt.value}>{gt.sl}</option>)}
             </select>
           </label>
-          <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] has-[:focus]:border-[#0f0f10] transition-colors">
+          <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-gray-200 rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] has-[:focus]:border-[#0f0f10] transition-colors">
             <span className="text-[#767676]">{t('Status:', 'Status:')}</span>
             <select value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1) }}
               className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
@@ -485,7 +448,7 @@ export default function EquipmentPage() {
           </label>
           {(search || filterCategory || filterFuelType || filterStatus) && (
             <button onClick={() => { setSearch(''); setFilterCategory(''); setFilterFuelType(''); setFilterStatus(''); setPage(1) }}
-              className="h-9 px-3 text-[13px] font-medium text-[#767676] bg-white border border-[#ececec] rounded-xl hover:bg-[#fafafa] transition-colors">
+              className="h-9 px-3 text-[13px] font-medium text-[#767676] bg-white border border-gray-200 rounded-xl hover:bg-[#fafafa] transition-colors">
               {t('Počisti', 'Clear')}
             </button>
           )}
@@ -493,29 +456,25 @@ export default function EquipmentPage() {
       )}
 
       {loading ? (
-        <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
+        <div className="bg-white border border-gray-200 rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
       ) : !equipment.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl">
           <EmptyState
             icon={Wrench}
             title={t('Ni opreme', 'No equipment')}
             subtitle={t('Dodajte prvi kos opreme', 'Add your first piece of equipment')}
           />
-        </div>
       ) : !filtered.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl">
           <EmptyState icon={Search} title={t('Ni zadetkov', 'No results')} subtitle={t('Poskusite spremeniti iskanje ali filtre', 'Try changing your search or filters')} />
-        </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-[#ececec]">
-                <th className="text-left text-sm font-medium text-[#767676] px-5 py-3">{t('Naprava', 'Device')}</th>
-                <th className="text-left text-sm font-medium text-[#767676] px-5 py-3">{t('Kategorija', 'Category')}</th>
-                <th className="text-left text-sm font-medium text-[#767676] px-5 py-3">{t('Energent', 'Fuel / substance')}</th>
-                <th className="text-left text-sm font-medium text-[#767676] px-5 py-3">{t('Lokacija', 'Location')}</th>
-                <th className="text-left text-sm font-medium text-[#767676] px-5 py-3">{t('Status', 'Status')}</th>
+              <tr className="border-b border-gray-200 bg-gray-50">
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Naprava', 'Device')}</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Kategorija', 'Category')}</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Energent', 'Fuel / substance')}</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Lokacija', 'Location')}</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Status', 'Status')}</th>
                 <th className="px-5 py-3" />
               </tr>
             </thead>
@@ -524,14 +483,14 @@ export default function EquipmentPage() {
                 const badges = getCategoryBadges(eq)
                 const subtitle = getEquipmentSubtitle(eq)
                 return (
-                  <tr key={eq.id} className={`hover:bg-[#f9f9f9] transition-colors ${i !== 0 ? 'border-t border-[#ececec]' : ''}`}>
+                  <tr key={eq.id} className={`hover:bg-[#f9f9f9] transition-colors ${i !== 0 ? 'border-t border-gray-200' : ''}`}>
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-[#fafafa] rounded-lg flex items-center justify-center shrink-0">
-                          <EquipmentEmoji eq={eq} />
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff'}}>
+                          <EquipmentIcon eq={eq} />
                         </div>
                         <div>
-                          <p className="text-sm font-semibold text-[#031f18]">{eq.name}</p>
+                          <p className="text-sm font-medium text-gray-700">{eq.name}</p>
                           {subtitle && <p className="text-xs text-[#767676] mt-0.5">{subtitle}</p>}
                         </div>
                       </div>
@@ -541,13 +500,13 @@ export default function EquipmentPage() {
                         {badges.length === 0 ? (
                           <span className="text-sm text-[#767676]">—</span>
                         ) : badges.map(b => (
-                          <span key={b.key} className={`text-xs font-medium px-2 py-0.5 rounded-full ${badgeColors[b.key]}`}>
+                          <span key={b.key} className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff',color:'#215bcf'}}>
                             {locale === 'EN' ? b.en : b.sl}
                           </span>
                         ))}
                       </div>
                     </td>
-                    <td className="px-5 py-4 text-sm text-[#767676]">
+                    <td className="px-5 py-4 text-sm text-gray-700">
                       {eq.uses_fuel && eq.fuel_type
                         ? getLabel(FUEL_TYPES, eq.fuel_type, locale)
                         : eq.uses_refrigerants && eq.refrigerant_type
@@ -556,10 +515,9 @@ export default function EquipmentPage() {
                         ? getLabel(INDUSTRIAL_GAS_TYPES, eq.industrial_gas_type, locale)
                         : '—'}
                     </td>
-                    <td className="px-5 py-4 text-sm text-[#767676]">{eq.locations?.name ?? '—'}</td>
+                    <td className="px-5 py-4 text-sm text-gray-700">{eq.locations?.name ?? '—'}</td>
                     <td className="px-5 py-4">
-                      <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${eq.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-[#fafafa] text-[#767676]'}`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${eq.is_active ? 'bg-emerald-500' : 'bg-gray-400'}`} />
+                      <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={eq.is_active ? {backgroundColor:'#e0fced',border:'1px solid #d4f8e6',color:'#098259'} : {backgroundColor:'#f1f3f5',border:'1px solid #e9ecef',color:'#868e96'}}>
                         {eq.is_active ? t('Aktivno', 'Active') : t('Neaktivno', 'Inactive')}
                       </span>
                     </td>
@@ -590,20 +548,17 @@ export default function EquipmentPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowModal(false)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowModal(false)} />
+          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
 
-            <div className="sticky top-0 bg-white border-b border-[#ececec] px-6 py-5 flex items-center justify-between rounded-t-2xl z-10">
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-5 flex items-center justify-between rounded-t-2xl z-10">
               <div>
                 <h2 className="text-lg font-bold text-[#031f18]">
                   {editingId ? t('Uredi opremo', 'Edit equipment') : t('Dodaj opremo', 'Add equipment')}
                 </h2>
-                <p className="text-xs text-[#767676] mt-0.5">
-                  {t('Stacionarna oprema z neposrednimi emisijami (Obseg 1)', 'Stationary equipment with direct emissions (Scope 1)')}
-                </p>
               </div>
               <button onClick={() => setShowModal(false)}
-                className="p-2 text-[#767676] hover:text-[#767676] hover:bg-[#fafafa] rounded-xl transition-colors">
+                className="text-gray-400 hover:text-gray-600 transition-colors">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -612,7 +567,7 @@ export default function EquipmentPage() {
 
               {/* Name */}
               <div>
-                <label className="block text-sm font-semibold text-[#031f18] mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   {t('Kako se imenuje ta oprema ali naprava?', 'What is the name or ID of this equipment?')} <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -629,13 +584,13 @@ export default function EquipmentPage() {
 
               {/* Category checkboxes */}
               <div>
-                <label className="block text-sm font-semibold text-[#031f18] mb-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   {t('Izberite ustrezno. Podatke lahko kadarkoli posodobite.', 'Please select the following that apply. You can always update these later.')} <span className="text-red-400">*</span>
                 </label>
                 <div className="space-y-3 mt-3">
 
                   {/* Fuel */}
-                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_fuel ? 'border-blue-500 bg-[#efefef]/40' : 'border-[#ececec] hover:border-[#ececec]'}`}>
+                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_fuel ? 'border-blue-500 bg-[#efefef]/40' : 'border-gray-200 hover:border-gray-200'}`}>
                     <input
                       type="radio"
                       name="equipment_category"
@@ -644,7 +599,7 @@ export default function EquipmentPage() {
                       className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
                     />
                     <div>
-                      <p className="text-sm font-semibold text-[#031f18]">{t('Ta oprema porablja gorivo', 'This equipment consumes fuel')}</p>
+                      <p className="text-sm font-medium text-gray-700">{t('Ta oprema porablja gorivo', 'This equipment consumes fuel')}</p>
                       <p className="text-xs text-[#767676] mt-0.5 leading-relaxed">
                         {t(
                           'Izberite, če naprava deluje na gorivo (bencin, dizel, zemeljski plin itd.). Da bi se izognili dvojnemu štetju: če ste porabo zemeljskega plina že zajeli na ravni lokacije, sem kotlov na zemeljski plin ni treba dodajati.',
@@ -655,7 +610,7 @@ export default function EquipmentPage() {
                   </label>
 
                   {/* Refrigerants */}
-                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_refrigerants ? 'border-blue-500 bg-[#efefef]/40' : 'border-[#ececec] hover:border-[#ececec]'}`}>
+                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_refrigerants ? 'border-blue-500 bg-[#efefef]/40' : 'border-gray-200 hover:border-gray-200'}`}>
                     <input
                       type="radio"
                       name="equipment_category"
@@ -664,7 +619,7 @@ export default function EquipmentPage() {
                       className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
                     />
                     <div>
-                      <p className="text-sm font-semibold text-[#031f18]">{t('Ta oprema uporablja hladiva', 'This equipment uses refrigerants')}</p>
+                      <p className="text-sm font-medium text-gray-700">{t('Ta oprema uporablja hladiva', 'This equipment uses refrigerants')}</p>
                       <p className="text-xs text-[#767676] mt-0.5 leading-relaxed">
                         {t(
                           'Izberite, če vaše podjetje kupuje hladiva za opremo, ki je v lasti vaše organizacije, vključno z mobilno klimatizacijo, hladilniki, maloprodajno zamrzovalno opremo, hladilnim transportom itd.',
@@ -675,7 +630,7 @@ export default function EquipmentPage() {
                   </label>
 
                   {/* Industrial gases */}
-                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_industrial_gases ? 'border-blue-500 bg-[#efefef]/40' : 'border-[#ececec] hover:border-[#ececec]'}`}>
+                  <label className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${form.uses_industrial_gases ? 'border-blue-500 bg-[#efefef]/40' : 'border-gray-200 hover:border-gray-200'}`}>
                     <input
                       type="radio"
                       name="equipment_category"
@@ -684,7 +639,7 @@ export default function EquipmentPage() {
                       className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
                     />
                     <div>
-                      <p className="text-sm font-semibold text-[#031f18]">{t('Ta oprema uporablja industrijske pline', 'This equipment uses industrial gases')}</p>
+                      <p className="text-sm font-medium text-gray-700">{t('Ta oprema uporablja industrijske pline', 'This equipment uses industrial gases')}</p>
                       <p className="text-xs text-[#767676] mt-0.5 leading-relaxed">
                         {t(
                           'Izberite, če vaše podjetje kupuje industrijske pline, kot so ogljikov dioksid, metan, didušikov oksid, žveplov heksafluorid in dušikov trifluorid, ki se uporabljajo v proizvodnji, testiranju ali laboratorijskih aplikacijah.',
@@ -698,7 +653,7 @@ export default function EquipmentPage() {
 
               {/* Electricity info box */}
               {!form.uses_fuel && !form.uses_refrigerants && !form.uses_industrial_gases && (
-                <div className="bg-[#f9f9f9] border border-[#ececec] rounded-xl px-4 py-3">
+                <div className="bg-[#f9f9f9] border border-gray-200 rounded-xl px-4 py-3">
                   <p className="text-xs text-[#767676] leading-relaxed">
                     {t(
                       'Iščete možnost sledenja porabe elektrike po opremi? Elektriko boste zajeli v razdelku za lokacije, ko dodate lokacijo.',
@@ -712,7 +667,7 @@ export default function EquipmentPage() {
               {form.uses_fuel && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-semibold text-[#031f18] mb-1.5">
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
                       {t('Katera vrsta opreme porablja gorivo?', 'What kind of fuel-burning equipment is this?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.fuel_equipment_type} onChange={e => f('fuel_equipment_type', e.target.value)} className={SELECT}>
@@ -722,7 +677,7 @@ export default function EquipmentPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-[#031f18] mb-1.5">
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
                       {t('Kateri energent uporablja ta oprema?', 'What fuel does this equipment use?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.fuel_type} onChange={e => f('fuel_type', e.target.value)} className={SELECT}>
@@ -738,7 +693,7 @@ export default function EquipmentPage() {
               {form.uses_refrigerants && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-semibold text-[#031f18] mb-1.5">
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
                       {t('Katera vrsta hladilne opreme je to?', 'What kind of refrigerant-using equipment is this?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.refrigerant_equipment_type} onChange={e => f('refrigerant_equipment_type', e.target.value)} className={SELECT}>
@@ -748,7 +703,7 @@ export default function EquipmentPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-[#031f18] mb-1.5">
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
                       {t('Katero hladivo uporablja ta oprema?', 'Which refrigerant does this equipment use?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.refrigerant_type} onChange={e => f('refrigerant_type', e.target.value)} className={SELECT}>
@@ -764,7 +719,7 @@ export default function EquipmentPage() {
               {form.uses_industrial_gases && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-semibold text-[#031f18] mb-1.5">
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
                       {t('Katera vrsta opreme z industrijskimi plini je to?', 'What kind of industrial gas equipment is this?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.industrial_gas_equipment_type} onChange={e => f('industrial_gas_equipment_type', e.target.value)} className={SELECT}>
@@ -774,7 +729,7 @@ export default function EquipmentPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-[#031f18] mb-1.5">
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
                       {t('Kateri industrijski plin uporablja ta oprema?', 'Which industrial gas does this equipment use?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.industrial_gas_type} onChange={e => f('industrial_gas_type', e.target.value)} className={SELECT}>
@@ -789,16 +744,12 @@ export default function EquipmentPage() {
               {/* Location */}
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
-                  <label className="block text-sm font-semibold text-[#031f18]">
-                    {t('Kje se nahaja ta oprema?', 'Where is this equipment located?')}
-                    {' '}<span className="text-[#767676] font-normal text-xs">({t('neobvezno', 'optional')})</span>
+                  <label className="block text-sm font-medium text-gray-700">
+                    {t('Lokacija', 'Location')} <span className="text-red-500">*</span>
                   </label>
-                  <span className="text-xs font-medium text-amber-600 border border-amber-400 rounded-full px-2 py-0.5 shrink-0">
-                    {t('Priporočeno', 'Recommended')}
-                  </span>
                 </div>
                 <select value={form.location_id} onChange={e => f('location_id', e.target.value)} className={SELECT}>
-                  <option value="">{t('— Brez lokacije —', '— No location —')}</option>
+                  <option value="">{t('— Izberite lokacijo —', '— Select location —')}</option>
                   {locations.map(loc => (
                     <option key={loc.id} value={loc.id}>{loc.name}</option>
                   ))}
@@ -808,14 +759,14 @@ export default function EquipmentPage() {
               {/* Status (edit only) */}
               {editingId && (
                 <div>
-                  <label className="block text-sm font-semibold text-[#031f18] mb-1.5">{t('Status', 'Status')}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Status', 'Status')}</label>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => f('is_active', true)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-[#f5f5f5] border-[#ececec] text-[#0f0f10]' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-[#f5f5f5] border-gray-200 text-[#0f0f10]' : 'border-gray-200 text-[#767676] hover:border-gray-200'}`}>
                       {t('Aktivno', 'Active')}
                     </button>
                     <button type="button" onClick={() => f('is_active', false)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${!form.is_active ? 'bg-[#fafafa] border-gray-400 text-[#031f18]' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${!form.is_active ? 'bg-[#fafafa] border-gray-400 text-[#031f18]' : 'border-gray-200 text-[#767676] hover:border-gray-200'}`}>
                       {t('Neaktivno', 'Inactive')}
                     </button>
                   </div>
@@ -824,7 +775,7 @@ export default function EquipmentPage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-sm font-semibold text-[#031f18] mb-1.5">
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
                   {t('Opombe', 'Notes')} <span className="text-[#767676] font-normal text-xs">({t('neobvezno', 'optional')})</span>
                 </label>
                 <textarea
@@ -832,7 +783,7 @@ export default function EquipmentPage() {
                   onChange={e => f('notes', e.target.value)}
                   rows={2}
                   placeholder={t('Dodatne informacije o napravi...', 'Additional device information...')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 resize-none"
+                  className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300 resize-none"
                 />
               </div>
 
@@ -841,13 +792,13 @@ export default function EquipmentPage() {
               )}
             </div>
 
-            <div className="sticky bottom-0 bg-white border-t border-[#ececec] px-6 py-4 flex gap-3 rounded-b-2xl">
+            <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex gap-3 rounded-b-2xl">
               <button onClick={() => setShowModal(false)}
-                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-gray-200 rounded-xl hover:bg-[#f9f9f9] transition-colors">
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={handleSave} disabled={saving || !form.name.trim() || (!form.uses_fuel && !form.uses_refrigerants && !form.uses_industrial_gases)}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving
                   ? t('Shranjevanje...', 'Saving...')
                   : editingId ? t('Shrani spremembe', 'Save changes') : t('Dodaj opremo', 'Add equipment')}

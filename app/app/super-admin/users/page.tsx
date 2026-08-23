@@ -73,28 +73,32 @@ export default function UsersPage() {
   const fmt = (d: string | null) => d ? new Date(d).toLocaleDateString('sl-SI') : '—'
 
   const roleBadge = (role: string, isSA: boolean) => {
-    if (isSA) return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">Super admin</span>
-    if (role === 'admin') return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-[#d4eddf] text-[#0f0f10]">Admin</span>
-    return <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-[#fafafa] text-[#767676]">Uporabnik</span>
+    if (isSA) return <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#f3e8ff',border:'1px solid #e9d5ff',color:'#7c3aed'}}>Super admin</span>
+    if (role === 'admin') return <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff',color:'#215bcf'}}>Admin</span>
+    return <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#f1f3f5',border:'1px solid #e9ecef',color:'#868e96'}}>Uporabnik</span>
   }
 
   const fullName = (u: UserRow) => [u.first_name, u.last_name].filter(Boolean).join(' ') || u.email || '—'
 
   return (
-    <div className="p-6 lg:p-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-medium text-[#0f0f10]">Uporabniki</h1>
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <div className="flex items-baseline gap-3 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">Uporabniki</h1>
+        </div>
       </div>
 
-      <div className="flex gap-3 mb-4 flex-wrap">
+      {/* Filters */}
+      <div className="flex gap-3 px-6 py-3.5 border-b border-gray-200 flex-wrap">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#767676]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
           <input value={search} onChange={e => setSearch(e.target.value)}
             placeholder="Ime, priimek ali e-pošta..."
-            className="pl-8 pr-3 py-2 text-sm border border-[#ececec] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-64" />
+            className="pl-8 pr-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:border-blue-500 w-64 placeholder:text-gray-300" />
         </div>
         <select value={roleFilter} onChange={e => setRoleFilter(e.target.value)}
-          className="px-3 py-2 text-sm border border-[#ececec] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          className="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:border-blue-500 text-gray-700">
           <option value="all">Vse vloge</option>
           <option value="admin">Admin</option>
           <option value="user">Uporabnik</option>
@@ -102,40 +106,42 @@ export default function UsersPage() {
         </select>
       </div>
 
-      <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-[#fafafc]">
-            <tr className="border-b border-[#ececec]">
-              <th className="text-left px-5 py-3 text-xs font-semibold text-[#767676]">Uporabnik</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-[#767676]">E-pošta</th>
-              {!selectedOrg && <th className="text-left px-5 py-3 text-xs font-semibold text-[#767676]">Podjetje</th>}
-              <th className="text-left px-5 py-3 text-xs font-semibold text-[#767676]">Vloga</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-[#767676]">Registriran</th>
-              <th className="text-left px-5 py-3 text-xs font-semibold text-[#767676]">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr><td colSpan={6} className="text-center py-12 text-sm text-[#767676]">Nalaganje...</td></tr>
-            ) : filtered.length === 0 ? (
-              <tr><td colSpan={6} className="text-center py-12 text-sm text-[#767676]">Ni rezultatov.</td></tr>
-            ) : filtered.map((u, i) => (
-              <tr key={u.id} className={cn('border-b border-gray-50 hover:bg-[#f9f9f9] transition-colors', i === filtered.length - 1 && 'border-0')}>
-                <td className="px-5 py-3.5 text-sm font-semibold text-[#031f18]">{fullName(u)}</td>
-                <td className="px-5 py-3.5 text-sm text-[#767676]">{u.email}</td>
-                {!selectedOrg && <td className="px-5 py-3.5 text-sm text-[#767676]">{u.org_name}</td>}
-                <td className="px-5 py-3.5">{roleBadge(u.role, u.is_super_admin)}</td>
-                <td className="px-5 py-3.5 text-sm text-[#767676]">{fmt(u.created_at)}</td>
-                <td className="px-5 py-3.5">
-                  <span className={cn('px-2 py-0.5 rounded-full text-xs font-semibold',
-                    u.status === 'active' ? 'bg-[#efefef] text-[#0f0f10]' : 'bg-[#fafafa] text-[#767676]')}>
-                    {u.status === 'active' ? 'Aktiven' : u.status}
-                  </span>
-                </td>
+      {/* Table */}
+      <div className="flex-1 overflow-auto">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-200 bg-gray-50">
+                <th className="text-left px-5 py-3 text-xs font-medium text-gray-500">Uporabnik</th>
+                <th className="text-left px-5 py-3 text-xs font-medium text-gray-500">E-pošta</th>
+                {!selectedOrg && <th className="text-left px-5 py-3 text-xs font-medium text-gray-500">Podjetje</th>}
+                <th className="text-left px-5 py-3 text-xs font-medium text-gray-500">Vloga</th>
+                <th className="text-left px-5 py-3 text-xs font-medium text-gray-500">Registriran</th>
+                <th className="text-left px-5 py-3 text-xs font-medium text-gray-500">Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr><td colSpan={6} className="text-center py-12 text-sm text-gray-500">Nalaganje...</td></tr>
+              ) : filtered.length === 0 ? (
+                <tr><td colSpan={6} className="text-center py-12 text-sm text-gray-500">Ni rezultatov.</td></tr>
+              ) : filtered.map((u, i) => (
+                <tr key={u.id} className={cn('hover:bg-gray-50 transition-colors', i !== 0 && 'border-t border-gray-200')}>
+                  <td className="px-5 py-3.5 text-sm font-semibold text-gray-900">{fullName(u)}</td>
+                  <td className="px-5 py-3.5 text-sm text-gray-700">{u.email}</td>
+                  {!selectedOrg && <td className="px-5 py-3.5 text-sm text-gray-700">{u.org_name}</td>}
+                  <td className="px-5 py-3.5">{roleBadge(u.role, u.is_super_admin)}</td>
+                  <td className="px-5 py-3.5 text-sm text-gray-700">{fmt(u.created_at)}</td>
+                  <td className="px-5 py-3.5">
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={u.status === 'active' ? {backgroundColor:'#e0fced',border:'1px solid #d4f8e6',color:'#098259'} : {backgroundColor:'#f1f3f5',border:'1px solid #e9ecef',color:'#868e96'}}>
+                      {u.status === 'active' ? 'Aktiven' : u.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )

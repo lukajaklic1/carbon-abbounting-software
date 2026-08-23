@@ -6,8 +6,8 @@ import { useOrganizationStore } from '@/stores/organization'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { Check, AlertCircle, Building2, User } from 'lucide-react'
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] transition-shadow'
 
 const INDUSTRIES = [
   { value: 'manufacturing', sl: 'Predelovalna industrija', en: 'Manufacturing' },
@@ -60,12 +60,12 @@ function ToastNotification({ toast, onClose }: { toast: Toast; onClose: () => vo
 
 function Card({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
   return (
-    <div className="bg-white border border-[#ececec] rounded-2xl overflow-hidden">
-      <div className="px-8 py-5 border-b border-[#ececec] flex items-center gap-3">
-        <div className="w-8 h-8 bg-[#efefef] rounded-lg flex items-center justify-center shrink-0">
-          <Icon className="h-4 w-4 text-[#0f0f10]" />
+    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+      <div className="px-8 py-5 border-b border-gray-200 flex items-center gap-3">
+        <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
+          <Icon className="h-4 w-4 text-gray-900" />
         </div>
-        <h2 className="text-sm font-semibold text-[#031f18]">{title}</h2>
+        <h2 className="text-base font-semibold text-gray-900">{title}</h2>
       </div>
       <div className="px-8 py-6">{children}</div>
     </div>
@@ -75,7 +75,7 @@ function Card({ title, icon: Icon, children }: { title: string; icon: React.Elem
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-[#031f18] mb-1.5">{label}</label>
+      <label className="block text-sm font-medium text-gray-700 mb-1.5">{label}</label>
       {children}
     </div>
   )
@@ -141,12 +141,18 @@ export default function SettingsPage() {
     setSavingProfile(false)
   }
 
-  const disabled = (base: string) => base + (!isAdmin ? ' bg-[#f9f9f9] text-[#767676] cursor-not-allowed' : '')
+  const disabled = (base: string) => base + (!isAdmin ? ' bg-gray-50 text-gray-500 cursor-not-allowed' : '')
 
   return (
-    <div className="min-h-full py-10 px-8">
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <div className="flex items-baseline gap-3 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Nastavitve', 'Settings')}</h1>
+          <p className="text-sm text-gray-500 truncate">{t('Podatki o podjetju in profilu.', 'Company and profile settings.')}</p>
+        </div>
+      </div>
+      <div className="flex-1 overflow-auto py-10 px-8">
       <div className="max-w-2xl mx-auto space-y-6">
-        <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Nastavitve', 'Settings')}</h1>
 
         {/* Company */}
         <Card title={t('Profil podjetja', 'Company profile')} icon={Building2}>
@@ -185,7 +191,7 @@ export default function SettingsPage() {
             {isAdmin && (
               <div className="flex justify-end pt-1">
                 <button onClick={saveOrg} disabled={savingOrg || !orgName.trim()}
-                  className="px-6 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
+                  className="px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl transition-colors">
                   {savingOrg ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
                 </button>
               </div>
@@ -205,12 +211,12 @@ export default function SettingsPage() {
               </Field>
             </div>
             <Field label="Email">
-              <input value={email} disabled className={INPUT + ' bg-[#f9f9f9] text-[#767676] cursor-not-allowed'} />
+              <input value={email} disabled className={INPUT + ' bg-gray-50 text-gray-500 cursor-not-allowed'} />
             </Field>
 
             <div className="flex justify-end pt-1">
               <button onClick={saveProfile} disabled={savingProfile}
-                className="px-6 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="px-6 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl transition-colors">
                 {savingProfile ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
               </button>
             </div>
@@ -218,6 +224,8 @@ export default function SettingsPage() {
         </Card>
       </div>
       <ToastNotification toast={toast} onClose={() => setToast(null)} />
+      </div>
+      </div>
     </div>
   )
 }

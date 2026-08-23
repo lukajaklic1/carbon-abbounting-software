@@ -104,10 +104,10 @@ export default function CompanyViewSectionPage() {
   }
 
   if (!cfg) {
-    return <div className="p-8 text-sm text-[#767676]">Neznana sekcija.</div>
+    return <div className="p-8 text-sm text-gray-500">Neznana sekcija.</div>
   }
   if (!selectedOrg) {
-    return <div className="p-8 text-sm text-[#767676]">Izberite podjetje v zgornjem meniju.</div>
+    return <div className="p-8 text-sm text-gray-500">Izberite podjetje v zgornjem meniju.</div>
   }
 
   const getResourceName = (row: any) =>
@@ -120,62 +120,62 @@ export default function CompanyViewSectionPage() {
   return (
     <div className="p-4 lg:p-8">
       <div className="mb-6">
-        <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1">
           {cfg.scope} · {selectedOrg.name} · {year}
         </p>
-        <h1 className="text-2xl font-medium text-[#0f0f10]">{cfg.title}</h1>
+        <h1 className="text-2xl font-medium text-gray-900">{cfg.title}</h1>
       </div>
 
       {/* Summary card */}
       <div className="mb-6">
-        <div className="inline-flex items-center gap-3 bg-white border border-[#ececec] rounded-xl px-5 py-4">
-          <div className="w-9 h-9 bg-[#efefef] rounded-lg flex items-center justify-center shrink-0">
-            <svg className="h-4 w-4 text-[#0f0f10]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="inline-flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-5 py-4">
+          <div className="w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
+            <svg className="h-4 w-4 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M3 14h18" />
             </svg>
           </div>
           <div>
-            <p className="text-xs text-[#767676]">Skupne emisije</p>
-            <p className="text-lg font-bold text-[#031f18]">{fmtCo2e(totalCo2e)}</p>
+            <p className="text-xs text-gray-500">Skupne emisije</p>
+            <p className="text-lg font-bold text-gray-900">{fmtCo2e(totalCo2e)}</p>
           </div>
-          <div className="ml-6 pl-6 border-l border-[#ececec]">
-            <p className="text-xs text-[#767676]">Vnosov</p>
-            <p className="text-lg font-bold text-[#031f18]">{rows.length}</p>
+          <div className="ml-6 pl-6 border-l border-gray-200">
+            <p className="text-xs text-gray-500">Vnosov</p>
+            <p className="text-lg font-bold text-gray-900">{rows.length}</p>
           </div>
         </div>
       </div>
 
       {loading ? (
-        <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">Nalaganje...</div>
+        <div className="bg-white border border-gray-200 rounded-xl p-12 text-center text-sm text-gray-500">Nalaganje...</div>
       ) : rows.length === 0 ? (
-        <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-gray-300">
+        <div className="bg-white border border-gray-200 rounded-xl p-12 text-center text-sm text-gray-300">
           Ni vnesenih podatkov za to kategorijo.
         </div>
       ) : (
-        <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[#fafafc]">
-              <tr className="border-b border-[#ececec] bg-[#f9f9f9]/50">
+            <thead className="bg-gray-50">
+              <tr className="border-b border-gray-200 bg-gray-50/50">
                 {!cfg.directRows && cfg.resourceTable && (
-                  <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">Vir</th>
+                  <th className="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-5 py-3">Vir</th>
                 )}
                 {cfg.typeKey && cfg.typeLabel && (
-                  <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">{cfg.typeLabel}</th>
+                  <th className="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-5 py-3">{cfg.typeLabel}</th>
                 )}
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">Količina</th>
-                <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-5 py-3">Emisije</th>
+                <th className="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-5 py-3">Količina</th>
+                <th className="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider px-5 py-3">Emisije</th>
               </tr>
             </thead>
             <tbody>
               {rows.map((row, i) => (
-                <tr key={row.id} className={cn('hover:bg-[#f9f9f9] transition-colors', i !== 0 && 'border-t border-[#ececec]')}>
+                <tr key={row.id} className={cn('hover:bg-gray-50 transition-colors', i !== 0 && 'border-t border-gray-200')}>
                   {!cfg.directRows && cfg.resourceTable && (
-                    <td className="px-5 py-4 text-sm font-semibold text-[#031f18]">{getResourceName(row)}</td>
+                    <td className="px-5 py-4 text-sm font-semibold text-gray-900">{getResourceName(row)}</td>
                   )}
                   {cfg.typeKey && cfg.typeLabel && (
-                    <td className="px-5 py-4 text-sm text-[#767676]">{getTypeVal(row)}</td>
+                    <td className="px-5 py-4 text-sm text-gray-500">{getTypeVal(row)}</td>
                   )}
-                  <td className="px-5 py-4 text-sm text-[#031f18]">
+                  <td className="px-5 py-4 text-sm text-gray-900">
                     {row.quantity != null
                       ? `${fmtQty(row.quantity)} ${row.unit ?? ''}`
                       : row.quantity_kg != null
@@ -186,7 +186,7 @@ export default function CompanyViewSectionPage() {
                   </td>
                   <td className="px-5 py-4">
                     {row.co2e_kg != null ? (
-                      <span className="text-sm font-semibold text-[#0f0f10]">{fmtCo2e(row.co2e_kg)}</span>
+                      <span className="text-base font-semibold text-gray-900">{fmtCo2e(row.co2e_kg)}</span>
                     ) : (
                       <span className="text-gray-300 text-sm">—</span>
                     )}
@@ -195,11 +195,11 @@ export default function CompanyViewSectionPage() {
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-[#ececec] bg-[#f9f9f9]/50">
+              <tr className="border-t border-gray-200 bg-gray-50/50">
                 {!cfg.directRows && cfg.resourceTable && <td className="px-5 py-3" />}
                 {cfg.typeKey && cfg.typeLabel && <td className="px-5 py-3" />}
-                <td className="px-5 py-3 text-xs font-semibold text-[#767676]">Skupaj</td>
-                <td className="px-5 py-3 text-sm font-bold text-[#031f18]">{fmtCo2e(totalCo2e)}</td>
+                <td className="px-5 py-3 text-xs font-semibold text-gray-500">Skupaj</td>
+                <td className="px-5 py-3 text-sm font-bold text-gray-900">{fmtCo2e(totalCo2e)}</td>
               </tr>
             </tfoot>
           </table>

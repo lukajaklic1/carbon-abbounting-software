@@ -3,34 +3,33 @@
 import React from 'react'
 
 interface EmptyStateProps {
-  icon: React.ElementType
+  icon?: React.ElementType
+  iconNode?: React.ReactNode
   title: string
   subtitle?: string
   action?: { label: string; onClick: () => void }
 }
 
-export function EmptyState({ icon: Icon, title, subtitle, action }: EmptyStateProps) {
+export function EmptyState({ icon: Icon, iconNode, title, subtitle, action }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-20 px-6 text-center">
-      {/* Icon container */}
-      <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
-        style={{ background: '#f4f4f5' }}>
-        <Icon className="h-6 w-6" style={{ color: '#a1a1aa' }} />
-      </div>
+    <div className="flex flex-col items-center justify-center py-20 px-6 text-center border-b border-gray-200">
+      {iconNode
+        ? <div className="mb-4" style={{ color: '#e4e4e8' }}>{iconNode}</div>
+        : Icon
+          ? <Icon className="h-8 w-8 mb-4" style={{ color: '#e4e4e8' }} />
+          : null
+      }
 
-      {/* Title */}
-      <p className="text-[15px] font-medium text-[#0f0f10] mb-2">{title}</p>
+      <p className="text-[15px] font-medium text-gray-900 mb-2">{title}</p>
 
-      {/* Subtitle */}
       {subtitle && (
-        <p className="text-sm text-[#767676] max-w-[280px] leading-relaxed">{subtitle}</p>
+        <p className="text-sm text-gray-500 max-w-[280px] leading-relaxed">{subtitle}</p>
       )}
 
-      {/* Action */}
       {action && (
         <button
           onClick={action.onClick}
-          className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-[#0f0f10] bg-white border border-[#ececec] hover:bg-[#fafafa] px-4 py-2 rounded-xl transition-colors">
+          className="mt-6 inline-flex items-center gap-1.5 text-[13px] font-medium text-gray-900 bg-white border border-gray-200 hover:bg-gray-50 px-4 py-2 rounded-xl transition-colors">
           {action.label}
         </button>
       )}

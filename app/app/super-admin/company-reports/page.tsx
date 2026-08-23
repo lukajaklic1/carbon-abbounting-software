@@ -33,41 +33,41 @@ function ScopeSection({ label, sub, data }: { label: string; sub: string; data: 
   const toggle = (name: string) => setOpenSources(prev => { const n = new Set(prev); n.has(name) ? n.delete(name) : n.add(name); return n })
 
   return (
-    <div className="bg-white border border-[#ececec] rounded-2xl overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
       <button onClick={() => setOpen(v => !v)}
-        className="w-full flex items-center justify-between px-6 py-5 hover:bg-[#f9f9f9] transition-colors">
+        className="w-full flex items-center justify-between px-6 py-5 hover:bg-gray-50 transition-colors">
         <div className="text-left">
-          <p className="text-xl font-bold text-[#031f18]">{label}</p>
-          <p className="text-sm text-[#767676]">{sub}</p>
+          <p className="text-xl font-bold text-gray-900">{label}</p>
+          <p className="text-sm text-gray-500">{sub}</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="text-right">
-            <p className="text-lg font-bold text-[#031f18] tabular-nums">{fmtT(data.total)}</p>
-            <p className="text-xs text-[#767676]">Bruto tCO₂e</p>
+            <p className="text-lg font-bold text-gray-900 tabular-nums">{fmtT(data.total)}</p>
+            <p className="text-xs text-gray-500">Bruto tCO₂e</p>
           </div>
-          <ChevronDown className={cn('h-5 w-5 text-[#767676] transition-transform', open && 'rotate-180')} />
+          <ChevronDown className={cn('h-5 w-5 text-gray-500 transition-transform', open && 'rotate-180')} />
         </div>
       </button>
       {open && data.sources.length > 0 && (
-        <div className="border-t border-[#ececec] px-6 py-4 space-y-4">
+        <div className="border-t border-gray-200 px-6 py-4 space-y-4">
           {data.sources.map(src => (
-            <div key={src.name} className="rounded-xl bg-[#f9f9f9] overflow-hidden">
+            <div key={src.name} className="rounded-xl bg-gray-50 overflow-hidden">
               <button onClick={() => toggle(src.name)}
-                className="w-full flex items-center justify-between px-4 py-3 hover:bg-[#fafafa] transition-colors">
-                <p className="text-sm font-semibold text-[#031f18] text-left">{src.name}</p>
-                <ChevronDown className={cn('h-4 w-4 text-[#767676] shrink-0 transition-transform', openSources.has(src.name) && 'rotate-180')} />
+                className="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition-colors">
+                <p className="text-sm font-semibold text-gray-900 text-left">{src.name}</p>
+                <ChevronDown className={cn('h-4 w-4 text-gray-500 shrink-0 transition-transform', openSources.has(src.name) && 'rotate-180')} />
               </button>
               {openSources.has(src.name) && (
-                <div className="border-t border-[#ececec]">
+                <div className="border-t border-gray-200">
                   {[
                     { label: 'Metodologija izračuna GHG', val: src.methodology },
                     { label: 'Vrsta izračuna', val: src.calcType },
                     { label: 'Nabor emisijskih faktorjev', val: src.factorSet },
                     { label: 'Emisije', val: `${fmtT(src.co2e_kg)} tCO₂e` },
                   ].map(f => (
-                    <div key={f.label} className="flex items-center justify-between px-4 py-2.5 border-b border-[#ececec] last:border-0 bg-white">
-                      <p className="text-sm text-[#767676]">{f.label}</p>
-                      <p className="text-sm font-medium text-[#031f18] text-right max-w-[60%]">{f.val}</p>
+                    <div key={f.label} className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 last:border-0 bg-white">
+                      <p className="text-sm text-gray-500">{f.label}</p>
+                      <p className="text-sm font-medium text-gray-900 text-right max-w-[60%]">{f.val}</p>
                     </div>
                   ))}
                 </div>
@@ -77,7 +77,7 @@ function ScopeSection({ label, sub, data }: { label: string; sub: string; data: 
         </div>
       )}
       {open && data.sources.length === 0 && (
-        <div className="border-t border-[#ececec] px-6 py-8 text-center text-sm text-[#767676]">Ni vnosov za to leto.</div>
+        <div className="border-t border-gray-200 px-6 py-8 text-center text-sm text-gray-500">Ni vnosov za to leto.</div>
       )}
     </div>
   )
@@ -146,15 +146,21 @@ export default function AdminReportsPage() {
 
   const grandTotal = (report?.scope1.total ?? 0) + (report?.scope2.total ?? 0) + (report?.scope3.total ?? 0)
 
-  if (!selectedOrg) return <div className="p-8 text-sm text-[#767676]">Izberite podjetje.</div>
+  if (!selectedOrg) return <div className="p-8 text-sm text-gray-500">Izberite podjetje.</div>
 
   return (
-    <div className="p-4 lg:p-8 max-w-3xl mx-auto">
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <div className="flex items-baseline gap-3 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">Poročilo o metodologiji GHG</h1>
+        </div>
+      </div>
+      <div className="flex-1 overflow-auto px-6 py-6">
+      <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-start justify-between mb-8 flex-wrap gap-3">
         <div>
-          <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">GHG · {selectedOrg.name} · {year}</p>
-          <h1 className="text-2xl font-medium text-[#0f0f10]">Poročilo o metodologiji GHG</h1>
-          <p className="text-sm text-[#767676] mt-1">Pregled metodologij in emisijskih faktorjev za izračun ogljičnega odtisa.</p>
+
+          <p className="text-sm text-gray-500 mt-1">Pregled metodologij in emisijskih faktorjev za izračun ogljičnega odtisa.</p>
         </div>
         <button
           onClick={async () => {
@@ -171,20 +177,20 @@ export default function AdminReportsPage() {
       </div>
 
       {loading ? (
-        <div className="bg-white border border-[#ececec] rounded-2xl p-12 text-center text-sm text-[#767676]">Nalaganje...</div>
+        <div className="bg-white border border-gray-200 rounded-2xl p-12 text-center text-sm text-gray-500">Nalaganje...</div>
       ) : (
         <div className="space-y-4">
-          <div className="bg-white border border-[#ececec] rounded-2xl p-6">
-            <p className="text-base font-bold text-[#031f18] mb-4">Poročevalsko obdobje</p>
+          <div className="bg-white border border-gray-200 rounded-2xl p-6">
+            <p className="text-base font-bold text-gray-900 mb-4">Poročevalsko obdobje</p>
             <div>
               {[
                 { label: 'Začetni datum', val: report?.period?.start ?? '—' },
                 { label: 'Končni datum', val: report?.period?.end ?? '—' },
                 { label: 'Skupne emisije', val: `${fmtT(grandTotal)} tCO₂e` },
               ].map((r, i) => (
-                <div key={r.label} className={cn('flex items-center justify-between py-3', i < 2 && 'border-b border-[#ececec]')}>
-                  <p className="text-sm text-[#767676]">{r.label}</p>
-                  <p className="text-sm font-medium text-[#031f18]">{r.val}</p>
+                <div key={r.label} className={cn('flex items-center justify-between py-3', i < 2 && 'border-b border-gray-200')}>
+                  <p className="text-sm text-gray-500">{r.label}</p>
+                  <p className="text-sm font-medium text-gray-900">{r.val}</p>
                 </div>
               ))}
             </div>
@@ -194,6 +200,8 @@ export default function AdminReportsPage() {
           {report && <ScopeSection label="Scope 3" sub="Ostale posredne emisije vrednostne verige" data={report.scope3} />}
         </div>
       )}
+      </div>
+      </div>
     </div>
   )
 }

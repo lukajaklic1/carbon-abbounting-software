@@ -22,11 +22,11 @@ function usePageMeta(pathname: string) {
   const { selectedYear } = usePeriodStore()
   const { counters } = useEmissionCountersStore()
 
-  const pages: { match: (p: string) => boolean; label: string; icon: React.ElementType; counter?: { done: number; total: number } }[] = [
+  const pages: { match: (p: string) => boolean; label: string; icon: React.ElementType; counter?: { done: number; total: number }; entityOnly?: boolean }[] = [
     { match: p => p === '/app/dashboard',                              label: t('Nadzorna plošča', 'Dashboard'),      icon: LayoutDashboard },
-    { match: p => p.startsWith('/app/locations'),                      label: t('Lokacije', 'Locations'),             icon: MapPin,        counter: counters['/app/locations'] },
-    { match: p => p.startsWith('/app/vehicles'),                       label: t('Vozila', 'Vehicles'),                icon: Car,           counter: counters['/app/vehicles'] },
-    { match: p => p.startsWith('/app/equipment'),                      label: t('Oprema', 'Equipment'),               icon: Wrench,        counter: counters['/app/equipment'] },
+    { match: p => p.startsWith('/app/locations'),                      label: t('Lokacije', 'Locations'),             icon: MapPin,        counter: counters['/app/locations'],  entityOnly: true },
+    { match: p => p.startsWith('/app/vehicles'),                       label: t('Vozila', 'Vehicles'),                icon: Car,           counter: counters['/app/vehicles'],   entityOnly: true },
+    { match: p => p.startsWith('/app/equipment'),                      label: t('Oprema', 'Equipment'),               icon: Wrench,        counter: counters['/app/equipment'],  entityOnly: true },
     { match: p => p.includes('/scope1/stationary'),                    label: t('Zemeljski plin', 'Natural Gas'),     icon: Flame,         counter: counters[`/app/periods/${selectedYear}/scope1/stationary`] },
     { match: p => p.includes('/scope1/mobile'),                        label: t('Poraba vozil', 'Vehicle Fuel'),      icon: Car,           counter: counters[`/app/periods/${selectedYear}/scope1/mobile`] },
     { match: p => p.includes('/scope1/equipment-fuel'),                label: t('Gorivo opreme', 'Equipment Fuel'),   icon: Wrench,        counter: counters[`/app/periods/${selectedYear}/scope1/equipment-fuel`] },
@@ -64,67 +64,67 @@ function TopBarContent({ pathname }: { pathname: string }) {
   return (
     <div className="flex items-center justify-between flex-1 min-w-0">
       {/* Page title + icon + counter */}
-      <div className="flex items-center gap-1.5 min-w-0">
+      <div className="flex items-center gap-2 min-w-0">
         {pageMeta && (
           <>
-            <pageMeta.icon className="h-[18px] w-[18px] shrink-0 text-[#0f0f10]" />
-            <span className="font-semibold text-[14px] text-[#0f0f10] truncate">{pageMeta.label}</span>
+            <pageMeta.icon className="w-4 h-4 shrink-0 text-gray-900" />
+            <span className="text-sm font-medium text-gray-900 truncate">{pageMeta.label}</span>
             {pageMeta.counter !== undefined && (
-              <span className="text-[11px] font-medium px-1.5 py-0.5 rounded-md"
-                style={{ background: '#efefef', color: '#767676' }}>
-                {pageMeta.counter.total}
+              <span className="text-xs font-medium text-gray-600 px-1.5 py-0.5 rounded bg-gray-100">
+                {pageMeta.entityOnly
+                  ? pageMeta.counter.total
+                  : `${pageMeta.counter.done}/${pageMeta.counter.total}`}
               </span>
             )}
           </>
         )}
       </div>
 
-      {/* Emissions pill */}
+      {/* Right: emissions + year */}
       <div className="flex items-center gap-2">
-        <div className="inline-flex items-center gap-2 h-8 px-3 rounded-xl border border-[#ececec] bg-white">
-          <span className="text-[14px] text-[#767676] font-medium hidden sm:inline">{t('Skupne emisije', 'Total emissions')}</span>
-          <span className="text-[14px] font-semibold text-[#0f0f10]">{formatCo2e(totalKg)}</span>
+        <div className="hidden sm:flex items-center gap-1.5 h-8 px-3 rounded-lg border border-gray-200 bg-white text-sm">
+          <span className="text-gray-500">{t('Skupne emisije', 'Total emissions')}</span>
+          <span className="font-semibold text-gray-900">{formatCo2e(totalKg)}</span>
         </div>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger className="inline-flex items-center gap-2 h-8 px-3 text-[13px] font-medium text-[#0f0f10] bg-white hover:bg-[#fafafa] rounded-xl cursor-pointer transition-colors border border-[#ececec] outline-none">
-          <span className="text-[14px] text-[#767676] font-medium hidden sm:inline">{t('Leto poročanja', 'Reporting year')}</span>
-          <span className="text-[14px] font-semibold text-[#0f0f10]">{displayYear}</span>
-          <ChevronDown className="h-3 w-3 text-[#767676]" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="min-w-[140px]">
-          {IS_MOCK ? (
-            [2024, 2025].map(y => (
-              <DropdownMenuItem key={y} onClick={() => handleSelectYear(y)}
-                className={y === selectedYear ? 'font-semibold text-[#0f0f10]' : ''}>
-                {y}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="inline-flex items-center gap-1.5 h-8 px-3 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 rounded-lg cursor-pointer transition-colors border border-gray-200 outline-none">
+            <span className="hidden sm:inline text-gray-500 font-normal">{t('Leto', 'Year')}</span>
+            <span className="font-semibold text-gray-900">{displayYear}</span>
+            <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="min-w-[140px]">
+            {IS_MOCK ? (
+              [2024, 2025].map(y => (
+                <DropdownMenuItem key={y} onClick={() => handleSelectYear(y)}
+                  className={y === selectedYear ? 'font-semibold' : ''}>
+                  {y}
+                </DropdownMenuItem>
+              ))
+            ) : availablePeriods.length > 0 ? (
+              availablePeriods.map(p => (
+                <DropdownMenuItem key={p.year} onClick={() => handleSelectYear(p.year)}
+                  className={p.year === selectedYear ? 'font-semibold' : ''}>
+                  {p.year}
+                  {p.status === 'completed' && <span className="ml-auto text-xs text-gray-500">✓</span>}
+                </DropdownMenuItem>
+              ))
+            ) : (
+              <DropdownMenuItem disabled className="text-gray-400 text-xs">
+                {t('Ni obdobij', 'No periods')}
               </DropdownMenuItem>
-            ))
-          ) : availablePeriods.length > 0 ? (
-            availablePeriods.map(p => (
-              <DropdownMenuItem key={p.year} onClick={() => handleSelectYear(p.year)}
-                className={p.year === selectedYear ? 'font-semibold text-[#0f0f10]' : ''}>
-                {p.year}
-                {p.status === 'completed' && <span className="ml-auto text-xs text-[#0f0f10]">✓</span>}
-              </DropdownMenuItem>
-            ))
-          ) : (
-            <DropdownMenuItem disabled className="text-[#767676] text-xs">
-              {t('Ni obdobij', 'No periods')}
-            </DropdownMenuItem>
-          )}
-          {!IS_MOCK && (
-            <>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push('/app/periods/new')}
-                className="text-[#0f0f10] font-medium">
-                <Plus className="h-3.5 w-3.5 mr-1.5" />
-                {t('Dodaj leto', 'Add year')}
-              </DropdownMenuItem>
-            </>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+            )}
+            {!IS_MOCK && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => router.push('/app/periods/new')} className="font-medium">
+                  <Plus className="h-3.5 w-3.5 mr-1.5" />
+                  {t('Dodaj leto', 'Add year')}
+                </DropdownMenuItem>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   )
@@ -162,10 +162,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         )}
 
         <div className="flex flex-col flex-1 overflow-hidden min-w-0">
-          <header className="h-12 lg:h-14 bg-white border-b border-[#ececec] flex items-center gap-3 px-4 lg:px-6 shrink-0">
+          <header className="h-[57px] bg-white border-b border-gray-200 flex items-center gap-3 px-4 shrink-0">
             {/* Mobile: hamburger */}
             <button
-              className="lg:hidden p-1.5 text-[#767676] hover:text-[#031f18] hover:bg-[#fafafa] rounded-lg transition-colors shrink-0"
+              className="lg:hidden p-1.5 text-gray-500 hover:text-gray-900 hover:bg-[#f6f6f6] rounded-md transition-colors shrink-0"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu className="h-5 w-5" />
@@ -173,10 +173,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             {/* Desktop: show expand button only when collapsed */}
             {sidebarCollapsed && (
               <button
-                className="hidden lg:flex p-1.5 text-[#767676] hover:text-[#0f0f10] hover:bg-[#efefef] rounded-lg transition-colors shrink-0"
+                className="hidden lg:flex p-1.5 text-gray-400 hover:text-gray-700 hover:bg-[#f6f6f6] rounded-md transition-colors shrink-0"
                 onClick={() => setSidebarCollapsed(false)}
               >
-                <PanelLeft className="h-4 w-4" />
+                <PanelLeft className="h-[18px] w-[18px]" />
               </button>
             )}
             <TopBarContent pathname={pathname} />

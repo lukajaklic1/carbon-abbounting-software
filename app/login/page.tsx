@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
@@ -43,6 +43,15 @@ function getCookieLocale(): 'EN' | 'SL' {
 
 export default function LoginPage() {
   const router = useRouter()
+  // Redirect if already logged in
+  useEffect(() => {
+    if (IS_MOCK) return
+    const supabase = createClient()
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) router.replace('/app/analytics')
+    })
+  }, [])
+
   const [locale, setLocale] = useState<'EN' | 'SL'>(() =>
     typeof document !== 'undefined' ? getCookieLocale() : 'EN'
   )

@@ -21,8 +21,8 @@ type Member = {
   isOwner?: boolean
 }
 
-const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] transition-shadow'
+const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300 transition-shadow'
+const SELECT = 'px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] transition-shadow'
 
 export default function TeamPage() {
   const { t } = useLocale()
@@ -195,17 +195,17 @@ export default function TeamPage() {
   const invitedCount = members.filter(m => m.status === 'invited').length
 
   return (
-    <div className="p-4 lg:p-8">
+    <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-        <div>
-          <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Uporabniki', 'Users')}</h1>
-          <p className="text-sm text-[#767676] mt-1">{t('Člani ekipe z dostopom do aplikacije in njihove vloge.', 'Team members with access to the application and their roles.')}</p>
+      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <div className="flex items-baseline gap-3 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Uporabniki', 'Users')}</h1>
+          <p className="text-sm text-gray-500 truncate">{t('Člani ekipe z dostopom do aplikacije in njihove vloge.', 'Team members with access to the application and their roles.')}</p>
         </div>
         {isAdmin && (
           <button onClick={() => { setShowInvite(true); resetInviteForm() }}
-            className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
-            <Plus className="h-4 w-4" /> {t('Dodaj uporabnika', 'Add user')}
+            className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors shrink-0 ml-4">
+            <Plus className="h-3.5 w-3.5" /> {t('Dodaj uporabnika', 'Add user')}
           </button>
         )}
       </div>
@@ -215,54 +215,54 @@ export default function TeamPage() {
         <div className="fixed inset-0 z-40 bg-black/30 flex items-center justify-center p-4" onClick={() => { setShowInvite(false); resetInviteForm() }}>
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-base font-bold text-[#031f18]">{t('Dodaj uporabnika', 'Add user')}</h3>
-              <button onClick={() => { setShowInvite(false); resetInviteForm() }} className="p-1 text-[#767676] hover:text-[#767676] rounded-lg transition-colors"><X className="h-4 w-4" /></button>
+              <h3 className="text-base font-bold text-gray-900">{t('Dodaj uporabnika', 'Add user')}</h3>
+              <button onClick={() => { setShowInvite(false); resetInviteForm() }} className="p-1 text-gray-500 hover:text-gray-500 rounded-lg transition-colors"><X className="h-4 w-4" /></button>
             </div>
 
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Ime', 'First name')}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Ime', 'First name')}</label>
                   <input value={inviteFirstName} onChange={e => setInviteFirstName(e.target.value)}
                     placeholder="Jana" className={INPUT} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Priimek', 'Last name')}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Priimek', 'Last name')}</label>
                   <input value={inviteLastName} onChange={e => setInviteLastName(e.target.value)}
                     placeholder="Novak" className={INPUT} />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('E-poštni naslov', 'Email address')} <span className="text-red-400">*</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('E-poštni naslov', 'Email address')} <span className="text-red-400">*</span></label>
                 <input value={inviteEmail} onChange={e => setInviteEmail(e.target.value)}
                   type="email" placeholder="jana@podjetje.si" className={INPUT} />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Delovno mesto', 'Job title')}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Delovno mesto', 'Job title')}</label>
                 <input value={inviteJobTitle} onChange={e => setInviteJobTitle(e.target.value)}
                   placeholder={t('npr. Računovodja', 'e.g. Accountant')} className={INPUT} />
               </div>
 
               <label className="flex items-center gap-2.5 cursor-pointer select-none">
                 <input type="checkbox" checked={inviteAsAdmin} onChange={e => setInviteAsAdmin(e.target.checked)}
-                  className="w-4 h-4 rounded border-[#ececec] text-[#0f0f10] focus:ring-blue-600 focus:ring-1" />
-                <span className="text-sm text-[#031f18]">{t('Povabi kot administratorja', 'Invite as administrator')}</span>
+                  className="w-4 h-4 rounded border-gray-200 text-gray-900 focus:ring-blue-600 focus:ring-1" />
+                <span className="text-sm text-gray-900">{t('Povabi kot administratorja', 'Invite as administrator')}</span>
               </label>
 
               {inviteMsg && (
-                <p className={`text-xs px-3 py-2 rounded-lg ${inviteMsg.type === 'success' ? 'bg-[#f5f5f5] text-[#0f0f10]' : 'bg-red-50 text-red-600'}`}>{inviteMsg.text}</p>
+                <p className={`text-xs px-3 py-2 rounded-lg ${inviteMsg.type === 'success' ? 'bg-gray-100 text-gray-900' : 'bg-red-50 text-red-600'}`}>{inviteMsg.text}</p>
               )}
             </div>
 
             <div className="flex gap-2 justify-end mt-6">
               <button onClick={() => { setShowInvite(false); resetInviteForm() }}
-                className="px-4 py-2 text-sm font-medium text-[#767676] hover:bg-[#fafafa] rounded-lg transition-colors">
+                className="px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-lg transition-colors">
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={sendInvite} disabled={inviting || !inviteEmail.trim()}
-                className="px-5 py-2 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-lg transition-colors">
+                className="px-5 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-lg transition-colors">
                 {inviting ? t('Pošiljanje...', 'Sending...') : t('Pošlji povabilo', 'Send invite')}
               </button>
             </div>
@@ -271,22 +271,23 @@ export default function TeamPage() {
       )}
 
       {/* Table */}
-      <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden overflow-x-auto">
+      <div className="flex-1 overflow-auto">
+        <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-[#fafafc]">
-            <tr className="border-b border-[#ececec]">
-              <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-6 py-3">{t('Ime', 'Name')}</th>
-              <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-6 py-3">{t('E-pošta', 'Email')}</th>
-              <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-6 py-3">{t('Vloga', 'Role')}</th>
-              <th className="text-left text-xs font-semibold text-[#767676] uppercase tracking-wider px-6 py-3">Status</th>
-              <th className="px-6 py-3 w-24" />
+          <thead>
+            <tr className="border-b border-gray-200 bg-gray-50">
+              <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Ime', 'Name')}</th>
+              <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('E-pošta', 'Email')}</th>
+              <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Vloga', 'Role')}</th>
+              <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">Status</th>
+              <th className="px-5 py-3 w-20" />
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={5} className="px-6 py-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</td></tr>
+              <tr><td colSpan={5} className="px-5 py-12 text-center text-sm text-gray-500">{t('Nalaganje...', 'Loading...')}</td></tr>
             ) : !allMembers.filter(m => m.status !== 'archived').length ? (
-              <tr><td colSpan={5} className="px-6 py-12 text-center text-sm text-[#767676]">{t('Ni uporabnikov.', 'No users.')}</td></tr>
+              <tr><td colSpan={5} className="px-5 py-12 text-center text-sm text-gray-500">{t('Ni uporabnikov.', 'No users.')}</td></tr>
             ) : (
               allMembers.map((m, i) => {
                 const isMe = m.user_id === currentUserId
@@ -295,50 +296,50 @@ export default function TeamPage() {
                 const canDeactivate = isAdmin && !isOwner && !isMe && m.status === 'active'
 
                 return (
-                  <tr key={m.id} className={`hover:bg-[#f9f9f9]/50 transition-colors ${i !== 0 ? 'border-t border-[#ececec]' : ''} ${m.status === 'archived' ? 'opacity-50' : ''}`}>
+                  <tr key={m.id} className={`hover:bg-gray-50/50 transition-colors ${i !== 0 ? 'border-t border-gray-200' : ''} ${m.status === 'archived' ? 'opacity-50' : ''}`}>
                     {/* Name */}
-                    <td className="px-6 py-3.5">
+                    <td className="px-5 py-3.5">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-[#031f18]">{displayName(m)}</span>
-                        {isMe && <span className="text-xs text-[#767676]">({t('vi', 'you')})</span>}
+                        <span className="text-sm font-semibold text-gray-900">{displayName(m)}</span>
+                        {isMe && <span className="text-xs text-gray-500">({t('vi', 'you')})</span>}
                       </div>
                     </td>
 
                     {/* Email */}
-                    <td className="px-6 py-3.5 text-sm text-[#767676]">{m.email ?? m.invited_email ?? '—'}</td>
+                    <td className="px-5 py-3.5 text-sm text-gray-700">{m.email ?? m.invited_email ?? '—'}</td>
 
                     {/* Role */}
-                    <td className="px-6 py-3.5">
+                    <td className="px-5 py-3.5">
                       {m.role === 'admin'
-                        ? <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#efefef] text-[#0f0f10] px-2.5 py-1 rounded-full">Administrator</span>
-                        : <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#fafafa] text-[#767676] px-2.5 py-1 rounded-full"><UserCheck className="h-3 w-3" /> {t('Član', 'Member')}</span>
+                        ? <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff',color:'#215bcf'}}>Administrator</span>
+                        : <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#f1f3f5',border:'1px solid #e9ecef',color:'#868e96'}}>{t('Član', 'Member')}</span>
                       }
                     </td>
 
                     {/* Status */}
-                    <td className="px-6 py-3.5">
-                      {m.status === 'active' && <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#f5f5f5] text-[#0f0f10] px-2.5 py-1 rounded-full">{t('Aktiven', 'Active')}</span>}
+                    <td className="px-5 py-3.5">
+                      {m.status === 'active' && <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#e0fced',border:'1px solid #d4f8e6',color:'#098259'}}>{t('Aktiven', 'Active')}</span>}
                       {m.status === 'invited' && (
                         <button onClick={() => resendInvite(m.invited_email!)}
-                          className="inline-flex items-center gap-1 text-xs font-medium bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full hover:bg-amber-100 transition-colors">
-                          <RefreshCw className="h-3 w-3" /> {t('Povabljen', 'Invited')}
+                          className="text-xs font-medium px-2 py-0.5 rounded-md hover:opacity-80 transition-opacity" style={{backgroundColor:'#fff3bf',border:'1px solid #ffe066',color:'#e67700'}}>
+                          {t('Povabljen', 'Invited')}
                         </button>
                       )}
-                      {m.status === 'archived' && <span className="inline-flex items-center gap-1 text-xs font-medium bg-[#fafafa] text-[#767676] px-2.5 py-1 rounded-full">{t('Deaktiviran', 'Deactivated')}</span>}
+                      {m.status === 'archived' && <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#f1f3f5',border:'1px solid #e9ecef',color:'#868e96'}}>{t('Deaktiviran', 'Deactivated')}</span>}
                     </td>
 
                     {/* Actions */}
-                    <td className="px-6 py-3.5">
+                    <td className="px-5 py-3.5">
                       <div className="flex items-center gap-1 justify-end">
                         {canEdit && (
                           <button onClick={() => { setEditMember(m); setEditRole(m.role); setEditFirstName(m.first_name ?? ''); setEditLastName(m.last_name ?? '') }}
-                            className="p-1.5 text-[#767676] hover:text-[#0f0f10] hover:bg-[#efefef] rounded-lg transition-colors" title={t('Uredi', 'Edit')}>
+                            className="p-1.5 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors" title={t('Uredi', 'Edit')}>
                             <Pencil className="h-3.5 w-3.5" />
                           </button>
                         )}
                         {canDeactivate && (
                           <button onClick={() => deactivate(m)}
-                            className="p-1.5 text-[#767676] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title={t('Deaktiviraj', 'Deactivate')}>
+                            className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title={t('Deaktiviraj', 'Deactivate')}>
                             <UserMinus className="h-3.5 w-3.5" />
                           </button>
                         )}
@@ -350,6 +351,7 @@ export default function TeamPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* Edit modal */}
@@ -357,16 +359,15 @@ export default function TeamPage() {
         <div className="fixed inset-0 z-40 bg-black/30 flex items-center justify-center p-4" onClick={() => setEditMember(null)}>
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-base font-bold text-[#031f18]">{t('Uredi uporabnika', 'Edit user')}</h3>
-              <button onClick={() => setEditMember(null)} className="p-1 text-[#767676] hover:text-[#767676] rounded-lg"><X className="h-4 w-4" /></button>
+              <h3 className="text-base font-bold text-gray-900">{t('Uredi uporabnika', 'Edit user')}</h3>
+              <button onClick={() => setEditMember(null)} className="p-1 text-gray-500 hover:text-gray-500 rounded-lg"><X className="h-4 w-4" /></button>
             </div>
-            <div className="flex items-center gap-3 mb-5 p-3 bg-[#f9f9f9] rounded-xl">
-              <div className="w-9 h-9 rounded-full bg-[#efefef] border border-blue-100 flex items-center justify-center text-xs font-bold text-[#0f0f10] shrink-0">
+            <div className="flex items-center gap-3 mb-5 p-3 bg-gray-50 rounded-xl">
+              <div className="w-9 h-9 rounded-full bg-gray-100 border border-blue-100 flex items-center justify-center text-xs font-bold text-gray-900 shrink-0">
                 {initials(editMember)}
               </div>
               <div>
-                <p className="text-sm font-semibold text-[#031f18]">{displayName(editMember)}</p>
-                <p className="text-xs text-[#767676]">{editMember.email ?? editMember.invited_email}</p>
+                <p className="text-base font-semibold text-gray-900">{displayName(editMember)}</p>
               </div>
             </div>
 
@@ -374,11 +375,11 @@ export default function TeamPage() {
             {editMember.user_id === currentUserId && (
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Ime', 'First name')}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Ime', 'First name')}</label>
                   <input value={editFirstName} onChange={e => setEditFirstName(e.target.value)} className={INPUT} placeholder={t('Ime', 'First name')} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Priimek', 'Last name')}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Priimek', 'Last name')}</label>
                   <input value={editLastName} onChange={e => setEditLastName(e.target.value)} className={INPUT} placeholder={t('Priimek', 'Last name')} />
                 </div>
               </div>
@@ -387,7 +388,7 @@ export default function TeamPage() {
             {/* Role — only for other members */}
             {editMember.user_id !== currentUserId && !editMember.isOwner && (
               <div className="mb-5">
-                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Vloga', 'Role')}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Vloga', 'Role')}</label>
                 <select value={editRole} onChange={e => setEditRole(e.target.value as any)} className={SELECT + ' w-full'}>
                   <option value="member">{t('Član', 'Member')}</option>
                   <option value="admin">Administrator</option>
@@ -395,8 +396,8 @@ export default function TeamPage() {
               </div>
             )}
             <div className="flex gap-2 justify-end">
-              <button onClick={() => setEditMember(null)} className="px-4 py-2 text-sm font-medium text-[#767676] hover:bg-[#fafafa] rounded-lg transition-colors">{t('Prekliči', 'Cancel')}</button>
-              <button onClick={saveEdit} disabled={saving} className="px-4 py-2 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-lg transition-colors">
+              <button onClick={() => setEditMember(null)} className="px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-lg transition-colors">{t('Prekliči', 'Cancel')}</button>
+              <button onClick={saveEdit} disabled={saving} className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-lg transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
               </button>
             </div>
@@ -410,6 +411,7 @@ export default function TeamPage() {
           <Check className="h-4 w-4 text-green-400" /> {toast}
         </div>
       )}
+    </div>
     </div>
   )
 }

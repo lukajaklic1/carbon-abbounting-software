@@ -35,9 +35,9 @@ export async function middleware(request: NextRequest) {
       .from('super_admins').select('user_id').eq('user_id', user.id).maybeSingle()
     const isSuperAdmin = !!sa
 
-    // Logged in but on login/register → send home
-    if (pathname === '/login' || pathname === '/register') {
-      const dest = isSuperAdmin ? '/app/super-admin' : '/app/analytics'
+    // Logged in but on login/register/landing → send home
+    if (pathname === '/login' || pathname === '/register' || pathname === '/') {
+      const dest = isSuperAdmin ? '/app/super-admin' : '/app/dashboard'
       return NextResponse.redirect(new URL(dest, request.url))
     }
 
@@ -56,5 +56,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/app/:path*', '/onboarding', '/login', '/register'],
+  matcher: ['/', '/app/:path*', '/onboarding', '/login', '/register'],
 }

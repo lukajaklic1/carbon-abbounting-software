@@ -80,9 +80,9 @@ function CollapsibleSection({ label, open, onToggle, children }: {
   return (
     <div className="pt-2">
       <button onClick={onToggle}
-        className="w-full flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-[#f9f9f9] transition-colors group">
-        <p className="text-[10px] font-semibold text-[#767676] uppercase tracking-widest group-hover:text-[#767676]">{label}</p>
-        <ChevronDown className={cn('h-3 w-3 text-[#767676] transition-transform duration-200', open ? 'rotate-0' : '-rotate-90')} />
+        className="w-full flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-gray-50 transition-colors group">
+        <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-widest group-hover:text-gray-500">{label}</p>
+        <ChevronDown className={cn('h-3 w-3 text-gray-500 transition-transform duration-200', open ? 'rotate-0' : '-rotate-90')} />
       </button>
       {open && <div className="space-y-0.5 mt-0.5">{children}</div>}
     </div>
@@ -99,13 +99,13 @@ function NavItem({ href, label, icon: Icon, counter, entityOnly, exact }: {
   return (
     <Link href={href} className={cn(
       'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-semibold transition-colors',
-      active ? 'bg-[#efefef] text-[#0f0f10]' : 'text-[#767676] hover:bg-[#f9f9f9] hover:text-[#031f18]'
+      active ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
     )}>
-      <Icon className={cn('h-4 w-4 shrink-0', active ? 'text-[#0f0f10]' : 'text-[#767676]')} />
+      <Icon className={cn('h-4 w-4 shrink-0', active ? 'text-gray-900' : 'text-gray-500')} />
       <span className="truncate flex-1">{label}</span>
       {counter !== undefined && (
         <span className={cn('text-[10px] font-normal tabular-nums shrink-0 tracking-tight',
-          allDone ? 'text-[#0f0f10]' : active ? 'text-[#51a676]' : 'text-[#767676]')}>
+          allDone ? 'text-gray-900' : active ? 'text-[#51a676]' : 'text-gray-500')}>
           {entityOnly ? counter.total : `${counter.done}/${counter.total}`}
         </span>
       )}
@@ -155,10 +155,10 @@ function SuperAdminSidebar() {
     exact ? pathname === href : pathname.startsWith(href)
 
   return (
-    <aside className="flex flex-col h-full w-[220px] bg-white border-r border-[#ececec] shrink-0">
+    <aside className="flex flex-col h-full w-[220px] bg-white border-r border-gray-200 shrink-0">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-5 h-16 border-b border-[#ececec] shrink-0">
-        <div className="w-8 h-8 bg-[#0f0f10] rounded-xl flex items-center justify-center shrink-0">
+      <div className="flex items-center gap-2.5 px-5 h-16 border-b border-gray-200 shrink-0">
+        <div className="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center shrink-0">
           <svg width="18" height="18" viewBox="0 0 32 32" fill="none">
             <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
             <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>
@@ -166,8 +166,8 @@ function SuperAdminSidebar() {
           </svg>
         </div>
         <div>
-          <span className="font-bold text-[#031f18] text-sm leading-tight block">CarbonTrack</span>
-          <span className="text-[10px] text-[#0f0f10] font-semibold">Super Admin</span>
+          <span className="font-bold text-gray-900 text-sm leading-tight block">CarbonTrack</span>
+          <span className="text-[10px] text-gray-900 font-semibold">Super Admin</span>
         </div>
       </div>
 
@@ -186,15 +186,15 @@ function SuperAdminSidebar() {
 
         {/* ── Company name + year ── */}
         <div className="pt-3 pb-1 px-2">
-          <p className="text-sm font-bold text-[#031f18] truncate">{selectedOrg?.name ?? '—'}</p>
+          <p className="text-sm font-bold text-gray-900 truncate">{selectedOrg?.name ?? '—'}</p>
         </div>
         <div className="px-2 pb-1">
           <div className="relative">
             <select value={year} onChange={e => setYear(Number(e.target.value))}
-              className="appearance-none w-full pl-2.5 pr-6 py-1.5 text-xs font-semibold text-[#031f18] bg-[#f9f9f9] border border-[#ececec] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
+              className="appearance-none w-full pl-2.5 pr-6 py-1.5 text-xs font-semibold text-gray-900 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
               {YEAR_OPTIONS.map(y => <option key={y} value={y}>{y}</option>)}
             </select>
-            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3 w-3 text-[#767676] pointer-events-none" />
+            <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3 w-3 text-gray-500 pointer-events-none" />
           </div>
         </div>
 
@@ -239,13 +239,13 @@ function SuperAdminSidebar() {
       </nav>
 
       {/* Bottom — same as regular sidebar */}
-      <div className="border-t border-[#ececec] px-3 py-3 space-y-1 shrink-0">
-        <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#f9f9f9] transition-colors">
-          <div className="w-7 h-7 rounded-full bg-[#fafafa] border border-[#ececec] flex items-center justify-center shrink-0">
-            <span className="text-[10px] font-semibold text-[#767676]">{userMeta.initials}</span>
+      <div className="border-t border-gray-200 px-3 py-3 space-y-1 shrink-0">
+        <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors">
+          <div className="w-7 h-7 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center shrink-0">
+            <span className="text-[10px] font-semibold text-gray-500">{userMeta.initials}</span>
           </div>
-          <span className="text-sm font-medium text-[#031f18] truncate flex-1">{userMeta.name}</span>
-          <button onClick={handleLogout} className="p-1 text-[#767676] hover:text-[#031f18] transition-colors shrink-0">
+          <span className="text-sm font-medium text-gray-900 truncate flex-1">{userMeta.name}</span>
+          <button onClick={handleLogout} className="p-1 text-gray-500 hover:text-gray-900 transition-colors shrink-0">
             <LogOut className="h-3.5 w-3.5" />
           </button>
         </div>
@@ -261,16 +261,16 @@ function CompanySelector() {
   if (orgs.length === 0) return null
   return (
     <div className="flex items-center gap-2">
-      <span className="text-xs text-[#767676] font-medium shrink-0">Podjetje:</span>
+      <span className="text-xs text-gray-500 font-medium shrink-0">Podjetje:</span>
       <div className="relative">
         <select
           value={selectedOrg?.id ?? ''}
           onChange={e => setSelectedOrg(orgs.find(o => o.id === e.target.value) ?? null)}
-          className="appearance-none pl-3 pr-7 py-1.5 text-sm font-semibold text-[#031f18] bg-white border border-[#ececec] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+          className="appearance-none pl-3 pr-7 py-1.5 text-sm font-semibold text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
         >
           {orgs.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
         </select>
-        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#767676] pointer-events-none" />
+        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-500 pointer-events-none" />
       </div>
     </div>
   )
@@ -282,7 +282,7 @@ function SuperAdminShell({ children }: { children: React.ReactNode }) {
       <SuperAdminSidebar />
 
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-        <header className="h-16 bg-white border-b border-[#ececec] flex items-center px-6 shrink-0">
+        <header className="h-16 bg-white border-b border-gray-200 flex items-center px-6 shrink-0">
           <CompanySelector />
         </header>
         <main className="flex-1 overflow-y-auto min-w-0">

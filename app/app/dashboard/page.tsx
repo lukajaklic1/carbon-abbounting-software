@@ -65,43 +65,45 @@ export default function DashboardPage() {
 
   const sources = [
     { label: 'Zemeljski plin', href: `/app/periods/${displayYear}/scope1/stationary`, icon: Flame, color: 'text-orange-500', bg: 'bg-orange-50', scope: 'Scope 1' },
-    { label: 'Vozila', href: `/app/periods/${displayYear}/scope1/mobile`, icon: Car, color: 'text-[#0f0f10]', bg: 'bg-[#efefef]', scope: 'Scope 1' },
-    { label: 'Oprema', href: `/app/periods/${displayYear}/scope1/equipment-fuel`, icon: Wrench, color: 'text-[#767676]', bg: 'bg-[#fafafa]', scope: 'Scope 1' },
+    { label: 'Vozila', href: `/app/periods/${displayYear}/scope1/mobile`, icon: Car, color: 'text-gray-900', bg: 'bg-gray-100', scope: 'Scope 1' },
+    { label: 'Oprema', href: `/app/periods/${displayYear}/scope1/equipment-fuel`, icon: Wrench, color: 'text-gray-500', bg: 'bg-gray-50', scope: 'Scope 1' },
     { label: 'Hladilni plini', href: `/app/periods/${displayYear}/scope1/refrigerants`, icon: Thermometer, color: 'text-cyan-500', bg: 'bg-cyan-50', scope: 'Scope 1' },
     { label: 'Industrijski plini', href: `/app/periods/${displayYear}/scope1/industrial-gases`, icon: FlaskConical, color: 'text-purple-500', bg: 'bg-purple-50', scope: 'Scope 1' },
     { label: 'Elektrika', href: `/app/periods/${displayYear}/scope2/electricity`, icon: Zap, color: 'text-yellow-600', bg: 'bg-yellow-50', scope: 'Scope 2' },
   ]
 
   const statsCards = [
-    { label: t('Skupne emisije', 'Total emissions'), value: `${totalTons.toFixed(2)} t`, sub: t('CO₂e letno', 'CO₂e annual'), icon: Leaf, color: 'text-[#0f0f10]', bg: 'bg-[#f5f5f5]' },
+    { label: t('Skupne emisije', 'Total emissions'), value: `${totalTons.toFixed(2)} t`, sub: t('CO₂e letno', 'CO₂e annual'), icon: Leaf, color: 'text-gray-900', bg: 'bg-gray-100' },
     { label: 'Scope 1', value: '0.00 t', sub: t('Direktne emisije', 'Direct emissions'), icon: Flame, color: 'text-orange-500', bg: 'bg-orange-50' },
     { label: 'Scope 2', value: '0.00 t', sub: t('Posredne emisije', 'Indirect emissions'), icon: Zap, color: 'text-yellow-600', bg: 'bg-yellow-50' },
-    { label: t('Viri podatkov', 'Data sources'), value: `0 / ${sources.length}`, sub: t('Izpolnjeno', 'Completed'), icon: BarChart3, color: 'text-[#0f0f10]', bg: 'bg-[#efefef]' },
+    { label: t('Viri podatkov', 'Data sources'), value: `0 / ${sources.length}`, sub: t('Izpolnjeno', 'Completed'), icon: BarChart3, color: 'text-gray-900', bg: 'bg-gray-100' },
   ]
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <div className="flex items-baseline gap-3 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">{org?.name ?? t('Nadzorna plošča', 'Dashboard')}</h1>
+          <p className="text-sm text-gray-500 truncate">{t('Pregled emisij in stanje poročanja.', 'Emissions overview and reporting status.')}</p>
+        </div>
+      </div>
+      <div className="flex-1 overflow-auto px-6 py-6 space-y-6">
       {IS_MOCK && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-700">
           {t('Demo način – prikazani so vzorčni podatki.', 'Demo mode – sample data is shown.')}
         </div>
       )}
 
-      {/* Page header */}
-      <div>
-        <h1 className="text-2xl font-medium text-[#0f0f10]">{org?.name}</h1>
-      </div>
-
       {/* Stats row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statsCards.map((s) => {
           const Icon = s.icon
           return (
-            <div key={s.label} className="bg-white border border-[#ececec] rounded-xl p-5 flex items-start justify-between">
+            <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-5 flex items-start justify-between">
               <div>
-                <p className="text-xs text-[#767676] mb-1">{s.label}</p>
-                <p className="text-2xl font-medium text-[#0f0f10]">{s.value}</p>
-                <p className="text-xs text-[#767676] mt-0.5">{s.sub}</p>
+                <p className="text-xs text-gray-500 mb-1">{s.label}</p>
+                <p className="text-2xl font-medium text-gray-900">{s.value}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{s.sub}</p>
               </div>
               <div className={`w-9 h-9 ${s.bg} rounded-lg flex items-center justify-center shrink-0`}>
                 <Icon className={`h-4 w-4 ${s.color}`} />
@@ -115,9 +117,9 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
         {/* Emissions by year */}
-        <div className="lg:col-span-2 bg-white border border-[#ececec] rounded-xl p-6">
-          <p className="text-sm font-semibold text-[#031f18] mb-1">{t('Emisije po letih', 'Emissions by year')}</p>
-          <p className="text-xs text-[#767676] mb-5">{t('Skupne emisije CO₂e (tCO₂e) po poročevalskih obdobjih', 'Total CO₂e emissions (tCO₂e) by reporting period')}</p>
+        <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl p-6">
+          <p className="text-sm font-semibold text-gray-900 mb-1">{t('Emisije po letih', 'Emissions by year')}</p>
+          <p className="text-xs text-gray-500 mb-5">{t('Skupne emisije CO₂e (tCO₂e) po poročevalskih obdobjih', 'Total CO₂e emissions (tCO₂e) by reporting period')}</p>
           {yearChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={yearChartData} barSize={36}>
@@ -141,16 +143,16 @@ export default function DashboardPage() {
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[200px] flex items-center justify-center text-sm text-[#767676]">
+            <div className="h-[200px] flex items-center justify-center text-sm text-gray-500">
               {t('Ni podatkov za prikaz', 'No data to display')}
             </div>
           )}
         </div>
 
         {/* Scope breakdown */}
-        <div className="bg-white border border-[#ececec] rounded-xl p-6">
-          <p className="text-sm font-semibold text-[#031f18] mb-1">{t('Emisije po scopu', 'Emissions by scope')} — {displayYear}</p>
-          <p className="text-xs text-[#767676] mb-5">{t('Razmerje med Scope 1 in Scope 2', 'Breakdown between Scope 1 and Scope 2')}</p>
+        <div className="bg-white border border-gray-200 rounded-xl p-6">
+          <p className="text-sm font-semibold text-gray-900 mb-1">{t('Emisije po scopu', 'Emissions by scope')} — {displayYear}</p>
+          <p className="text-xs text-gray-500 mb-5">{t('Razmerje med Scope 1 in Scope 2', 'Breakdown between Scope 1 and Scope 2')}</p>
           {scopeChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
@@ -170,7 +172,7 @@ export default function DashboardPage() {
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[200px] flex items-center justify-center text-sm text-[#767676]">
+            <div className="h-[200px] flex items-center justify-center text-sm text-gray-500">
               {t('Vnesite podatke za prikaz', 'Enter data to display')}
             </div>
           )}
@@ -182,20 +184,20 @@ export default function DashboardPage() {
 
         {/* Emission sources */}
         <div className="lg:col-span-2">
-          <h2 className="text-sm font-semibold text-[#031f18] mb-3">{t('Viri emisij', 'Emission sources')} — {displayYear}</h2>
+          <h2 className="text-sm font-semibold text-gray-900 mb-3">{t('Viri emisij', 'Emission sources')} — {displayYear}</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {sources.map((s) => {
               const Icon = s.icon
               return (
                 <Link key={s.href} href={s.href}
-                  className="flex items-center gap-3 bg-white border border-[#ececec] rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
+                  className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
                   <div className={`w-9 h-9 ${s.bg} rounded-lg flex items-center justify-center shrink-0`}>
                     <Icon className={`h-4 w-4 ${s.color}`} />
                   </div>
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold text-[#767676]">{s.scope}</p>
-                    <p className="text-sm font-medium text-[#031f18] truncate">{s.label}</p>
-                    <p className="text-xs text-[#767676]">{t('Ni podatkov', 'No data')}</p>
+                    <p className="text-xs font-semibold text-gray-500">{s.scope}</p>
+                    <p className="text-sm font-medium text-gray-900 truncate">{s.label}</p>
+                    <p className="text-xs text-gray-500">{t('Ni podatkov', 'No data')}</p>
                   </div>
                 </Link>
               )
@@ -205,44 +207,44 @@ export default function DashboardPage() {
 
         {/* Quick links */}
         <div>
-          <h2 className="text-sm font-semibold text-[#031f18] mb-3">{t('Hitri dostop', 'Quick links')}</h2>
+          <h2 className="text-sm font-semibold text-gray-900 mb-3">{t('Hitri dostop', 'Quick links')}</h2>
           <div className="space-y-3">
             <Link href="/app/analytics"
-              className="flex items-center gap-3 bg-white border border-[#ececec] rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
-              <div className="w-9 h-9 bg-[#efefef] rounded-lg flex items-center justify-center shrink-0">
-                <TrendingUp className="h-4 w-4 text-[#0f0f10]" />
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
+              <div className="w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
+                <TrendingUp className="h-4 w-4 text-gray-900" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-[#031f18]">{t('Analitika', 'Analytics')}</p>
-                <p className="text-xs text-[#767676]">{t('Grafi in trendi', 'Charts & trends')}</p>
+                <p className="text-base font-semibold text-gray-900">{t('Analitika', 'Analytics')}</p>
+                <p className="text-xs text-gray-500">{t('Grafi in trendi', 'Charts & trends')}</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-[#0f0f10] shrink-0" />
+              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-gray-900 shrink-0" />
             </Link>
             <Link href="/app/reports"
-              className="flex items-center gap-3 bg-white border border-[#ececec] rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
-              <div className="w-9 h-9 bg-[#f5f5f5] rounded-lg flex items-center justify-center shrink-0">
-                <FileText className="h-4 w-4 text-[#0f0f10]" />
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
+              <div className="w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
+                <FileText className="h-4 w-4 text-gray-900" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-[#031f18]">{t('Poročila', 'Reports')}</p>
-                <p className="text-xs text-[#767676]">{t('Izvoz PDF, CSRD', 'PDF export, CSRD')}</p>
+                <p className="text-base font-semibold text-gray-900">{t('Poročila', 'Reports')}</p>
+                <p className="text-xs text-gray-500">{t('Izvoz PDF, CSRD', 'PDF export, CSRD')}</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-[#0f0f10] shrink-0" />
+              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-gray-900 shrink-0" />
             </Link>
             <Link href="/app/locations"
-              className="flex items-center gap-3 bg-white border border-[#ececec] rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
-              <div className="w-9 h-9 bg-purple-50 rounded-lg flex items-center justify-center shrink-0">
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
+              <div className="w-9 h-9 bg-gray-100 rounded-md flex items-center justify-center shrink-0">
                 <Building2 className="h-4 w-4 text-purple-600" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-[#031f18]">{t('Lokacije', 'Locations')}</p>
-                <p className="text-xs text-[#767676]">{t('Upravljanje lokacij', 'Manage locations')}</p>
+                <p className="text-base font-semibold text-gray-900">{t('Lokacije', 'Locations')}</p>
+                <p className="text-xs text-gray-500">{t('Upravljanje lokacij', 'Manage locations')}</p>
               </div>
-              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-[#0f0f10] shrink-0" />
+              <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-gray-900 shrink-0" />
             </Link>
           </div>
         </div>
       </div>
-    </div>
+    </div></div>
   )
 }

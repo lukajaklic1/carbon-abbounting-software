@@ -62,11 +62,11 @@ export default function NewVehiclePage() {
         {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
         <div className="flex gap-3 pt-2">
           <button type="button" onClick={() => router.push('/app/vehicles')}
-            className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
             Cancel
           </button>
           <button type="submit" disabled={loading}
-            className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-60 rounded-xl transition-colors">
+            className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60 rounded-xl transition-colors">
             {loading ? 'Saving...' : 'Add Vehicle'}
           </button>
         </div>

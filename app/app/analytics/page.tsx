@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { usePeriodStore } from '@/stores/period'
-import { Leaf, Flame, Zap, Wind } from 'lucide-react'
+import { IconAtom2, IconEngine, IconPlugConnected, IconTruckDelivery } from '@tabler/icons-react'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
@@ -137,44 +137,43 @@ export default function AnalyticsPage() {
   const fmtT = (kg: number) => (kg / 1000).toFixed(2).replace('.', ',')
 
   return (
-    <div className="p-4 lg:p-8 space-y-6">
-      {/* Header */}
-      <div>
-        <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">{t('Analitika', 'Analytics')} · {year}</p>
-        <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Ogljični odtis', 'Carbon Footprint')}</h1>
-        <p className="text-sm text-[#767676] mt-1">{t('Pregled celotnih emisij CO₂e po scopih, kategorijah in lokacijah za izbrano poročevalsko obdobje.', 'Overview of total CO₂e emissions by scope, category and location for the selected reporting period.')}</p>
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <div className="flex items-baseline gap-3 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Analitika', 'Analytics')}</h1>
+          <p className="text-sm text-gray-500 truncate">{t('Pregled emisij CO₂e po scopih in kategorijah.', 'Overview of CO₂e emissions by scope and category.')}</p>
+        </div>
       </div>
+      <div className="flex-1 overflow-auto px-6 py-6 space-y-6">
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: t('Skupaj', 'Total'), value: fmtT(total), sub: 'tCO₂e', icon: Leaf, color: 'text-[#0f0f10]', bg: 'bg-[#f5f5f5]' },
-          { label: 'Scope 1', value: fmtT(scopeData?.scope1_kg ?? 0), sub: `${pct(scopeData?.scope1_kg ?? 0)}%`, icon: Flame, color: 'text-[#0f0f10]', bg: 'bg-[#efefef]' },
-          { label: 'Scope 2', value: fmtT(scopeData?.scope2_kg ?? 0), sub: `${pct(scopeData?.scope2_kg ?? 0)}%`, icon: Zap, color: 'text-amber-500', bg: 'bg-amber-50' },
-          { label: 'Scope 3', value: fmtT(scopeData?.scope3_kg ?? 0), sub: `${pct(scopeData?.scope3_kg ?? 0)}%`, icon: Wind, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+          { label: t('Skupne emisije', 'Total emissions'), value: fmtT(total), sub: 'tCO₂e', icon: IconAtom2, iconColor: '#215bcf', bg: '#e5eeff' },
+          { label: t('Obseg 1', 'Scope 1'), value: fmtT(scopeData?.scope1_kg ?? 0), sub: `${pct(scopeData?.scope1_kg ?? 0)}% ${t('skupaj', 'of total')}`, icon: IconEngine, iconColor: '#098259', bg: '#e0fced' },
+          { label: t('Obseg 2', 'Scope 2'), value: fmtT(scopeData?.scope2_kg ?? 0), sub: `${pct(scopeData?.scope2_kg ?? 0)}% ${t('skupaj', 'of total')}`, icon: IconPlugConnected, iconColor: '#215bcf', bg: '#e5eeff' },
+          { label: t('Obseg 3', 'Scope 3'), value: fmtT(scopeData?.scope3_kg ?? 0), sub: `${pct(scopeData?.scope3_kg ?? 0)}% ${t('skupaj', 'of total')}`, icon: IconTruckDelivery, iconColor: '#098259', bg: '#e0fced' },
         ].map(card => {
           const Icon = card.icon
           return (
-            <div key={card.label} className="bg-white border border-[#ececec] rounded-xl p-5">
-              <div className="flex items-start justify-between mb-3">
-                <p className="text-xs text-[#767676]">{card.label}</p>
-                <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0', card.bg)}>
-                  <Icon className={cn('h-4 w-4', card.color)} />
-                </div>
+            <div key={card.label} className="bg-white border border-gray-200 rounded-xl p-5">
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: card.bg }}>
+                <Icon className="h-4 w-4" style={{ color: card.iconColor }} />
               </div>
-              <p className="text-2xl font-medium text-[#0f0f10] tabular-nums">{loading ? '—' : card.value}</p>
-              <p className="text-xs text-[#767676] mt-0.5">{card.sub}</p>
+              <p className="text-sm text-gray-500 mb-1">{card.label}</p>
+              <p className="text-2xl font-semibold text-gray-900 tabular-nums">{loading ? '—' : card.value}</p>
+              <p className="text-xs text-gray-400 mt-0.5">{card.sub}</p>
             </div>
           )
         })}
       </div>
 
       {/* Charts row 1: trend + scope pie */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Trend by year */}
-        <div className="lg:col-span-2 bg-white border border-[#ececec] rounded-xl p-6">
-          <p className="text-sm font-semibold text-[#031f18] mb-0.5">{t('Trend emisij po letih', 'Emissions trend by year')}</p>
-          <p className="text-xs text-[#767676] mb-5">tCO₂e</p>
+        <div className="bg-white border border-gray-200 rounded-xl p-6">
+          <p className="text-sm font-semibold text-gray-900 mb-0.5">{t('Trend emisij po letih', 'Emissions trend by year')}</p>
+          <p className="text-xs text-gray-500 mb-5">tCO₂e</p>
           {yearChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={yearChartData} barSize={40}>
@@ -187,7 +186,7 @@ export default function AnalyticsPage() {
                 />
                 <Bar dataKey="emisije" radius={[6, 6, 0, 0]}>
                   {yearChartData.map((entry, i) => (
-                    <Cell key={i} fill={entry.year === String(year) ? '#0f0f10' : '#bfdbfe'} />
+                    <Cell key={i} fill={entry.year === String(year) ? '#2563eb' : '#bfdbfe'} />
                   ))}
                 </Bar>
               </BarChart>
@@ -198,9 +197,9 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Scope breakdown pie */}
-        <div className="bg-white border border-[#ececec] rounded-xl p-6">
-          <p className="text-sm font-semibold text-[#031f18] mb-0.5">{t('Delež po obsegu', 'Breakdown by scope')}</p>
-          <p className="text-xs text-[#767676] mb-5">{year}</p>
+        <div className="bg-white border border-gray-200 rounded-xl p-6">
+          <p className="text-sm font-semibold text-gray-900 mb-0.5">{t('Delež po obsegu', 'Breakdown by scope')}</p>
+          <p className="text-xs text-gray-500 mb-5">{year} · tCO₂e</p>
           {scopeChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
@@ -224,9 +223,9 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Emission sources breakdown */}
-      <div className="bg-white border border-[#ececec] rounded-xl p-6">
-        <p className="text-sm font-semibold text-[#031f18] mb-0.5">{t('Emisije po virih', 'Emissions by source')}</p>
-        <p className="text-xs text-[#767676] mb-5">{year} · tCO₂e</p>
+      <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <p className="text-sm font-semibold text-gray-900 mb-0.5">{t('Emisije po virih', 'Emissions by source')}</p>
+        <p className="text-xs text-gray-500 mb-5">{year} · tCO₂e</p>
         {sourceChartData.length > 0 ? (
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={sourceChartData} layout="vertical" barSize={18} margin={{ left: 16, right: 32 }}>
@@ -254,13 +253,14 @@ export default function AnalyticsPage() {
             {sourceChartData.map((s, i) => (
               <div key={s.name} className="flex items-center gap-3">
                 <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: SOURCE_COLORS[i % SOURCE_COLORS.length] }} />
-                <span className="text-xs text-[#767676] flex-1">{s.name}</span>
-                <span className="text-xs font-semibold text-[#031f18] tabular-nums">{String(s.value).replace('.', ',')} t</span>
-                <span className="text-xs text-[#767676] w-10 text-right">{total > 0 ? ((s.value * 1000 / total) * 100).toFixed(1) : 0}%</span>
+                <span className="text-xs text-gray-500 flex-1">{s.name}</span>
+                <span className="text-xs font-semibold text-gray-900 tabular-nums">{String(s.value).replace('.', ',')} t</span>
+                <span className="text-xs text-gray-500 w-10 text-right">{total > 0 ? ((s.value * 1000 / total) * 100).toFixed(1) : 0}%</span>
               </div>
             ))}
           </div>
         )}
+      </div>
       </div>
     </div>
   )

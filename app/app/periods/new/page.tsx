@@ -56,24 +56,24 @@ export default function NewPeriodPage() {
     <div className="max-w-lg mx-auto p-6">
       <FormCard title={t('Novo leto poročanja', 'New reporting year')} backHref="/app/dashboard">
         <div className="p-6 space-y-5">
-          <div className="flex items-center gap-3 p-4 bg-[#efefef] border border-blue-100 rounded-xl">
-            <CalendarDays className="h-5 w-5 text-[#0f0f10] shrink-0" />
-            <p className="text-sm text-[#0f0f10]">
+          <div className="flex items-center gap-3 p-4 bg-gray-100 border border-blue-100 rounded-xl">
+            <CalendarDays className="h-5 w-5 text-gray-900 shrink-0" />
+            <p className="text-sm text-gray-900">
               {t('Vsako leto poročanja je ločen nabor podatkov o emisijah.', 'Each reporting year is a separate set of emissions data.')}
             </p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#031f18] mb-3">{t('Izberite leto', 'Select year')}</label>
+            <label className="block text-sm font-medium text-gray-900 mb-3">{t('Izberite leto', 'Select year')}</label>
             <div className="grid grid-cols-4 gap-2">
               {YEARS.map(y => {
                 const taken = takenYears.includes(y)
                 return (
                   <button key={y} onClick={() => !taken && setYear(y)} disabled={taken}
                     className={`py-2 rounded-xl text-sm font-semibold border-2 transition-all ${
-                      taken ? 'border-[#ececec] bg-[#f9f9f9] text-gray-300 cursor-not-allowed' :
-                      year === y ? 'border-[#0f0f10] bg-[#efefef] text-[#0f0f10]' :
-                      'border-[#ececec] bg-white text-[#031f18] hover:border-blue-300'
+                      taken ? 'border-gray-200 bg-gray-50 text-gray-300 cursor-not-allowed' :
+                      year === y ? 'border-[#0f0f10] bg-gray-100 text-gray-900' :
+                      'border-gray-200 bg-white text-gray-900 hover:border-blue-300'
                     }`}>
                     {y}
                     {taken && <span className="block text-[9px] font-normal mt-0.5">{t('že obstaja', 'exists')}</span>}
@@ -87,11 +87,11 @@ export default function NewPeriodPage() {
 
           <div className="flex gap-3 pt-2">
             <button onClick={() => router.back()}
-              className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+              className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
               {t('Prekliči', 'Cancel')}
             </button>
             <button onClick={handleCreate} disabled={loading}
-              className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
+              className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl transition-colors">
               {loading ? t('Ustvarjanje...', 'Creating...') : `${t('Ustvari', 'Create')} ${year}`}
             </button>
           </div>

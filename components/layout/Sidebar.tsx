@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import {
   MapPin, Car, BarChart2, FileText, Flame, Zap, Thermometer,
   FlaskConical, Settings, LogOut, Users, ChevronDown, ChevronRight,
-  Wrench, Wind, Package, PanelLeft, ChevronLeft, Home,
+  Wrench, Wind, Package, PanelLeft, Building2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useOrganizationStore } from '@/stores/organization'
@@ -18,14 +18,12 @@ import { useEmissionCountersStore } from '@/stores/emissionCounters'
 
 const IS_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL
 
-/* ─── Logo icon — two chevrons (grey back, black front) ─── */
-function CarboniqIcon({ size = 32 }: { size?: number }) {
+/* ─── Logo ─── */
+function CarboniqIcon({ size = 20 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      {/* Grey chevron — behind */}
-      <path d="M14 6L8 12L14 18" stroke="#c0c0c0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-      {/* Black chevron — front */}
-      <path d="M10 6L4 12L10 18" stroke="#0f0f10" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 6L8 12L14 18" stroke="#9ca3af" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 6L4 12L10 18" stroke="#111827" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -39,7 +37,6 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
   const { selectedYear, availablePeriods, setSelectedYear, setCurrentPeriod } = usePeriodStore()
   const { locale, switchLocale } = useLocale()
   const [userMeta, setUserMeta] = useState<{ firstName?: string; lastName?: string; email?: string } | null>(null)
-  const [yearOpen, setYearOpen] = useState(false)
 
   const { counters, refresh } = useEmissionCountersStore()
   useEffect(() => { if (selectedYear) refresh(selectedYear) }, [selectedYear, pathname])
@@ -71,7 +68,6 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
   function handleSelectYear(y: number) {
     setSelectedYear(y)
     setCurrentPeriod(availablePeriods.find(p => p.year === y) ?? null)
-    setYearOpen(false)
   }
 
   const initials = userMeta
@@ -110,45 +106,40 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
   ]
 
   return (
-    <aside className={`flex flex-col h-full shrink-0 overflow-x-hidden transition-all duration-200 ${collapsed ? 'w-[56px]' : 'w-[264px]'}`}
-      style={{ background: 'var(--bg-sidebar)', borderRight: '1px solid var(--border-color)' }}>
+    <aside className={cn(
+      'flex flex-col h-full shrink-0 overflow-hidden transition-all duration-200 bg-gray-50 border-r border-gray-200',
+      collapsed ? 'w-[56px]' : 'w-64',
+    )}>
 
       {/* ── Logo ── */}
-      <div className="flex items-center h-12 lg:h-14 shrink-0 px-3 gap-0"
-        style={{ borderBottom: '1px solid var(--border-color)' }}>
-        {/* Icon always visible */}
-        <div className="shrink-0">
-          <CarboniqIcon size={32} />
-        </div>
-        {/* Name — hidden when collapsed */}
+      <div className="h-[57px] px-4 border-b border-gray-200 flex items-center justify-between shrink-0">
         {!collapsed && (
-          <span className="font-semibold text-[18px] flex-1 truncate"
-            style={{ color: 'var(--text-primary)', letterSpacing: '-0.025em' }}>
-            Carboniqdesk
-          </span>
+          <div className="flex items-center gap-2">
+            <CarboniqIcon size={20} />
+            <span className="font-semibold text-[15px] text-gray-900 tracking-tight">Carboniqdesk</span>
+          </div>
         )}
-        {/* Toggle button — only visible when expanded */}
+        {collapsed && <CarboniqIcon size={20} />}
         {!collapsed && onToggleCollapse && (
           <button onClick={onToggleCollapse}
-            className="shrink-0 p-1 rounded-md transition-colors"
-            style={{ color: 'var(--text-muted)' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-hover)'; (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)' }}>
-            <PanelLeft className="h-4 w-4" />
+            className="p-1.5 rounded-md text-gray-400 hover:text-gray-700 hover:bg-[#f6f6f6] transition-colors">
+            <PanelLeft className="w-[18px] h-[18px]" />
           </button>
         )}
       </div>
 
-      {/* ── Org + year ── */}
-      {!collapsed && <div className="px-3 py-2" style={{ borderBottom: '1px solid var(--border-color)' }}>
-        <div className="flex items-center w-full px-3 py-1.5 rounded-xl text-[14px] font-medium truncate"
-          style={{ background: '#ffffff', border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
-          {orgName}
+      {/* ── Org ── */}
+      {!collapsed && (
+        <div className="px-3 pt-3 pb-1">
+          <div className="flex items-center gap-2 px-2.5 py-1 bg-white rounded-md border border-gray-200">
+            <Building2 className="w-4 h-4 text-gray-400 shrink-0" />
+            <p className="text-sm font-medium text-gray-900 truncate">{orgName}</p>
+          </div>
         </div>
-      </div>}
+      )}
 
       {/* ── Nav ── */}
-      <nav className="flex-1 px-3 py-2 overflow-y-auto flex flex-col gap-0.5">
+      <nav className="flex-1 overflow-y-auto overflow-x-hidden py-2 px-2">
 
         {!collapsed && <SectionLabel label={t('Moja organizacija', 'My organisation')} open={openOrg} onToggle={() => setOpenOrg(v => !v)} />}
         {(collapsed || openOrg) && mainItems.map(i => (
@@ -178,69 +169,59 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
       </nav>
 
       {/* ── Bottom ── */}
-      <div className="px-3 pb-3 pt-2 space-y-0.5" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+      <div className="border-t border-gray-200 p-2">
         <NavItem href="/app/settings" label={t('Nastavitve', 'Settings')} icon={Settings} active={pathname.startsWith('/app/settings')} collapsed={collapsed} />
         {isAdmin && <NavItem href="/app/team" label={t('Uporabniki', 'Users')} icon={Users} active={pathname.startsWith('/app/team')} collapsed={collapsed} />}
         {isSuperAdmin && <NavItem href="/app/admin/scope3" label="Admin" icon={FileText} active={pathname.startsWith('/app/admin')} collapsed={collapsed} />}
 
-        {/* Lang — hidden when collapsed */}
+        {/* Lang switcher */}
         {!collapsed && (
-          <div className="flex items-center gap-1 px-2 py-1">
-            {(['SL', 'EN'] as const).map(l => (
-              <button key={l} onClick={() => switchLocale(l)}
-                className="text-[11px] font-semibold px-2 py-0.5 rounded-md transition-colors"
-                style={locale === l
-                  ? { background: 'var(--brand)', color: '#fff' }
-                  : { color: 'var(--text-muted)' }}>
-                {l}
-              </button>
-            ))}
+          <div className="flex items-center gap-2 px-3 py-2 mb-1">
+            <span className="text-xs text-gray-500 shrink-0">{locale === 'EN' ? 'Language' : 'Jezik'}:</span>
+            <div className="flex gap-1">
+              {(['SL', 'EN'] as const).map(l => (
+                <button key={l} onClick={() => switchLocale(l)}
+                  className={cn(
+                    'px-2 py-0.5 rounded text-xs font-medium transition-colors',
+                    locale === l ? 'bg-blue-600 text-white' : 'text-gray-500 hover:text-gray-900 hover:bg-[#f6f6f6]',
+                  )}>
+                  {l}
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
         {/* User row */}
-        <button className="w-full flex items-center gap-2.5 px-2 py-2 rounded-lg transition-colors text-left"
-          style={{ color: 'var(--text-primary)' }}
-          onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-hover)')}
-          onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-          <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-[9px] font-bold"
-            style={{ background: 'var(--bg-selected)', color: 'var(--text-secondary)' }}>
+        <div className="flex items-center gap-3 px-3 py-2">
+          <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-semibold shrink-0">
             {initials}
           </div>
           {!collapsed && (
             <>
-              <span className="text-[13px] font-medium truncate flex-1" style={{ color: 'var(--text-primary)' }}>
-                {displayName}
-              </span>
-              <button onClick={e => { e.stopPropagation(); handleLogout() }}
-                className="shrink-0 p-0.5 rounded transition-colors"
-                style={{ color: 'var(--text-muted)' }}
-                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = 'var(--text-primary)')}
-                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = 'var(--text-muted)')}>
-                <LogOut className="h-3.5 w-3.5" />
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-medium text-gray-900 truncate">{displayName}</p>
+              </div>
+              <button onClick={handleLogout} className="text-gray-400 hover:text-gray-900 transition-colors" title={t('Odjava', 'Sign out')}>
+                <LogOut className="w-4 h-4" />
               </button>
             </>
           )}
-        </button>
+        </div>
       </div>
     </aside>
   )
 }
 
-/* ─── Section label (ElevenLabs "Pinned" style) ─── */
-function SectionLabel({ label, open, onToggle, icon: Icon }: {
-  label: string; open: boolean; onToggle: () => void; icon?: React.ElementType
-}) {
+/* ─── Section label ─── */
+function SectionLabel({ label, open, onToggle }: { label: string; open: boolean; onToggle: () => void }) {
   return (
     <button onClick={onToggle}
-      className="w-full flex items-center gap-2.5 px-2 py-[7px] mt-1 mx-1 rounded-xl transition-colors group"
-      onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-hover)')}
-      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-      {Icon && <Icon className="h-[17px] w-[17px] shrink-0" style={{ color: 'var(--text-muted)' }} />}
-      <span className="text-[14px] font-medium flex-1 text-left" style={{ color: 'var(--text-primary)' }}>{label}</span>
+      className="w-full flex items-center gap-1.5 px-3 py-1 mt-2 rounded-lg text-xs font-medium text-gray-500 hover:text-gray-700 hover:bg-[#f6f6f6] transition-colors">
+      <span className="flex-1 text-left">{label}</span>
       {open
-        ? <ChevronDown className="h-3 w-3 shrink-0" style={{ color: 'var(--text-muted)' }} />
-        : <ChevronRight className="h-3 w-3 shrink-0" style={{ color: 'var(--text-muted)' }} />}
+        ? <ChevronDown className="h-3 w-3 shrink-0" />
+        : <ChevronRight className="h-3 w-3 shrink-0" />}
     </button>
   )
 }
@@ -254,18 +235,15 @@ function NavItem({ href, label, icon: Icon, active, counter, entityOnly, collaps
   return (
     <Link href={href}
       title={collapsed ? label : undefined}
-      className={`flex items-center gap-2.5 px-2 py-[5px] mx-1 rounded-xl text-[14px] transition-colors group ${collapsed ? 'justify-center' : ''}`}
-      style={active
-        ? { background: 'var(--bg-selected)', color: 'var(--text-primary)', fontWeight: 500 }
-        : { color: 'var(--text-primary)', fontWeight: 500 }}
-      onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.background = 'var(--bg-hover)' }}
-      onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.background = 'transparent' }}>
-      <Icon className="h-[17px] w-[17px] shrink-0"
-        style={{ color: active ? 'var(--text-primary)' : 'var(--text-muted)' }} />
+      className={cn(
+        'flex items-center gap-2.5 px-3 py-1.5 rounded-lg mb-0.5 text-sm font-medium transition-colors',
+        collapsed ? 'justify-center' : '',
+        active ? 'bg-[#f1f1f1] text-gray-900' : 'text-gray-900 hover:bg-[#f6f6f6]',
+      )}>
+      <Icon className="w-4 h-4 shrink-0 text-gray-500" />
       {!collapsed && <span className="truncate flex-1">{label}</span>}
       {!collapsed && counter !== undefined && (
-        <span className="text-[12px] tabular-nums shrink-0"
-          style={{ color: allDone ? 'var(--brand)' : 'var(--text-muted)', fontWeight: 500 }}>
+        <span className={cn('text-xs tabular-nums shrink-0 font-medium', allDone ? 'text-blue-600' : 'text-gray-400')}>
           {entityOnly ? counter.total : `${counter.done}/${counter.total}`}
         </span>
       )}

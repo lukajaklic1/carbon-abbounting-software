@@ -64,16 +64,21 @@ export default function SuperAdminDashboard() {
   }
 
   const cards = [
-    { label: 'Skupaj podjetij', value: stats.orgs, icon: Building2, color: 'text-[#0f0f10]', bg: 'bg-[#efefef]' },
-    { label: 'Aktivni uporabniki', value: stats.users, icon: Users, color: 'text-[#0f0f10]', bg: 'bg-[#f5f5f5]' },
+    { label: 'Skupaj podjetij', value: stats.orgs, icon: Building2, color: 'text-gray-900', bg: 'bg-gray-100' },
+    { label: 'Aktivni uporabniki', value: stats.users, icon: Users, color: 'text-gray-900', bg: 'bg-gray-100' },
     { label: 'Nova podjetja ta mesec', value: stats.newOrgs, icon: TrendingUp, color: 'text-amber-500', bg: 'bg-amber-50' },
     { label: 'Novi uporabniki ta mesec', value: stats.newUsers, icon: UserPlus, color: 'text-orange-500', bg: 'bg-orange-50' },
   ]
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <div className="flex items-baseline gap-3 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">Nadzorna plošča</h1>
+        </div>
+      </div>
+      <div className="flex-1 overflow-auto px-6 py-6 space-y-6">
       <div>
-        <h1 className="text-2xl font-medium text-[#0f0f10]">Nadzorna plošča</h1>
       </div>
 
       {/* Stat cards */}
@@ -81,13 +86,13 @@ export default function SuperAdminDashboard() {
         {cards.map(c => {
           const Icon = c.icon
           return (
-            <div key={c.label} className="bg-white border border-[#ececec] rounded-xl p-5 flex items-center gap-4">
+            <div key={c.label} className="bg-white border border-gray-200 rounded-xl p-5 flex items-center gap-4">
               <div className={`w-10 h-10 ${c.bg} rounded-xl flex items-center justify-center shrink-0`}>
                 <Icon className={`h-5 w-5 ${c.color}`} />
               </div>
               <div>
-                <p className="text-2xl font-medium text-[#0f0f10]">{loading ? '—' : c.value}</p>
-                <p className="text-xs text-[#767676]">{c.label}</p>
+                <p className="text-2xl font-medium text-gray-900">{loading ? '—' : c.value}</p>
+                <p className="text-xs text-gray-500">{c.label}</p>
               </div>
             </div>
           )
@@ -105,9 +110,9 @@ export default function SuperAdminDashboard() {
 
 function TrendCard({ title, data, color, total }: { title: string; data: MonthPoint[]; color: string; total: number }) {
   return (
-    <div className="bg-white border border-[#ececec] rounded-xl p-5">
+    <div className="bg-white border border-gray-200 rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm font-semibold text-[#031f18]">{title}</p>
+        <p className="text-base font-semibold text-gray-900">{title}</p>
         <span className="text-lg font-bold tabular-nums" style={{ color }}>{total}</span>
       </div>
       <ResponsiveContainer width="100%" height={140}>
@@ -125,6 +130,8 @@ function TrendCard({ title, data, color, total }: { title: string; data: MonthPo
             fill={`url(#grad-${color})`} dot={false} activeDot={{ r: 4, fill: color }} />
         </AreaChart>
       </ResponsiveContainer>
+      </div>
+      </div>
     </div>
   )
 }

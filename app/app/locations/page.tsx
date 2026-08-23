@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { MapPin, Plus, Pencil, Trash2, Building2, X, Check, Search } from 'lucide-react'
+import { MapPin, Plus, Pencil, Trash2, Building2, X, Check, Search, Factory, Warehouse, ShoppingBag, UtensilsCrossed, Hotel, Cross, GraduationCap, Trophy, Server, Truck, Landmark, LayoutGrid } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { mockLocations } from '@/lib/mock-data'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
@@ -22,20 +22,20 @@ const COUNTRIES = [
 ]
 
 const LOCATION_TYPES = [
-  { value: 'office',          sl: 'Pisarna',                      en: 'Office',               emoji: '🏢' },
-  { value: 'manufacturing',   sl: 'Proizvodnja',                  en: 'Manufacturing',         emoji: '🏭' },
-  { value: 'warehouse',       sl: 'Skladišče',                    en: 'Warehouse',             emoji: '🏗️' },
-  { value: 'retail',          sl: 'Prodajalna',                   en: 'Retail store',          emoji: '🏪' },
-  { value: 'restaurant_cafe', sl: 'Restavracija / kavarna',       en: 'Restaurant / café',     emoji: '🍽️' },
-  { value: 'hotel',           sl: 'Hotel',                        en: 'Hotel',                 emoji: '🏨' },
-  { value: 'healthcare',      sl: 'Zdravstveni objekt',           en: 'Healthcare facility',   emoji: '🏥' },
-  { value: 'education',       sl: 'Šola / izobraževalni center',  en: 'School / education',    emoji: '🏫' },
-  { value: 'sports',          sl: 'Športni objekt',               en: 'Sports facility',       emoji: '🏟️' },
-  { value: 'datacenter',      sl: 'Podatkovni center',            en: 'Data center',           emoji: '🖥️' },
-  { value: 'logistics',       sl: 'Logistično središče',          en: 'Logistics hub',         emoji: '🚚' },
-  { value: 'public',          sl: 'Javna zgradba',                en: 'Public building',       emoji: '🏛️' },
-  { value: 'mixed_use',       sl: 'Večnamenska stavba',           en: 'Mixed use',             emoji: '🏘️' },
-  { value: 'other',           sl: 'Drugo',                        en: 'Other',                 emoji: '📍' },
+  { value: 'office',          sl: 'Pisarna',                      en: 'Office',               icon: Building2 },
+  { value: 'manufacturing',   sl: 'Proizvodnja',                  en: 'Manufacturing',         icon: Factory },
+  { value: 'warehouse',       sl: 'Skladišče',                    en: 'Warehouse',             icon: Warehouse },
+  { value: 'retail',          sl: 'Prodajalna',                   en: 'Retail store',          icon: ShoppingBag },
+  { value: 'restaurant_cafe', sl: 'Restavracija / kavarna',       en: 'Restaurant / café',     icon: UtensilsCrossed },
+  { value: 'hotel',           sl: 'Hotel',                        en: 'Hotel',                 icon: Hotel },
+  { value: 'healthcare',      sl: 'Zdravstveni objekt',           en: 'Healthcare facility',   icon: Cross },
+  { value: 'education',       sl: 'Šola / izobraževalni center',  en: 'School / education',    icon: GraduationCap },
+  { value: 'sports',          sl: 'Športni objekt',               en: 'Sports facility',       icon: Trophy },
+  { value: 'datacenter',      sl: 'Podatkovni center',            en: 'Data center',           icon: Server },
+  { value: 'logistics',       sl: 'Logistično središče',          en: 'Logistics hub',         icon: Truck },
+  { value: 'public',          sl: 'Javna zgradba',                en: 'Public building',       icon: Landmark },
+  { value: 'mixed_use',       sl: 'Večnamenska stavba',           en: 'Mixed use',             icon: LayoutGrid },
+  { value: 'other',           sl: 'Drugo',                        en: 'Other',                 icon: MapPin },
 ]
 
 const UTILITIES = [
@@ -57,12 +57,13 @@ const EMPTY_FORM = {
 type LocationForm = typeof EMPTY_FORM
 
 export default function LocationsPage() {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const refreshCounters = useEmissionCountersStore(s => s.refresh)
   const { selectedYear } = usePeriodStore()
   const [locations, setLocations] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [linkedCounts, setLinkedCounts] = useState<Record<string, number>>({})
+  const [linkedDetail, setLinkedDetail] = useState<Record<string, { vehicles: number; equipment: number; emissions: number }>>({})
   const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null)
   const [showModal, setShowModal] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -91,17 +92,30 @@ export default function LocationsPage() {
 
       const ids = (data ?? []).map((l: any) => l.id)
       if (ids.length > 0) {
-        const [{ data: d1 }, { data: d2 }, { data: d3 }, { data: d4 }] = await Promise.all([
+        const [s1a, s1b, s1c, s1d, s1e, s2a, s2b, s2c, s2d, eqRes, vRes] = await Promise.all([
           supabase.from('scope1_stationary').select('location_id').in('location_id', ids),
+          supabase.from('scope1_mobile').select('location_id').in('location_id', ids),
+          supabase.from('scope1_equipment_fuel').select('location_id').in('location_id', ids),
+          supabase.from('scope1_refrigerants').select('location_id').in('location_id', ids),
+          supabase.from('scope1_industrial_gases').select('location_id').in('location_id', ids),
           supabase.from('scope2_electricity').select('location_id').in('location_id', ids),
-          supabase.from('equipment').select('location_id').in('location_id', ids).eq('is_active', true),
-          supabase.from('vehicles').select('location_id').in('location_id', ids).eq('is_active', true),
+          supabase.from('scope2_heat').select('location_id').in('location_id', ids),
+          supabase.from('scope2_steam').select('location_id').in('location_id', ids),
+          supabase.from('scope2_cooling').select('location_id').in('location_id', ids),
+          supabase.from('equipment').select('location_id').in('location_id', ids),
+          supabase.from('vehicles').select('location_id').in('location_id', ids),
         ])
         const counts: Record<string, number> = {}
-        ;[...(d1 ?? []), ...(d2 ?? []), ...(d3 ?? []), ...(d4 ?? [])].forEach((r: any) => {
-          if (r.location_id) counts[r.location_id] = (counts[r.location_id] ?? 0) + 1
+        const detail: Record<string, { vehicles: number; equipment: number; emissions: number }> = {}
+        const bump = (id: string) => { counts[id] = (counts[id] ?? 0) + 1 }
+        const d = (id: string) => detail[id] ?? (detail[id] = { vehicles: 0, equipment: 0, emissions: 0 })
+        ;[s1a, s1b, s1c, s1d, s1e, s2a, s2b, s2c, s2d].flatMap(r => r.data ?? []).forEach((r: any) => {
+          if (r.location_id) { bump(r.location_id); d(r.location_id).emissions++ }
         })
+        ;(eqRes.data ?? []).forEach((r: any) => { if (r.location_id) { bump(r.location_id); d(r.location_id).equipment++ } })
+        ;(vRes.data ?? []).forEach((r: any) => { if (r.location_id) { bump(r.location_id); d(r.location_id).vehicles++ } })
         setLinkedCounts(counts)
+        setLinkedDetail(detail)
       }
     } catch { setLocations(mockLocations) }
     setLoading(false)
@@ -195,9 +209,10 @@ export default function LocationsPage() {
     if (IS_MOCK) { setLocations(prev => prev.filter(l => l.id !== id)); return }
     try {
       const supabase = createClient()
-      await supabase.from('locations').update({ is_active: false }).eq('id', id)
+      await supabase.from('locations').delete().eq('id', id)
       setLocations(prev => prev.filter(l => l.id !== id))
       setLinkedCounts(prev => { const n = { ...prev }; delete n[id]; return n })
+      if (selectedYear) refreshCounters(selectedYear)
     } catch {}
   }
 
@@ -211,42 +226,42 @@ export default function LocationsPage() {
   const paginatedLocations = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
-    <div className="p-4 lg:p-8">
+    <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-        <div>
-          <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Lokacije', 'Locations')}</h1>
-          <p className="text-sm text-[#767676] mt-1">{t('Pisarne, tovarne, skladišča in druge nepremičnine, kjer organizacija deluje.', 'Offices, factories, warehouses and other premises where your organisation operates.')}</p>
+      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <div className="flex items-baseline gap-3 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Lokacije', 'Locations')}</h1>
+          <p className="text-sm text-gray-500 truncate">{t('Upravljajte lokacije vaše organizacije – pisarne, tovarne, skladišča in druga mesta poslovanja.', 'Manage your organisation\'s locations – offices, factories, warehouses and other sites.')}</p>
         </div>
         <button onClick={openNew}
-          className="inline-flex items-center gap-2 bg-[#0f0f10] hover:bg-[#2a2a2b] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors">
-          <Plus className="h-4 w-4" />
+          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+          <Plus className="h-3.5 w-3.5" />
           {t('Nova lokacija', 'New location')}
         </button>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-2 mb-4">
-        <div className="inline-flex items-center gap-2 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] min-w-[180px] focus-within:border-[#0f0f10] transition-colors">
-          <Search className="h-3.5 w-3.5 text-[#767676] shrink-0" />
+      <div className="flex flex-wrap items-center gap-2 px-4 py-3 border-b border-gray-200 shrink-0">
+        <div className="inline-flex items-center gap-2 h-8 px-3 bg-white border border-gray-200 rounded-lg text-[13px] min-w-[180px] focus-within:border-blue-500 transition-colors">
+          <Search className="h-3.5 w-3.5 text-gray-400 shrink-0" />
           <input
             value={search} onChange={e => { setSearch(e.target.value); setPage(1) }}
             placeholder={t('Iskanje...', 'Search...')}
-            className="flex-1 bg-transparent focus:outline-none text-[#0f0f10] placeholder:text-[#767676] text-[13px]"
+            className="flex-1 bg-transparent focus:outline-none text-gray-900 placeholder:text-gray-400 text-[13px]"
           />
         </div>
-        <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] has-[:focus]:border-[#0f0f10] transition-colors">
-          <span className="text-[#767676]">{t('Tip:', 'Type:')}</span>
+        <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-gray-200 rounded-lg text-[13px] cursor-pointer hover:bg-[#f6f6f6] transition-colors">
+          <span className="text-gray-500">{t('Tip:', 'Type:')}</span>
           <select value={filterType} onChange={e => { setFilterType(e.target.value); setPage(1) }}
-            className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
+            className="font-medium text-gray-900 bg-transparent focus:outline-none cursor-pointer">
             <option value="">{t('Vsi', 'All')}</option>
             {LOCATION_TYPES.map(lt => <option key={lt.value} value={lt.value}>{lt.sl}</option>)}
           </select>
         </label>
-        <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-[#ececec] rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] has-[:focus]:border-[#0f0f10] transition-colors">
-          <span className="text-[#767676]">{t('Status:', 'Status:')}</span>
+        <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-gray-200 rounded-lg text-[13px] cursor-pointer hover:bg-[#f6f6f6] transition-colors">
+          <span className="text-gray-500">{t('Status:', 'Status:')}</span>
           <select value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1) }}
-            className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
+            className="font-medium text-gray-900 bg-transparent focus:outline-none cursor-pointer">
             <option value="">{t('Vsi', 'All')}</option>
             <option value="active">{t('Aktivno', 'Active')}</option>
             <option value="inactive">{t('Neaktivno', 'Inactive')}</option>
@@ -254,7 +269,7 @@ export default function LocationsPage() {
         </label>
         {(search || filterType || filterStatus) && (
           <button onClick={() => { setSearch(''); setFilterType(''); setFilterStatus(''); setPage(1) }}
-            className="h-9 px-3 text-[13px] font-medium text-[#767676] bg-white border border-[#ececec] rounded-xl hover:bg-[#fafafa] transition-colors">
+            className="h-8 px-3 text-[13px] font-medium text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-[#f6f6f6] transition-colors">
             {t('Počisti', 'Clear')}
           </button>
         )}
@@ -263,15 +278,15 @@ export default function LocationsPage() {
       {/* Confirm delete modal */}
       {confirmDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setConfirmDelete(null)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 space-y-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setConfirmDelete(null)} />
+          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 space-y-4">
             <div className="flex items-start gap-3">
               <div className="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center shrink-0">
                 <Trash2 className="h-5 w-5 text-red-500" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-[#031f18]">{t('Izbriši lokacijo', 'Delete location')}</h3>
-                <p className="text-sm text-[#767676] mt-0.5">
+                <h3 className="text-base font-bold text-gray-900">{t('Izbriši lokacijo', 'Delete location')}</h3>
+                <p className="text-sm text-gray-500 mt-0.5">
                   {t(`Ali ste prepričani, da želite izbrisati "${confirmDelete.name}"? Tega dejanja ni mogoče razveljaviti.`,
                      `Are you sure you want to delete "${confirmDelete.name}"? This action cannot be undone.`)}
                 </p>
@@ -279,7 +294,7 @@ export default function LocationsPage() {
             </div>
             <div className="flex gap-3 pt-1">
               <button onClick={() => setConfirmDelete(null)}
-                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+                className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={confirmAndDelete}
@@ -292,100 +307,106 @@ export default function LocationsPage() {
       )}
 
       {/* Table */}
-      {loading ? (
-        <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
-      ) : !filtered.length ? (
-        <div className="bg-white border border-[#ececec] rounded-xl">
-          {locations.length === 0
-            ? <EmptyState icon={MapPin} title={t('Ni lokacij', 'No locations')} subtitle={t('Dodajte prvo lokacijo', 'Add your first location')} />
-            : <EmptyState icon={Search} title={t('Ni zadetkov', 'No results')} subtitle={t('Poskusite spremeniti iskanje ali filtre', 'Try changing your search or filters')} />
-          }
-        </div>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-[#ececec]">
-                <th className="text-left text-sm font-medium text-[#767676] px-5 py-3">{t('Ime lokacije', 'Location name')}</th>
-                <th className="text-left text-sm font-medium text-[#767676] px-5 py-3">{t('Naslov', 'Address')}</th>
-                <th className="text-left text-sm font-medium text-[#767676] px-5 py-3">{t('Tip', 'Type')}</th>
-                <th className="text-left text-sm font-medium text-[#767676] px-5 py-3">{t('Površina', 'Floor area')}</th>
-                <th className="text-left text-sm font-medium text-[#767676] px-5 py-3">{t('Status', 'Status')}</th>
-                <th className="px-5 py-3"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedLocations.map((loc, i) => (
-                <tr key={loc.id} className={`hover:bg-[#f9f9f9] transition-colors ${i !== 0 ? 'border-t border-[#ececec]' : ''}`}>
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-[#fafafa] rounded-lg flex items-center justify-center shrink-0 text-lg leading-none">
-                        {LOCATION_TYPES.find(lt => lt.value === loc.location_type)?.emoji ?? '📍'}
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-[#031f18]">{loc.name}</p>
-                        <p className="text-sm text-[#767676]">{COUNTRIES.find(c => c.value === loc.country_code)?.label ?? loc.country_code}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-5 py-4 text-sm text-[#767676]">
-                    {[loc.address, loc.city, loc.postal_code].filter(Boolean).join(', ') || '—'}
-                  </td>
-                  <td className="px-5 py-4">
-                    <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-lg font-medium">
-                      {(() => { const lt = LOCATION_TYPES.find(lt => lt.value === loc.location_type); return lt ? t(lt.sl, lt.en) : '—' })()}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4 text-sm text-[#767676]">
-                    {loc.floor_area_m2 ? `${loc.floor_area_m2} m²` : '—'}
-                  </td>
-                  <td className="px-5 py-4">
-                    <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${loc.is_active ? 'bg-emerald-50 text-emerald-700' : 'bg-[#fafafa] text-[#767676]'}`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${loc.is_active ? 'bg-emerald-500' : 'bg-gray-400'}`} />
-                      {loc.is_active ? t('Aktivno', 'Active') : t('Neaktivno', 'Inactive')}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4">
-                    <div className="flex items-center gap-1 justify-end">
-                      <button onClick={() => openEdit(loc)}
-                        className="p-1.5 text-[#767676] hover:text-[#0f0f10] hover:bg-[#efefef] rounded-lg transition-colors">
-                        <Pencil className="h-3.5 w-3.5" />
-                      </button>
-                      <button
-                        onClick={() => setConfirmDelete({ id: loc.id, name: loc.name })}
-                        disabled={!!(linkedCounts[loc.id])}
-                        title={linkedCounts[loc.id] ? t(`Ni možno izbrisati – ${linkedCounts[loc.id]} vezanih zapisov`, `Cannot delete – ${linkedCounts[loc.id]} linked records`) : undefined}
-                        className="p-1.5 text-[#767676] hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-[#767676] disabled:hover:bg-transparent">
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination page={page} totalPages={totalPages} totalItems={locations.length} pageSize={PAGE_SIZE} onPage={setPage} />
-        </div>
-      )}
+      <div className="flex-1 overflow-auto">
+        {loading ? (
+          <div className="p-12 text-center text-sm text-gray-500">{t('Nalaganje...', 'Loading...')}</div>
+        ) : !filtered.length ? (
+          <>
+            {locations.length === 0
+              ? <EmptyState icon={MapPin} title={t('Ni lokacij', 'No locations')} subtitle={t('Dodajte prvo lokacijo', 'Add your first location')} />
+              : <EmptyState icon={Search} title={t('Ni zadetkov', 'No results')} subtitle={t('Poskusite spremeniti iskanje ali filtre', 'Try changing your search or filters')} />
+            }
+          </>
+        ) : (
+          <>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Ime lokacije', 'Location name')}</th>
+                    <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Naslov', 'Address')}</th>
+                    <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Tip', 'Type')}</th>
+                    <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Površina', 'Floor area')}</th>
+                    <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Status', 'Status')}</th>
+                    <th className="px-5 py-3"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedLocations.map((loc, i) => (
+                    <tr key={loc.id} className={`hover:bg-[#f6f6f6] transition-colors ${i !== 0 ? 'border-t border-gray-200' : ''}`}>
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff'}}>
+                            {(() => { const lt = LOCATION_TYPES.find(lt => lt.value === loc.location_type); const Icon = lt?.icon ?? MapPin; return <Icon className="w-3.5 h-3.5" style={{color:'#215bcf'}} /> })()}
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-700">{loc.name}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-5 py-3.5 text-sm text-gray-700">
+                        {[loc.address, loc.city, loc.postal_code].filter(Boolean).join(', ') || '—'}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span className="text-xs px-2 py-0.5 rounded-md font-medium" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff',color:'#215bcf'}}>
+                          {(() => { const lt = LOCATION_TYPES.find(lt => lt.value === loc.location_type); return lt ? t(lt.sl, lt.en) : '—' })()}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5 text-sm text-gray-700">
+                        {loc.floor_area_m2 ? `${loc.floor_area_m2} m²` : '—'}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={loc.is_active ? {backgroundColor:'#e0fced',border:'1px solid #d4f8e6',color:'#098259'} : {backgroundColor:'#f1f3f5',border:'1px solid #e9ecef',color:'#868e96'}}>
+                          {loc.is_active ? t('Aktivno', 'Active') : t('Neaktivno', 'Inactive')}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center gap-1 justify-end">
+                          <button onClick={() => openEdit(loc)}
+                            className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-[#f6f6f6] rounded-md transition-colors">
+                            <Pencil className="h-3.5 w-3.5" />
+                          </button>
+                          <button
+                            onClick={() => setConfirmDelete({ id: loc.id, name: loc.name })}
+                            disabled={!!(linkedCounts[loc.id])}
+                            title={linkedCounts[loc.id] ? (() => {
+                              const d = linkedDetail[loc.id]
+                              const parts: string[] = []
+                              if (d?.vehicles) parts.push(locale === 'EN' ? `${d.vehicles} vehicle${d.vehicles > 1 ? 's' : ''}` : `${d.vehicles} vozil${d.vehicles === 1 ? 'o' : 'a'}`)
+                              if (d?.equipment) parts.push(locale === 'EN' ? `${d.equipment} equipment` : `${d.equipment} oprem${d.equipment === 1 ? 'a' : 'e'}`)
+                              if (d?.emissions) parts.push(locale === 'EN' ? `${d.emissions} emission record${d.emissions > 1 ? 's' : ''}` : `${d.emissions} emisijski${d.emissions === 1 ? ' vnos' : ' vnosi'}`)
+                              return locale === 'EN' ? `Cannot delete – has ${parts.join(', ')}` : `Ni možno izbrisati – ima ${parts.join(', ')}`
+                            })() : undefined}
+                            className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:text-gray-400 disabled:hover:bg-transparent">
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <Pagination page={page} totalPages={totalPages} totalItems={filtered.length} pageSize={PAGE_SIZE} onPage={setPage} />
+          </>
+        )}
+      </div>
 
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowModal(false)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowModal(false)} />
+          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
 
             {/* Modal header */}
-            <div className="sticky top-0 z-10 bg-white border-b border-[#ececec] px-6 py-5 flex items-center justify-between rounded-t-2xl">
+            <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-5 flex items-center justify-between rounded-t-2xl">
               <div>
-                <h2 className="text-lg font-bold text-[#031f18]">
+                <h2 className="text-base font-semibold text-gray-900">
                   {editingId ? t('Uredi lokacijo', 'Edit location') : t('Dodaj lokacijo', 'Add location')}
                 </h2>
-                <p className="text-xs text-[#767676] mt-0.5">
-                  {editingId ? t('Posodobite podatke lokacije', 'Update location details') : t('Fizično mesto, pisarna ali skladišče', 'Physical place, office or warehouse')}
-                </p>
               </div>
               <button onClick={() => setShowModal(false)}
-                className="p-2 text-[#767676] hover:text-[#767676] hover:bg-[#fafafa] rounded-xl transition-colors">
+                className="text-gray-400 hover:text-gray-600 transition-colors">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -394,38 +415,38 @@ export default function LocationsPage() {
 
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-[#031f18] mb-1.5">
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
                   {t('Ime lokacije', 'Location name')} <span className="text-red-400">*</span>
                 </label>
                 <input value={form.name} onChange={e => f('name', e.target.value)}
                   placeholder={t('npr. Centralna pisarna Ljubljana', 'e.g. Main Office Ljubljana')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300"
+                  className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300"
                 />
               </div>
 
               {/* Address */}
               <div>
-                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Ulica in hišna številka', 'Street address')}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Ulica in hišna številka', 'Street address')}</label>
                 <input value={form.address} onChange={e => f('address', e.target.value)}
                   placeholder={t('npr. Dunajska cesta 5', 'e.g. Main Street 5')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300"
+                  className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300"
                 />
               </div>
 
               {/* City + Postal */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Mesto', 'City')}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Mesto', 'City')}</label>
                   <input value={form.city} onChange={e => f('city', e.target.value)}
                     placeholder={t('Ljubljana', 'Ljubljana')}
-                    className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300"
+                    className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Poštna številka', 'Postal code')}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Poštna številka', 'Postal code')}</label>
                   <input value={form.postal_code} onChange={e => f('postal_code', e.target.value)}
                     placeholder="1000"
-                    className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300"
+                    className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300"
                   />
                 </div>
               </div>
@@ -433,16 +454,16 @@ export default function LocationsPage() {
               {/* Country + Type */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Država', 'Country')}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Država', 'Country')}</label>
                   <select value={form.country_code} onChange={e => f('country_code', e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033]">
+                    className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633]">
                     {COUNTRIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Tip lokacije', 'Location type')}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Tip lokacije', 'Location type')}</label>
                   <select value={form.location_type} onChange={e => f('location_type', e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033]">
+                    className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633]">
                     {LOCATION_TYPES.map(lt => <option key={lt.value} value={lt.value}>{t(lt.sl, lt.en)}</option>)}
                   </select>
                 </div>
@@ -450,13 +471,13 @@ export default function LocationsPage() {
 
               {/* Floor area */}
               <div>
-                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Površina', 'Floor area')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Površina', 'Floor area')} <span className="text-gray-500 font-normal">({t('neobvezno', 'optional')})</span></label>
                 <div className="flex gap-2">
                   <input value={form.floor_area_m2} onChange={e => f('floor_area_m2', e.target.value)}
                     type="number" placeholder={t('npr. 500', 'e.g. 500')}
-                    className="flex-1 px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300"
+                    className="flex-1 px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300"
                   />
-                  <div className="w-16 px-3 py-2 text-sm bg-[#f9f9f9] border border-[#ececec] rounded-lg text-[#767676] flex items-center justify-center">
+                  <div className="w-16 px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center">
                     m²
                   </div>
                 </div>
@@ -464,24 +485,23 @@ export default function LocationsPage() {
 
               {/* Utilities */}
               <div>
-                <label className="block text-sm font-medium text-[#031f18] mb-2">{t('Energenti na tej lokaciji', 'Utilities at this location')}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('Energenti na tej lokaciji', 'Utilities at this location')}</label>
                 <div className="space-y-2">
                   {UTILITIES.map(u => (
-                    <label key={u.key} className="flex items-start gap-3 p-3 rounded-xl border border-[#ececec] hover:border-blue-200 hover:bg-[#efefef]/30 cursor-pointer transition-colors group">
+                    <label key={u.key} className="flex items-start gap-3 p-3 rounded-xl border border-gray-200 hover:border-blue-200 hover:bg-gray-100/30 cursor-pointer transition-colors group">
                       <div className="relative mt-0.5 shrink-0">
                         <input type="checkbox"
                           checked={!!(form as any)[u.key]}
                           onChange={e => f(u.key as keyof LocationForm, e.target.checked)}
                           className="sr-only" />
                         <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-                          (form as any)[u.key] ? 'bg-[#0f0f10] border-[#0f0f10]' : 'border-[#ececec]'
+                          (form as any)[u.key] ? 'bg-blue-600 border-blue-600' : 'border-gray-200'
                         }`}>
                           {(form as any)[u.key] && <Check className="w-2.5 h-2.5 text-white" />}
                         </div>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-[#031f18]">{u.label}</p>
-                        <p className="text-xs text-[#767676] mt-0.5">{u.desc}</p>
+                        <p className="text-sm font-medium text-gray-700">{u.label}</p>
                       </div>
                     </label>
                   ))}
@@ -491,14 +511,14 @@ export default function LocationsPage() {
               {/* Status (edit only) */}
               {editingId && (
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Status', 'Status')}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Status', 'Status')}</label>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => f('is_active', true)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-[#f5f5f5] border-[#ececec] text-[#0f0f10]' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-gray-100 border-gray-200 text-gray-900' : 'border-gray-200 text-gray-500 hover:border-gray-200'}`}>
                       {t('Aktivno', 'Active')}
                     </button>
                     <button type="button" onClick={() => f('is_active', false)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${!form.is_active ? 'bg-[#fafafa] border-gray-400 text-[#031f18]' : 'border-[#ececec] text-[#767676] hover:border-[#ececec]'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${!form.is_active ? 'bg-gray-50 border-gray-400 text-gray-900' : 'border-gray-200 text-gray-500 hover:border-gray-200'}`}>
                       {t('Neaktivno', 'Inactive')}
                     </button>
                   </div>
@@ -507,10 +527,10 @@ export default function LocationsPage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t('Opombe', 'Notes')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span></label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Opombe', 'Notes')} <span className="text-gray-500 font-normal">({t('neobvezno', 'optional')})</span></label>
                 <textarea value={form.notes} onChange={e => f('notes', e.target.value)}
                   rows={2} placeholder={t('Dodatne informacije o lokaciji...', 'Additional information about this location...')}
-                  className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 resize-none"
+                  className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300 resize-none"
                 />
               </div>
 
@@ -518,13 +538,13 @@ export default function LocationsPage() {
             </div>
 
             {/* Modal footer */}
-            <div className="sticky bottom-0 bg-white border-t border-[#ececec] px-6 py-4 flex gap-3 rounded-b-2xl">
+            <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex gap-3 rounded-b-2xl">
               <button onClick={() => setShowModal(false)}
-                className="flex-1 px-4 py-2.5 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
+                className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={handleSave} disabled={saving || !form.name.trim()}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:bg-[#efefef] disabled:text-[#767676] disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : editingId ? t('Shrani spremembe', 'Save changes') : t('Dodaj lokacijo', 'Add location')}
               </button>
             </div>

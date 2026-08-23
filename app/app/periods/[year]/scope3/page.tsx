@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Upload, Check, Clock, FileText, X, Leaf, Download } from 'lucide-react'
+import { Upload, Check, Clock, FileText, X, Download } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { useParams } from 'next/navigation'
@@ -172,43 +172,27 @@ export default function Scope3Page() {
   const inReviewCount = Object.values(submissions).filter(s => s.status === 'in_review').length
 
   return (
-    <div className="p-4 lg:p-8">
-      {/* Header */}
-      <div className="mb-6">
-        <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-1">Scope 3 · {year}</p>
-        <h1 className="text-2xl font-medium text-[#0f0f10]">{t('Posredne emisije vrednostne verige', 'Value Chain Indirect Emissions')}</h1>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white border border-[#ececec] rounded-xl p-4 flex items-center gap-3">
-          <div className="w-9 h-9 bg-purple-50 rounded-lg flex items-center justify-center shrink-0">
-            <Leaf className="h-4 w-4 text-purple-600" />
-          </div>
-          <div>
-            <p className="text-xs text-[#767676]">{t('Skupne emisije', 'Total emissions')} · {year}</p>
-            <p className="text-lg font-bold text-[#031f18]">{(totalCo2e / 1000).toFixed(2).replace('.', ',')} <span className="text-xs font-normal text-[#767676]">tCO₂e</span></p>
-          </div>
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <div className="flex items-baseline gap-3 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Obseg 3', 'Scope 3')}</h1>
+          <p className="text-sm text-gray-500 truncate">{t('Posredne emisije vrednostne verige.', 'Value chain indirect emissions.')}</p>
         </div>
-        <div className="bg-white border border-[#ececec] rounded-xl p-4 flex items-center gap-3">
-          <div className="w-9 h-9 bg-[#f5f5f5] rounded-lg flex items-center justify-center shrink-0">
-            <Check className="h-4 w-4 text-[#0f0f10]" />
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
+            <span className="font-medium text-gray-900">{(totalCo2e / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
           </div>
-          <div>
-            <p className="text-xs text-[#767676]">{t('Zaključeno', 'Completed')}</p>
-            <p className="text-lg font-bold text-[#031f18]">{doneCount} <span className="text-xs font-normal text-[#767676]">/ 15</span></p>
+          <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
+            <span className="text-gray-500">{t('Zaključeno', 'Completed')}</span>
+            <span className="font-medium text-gray-900">{doneCount} / 15</span>
           </div>
-        </div>
-        <div className="bg-white border border-[#ececec] rounded-xl p-4 flex items-center gap-3">
-          <div className="w-9 h-9 bg-amber-50 rounded-lg flex items-center justify-center shrink-0">
-            <Clock className="h-4 w-4 text-amber-500" />
-          </div>
-          <div>
-            <p className="text-xs text-[#767676]">{t('V pregledu', 'In review')}</p>
-            <p className="text-lg font-bold text-[#031f18]">{inReviewCount}</p>
+          <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
+            <span className="text-gray-500">{t('V pregledu', 'In review')}</span>
+            <span className="font-medium text-gray-900">{inReviewCount}</span>
           </div>
         </div>
       </div>
+      <div className="flex-1 overflow-auto px-6 py-6">
 
       {loadError && (
         <div className="mb-4 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-700">{loadError}</div>
@@ -216,30 +200,29 @@ export default function Scope3Page() {
 
       {/* Categories */}
       {loading ? (
-        <div className="bg-white border border-[#ececec] rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
+        <div className="bg-white border border-gray-200 rounded-xl p-12 text-center text-sm text-gray-500">{t('Nalaganje...', 'Loading...')}</div>
       ) : (
-        <div className="bg-white border border-[#ececec] rounded-xl overflow-hidden">
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
           {SCOPE3_CATEGORIES.map((cat, i) => {
             const sub = submissions[cat.number]
             const isDone = sub?.status === 'done'
             const isInReview = sub?.status === 'in_review'
-            const isDeleting = deleting.has(cat.number)
 
             return (
-              <div key={cat.number} className={cn('flex items-center gap-4 px-5 py-3.5', i !== 0 && 'border-t border-[#ececec]', 'hover:bg-[#f9f9f9]/50 transition-colors')}>
+              <div key={cat.number} className={cn('flex items-center gap-4 px-5 py-3.5', i !== 0 && 'border-t border-gray-100', 'hover:bg-gray-50/50 transition-colors')}>
                 {/* Number */}
-                <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold',
-                  isDone ? 'bg-[#f5f5f5] text-[#0f0f10]' : isInReview ? 'bg-amber-50 text-amber-600' : 'bg-[#fafafa] text-[#767676]'
+                <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-xs font-semibold',
+                  isDone ? 'bg-gray-100 text-gray-700' : isInReview ? 'bg-amber-50 text-amber-600' : 'bg-gray-50 text-gray-400'
                 )}>
                   {cat.number}
                 </div>
 
                 {/* Name + file inline */}
                 <div className="flex-1 min-w-0 flex items-center gap-2 overflow-hidden">
-                  <p className="text-sm font-semibold text-[#031f18] shrink-0">{t(cat.label_sl, cat.label_en)}</p>
+                  <p className="text-sm font-medium text-gray-900 shrink-0">{t(cat.label_sl, cat.label_en)}</p>
                   {sub?.file_name && (
                     <a href={sub.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#fafafa] hover:bg-[#efefef] hover:text-[#0f0f10] text-[#767676] transition-colors shrink min-w-0 max-w-[200px]">
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-gray-50 hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors shrink min-w-0 max-w-[200px]">
                       <Download className="h-3 w-3 shrink-0" />
                       <span className="text-xs font-medium truncate">{sub.file_name}</span>
                     </a>
@@ -248,9 +231,9 @@ export default function Scope3Page() {
 
                 {/* CO2e value */}
                 {isDone && sub?.co2e_kg != null ? (
-                  <span className="text-sm font-semibold text-[#031f18] shrink-0 tabular-nums">
+                  <span className="text-sm font-medium text-gray-900 shrink-0 tabular-nums">
                     {(sub.co2e_kg / 1000).toFixed(2).replace('.', ',')}
-                    <span className="text-xs font-normal text-[#767676] ml-1">tCO₂e</span>
+                    <span className="text-xs font-normal text-gray-500 ml-1">tCO₂e</span>
                   </span>
                 ) : sub ? (
                   <span className="text-sm text-gray-300 shrink-0 tabular-nums">— tCO₂e</span>
@@ -259,26 +242,26 @@ export default function Scope3Page() {
                 {/* Badge */}
                 <div className="shrink-0">
                   {isDone && (
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-[#efefef] text-[#0f0f10] border border-[#ececec]">
+                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
                       <Check className="h-3 w-3" />
                       {t('Zaključeno', 'Done')}
                     </span>
                   )}
                   {isInReview && (
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200">
+                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
                       <Clock className="h-3 w-3" />
                       {t('V pregledu', 'In review')}
                     </span>
                   )}
                 </div>
 
-                {/* Upload button — locked when submitted */}
+                {/* Upload button */}
                 {!sub && (
                   <button
                     onClick={() => openModal(cat)}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors shrink-0 bg-[#0f0f10] text-white hover:bg-[#2a2a2b]"
+                    className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-lg transition-colors shrink-0 bg-blue-600 text-white hover:bg-blue-700"
                   >
-                    <Upload className="h-3 w-3" />
+                    <Upload className="h-3.5 w-3.5" />
                     {t('Naloži podatke', 'Upload data')}
                   </button>
                 )}
@@ -290,17 +273,16 @@ export default function Scope3Page() {
 
       {/* Upload Modal */}
       {modal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30" onClick={() => setModal(null)} />
+          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md">
             {/* Modal header */}
-            <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-[#ececec]">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
               <div>
-                <p className="text-xs font-semibold text-[#767676] uppercase tracking-widest mb-0.5">
-                  {t('Kategorija', 'Category')} {modal.catNumber}
-                </p>
-                <h2 className="text-base font-bold text-[#031f18]">{modal.catLabel}</h2>
+                <p className="text-xs text-gray-400 mb-0.5">{t('Kategorija', 'Category')} {modal.catNumber}</p>
+                <h2 className="text-base font-semibold text-gray-900">{modal.catLabel}</h2>
               </div>
-              <button onClick={() => setModal(null)} className="p-1.5 text-[#767676] hover:text-[#031f18] rounded-lg hover:bg-[#fafafa] transition-colors">
+              <button onClick={() => setModal(null)} className="text-gray-400 hover:text-gray-600 transition-colors">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -308,41 +290,38 @@ export default function Scope3Page() {
             {/* Modal body */}
             <div className="px-6 py-5">
               {modal.selectedFile ? (
-                /* File selected state */
-                <div className="border-2 border-dashed border-green-300 bg-[#f5f5f5] rounded-xl p-6 text-center">
-                  <FileText className="h-8 w-8 text-[#0f0f10] mx-auto mb-2" />
-                  <p className="text-sm font-semibold text-[#031f18] mb-0.5">{modal.selectedFile.name}</p>
-                  <p className="text-xs text-[#767676] mb-4">{(modal.selectedFile.size / 1024).toFixed(0)} KB</p>
+                <div className="border-2 border-dashed border-green-300 bg-gray-50 rounded-xl p-6 text-center">
+                  <FileText className="h-8 w-8 text-gray-600 mx-auto mb-2" />
+                  <p className="text-sm font-medium text-gray-900 mb-0.5">{modal.selectedFile.name}</p>
+                  <p className="text-xs text-gray-500 mb-4">{(modal.selectedFile.size / 1024).toFixed(0)} KB</p>
                   <div className="flex items-center justify-center gap-2">
                     <button type="button" onClick={() => modalFileRef.current?.click()}
-                      className="px-3 py-1.5 text-xs font-semibold bg-white border border-[#ececec] text-[#767676] rounded-lg hover:bg-[#f9f9f9] transition-colors">
+                      className="px-3 py-1.5 text-xs font-medium bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors">
                       {t('Zamenjaj datoteko', 'Replace file')}
                     </button>
                     <button type="button" onClick={() => setModal(m => m ? { ...m, selectedFile: null } : m)}
-                      className="px-3 py-1.5 text-xs font-semibold bg-white border border-red-200 text-red-500 rounded-lg hover:bg-red-50 transition-colors">
+                      className="px-3 py-1.5 text-xs font-medium bg-white border border-red-200 text-red-500 rounded-lg hover:bg-red-50 transition-colors">
                       {t('Odstrani', 'Remove')}
                     </button>
                   </div>
                 </div>
               ) : (
-                /* Empty drop zone */
                 <button type="button" onClick={() => modalFileRef.current?.click()}
-                  className="w-full border-2 border-dashed border-[#ececec] hover:border-blue-300 hover:bg-[#f9f9f9] rounded-xl p-8 text-center transition-colors">
+                  className="w-full border-2 border-dashed border-gray-200 hover:border-blue-300 hover:bg-gray-50 rounded-xl p-8 text-center transition-colors">
                   <Upload className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-                  <p className="text-sm font-semibold text-[#031f18]">{t('Kliknite za izbiro datoteke', 'Click to select file')}</p>
-                  <p className="text-xs text-[#767676] mt-1">Excel, CSV, PDF · max 50 MB</p>
+                  <p className="text-sm font-medium text-gray-900">{t('Kliknite za izbiro datoteke', 'Click to select file')}</p>
+                  <p className="text-xs text-gray-400 mt-1">Excel, CSV, PDF · max 50 MB</p>
                 </button>
               )}
 
-              {/* Existing file download */}
               {modal.existing?.file_name && (
-                <div className="mt-3 flex items-center justify-between bg-[#f9f9f9] border border-[#ececec] rounded-lg px-3 py-2">
+                <div className="mt-3 flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <FileText className="h-3.5 w-3.5 text-[#767676] shrink-0" />
-                    <span className="text-xs text-[#767676] truncate">{t('Obstoječa', 'Existing')}: {modal.existing.file_name}</span>
+                    <FileText className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                    <span className="text-xs text-gray-500 truncate">{t('Obstoječa', 'Existing')}: {modal.existing.file_name}</span>
                   </div>
                   <a href={modal.existing.file_url ?? '#'} target="_blank" rel="noopener noreferrer"
-                    className="text-xs text-[#0f0f10] hover:underline shrink-0 ml-2">
+                    className="text-xs text-gray-700 hover:underline shrink-0 ml-2">
                     {t('Prenesi', 'Download')}
                   </a>
                 </div>
@@ -354,19 +333,19 @@ export default function Scope3Page() {
             </div>
 
             {/* Modal footer */}
-            <div className="flex items-center justify-end gap-2 px-6 pb-6 pt-0">
+            <div className="flex items-center justify-end gap-2 px-6 pb-5 pt-0">
               <button onClick={() => setModal(null)}
-                className="px-4 py-2 text-sm font-semibold text-[#767676] hover:text-[#031f18] rounded-lg hover:bg-[#fafafa] transition-colors">
+                className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                 {t('Prekliči', 'Cancel')}
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={!modal.selectedFile || modal.uploading}
                 className={cn(
-                  'px-5 py-2 text-sm font-semibold rounded-lg transition-colors',
+                  'px-5 py-2 text-sm font-medium rounded-lg transition-colors',
                   !modal.selectedFile || modal.uploading
-                    ? 'bg-[#fafafa] text-[#767676] cursor-not-allowed'
-                    : 'bg-[#0f0f10] text-white hover:bg-[#2a2a2b]'
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
                 )}
               >
                 {modal.uploading ? t('Pošiljanje...', 'Submitting...') : t('Pošlji v pregled', 'Submit for Review')}
@@ -377,6 +356,7 @@ export default function Scope3Page() {
           <input ref={modalFileRef} type="file" accept=".xlsx,.xls,.csv,.pdf" className="hidden" onChange={handleModalFileSelect} />
         </div>
       )}
+      </div>
     </div>
   )
 }
