@@ -137,7 +137,7 @@ export default function AnalyticsPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
         <div className="flex items-baseline gap-3 min-w-0">
           <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Analitika', 'Analytics')}</h1>
           <p className="text-sm text-gray-500 truncate">{t('Pregled emisij CO₂e po scopih in kategorijah.', 'Overview of CO₂e emissions by scope and category.')}</p>

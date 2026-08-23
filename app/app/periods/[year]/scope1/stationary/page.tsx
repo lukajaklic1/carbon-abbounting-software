@@ -136,7 +136,7 @@ export default function Scope1StationaryPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
         <div>
           <h1 className="text-base font-semibold text-gray-900">{t('Stacionarno zgorevanje – lokacije', 'Stationary combustion – locations')}</h1>
       </div>
@@ -158,7 +158,7 @@ export default function Scope1StationaryPage() {
         <EmptyState
             icon={Building2}
             title={t('Ni aktivnih lokacij', 'No active locations')}
-            subtitle={t('Dodajte lokacijo z vklopljenim zemeljskim plinom.', 'Add a location with natural gas enabled.')}
+            subtitle={t('Dodajte lokacijo, ki uporablja zemeljski plin.', 'Add a location that uses natural gas.')}
           />
       ) : (
         <>
@@ -185,7 +185,7 @@ export default function Scope1StationaryPage() {
                           <Building2 className="h-3.5 w-3.5" style={{color:'#215bcf'}} />
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-700">{loc.name}</p>
+                          <p className="text-xs font-medium text-gray-500">{loc.name}</p>
                           {loc.address && <p className="text-sm text-gray-500">{loc.address}</p>}
                         </div>
                       </div>
@@ -198,7 +198,7 @@ export default function Scope1StationaryPage() {
                     </td>
                     <td className="px-5 py-3.5">
                       {entry
-                        ? <span className="text-sm font-medium text-gray-700">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
+                        ? <span className="text-xs font-medium text-gray-500">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
                         : <span className="text-gray-300 text-sm">—</span>}
                     </td>
                     <td className="px-5 py-3.5">
@@ -258,13 +258,13 @@ export default function Scope1StationaryPage() {
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Vrsta goriva', 'Fuel type')}</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{t('Vrsta goriva', 'Fuel type')}</label>
                 <select value={form.fuel_type} onChange={e => f('fuel_type', e.target.value)} className={SELECT}>
                   {STATIONARY_FUELS.map(k => <option key={k} value={k}>{t(FUEL_FACTORS[k]?.label_sl ?? k, FUEL_FACTORS[k]?.label_en ?? k)}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Letna poraba', 'Annual consumption')} <span className="text-red-400">*</span></label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{t('Letna poraba', 'Annual consumption')} <span className="text-red-400">*</span></label>
                 <div className="flex gap-2">
                   <input value={form.quantity} onChange={e => f('quantity', e.target.value)} onBlur={e => f('quantity', fmtQty(e.target.value))} type="text" inputMode="decimal" placeholder="0" className={INPUT} autoFocus />
                   <div className="w-14 px-2 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center shrink-0 font-medium">

@@ -129,7 +129,7 @@ export default function Scope2SteamPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
         <div>
           <h1 className="text-base font-semibold text-gray-900">{t('Para – lokacije', 'Purchased Steam – locations')}</h1>
       </div>
@@ -147,7 +147,7 @@ export default function Scope2SteamPage() {
       {loading ? (
         <div className="p-12 text-center text-sm text-gray-500">{t('Nalaganje...', 'Loading...')}</div>
       ) : !locations.length ? (
-        <EmptyState icon={Wind} title={t('Ni lokacij s kupljeno paro', 'No locations with purchased steam')} subtitle={t('Dodajte lokacijo s kupljeno paro.', 'Add a location with steam enabled.')} />
+        <EmptyState icon={Wind} title={t('Ni lokacij s kupljeno paro', 'No locations with purchased steam')} subtitle={t('Dodajte lokacijo, ki kupuje paro.', 'Add a location that purchases steam.')} />
       ) : (
         <>
             <div className="overflow-x-auto">
@@ -173,14 +173,14 @@ export default function Scope2SteamPage() {
                           <Building2 className="h-4 w-4 text-gray-900" />
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-700">{loc.name}</p>
+                          <p className="text-xs font-medium text-gray-500">{loc.name}</p>
                           {loc.address && <p className="text-xs text-gray-400 mt-0.5">{loc.address}</p>}
                         </div>
                       </div>
                     </td>
                     <td className="px-5 py-3.5 text-sm text-gray-700">{entry ? STEAM_FACTORS[entry.country_code]?.label ?? entry.country_code : <span className="text-gray-300">—</span>}</td>
                     <td className="px-5 py-3.5 text-sm font-medium text-gray-700">{entry ? `${fmtQty(entry.quantity)} kWh` : <span className="text-gray-300">—</span>}</td>
-                    <td className="px-5 py-3.5">{entry ? <span className="text-sm font-medium text-gray-700">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span> : <span className="text-gray-300 text-sm">—</span>}</td>
+                    <td className="px-5 py-3.5">{entry ? <span className="text-xs font-medium text-gray-500">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span> : <span className="text-gray-300 text-sm">—</span>}</td>
                     <td className="px-5 py-3.5">
                       {entry ? (
                         <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-900"><span className="w-1.5 h-1.5 rounded-full bg-gray-1000" />{t('Podatki vneseni', 'Data entered')}</span>
@@ -235,13 +235,13 @@ export default function Scope2SteamPage() {
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Država / vir omrežja', 'Country / grid source')}</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{t('Država / vir omrežja', 'Country / grid source')}</label>
                 <select value={form.country_code} onChange={e => f('country_code', e.target.value)} className={SELECT}>
                   {COUNTRY_KEYS.map(k => <option key={k} value={k}>{STEAM_FACTORS[k].label}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Letna poraba pare', 'Annual steam consumption')} <span className="text-red-400">*</span></label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{t('Letna poraba pare', 'Annual steam consumption')} <span className="text-red-400">*</span></label>
                 <div className="flex gap-2">
                   <input value={form.kwh} onChange={e => f('kwh', e.target.value)} onBlur={e => f('kwh', fmtQty(e.target.value))} type="text" inputMode="decimal" placeholder="0" className={INPUT} autoFocus />
                   <div className="w-12 px-2 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center shrink-0 font-medium">kWh</div>

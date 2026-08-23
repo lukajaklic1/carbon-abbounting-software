@@ -35,7 +35,7 @@ type ReportData = {
 }
 
 function fmtT(kg: number) {
-  return (kg / 1000).toFixed(4).replace('.', ',')
+  return (kg / 1000).toFixed(2).replace('.', ',')
 }
 
 function ScopeSection({ scope, label, sub, data, defaultOpen }: {
@@ -196,13 +196,13 @@ export default function ReportsPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
         <div className="flex items-baseline gap-3 min-w-0">
           <h1 className="text-base font-semibold text-gray-900 shrink-0">Poročila</h1>
           <p className="text-sm text-gray-500 truncate">Metodološko poročilo GHG.</p>
         </div>
       </div>
-      <div className="flex-1 overflow-auto px-6 py-6">
+      <div className="flex-1 overflow-auto px-4 sm:px-6 py-4 sm:py-6">
       <div className="max-w-3xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between mb-8">

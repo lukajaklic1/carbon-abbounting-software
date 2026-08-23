@@ -11,7 +11,7 @@ const IS_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL
 const T = {
   EN: {
     title: 'Create account',
-    subtitle: 'Get started with CarbonTrack',
+    subtitle: 'Get started with Carboniqdesk',
     email: 'Email',
     password: 'Password',
     confirmPassword: 'Confirm password',
@@ -109,12 +109,12 @@ export default function RegisterPage() {
   const canSubmit = email && password.length >= 8 && confirm && agreed && !loading
 
   return (
-    <div className="min-h-screen bg-[#f4f6fb] flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-[#f7f8fa] flex flex-col items-center justify-center p-4">
 
       {/* Logo */}
-      <div className="mb-6">
-        <div className="w-14 h-14 bg-[#0f0f10] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
-          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <div className="flex justify-center mb-8">
+        <div className="w-11 h-11 bg-[#0f0f10] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
             {/* top face */}
             <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
             {/* left face */}
@@ -127,7 +127,7 @@ export default function RegisterPage() {
 
       {/* Card */}
       <div className="w-full max-w-[360px] bg-white rounded-2xl border border-[#ececec] px-8 py-8">
-        <h1 className="text-2xl font-bold text-[#031f18] text-center mb-1">{t.title}</h1>
+        <h1 className="text-xl font-bold text-[#031f18] text-center mb-1">{t.title}</h1>
         <p className="text-sm text-[#767676] text-center mb-7">{t.subtitle}</p>
 
         {IS_MOCK && (
@@ -138,22 +138,22 @@ export default function RegisterPage() {
 
         <form onSubmit={handleRegister} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t.email}</label>
+            <label className="block text-xs font-medium text-gray-500 mb-1">{t.email}</label>
             <input
               type="email" value={email} onChange={e => setEmail(e.target.value)} required
               placeholder={t.placeholder_email}
-              className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] focus:bg-white placeholder:text-gray-300"
+              className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] focus:bg-white placeholder:text-gray-300"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t.password}</label>
+            <label className="block text-xs font-medium text-gray-500 mb-1">{t.password}</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password} onChange={e => setPassword(e.target.value)} required minLength={8}
                 placeholder={t.placeholder_password}
-                className="w-full px-3 py-2 pr-10 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] focus:bg-white placeholder:text-gray-300"
+                className="w-full px-3.5 py-2.5 pr-10 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] focus:bg-white placeholder:text-gray-300"
               />
               <button type="button" onClick={() => setShowPassword(v => !v)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#767676] hover:text-[#767676]">
@@ -163,13 +163,13 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t.confirmPassword}</label>
+            <label className="block text-xs font-medium text-gray-500 mb-1">{t.confirmPassword}</label>
             <div className="relative">
               <input
                 type={showConfirm ? 'text' : 'password'}
                 value={confirm} onChange={e => setConfirm(e.target.value)} required
                 placeholder={t.placeholder_confirm}
-                className="w-full px-3 py-2 pr-10 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] focus:bg-white placeholder:text-gray-300"
+                className="w-full px-3.5 py-2.5 pr-10 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] focus:bg-white placeholder:text-gray-300"
               />
               <button type="button" onClick={() => setShowConfirm(v => !v)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#767676] hover:text-[#767676]">

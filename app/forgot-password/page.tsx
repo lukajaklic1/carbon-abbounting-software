@@ -26,11 +26,11 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f9fafb] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#f7f8fa] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <div className="w-12 h-12 bg-[#0f0f10] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
+          <div className="w-11 h-11 bg-[#0f0f10] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
               <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
               <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>
@@ -47,18 +47,18 @@ export default function ForgotPasswordPage() {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">E-pošta</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">E-pošta</label>
                   <input
                     type="email" value={email} onChange={e => setEmail(e.target.value)}
                     placeholder="vi@podjetje.si" required
-                    className="w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow"
+                    className="w-full px-3.5 py-2.5 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow"
                   />
                 </div>
 
                 {error && <p className="text-xs text-red-500">{error}</p>}
 
                 <button type="submit" disabled={loading || !email}
-                  className="w-full py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-50 rounded-lg transition-colors">
+                  className="w-full py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-50 rounded-xl transition-colors">
                   {loading ? 'Pošiljanje...' : 'Pošlji povezavo'}
                 </button>
               </form>

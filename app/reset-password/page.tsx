@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Eye, EyeOff, Check } from 'lucide-react'
 
+const INPUT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
+
 export default function ResetPasswordPage() {
   const router = useRouter()
   const [password, setPassword] = useState('')
@@ -16,12 +18,10 @@ export default function ResetPasswordPage() {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    // Supabase sets the session from the URL hash on PASSWORD_RECOVERY
     const supabase = createClient()
     supabase.auth.onAuthStateChange((event) => {
       if (event === 'PASSWORD_RECOVERY') setReady(true)
     })
-    // Also check if already in session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setReady(true)
     })
@@ -42,14 +42,13 @@ export default function ResetPasswordPage() {
     setLoading(false)
   }
 
-  const INPUT = 'w-full px-3 py-2 text-sm bg-white border border-[#ececec] rounded-lg focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
-
   return (
-    <div className="min-h-screen bg-[#f9fafb] flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
+    <div className="min-h-screen bg-[#f7f8fa] flex items-center justify-center p-4">
+      <div className="w-full max-w-[360px]">
+
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <div className="w-12 h-12 bg-[#0f0f10] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
+          <div className="w-11 h-11 bg-[#0f0f10] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
             <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
               <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
               <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>
@@ -61,8 +60,8 @@ export default function ResetPasswordPage() {
         <div className="bg-white border border-[#ececec] rounded-2xl shadow-sm p-8">
           {done ? (
             <div className="text-center py-2">
-              <div className="w-12 h-12 bg-[#f5f5f5] border border-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Check className="h-5 w-5 text-[#0f0f10]" />
+              <div className="w-12 h-12 bg-green-50 border border-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Check className="h-5 w-5 text-green-500" />
               </div>
               <h2 className="text-base font-bold text-[#031f18] mb-1">Geslo posodobljeno</h2>
               <p className="text-sm text-[#767676]">Preusmerjamo vas na prijavo...</p>
@@ -73,14 +72,14 @@ export default function ResetPasswordPage() {
               <p className="text-sm text-[#767676] mb-6">Vnesite novo geslo za vaš račun.</p>
 
               {!ready && (
-                <p className="text-xs text-amber-600 bg-amber-50 border border-amber-100 px-3 py-2 rounded-lg mb-4">
+                <p className="text-xs text-amber-600 bg-amber-50 border border-amber-100 px-3 py-2 rounded-xl mb-4">
                   Čakanje na potrditev povezave... Odprite to stran iz e-poštnega sporočila.
                 </p>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">Novo geslo</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">Novo geslo</label>
                   <div className="relative">
                     <input
                       type={showPass ? 'text' : 'password'}
@@ -89,14 +88,14 @@ export default function ResetPasswordPage() {
                       className={INPUT + ' pr-10'}
                     />
                     <button type="button" onClick={() => setShowPass(!showPass)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#767676] hover:text-[#767676]">
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#767676] hover:text-[#031f18]">
                       {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">Potrdi geslo</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">Potrdi geslo</label>
                   <input
                     type={showPass ? 'text' : 'password'}
                     value={confirm} onChange={e => setConfirm(e.target.value)}
@@ -105,15 +104,31 @@ export default function ResetPasswordPage() {
                   />
                 </div>
 
-                {error && <p className="text-xs text-red-500">{error}</p>}
+                {error && (
+                  <p className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>
+                )}
 
                 <button type="submit" disabled={loading || !password || !confirm || !ready}
-                  className="w-full py-2.5 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-50 rounded-lg transition-colors">
-                  {loading ? 'Shranjevanje...' : 'Nastavi novo geslo'}
+                  className="w-full py-3 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-50 disabled:cursor-not-allowed rounded-xl transition-colors">
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                      </svg>
+                      Shranjevanje...
+                    </span>
+                  ) : 'Nastavi novo geslo'}
                 </button>
               </form>
             </>
           )}
+        </div>
+
+        <div className="flex justify-center mt-5">
+          <a href="/login" className="text-sm text-[#767676] hover:text-[#031f18] transition-colors">
+            ← Nazaj na prijavo
+          </a>
         </div>
       </div>
     </div>

@@ -136,7 +136,7 @@ export default function Scope2ElectricityPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
         <div>
           <h1 className="text-base font-semibold text-gray-900">{t('Električna energija – lokacije', 'Electricity – locations')}</h1>
       </div>
@@ -157,7 +157,7 @@ export default function Scope2ElectricityPage() {
         <EmptyState
             icon={Zap}
             title={t('Ni aktivnih lokacij', 'No active locations')}
-            subtitle={t('Dodajte lokacijo z vklopljeno elektriko.', 'Add a location with electricity enabled.')}
+            subtitle={t('Dodajte lokacijo, ki porablja elektriko.', 'Add a location that consumes electricity.')}
           />
       ) : (
         <>
@@ -184,7 +184,7 @@ export default function Scope2ElectricityPage() {
                           <Zap className="h-3.5 w-3.5" style={{color:'#215bcf'}} />
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-700">{loc.name}</p>
+                          <p className="text-xs font-medium text-gray-500">{loc.name}</p>
                           {loc.address && <p className="text-xs text-gray-400 mt-0.5">{loc.address}</p>}
                         </div>
                       </div>
@@ -197,7 +197,7 @@ export default function Scope2ElectricityPage() {
                     </td>
                     <td className="px-5 py-3.5">
                       {entry
-                        ? <span className="text-sm font-medium text-gray-700">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
+                        ? <span className="text-xs font-medium text-gray-500">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
                         : <span className="text-gray-300 text-sm">—</span>}
                     </td>
                     <td className="px-5 py-3.5">
@@ -257,14 +257,14 @@ export default function Scope2ElectricityPage() {
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Letna poraba', 'Annual consumption')} (kWh) <span className="text-red-400">*</span></label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{t('Letna poraba', 'Annual consumption')} (kWh) <span className="text-red-400">*</span></label>
                 <div className="flex gap-2">
                   <input value={form.kwh} onChange={e => f('kwh', e.target.value)} onBlur={e => f('kwh', fmtQty(e.target.value))} type="text" inputMode="decimal" placeholder="0" className={INPUT} autoFocus />
                   <div className="w-12 px-2 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center shrink-0 font-medium">kWh</div>
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Država / faktor', 'Country / factor')}</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{t('Država / faktor', 'Country / factor')}</label>
                 <select value={form.country_code} onChange={e => f('country_code', e.target.value)} className={SELECT}>
                   {COUNTRY_KEYS.map(k => (
                     <option key={k} value={k}>{ELECTRICITY_FACTORS[k]?.label} — {ELECTRICITY_FACTORS[k]?.factor} kg/kWh</option>

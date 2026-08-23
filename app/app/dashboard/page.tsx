@@ -23,8 +23,8 @@ const INDUSTRY_LABELS: Record<string, string> = {
   it: 'Informacijska tehnologija', education: 'Izobraževanje', public: 'Javna uprava', other: 'Drugo',
 }
 
-const SCOPE_COLORS = ['#0f0f10', '#f59e0b', '#10b981']
-const YEAR_COLOR = '#0f0f10'
+const SCOPE_COLORS = ['#215bcf', '#098259', '#f59e0b']
+const YEAR_COLOR = '#215bcf'
 
 export default function DashboardPage() {
   const { selectedYear, currentPeriod, availablePeriods, setSelectedYear, setCurrentPeriod } = usePeriodStore()
@@ -53,41 +53,41 @@ export default function DashboardPage() {
   // Chart: scope breakdown for selected year (mock data for now)
   const scopeChartData = totalKg > 0
     ? [
-        { name: 'Scope 1', value: parseFloat((totalKg * 0.7 / 1000).toFixed(2)) },
-        { name: 'Scope 2', value: parseFloat((totalKg * 0.3 / 1000).toFixed(2)) },
+        { name: 'Obseg 1', value: parseFloat((totalKg * 0.7 / 1000).toFixed(2)) },
+        { name: 'Obseg 2', value: parseFloat((totalKg * 0.3 / 1000).toFixed(2)) },
       ]
     : IS_MOCK
       ? [
-          { name: 'Scope 1', value: 33.8 },
-          { name: 'Scope 2', value: 14.5 },
+          { name: 'Obseg 1', value: 33.8 },
+          { name: 'Obseg 2', value: 14.5 },
         ]
       : []
 
   const sources = [
-    { label: 'Zemeljski plin', href: `/app/periods/${displayYear}/scope1/stationary`, icon: Flame, color: 'text-orange-500', bg: 'bg-orange-50', scope: 'Scope 1' },
-    { label: 'Vozila', href: `/app/periods/${displayYear}/scope1/mobile`, icon: Car, color: 'text-gray-900', bg: 'bg-gray-100', scope: 'Scope 1' },
-    { label: 'Oprema', href: `/app/periods/${displayYear}/scope1/equipment-fuel`, icon: Wrench, color: 'text-gray-500', bg: 'bg-gray-50', scope: 'Scope 1' },
-    { label: 'Hladilni plini', href: `/app/periods/${displayYear}/scope1/refrigerants`, icon: Thermometer, color: 'text-cyan-500', bg: 'bg-cyan-50', scope: 'Scope 1' },
-    { label: 'Industrijski plini', href: `/app/periods/${displayYear}/scope1/industrial-gases`, icon: FlaskConical, color: 'text-purple-500', bg: 'bg-purple-50', scope: 'Scope 1' },
-    { label: 'Elektrika', href: `/app/periods/${displayYear}/scope2/electricity`, icon: Zap, color: 'text-yellow-600', bg: 'bg-yellow-50', scope: 'Scope 2' },
+    { label: t('Zemeljski plin', 'Natural gas'), href: `/app/periods/${displayYear}/scope1/stationary`, icon: Flame, iconColor: '#215bcf', bg: '#e5eeff', scope: 'Obseg 1' },
+    { label: t('Vozila', 'Vehicles'), href: `/app/periods/${displayYear}/scope1/mobile`, icon: Car, iconColor: '#215bcf', bg: '#e5eeff', scope: 'Obseg 1' },
+    { label: t('Oprema', 'Equipment'), href: `/app/periods/${displayYear}/scope1/equipment-fuel`, icon: Wrench, iconColor: '#215bcf', bg: '#e5eeff', scope: 'Obseg 1' },
+    { label: t('Hladilni plini', 'Refrigerants'), href: `/app/periods/${displayYear}/scope1/refrigerants`, icon: Thermometer, iconColor: '#098259', bg: '#e0fced', scope: 'Obseg 1' },
+    { label: t('Industrijski plini', 'Industrial gases'), href: `/app/periods/${displayYear}/scope1/industrial-gases`, icon: FlaskConical, iconColor: '#098259', bg: '#e0fced', scope: 'Obseg 1' },
+    { label: t('Elektrika', 'Electricity'), href: `/app/periods/${displayYear}/scope2/electricity`, icon: Zap, iconColor: '#098259', bg: '#e0fced', scope: 'Obseg 2' },
   ]
 
   const statsCards = [
-    { label: t('Skupne emisije', 'Total emissions'), value: `${totalTons.toFixed(2)} t`, sub: t('CO₂e letno', 'CO₂e annual'), icon: Leaf, color: 'text-gray-900', bg: 'bg-gray-100' },
-    { label: 'Scope 1', value: '0.00 t', sub: t('Direktne emisije', 'Direct emissions'), icon: Flame, color: 'text-orange-500', bg: 'bg-orange-50' },
-    { label: 'Scope 2', value: '0.00 t', sub: t('Posredne emisije', 'Indirect emissions'), icon: Zap, color: 'text-yellow-600', bg: 'bg-yellow-50' },
-    { label: t('Viri podatkov', 'Data sources'), value: `0 / ${sources.length}`, sub: t('Izpolnjeno', 'Completed'), icon: BarChart3, color: 'text-gray-900', bg: 'bg-gray-100' },
+    { label: t('Skupne emisije', 'Total emissions'), value: `${totalTons.toFixed(2)} t`, sub: t('CO₂e letno', 'CO₂e annual'), icon: Leaf, iconColor: '#215bcf', bg: '#e5eeff' },
+    { label: 'Obseg 1', value: '0.00 t', sub: t('Direktne emisije', 'Direct emissions'), icon: Flame, iconColor: '#098259', bg: '#e0fced' },
+    { label: 'Obseg 2', value: '0.00 t', sub: t('Posredne emisije', 'Indirect emissions'), icon: Zap, iconColor: '#215bcf', bg: '#e5eeff' },
+    { label: t('Viri podatkov', 'Data sources'), value: `0 / ${sources.length}`, sub: t('Izpolnjeno', 'Completed'), icon: BarChart3, iconColor: '#098259', bg: '#e0fced' },
   ]
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
         <div className="flex items-baseline gap-3 min-w-0">
           <h1 className="text-base font-semibold text-gray-900 shrink-0">{org?.name ?? t('Nadzorna plošča', 'Dashboard')}</h1>
           <p className="text-sm text-gray-500 truncate">{t('Pregled emisij in stanje poročanja.', 'Emissions overview and reporting status.')}</p>
         </div>
       </div>
-      <div className="flex-1 overflow-auto px-6 py-6 space-y-6">
+      <div className="flex-1 overflow-auto px-4 sm:px-6 py-4 sm:py-6 space-y-6">
       {IS_MOCK && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-700">
           {t('Demo način – prikazani so vzorčni podatki.', 'Demo mode – sample data is shown.')}
@@ -95,18 +95,18 @@ export default function DashboardPage() {
       )}
 
       {/* Stats row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {statsCards.map((s) => {
           const Icon = s.icon
           return (
             <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-5 flex items-start justify-between">
               <div>
                 <p className="text-xs text-gray-500 mb-1">{s.label}</p>
-                <p className="text-2xl font-medium text-gray-900">{s.value}</p>
+                <p className="text-2xl font-semibold text-gray-900">{s.value}</p>
                 <p className="text-xs text-gray-500 mt-0.5">{s.sub}</p>
               </div>
-              <div className={`w-9 h-9 ${s.bg} rounded-lg flex items-center justify-center shrink-0`}>
-                <Icon className={`h-4 w-4 ${s.color}`} />
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: s.bg }}>
+                <Icon className="h-4 w-4" style={{ color: s.iconColor }} />
               </div>
             </div>
           )
@@ -136,7 +136,7 @@ export default function DashboardPage() {
                   {yearChartData.map((entry, index) => (
                     <Cell
                       key={index}
-                      fill={entry.year === String(displayYear) ? '#0f0f10' : '#bfdbfe'}
+                      fill={entry.year === String(displayYear) ? '#215bcf' : '#bfdbfe'}
                     />
                   ))}
                 </Bar>
@@ -191,8 +191,8 @@ export default function DashboardPage() {
               return (
                 <Link key={s.href} href={s.href}
                   className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
-                  <div className={`w-9 h-9 ${s.bg} rounded-lg flex items-center justify-center shrink-0`}>
-                    <Icon className={`h-4 w-4 ${s.color}`} />
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: s.bg }}>
+                    <Icon className="h-4 w-4" style={{ color: s.iconColor }} />
                   </div>
                   <div className="min-w-0">
                     <p className="text-xs font-semibold text-gray-500">{s.scope}</p>
@@ -211,33 +211,33 @@ export default function DashboardPage() {
           <div className="space-y-3">
             <Link href="/app/analytics"
               className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
-              <div className="w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
-                <TrendingUp className="h-4 w-4 text-gray-900" />
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: '#e5eeff' }}>
+                <TrendingUp className="h-4 w-4" style={{ color: '#215bcf' }} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-base font-semibold text-gray-900">{t('Analitika', 'Analytics')}</p>
+                <p className="text-sm font-semibold text-gray-900">{t('Analitika', 'Analytics')}</p>
                 <p className="text-xs text-gray-500">{t('Grafi in trendi', 'Charts & trends')}</p>
               </div>
               <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-gray-900 shrink-0" />
             </Link>
             <Link href="/app/reports"
               className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
-              <div className="w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
-                <FileText className="h-4 w-4 text-gray-900" />
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: '#e5eeff' }}>
+                <FileText className="h-4 w-4" style={{ color: '#215bcf' }} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-base font-semibold text-gray-900">{t('Poročila', 'Reports')}</p>
+                <p className="text-sm font-semibold text-gray-900">{t('Poročila', 'Reports')}</p>
                 <p className="text-xs text-gray-500">{t('Izvoz PDF, CSRD', 'PDF export, CSRD')}</p>
               </div>
               <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-gray-900 shrink-0" />
             </Link>
             <Link href="/app/locations"
               className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-sm transition-all group">
-              <div className="w-9 h-9 bg-gray-100 rounded-md flex items-center justify-center shrink-0">
-                <Building2 className="h-4 w-4 text-purple-600" />
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: '#e0fced' }}>
+                <Building2 className="h-4 w-4" style={{ color: '#098259' }} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-base font-semibold text-gray-900">{t('Lokacije', 'Locations')}</p>
+                <p className="text-sm font-semibold text-gray-900">{t('Lokacije', 'Locations')}</p>
                 <p className="text-xs text-gray-500">{t('Upravljanje lokacij', 'Manage locations')}</p>
               </div>
               <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-gray-900 shrink-0" />

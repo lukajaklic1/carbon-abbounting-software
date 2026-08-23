@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     { auth: { autoRefreshToken: false, persistSession: false } }
   )
   try {
-    const { email, organizationId, role } = await req.json()
+    const { email, organizationId, role, firstName, lastName, jobTitle } = await req.json()
 
     if (!email || !organizationId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     // Upsert the invited member record
     if (existing) {
       await supabaseAdmin.from('organization_members')
-        .update({ status: 'invited', role: role ?? 'member', invited_at: new Date().toISOString() })
+        .update({ status: 'invited', role: role ?? 'member', invited_at: new Date().toISOString(), first_name: firstName ?? null, last_name: lastName ?? null, job_title: jobTitle ?? null })
         .eq('id', existing.id)
     } else {
       await supabaseAdmin.from('organization_members').insert({
@@ -52,6 +52,9 @@ export async function POST(req: NextRequest) {
         invited_email: email,
         role: role ?? 'member',
         status: 'invited',
+        first_name: firstName ?? null,
+        last_name: lastName ?? null,
+        job_title: jobTitle ?? null,
       })
     }
 

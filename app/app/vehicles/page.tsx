@@ -249,13 +249,10 @@ export default function VehiclesPage() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
-        <div className="flex items-baseline gap-3 min-w-0">
-          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Vozila', 'Vehicles')}</h1>
-          <p className="text-sm text-gray-500 truncate">{t('Osebna vozila, kombiji in tovornjaki v lasti ali najemu podjetja, ki porabljajo gorivo.', 'Company-owned or leased cars, vans and trucks that consume fuel.')}</p>
-        </div>
+      <div className="flex items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <h1 className="text-base font-semibold text-gray-900">{t('Vozila', 'Vehicles')}</h1>
         <button onClick={openNew}
-          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg transition-colors shrink-0">
           <Plus className="h-4 w-4" />
           {t('Novo vozilo', 'New vehicle')}
         </button>
@@ -451,7 +448,7 @@ export default function VehiclesPage() {
 
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-xs font-medium text-gray-500 mb-1">
                   {t('Naziv / ID vozila', 'Vehicle name / ID')} <span className="text-red-400">*</span>
                 </label>
                 <input value={form.name} onChange={e => f('name', e.target.value)}
@@ -462,7 +459,7 @@ export default function VehiclesPage() {
               {/* Make + Model */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
                     {t('Znamka', 'Make')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span>
                   </label>
                   <input value={form.make} onChange={e => f('make', e.target.value)}
@@ -470,7 +467,7 @@ export default function VehiclesPage() {
                     className={INPUT} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
                     {t('Model', 'Model')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span>
                   </label>
                   <input value={form.model} onChange={e => f('model', e.target.value)}
@@ -482,7 +479,7 @@ export default function VehiclesPage() {
               {/* Type + Fuel */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Tip vozila', 'Vehicle type')}</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('Tip vozila', 'Vehicle type')}</label>
                   <select value={form.vehicle_type} onChange={e => f('vehicle_type', e.target.value)} className={SELECT}>
                     {VEHICLE_TYPES.map(vt => (
                       <option key={vt.value} value={vt.value}>{locale === 'EN' ? vt.en : vt.sl}</option>
@@ -490,7 +487,7 @@ export default function VehiclesPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Gorivo', 'Fuel type')}</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('Gorivo', 'Fuel type')}</label>
                   <select value={form.fuel_type} onChange={e => f('fuel_type', e.target.value)} className={SELECT}>
                     {FUEL_TYPES.map(ft => (
                       <option key={ft.value} value={ft.value}>{locale === 'EN' ? ft.en : ft.sl}</option>
@@ -502,7 +499,7 @@ export default function VehiclesPage() {
               {/* Ownership + Registration */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Lastništvo', 'Ownership')}</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('Lastništvo', 'Ownership')}</label>
                   <select value={form.ownership_type} onChange={e => f('ownership_type', e.target.value)} className={SELECT}>
                     {OWNERSHIP_TYPES.map(ot => (
                       <option key={ot.value} value={ot.value}>{locale === 'EN' ? ot.en : ot.sl}</option>
@@ -510,7 +507,7 @@ export default function VehiclesPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
                     {t('Registrska označba', 'Registration number')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span>
                   </label>
                   <input value={form.registration_number} onChange={e => f('registration_number', e.target.value)}
@@ -521,7 +518,7 @@ export default function VehiclesPage() {
 
               {/* Year */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-xs font-medium text-gray-500 mb-1">
                   {t('Letnik', 'Year of manufacture')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span>
                 </label>
                 <input value={form.year_of_manufacture} onChange={e => f('year_of_manufacture', e.target.value)}
@@ -531,7 +528,7 @@ export default function VehiclesPage() {
 
               {/* Location */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-xs font-medium text-gray-500 mb-1">
                   {t('Lokacija vozila', 'Vehicle location')} <span className="text-red-500">*</span>
                 </label>
                 <select value={form.location_id} onChange={e => f('location_id', e.target.value)} className={SELECT}>
@@ -545,7 +542,7 @@ export default function VehiclesPage() {
               {/* Status (edit only) */}
               {editingId && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Status', 'Status')}</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('Status', 'Status')}</label>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => f('is_active', true)}
                       className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-[#f5f5f5] border-gray-200 text-[#0f0f10]' : 'border-gray-200 text-[#767676] hover:border-gray-200'}`}>
@@ -561,7 +558,7 @@ export default function VehiclesPage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-xs font-medium text-gray-500 mb-1">
                   {t('Opombe', 'Notes')} <span className="text-[#767676] font-normal">({t('neobvezno', 'optional')})</span>
                 </label>
                 <textarea value={form.notes} onChange={e => f('notes', e.target.value)}

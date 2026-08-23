@@ -84,7 +84,7 @@ const FUEL_EQUIPMENT_TYPES = [
   { value: 'boiler',     sl: 'Kotel',                               en: 'Boiler' },
   { value: 'burner',     sl: 'Gorilnik',                            en: 'Burner' },
   { value: 'dryer',      sl: 'Sušilnik',                            en: 'Dryer' },
-  { value: 'flare',      sl: 'Bakla',                               en: 'Flare' },
+  { value: 'flare',      sl: 'Plinska bakla',                       en: 'Flare' },
   { value: 'furnace',    sl: 'Industrijska peč',                    en: 'Furnace' },
   { value: 'generator',  sl: 'Generator',                           en: 'Generator' },
   { value: 'heater',     sl: 'Grelnik',                             en: 'Heater' },
@@ -161,6 +161,28 @@ function getPrimaryCategory(eq: any) {
   return 'fuel'
 }
 
+function GuideCard({ iconColor, title, subtitle, items }: { iconColor: string; title: string; subtitle: string; items: string[] }) {
+  return (
+    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
+        <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: iconColor }} />
+        <div>
+          <p className="text-sm font-semibold text-gray-900">{title}</p>
+          <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>
+        </div>
+      </div>
+      <ul className="px-5 py-3 space-y-2">
+        {items.map((item, i) => (
+          <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+            <span className="mt-1.5 w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: iconColor }} />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 export default function EquipmentPage() {
   const { t, locale } = useLocale()
   const refreshCounters = useEmissionCountersStore(s => s.refresh)
@@ -180,6 +202,7 @@ export default function EquipmentPage() {
   const [filterCategory, setFilterCategory] = useState('')
   const [filterFuelType, setFilterFuelType] = useState('')
   const [filterStatus, setFilterStatus] = useState('')
+  const [activeTab, setActiveTab] = useState<'list' | 'guide'>('list')
 
   useEffect(() => { load() }, [])
 
@@ -365,17 +388,83 @@ export default function EquipmentPage() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
-        <div className="flex items-baseline gap-3 min-w-0">
-          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Oprema', 'Equipment')}</h1>
-          <p className="text-sm text-gray-500 truncate">{t('Kotli, generatorji, hladilniki in druga stacionarna oprema, ki porablja gorivo ali hladilne pline.', 'Boilers, generators, refrigeration units and other stationary equipment consuming fuel or refrigerants.')}</p>
-        </div>
+      <div className="flex items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <h1 className="text-base font-semibold text-gray-900">{t('Oprema', 'Equipment')}</h1>
         <button onClick={openNew}
-          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg transition-colors shrink-0">
           <Plus className="h-3.5 w-3.5" />
           {t('Nova oprema', 'New equipment')}
         </button>
       </div>
+
+      {/* Guide view */}
+      {activeTab === 'guide' && (
+        <div className="flex-1 overflow-auto">
+          <div className="flex items-center gap-2 px-6 py-3 border-b border-gray-200">
+            <button onClick={() => setActiveTab('list')}
+              className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors">
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+              {t('Nazaj', 'Back')}
+            </button>
+            <span className="text-gray-300">/</span>
+            <span className="text-sm text-gray-900 font-medium">{t('Kaj spada sem', 'What belongs here')}</span>
+          </div>
+          <div className="px-6 py-6">
+          <div className="max-w-2xl mx-auto space-y-4">
+            <GuideCard
+              iconColor="#215bcf"
+              title={t('Gorivo — stacionarna oprema', 'Fuel — stationary equipment')}
+              subtitle={t('Naprave, ki sežigajo gorivo na eni lokaciji', 'Equipment that burns fuel at a fixed location')}
+              items={[
+                t('Kotel', 'Boiler'),
+                t('Gorilnik', 'Burner'),
+                t('Sušilnik', 'Dryer'),
+                t('Plinska bakla', 'Flare'),
+                t('Industrijska peč', 'Furnace'),
+                t('Generator', 'Generator'),
+                t('Grelnik', 'Heater'),
+                t('Sežigalnik odpadkov', 'Incinerator'),
+                t('Motor z notranjim izgorevanjem', 'Internal Combustion Engine'),
+                t('Peč za žganje (kilna)', 'Kiln'),
+                t('Odprto kurjenje', 'Open Burning'),
+                t('Pečica / Kuhalna peč', 'Oven'),
+                t('Termalni oksidator', 'Thermal Oxidizer'),
+                t('Turbina', 'Turbine'),
+              ]}
+            />
+            <GuideCard
+              iconColor="#215bcf"
+              title={t('Hladiva — hladilna in klimatska oprema', 'Refrigerants — cooling & A/C equipment')}
+              subtitle={t('Naprave, ki vsebujejo hladilne pline (HFC, HFO, PFC…)', 'Equipment that contains refrigerant gases (HFC, HFO, PFC…)')}
+              items={[
+                t('Hladilniki (chillerji)', 'Chillers'),
+                t('Gospodinjski hladilniki', 'Domestic Refrigeration'),
+                t('Industrijska hladilna tehnika in predelava hrane', 'Industrial Refrigeration incl. Food Processing & Cold Storage'),
+                t('Srednji in veliki komercialni hladilniki', 'Medium & Large Commercial Refrigeration'),
+                t('Mobilna klimatizacija', 'Mobile Air Conditioning'),
+                t('Stanovanjske in poslovne klimatske naprave (toplotne črpalke)', 'Residential & Commercial A/C incl. Heat Pumps'),
+                t('Samostojne komercialne hladilne naprave', 'Stand-alone Commercial Applications'),
+                t('Transportna hladilna tehnika', 'Transport Refrigeration'),
+              ]}
+            />
+            <GuideCard
+              iconColor="#215bcf"
+              title={t('Industrijski plini', 'Industrial gases')}
+              subtitle={t('Oprema, ki vsebuje ali oddaja industrijske pline z visokimi GWP vrednostmi', 'Equipment that contains or emits industrial gases with high GWP values')}
+              items={[
+                t('Fiksna oprema za gašenje požarov (SF₆, FM-200…)', 'Fixed Fire Suppression Equipment (SF₆, FM-200…)'),
+                t('Prenosna oprema za gašenje požarov (CO₂, prah…)', 'Portable Fire Suppression Equipment (CO₂, powder…)'),
+              ]}
+            />
+            <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-500">
+              💡 {t('Vozila (avtomobili, tovornjaki, viličarji…) vnesite pod', 'Vehicles (cars, trucks, forklifts…) enter under')}{' '}
+              <strong className="text-gray-700">{t('Vozila', 'Vehicles')}</strong>.{' '}
+              {t('Električna vozila sem ne spadajo — njihova poraba se obravnava pod elektriko.', 'Electric vehicles do not belong here — their consumption is covered under electricity.')}
+            </div>
+          </div>
+          </div>
+        </div>
+      )}
 
       {/* Confirm delete modal */}
       {confirmDelete && (
@@ -408,8 +497,8 @@ export default function EquipmentPage() {
         </div>
       )}
 
-      {/* Filters */}
-      {!loading && (
+      {/* List tab content */}
+      {activeTab === 'list' && !loading && (
         <div className="flex flex-wrap items-center gap-2 px-6 py-3.5 border-b border-gray-200">
           <div className="inline-flex items-center gap-2 h-9 px-3 bg-white border border-gray-200 rounded-xl text-[13px] min-w-[180px] focus-within:border-[#0f0f10] transition-colors">
             <Search className="h-3.5 w-3.5 text-[#767676] shrink-0" />
@@ -452,20 +541,23 @@ export default function EquipmentPage() {
               {t('Počisti', 'Clear')}
             </button>
           )}
+          <button onClick={() => setActiveTab('guide')}
+            className="ml-auto h-9 px-3 text-[13px] font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-xl transition-colors">
+            {t('Kaj spada sem?', 'What belongs here?')}
+          </button>
         </div>
       )}
 
-      {loading ? (
+      {activeTab === 'list' && loading && (
         <div className="bg-white border border-gray-200 rounded-xl p-12 text-center text-sm text-[#767676]">{t('Nalaganje...', 'Loading...')}</div>
-      ) : !equipment.length ? (
-          <EmptyState
-            icon={Wrench}
-            title={t('Ni opreme', 'No equipment')}
-            subtitle={t('Dodajte prvi kos opreme', 'Add your first piece of equipment')}
-          />
-      ) : !filtered.length ? (
-          <EmptyState icon={Search} title={t('Ni zadetkov', 'No results')} subtitle={t('Poskusite spremeniti iskanje ali filtre', 'Try changing your search or filters')} />
-      ) : (
+      )}
+      {activeTab === 'list' && !loading && !equipment.length && (
+        <EmptyState icon={Wrench} title={t('Ni opreme', 'No equipment')} subtitle={t('Dodajte prvi kos opreme', 'Add your first piece of equipment')} />
+      )}
+      {activeTab === 'list' && !loading && equipment.length > 0 && !filtered.length && (
+        <EmptyState icon={Search} title={t('Ni zadetkov', 'No results')} subtitle={t('Poskusite spremeniti iskanje ali filtre', 'Try changing your search or filters')} />
+      )}
+      {activeTab === 'list' && !loading && filtered.length > 0 && (
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -490,7 +582,7 @@ export default function EquipmentPage() {
                           <EquipmentIcon eq={eq} />
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-700">{eq.name}</p>
+                          <p className="text-xs font-medium text-gray-500">{eq.name}</p>
                           {subtitle && <p className="text-xs text-[#767676] mt-0.5">{subtitle}</p>}
                         </div>
                       </div>
@@ -567,7 +659,7 @@ export default function EquipmentPage() {
 
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1">
                   {t('Kako se imenuje ta oprema ali naprava?', 'What is the name or ID of this equipment?')} <span className="text-red-400">*</span>
                 </label>
                 <input
@@ -584,7 +676,7 @@ export default function EquipmentPage() {
 
               {/* Category checkboxes */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1">
                   {t('Izberite ustrezno. Podatke lahko kadarkoli posodobite.', 'Please select the following that apply. You can always update these later.')} <span className="text-red-400">*</span>
                 </label>
                 <div className="space-y-3 mt-3">
@@ -599,7 +691,7 @@ export default function EquipmentPage() {
                       className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
                     />
                     <div>
-                      <p className="text-sm font-medium text-gray-700">{t('Ta oprema porablja gorivo', 'This equipment consumes fuel')}</p>
+                      <p className="text-xs font-medium text-gray-500">{t('Ta oprema porablja gorivo', 'This equipment consumes fuel')}</p>
                       <p className="text-xs text-[#767676] mt-0.5 leading-relaxed">
                         {t(
                           'Izberite, če naprava deluje na gorivo (bencin, dizel, zemeljski plin itd.). Da bi se izognili dvojnemu štetju: če ste porabo zemeljskega plina že zajeli na ravni lokacije, sem kotlov na zemeljski plin ni treba dodajati.',
@@ -619,7 +711,7 @@ export default function EquipmentPage() {
                       className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
                     />
                     <div>
-                      <p className="text-sm font-medium text-gray-700">{t('Ta oprema uporablja hladiva', 'This equipment uses refrigerants')}</p>
+                      <p className="text-xs font-medium text-gray-500">{t('Ta oprema uporablja hladiva', 'This equipment uses refrigerants')}</p>
                       <p className="text-xs text-[#767676] mt-0.5 leading-relaxed">
                         {t(
                           'Izberite, če vaše podjetje kupuje hladiva za opremo, ki je v lasti vaše organizacije, vključno z mobilno klimatizacijo, hladilniki, maloprodajno zamrzovalno opremo, hladilnim transportom itd.',
@@ -639,7 +731,7 @@ export default function EquipmentPage() {
                       className="mt-0.5 h-4 w-4 accent-[#0f0f10] shrink-0"
                     />
                     <div>
-                      <p className="text-sm font-medium text-gray-700">{t('Ta oprema uporablja industrijske pline', 'This equipment uses industrial gases')}</p>
+                      <p className="text-xs font-medium text-gray-500">{t('Ta oprema uporablja industrijske pline', 'This equipment uses industrial gases')}</p>
                       <p className="text-xs text-[#767676] mt-0.5 leading-relaxed">
                         {t(
                           'Izberite, če vaše podjetje kupuje industrijske pline, kot so ogljikov dioksid, metan, didušikov oksid, žveplov heksafluorid in dušikov trifluorid, ki se uporabljajo v proizvodnji, testiranju ali laboratorijskih aplikacijah.',
@@ -667,7 +759,7 @@ export default function EquipmentPage() {
               {form.uses_fuel && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    <label className="block text-xs font-medium text-gray-500 mb-1">
                       {t('Katera vrsta opreme porablja gorivo?', 'What kind of fuel-burning equipment is this?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.fuel_equipment_type} onChange={e => f('fuel_equipment_type', e.target.value)} className={SELECT}>
@@ -677,7 +769,7 @@ export default function EquipmentPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    <label className="block text-xs font-medium text-gray-500 mb-1">
                       {t('Kateri energent uporablja ta oprema?', 'What fuel does this equipment use?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.fuel_type} onChange={e => f('fuel_type', e.target.value)} className={SELECT}>
@@ -693,7 +785,7 @@ export default function EquipmentPage() {
               {form.uses_refrigerants && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    <label className="block text-xs font-medium text-gray-500 mb-1">
                       {t('Katera vrsta hladilne opreme je to?', 'What kind of refrigerant-using equipment is this?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.refrigerant_equipment_type} onChange={e => f('refrigerant_equipment_type', e.target.value)} className={SELECT}>
@@ -703,7 +795,7 @@ export default function EquipmentPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    <label className="block text-xs font-medium text-gray-500 mb-1">
                       {t('Katero hladivo uporablja ta oprema?', 'Which refrigerant does this equipment use?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.refrigerant_type} onChange={e => f('refrigerant_type', e.target.value)} className={SELECT}>
@@ -719,7 +811,7 @@ export default function EquipmentPage() {
               {form.uses_industrial_gases && (
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    <label className="block text-xs font-medium text-gray-500 mb-1">
                       {t('Katera vrsta opreme z industrijskimi plini je to?', 'What kind of industrial gas equipment is this?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.industrial_gas_equipment_type} onChange={e => f('industrial_gas_equipment_type', e.target.value)} className={SELECT}>
@@ -729,7 +821,7 @@ export default function EquipmentPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    <label className="block text-xs font-medium text-gray-500 mb-1">
                       {t('Kateri industrijski plin uporablja ta oprema?', 'Which industrial gas does this equipment use?')} <span className="text-red-400">*</span>
                     </label>
                     <select value={form.industrial_gas_type} onChange={e => f('industrial_gas_type', e.target.value)} className={SELECT}>
@@ -759,7 +851,7 @@ export default function EquipmentPage() {
               {/* Status (edit only) */}
               {editingId && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Status', 'Status')}</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('Status', 'Status')}</label>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => f('is_active', true)}
                       className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-[#f5f5f5] border-gray-200 text-[#0f0f10]' : 'border-gray-200 text-[#767676] hover:border-gray-200'}`}>
@@ -775,7 +867,7 @@ export default function EquipmentPage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-xs font-medium text-gray-500 mb-1">
                   {t('Opombe', 'Notes')} <span className="text-[#767676] font-normal text-xs">({t('neobvezno', 'optional')})</span>
                 </label>
                 <textarea

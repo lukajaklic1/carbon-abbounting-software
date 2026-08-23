@@ -138,7 +138,7 @@ export default function Scope1IndustrialGasesPage() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
         <div>
           <h1 className="text-base font-semibold text-gray-900">{t('Industrijski plini – oprema', 'Industrial gases – equipment')}</h1>
       </div>
@@ -156,7 +156,7 @@ export default function Scope1IndustrialGasesPage() {
       {loading ? (
         <div className="p-12 text-center text-sm text-gray-500">{t('Nalaganje...', 'Loading...')}</div>
       ) : !equipment.length ? (
-        <EmptyState iconNode={<IconFireExtinguisher size={32} />} title={t('Ni opreme z industrijskimi plini', 'No industrial gas equipment')} subtitle={t('Dodajte opremo z industrijskimi plini.', 'Add equipment with industrial gases enabled.')} />
+        <EmptyState iconNode={<IconFireExtinguisher size={32} />} title={t('Ni opreme z industrijskimi plini', 'No industrial gas equipment')} subtitle={t('Dodajte opremo, ki vsebuje industrijske pline.', 'Add equipment that contains industrial gases.')} />
       ) : (
         <>
             <div className="overflow-x-auto">
@@ -181,7 +181,7 @@ export default function Scope1IndustrialGasesPage() {
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff'}}>
                           <FlaskConical className="h-3.5 w-3.5" style={{color:'#215bcf'}} />
                         </div>
-                        <p className="text-sm font-medium text-gray-700">{item.name}</p>
+                        <p className="text-xs font-medium text-gray-500">{item.name}</p>
                       </div>
                     </td>
                     <td className="px-5 py-3.5 text-sm text-gray-700">
@@ -192,7 +192,7 @@ export default function Scope1IndustrialGasesPage() {
                     </td>
                     <td className="px-5 py-3.5">
                       {entry
-                        ? <span className="text-sm font-medium text-gray-700">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
+                        ? <span className="text-xs font-medium text-gray-500">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
                         : <span className="text-gray-300 text-sm">—</span>}
                     </td>
                     <td className="px-5 py-3.5">
@@ -253,13 +253,13 @@ export default function Scope1IndustrialGasesPage() {
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Vrsta plina', 'Gas type')}</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{t('Vrsta plina', 'Gas type')}</label>
                 <select value={form.gas_type} onChange={e => f('gas_type', e.target.value)} className={SELECT}>
                   {GAS_KEYS.map(k => <option key={k} value={k}>{k} — GWP {INDUSTRIAL_GAS_FACTORS[k]?.factor}</option>)}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Letna količina', 'Annual quantity')} (kg) <span className="text-red-400">*</span></label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{t('Letna količina', 'Annual quantity')} (kg) <span className="text-red-400">*</span></label>
                 <div className="flex gap-2">
                   <input value={form.quantity_kg} onChange={e => f('quantity_kg', e.target.value)} onBlur={e => f('quantity_kg', fmtQty(e.target.value))} type="text" inputMode="decimal" placeholder="0" className={INPUT} autoFocus />
                   <div className="w-10 px-2 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center shrink-0 font-medium">kg</div>

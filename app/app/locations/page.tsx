@@ -228,13 +228,10 @@ export default function LocationsPage() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
-        <div className="flex items-baseline gap-3 min-w-0">
-          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Lokacije', 'Locations')}</h1>
-          <p className="text-sm text-gray-500 truncate">{t('Upravljajte lokacije vaše organizacije – pisarne, tovarne, skladišča in druga mesta poslovanja.', 'Manage your organisation\'s locations – offices, factories, warehouses and other sites.')}</p>
-        </div>
+      <div className="flex items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 h-[57px] shrink-0">
+        <h1 className="text-base font-semibold text-gray-900">{t('Lokacije', 'Locations')}</h1>
         <button onClick={openNew}
-          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg transition-colors shrink-0">
           <Plus className="h-3.5 w-3.5" />
           {t('Nova lokacija', 'New location')}
         </button>
@@ -340,7 +337,7 @@ export default function LocationsPage() {
                             {(() => { const lt = LOCATION_TYPES.find(lt => lt.value === loc.location_type); const Icon = lt?.icon ?? MapPin; return <Icon className="w-3.5 h-3.5" style={{color:'#215bcf'}} /> })()}
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-gray-700">{loc.name}</p>
+                            <p className="text-xs font-medium text-gray-500">{loc.name}</p>
                           </div>
                         </div>
                       </td>
@@ -415,7 +412,7 @@ export default function LocationsPage() {
 
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label className="block text-xs font-medium text-gray-500 mb-1">
                   {t('Ime lokacije', 'Location name')} <span className="text-red-400">*</span>
                 </label>
                 <input value={form.name} onChange={e => f('name', e.target.value)}
@@ -426,7 +423,7 @@ export default function LocationsPage() {
 
               {/* Address */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Ulica in hišna številka', 'Street address')}</label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{t('Ulica in hišna številka', 'Street address')}</label>
                 <input value={form.address} onChange={e => f('address', e.target.value)}
                   placeholder={t('npr. Dunajska cesta 5', 'e.g. Main Street 5')}
                   className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300"
@@ -436,14 +433,14 @@ export default function LocationsPage() {
               {/* City + Postal */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Mesto', 'City')}</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('Mesto', 'City')}</label>
                   <input value={form.city} onChange={e => f('city', e.target.value)}
                     placeholder={t('Ljubljana', 'Ljubljana')}
                     className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Poštna številka', 'Postal code')}</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('Poštna številka', 'Postal code')}</label>
                   <input value={form.postal_code} onChange={e => f('postal_code', e.target.value)}
                     placeholder="1000"
                     className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300"
@@ -454,14 +451,14 @@ export default function LocationsPage() {
               {/* Country + Type */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Država', 'Country')}</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('Država', 'Country')}</label>
                   <select value={form.country_code} onChange={e => f('country_code', e.target.value)}
                     className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633]">
                     {COUNTRIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Tip lokacije', 'Location type')}</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('Tip lokacije', 'Location type')}</label>
                   <select value={form.location_type} onChange={e => f('location_type', e.target.value)}
                     className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633]">
                     {LOCATION_TYPES.map(lt => <option key={lt.value} value={lt.value}>{t(lt.sl, lt.en)}</option>)}
@@ -471,7 +468,7 @@ export default function LocationsPage() {
 
               {/* Floor area */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Površina', 'Floor area')} <span className="text-gray-500 font-normal">({t('neobvezno', 'optional')})</span></label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{t('Površina', 'Floor area')} <span className="text-gray-500 font-normal">({t('neobvezno', 'optional')})</span></label>
                 <div className="flex gap-2">
                   <input value={form.floor_area_m2} onChange={e => f('floor_area_m2', e.target.value)}
                     type="number" placeholder={t('npr. 500', 'e.g. 500')}
@@ -485,7 +482,7 @@ export default function LocationsPage() {
 
               {/* Utilities */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t('Energenti na tej lokaciji', 'Utilities at this location')}</label>
+                <label className="block text-xs font-medium text-gray-500 mb-2">{t('Energenti na tej lokaciji', 'Utilities at this location')}</label>
                 <div className="space-y-2">
                   {UTILITIES.map(u => (
                     <label key={u.key} className="flex items-start gap-3 p-3 rounded-xl border border-gray-200 hover:border-blue-200 hover:bg-gray-100/30 cursor-pointer transition-colors group">
@@ -501,7 +498,7 @@ export default function LocationsPage() {
                         </div>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-700">{u.label}</p>
+                        <p className="text-xs font-medium text-gray-500">{u.label}</p>
                       </div>
                     </label>
                   ))}
@@ -511,7 +508,7 @@ export default function LocationsPage() {
               {/* Status (edit only) */}
               {editingId && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Status', 'Status')}</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('Status', 'Status')}</label>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => f('is_active', true)}
                       className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-gray-100 border-gray-200 text-gray-900' : 'border-gray-200 text-gray-500 hover:border-gray-200'}`}>
@@ -527,7 +524,7 @@ export default function LocationsPage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">{t('Opombe', 'Notes')} <span className="text-gray-500 font-normal">({t('neobvezno', 'optional')})</span></label>
+                <label className="block text-xs font-medium text-gray-500 mb-1">{t('Opombe', 'Notes')} <span className="text-gray-500 font-normal">({t('neobvezno', 'optional')})</span></label>
                 <textarea value={form.notes} onChange={e => f('notes', e.target.value)}
                   rows={2} placeholder={t('Dodatne informacije o lokaciji...', 'Additional information about this location...')}
                   className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633] placeholder:text-gray-300 resize-none"

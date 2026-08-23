@@ -9,7 +9,7 @@ import { useParams } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
 const SCOPE3_CATEGORIES = [
-  { number: 1,  label_sl: 'Nabavljeno blago in storitve',         label_en: 'Purchased Goods & Services',              desc_sl: 'Emisije pri proizvodnji kupljenih materialov in storitev',         desc_en: 'Emissions from production of purchased materials and services' },
+  { number: 1,  label_sl: 'Kupljeno blago in storitve',         label_en: 'Purchased Goods & Services',              desc_sl: 'Emisije pri proizvodnji kupljenih materialov in storitev',         desc_en: 'Emissions from production of purchased materials and services' },
   { number: 2,  label_sl: 'Kapitalsko blago',                     label_en: 'Capital Goods',                           desc_sl: 'Emisije pri proizvodnji kupljene opreme in infrastrukture',        desc_en: 'Emissions from production of purchased capital equipment' },
   { number: 3,  label_sl: 'Gorivo in energija (posredno)',        label_en: 'Fuel & Energy Related Activities',        desc_sl: 'Emisije pri pridobivanju goriv in energije (ni obseg 1/2)',        desc_en: 'Upstream emissions from fuels and energy not in Scope 1/2' },
   { number: 4,  label_sl: 'Vhodni transport in distribucija',     label_en: 'Upstream Transport & Distribution',       desc_sl: 'Emisije pri prevozu blaga do vaše organizacije',                  desc_en: 'Emissions from transport of goods to your organization' },
@@ -60,6 +60,7 @@ export default function Scope3Page() {
   const [modal, setModal] = useState<ModalState | null>(null)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [upgradeState, setUpgradeState] = useState<'idle' | 'sending' | 'done'>('idle')
+  const [upgradeRequested, setUpgradeRequested] = useState(() => !!(organization as any)?.upgrade_requested_at)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const modalFileRef = useRef<HTMLInputElement>(null)
 
@@ -184,17 +185,26 @@ export default function Scope3Page() {
           <p className="text-sm text-gray-500 truncate">{t('Posredne emisije vrednostne verige.', 'Value chain indirect emissions.')}</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
+          <div className="hidden sm:flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
             <span className="font-medium text-gray-900">{(totalCo2e / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
           </div>
-          <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
+          <div className="hidden sm:flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
             <span className="text-gray-500">{t('Zaključeno', 'Completed')}</span>
             <span className="font-medium text-gray-900">{doneCount} / 15</span>
           </div>
-          <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
-            <span className="text-gray-500">{t('V pregledu', 'In review')}</span>
-            <span className="font-medium text-gray-900">{inReviewCount}</span>
-          </div>
+          {upgradeRequested ? (
+            <div className="inline-flex items-center gap-1.5 h-9 px-4 bg-green-50 border border-green-200 rounded-xl text-sm font-medium text-green-700">
+              <Check className="h-3.5 w-3.5" />
+              {t('Zahteva za nadgraditev poslana', 'Upgrade request sent')}
+            </div>
+          ) : (
+            <button
+              onClick={() => { setShowUpgradeModal(true); setUpgradeState('idle') }}
+              className="inline-flex items-center gap-1.5 h-9 px-4 bg-[#215bcf] hover:bg-[#1a4ab5] rounded-xl text-sm font-medium text-white transition-colors">
+              <Lock className="h-3.5 w-3.5" />
+              {t('Nadgradi', 'Upgrade')}
+            </button>
+          )}
         </div>
       </div>
       <div className="flex-1 overflow-auto px-6 py-6">
@@ -271,13 +281,9 @@ export default function Scope3Page() {
                       {t('Naloži podatke', 'Upload data')}
                     </button>
                   ) : (
-                    <button
-                      onClick={() => { setShowUpgradeModal(true); setUpgradeState('idle') }}
-                      className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-lg transition-colors shrink-0 border border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100"
-                    >
-                      <Lock className="h-3.5 w-3.5" />
-                      {t('Nadgradi za nalaganje', 'Upgrade to upload')}
-                    </button>
+                    <div className="w-8 h-8 flex items-center justify-center text-gray-300 shrink-0">
+                      <Lock className="h-4 w-4" />
+                    </div>
                   )
                 )}
               </div>
@@ -385,7 +391,7 @@ export default function Scope3Page() {
                 <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
                   <Check className="h-6 w-6 text-green-600" />
                 </div>
-                <p className="text-base font-semibold text-gray-900 mb-1">{t('Zahteva poslana!', 'Request sent!')}</p>
+                <p className="text-base font-semibold text-gray-900 mb-1">{t('Zahteva za nadgraditev poslana', 'Upgrade request sent')}</p>
                 <p className="text-sm text-gray-500">{t('Naša ekipa vas bo v kratkem kontaktirala.', 'Our team will contact you shortly.')}</p>
                 <button onClick={() => setShowUpgradeModal(false)}
                   className="mt-6 px-6 py-2.5 text-sm font-medium bg-gray-900 text-white rounded-xl hover:bg-gray-700 transition-colors">
@@ -407,9 +413,9 @@ export default function Scope3Page() {
                   <p className="text-sm text-gray-500">{t('Z nadgradnjo pridobite:', 'With the upgrade you get:')}</p>
                   <ul className="space-y-2">
                     {[
-                      t('Nalaganje podatkov za Obseg 3 kategorije', 'Upload data for Scope 3 categories'),
-                      t('Izvoz GHG poročila v PDF', 'Export GHG report as PDF'),
-                      t('Prioritetna podpora', 'Priority support'),
+                      t('PDF poročilo o ogljičnih emisijah', 'PDF report on carbon emissions'),
+                      t('Nalaganje podatkov za Obseg 3 (15 kategorij)', 'Scope 3 data upload (15 categories)'),
+                      t('Podpora pri izdelavi poročila (Obseg 1, 2 in 3)', 'Support for emissions report (Scope 1, 2 & 3)'),
                     ].map(item => (
                       <li key={item} className="flex items-center gap-2 text-sm text-gray-700">
                         <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0" style={{ backgroundColor: '#e0fced' }}>
@@ -419,6 +425,11 @@ export default function Scope3Page() {
                       </li>
                     ))}
                   </ul>
+                </div>
+
+                {/* Info */}
+                <div className="mx-6 mb-4 px-4 py-3 bg-blue-50 border border-blue-100 rounded-xl text-sm text-blue-700">
+                  {t('Po oddaji zahteve vas bo naša ekipa kontaktirala v 1–2 delovnih dneh.', 'After submitting the request, our team will contact you within 1–2 business days.')}
                 </div>
 
                 {/* Footer */}
@@ -436,6 +447,7 @@ export default function Scope3Page() {
                         await supabase.from('organizations').update({ upgrade_requested_at: new Date().toISOString() }).eq('id', organization!.id)
                       } catch {}
                       setUpgradeState('done')
+                      setUpgradeRequested(true)
                     }}
                     className="px-5 py-2 text-sm font-medium bg-gray-900 text-white rounded-xl hover:bg-gray-700 disabled:opacity-50 transition-colors">
                     {upgradeState === 'sending' ? t('Pošiljanje...', 'Sending...') : t('Pošlji zahtevo', 'Send request')}

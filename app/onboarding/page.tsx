@@ -173,7 +173,7 @@ export default function OnboardingPage() {
               <div key={i} className="flex items-center">
                 <div className="flex flex-col items-center gap-1.5">
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                    done ? 'bg-[#f5f5f5]0 text-white' :
+                    done ? 'bg-green-500 text-white' :
                     active ? 'bg-[#0f0f10] text-white shadow-md shadow-blue-200' :
                     'bg-white border-2 border-[#ececec] text-[#767676]'
                   }`}>
@@ -196,8 +196,8 @@ export default function OnboardingPage() {
           {step === 1 && (
             <div className="p-8">
               <div className="flex items-start gap-4 mb-6">
-                <div className="w-10 h-10 bg-[#efefef] rounded-xl flex items-center justify-center shrink-0">
-                  <Building2 className="h-5 w-5 text-[#0f0f10]" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#e5eeff' }}>
+                  <Building2 className="h-5 w-5" style={{ color: '#215bcf' }} />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-[#031f18] leading-tight">{t.s1title}</h2>
@@ -207,27 +207,27 @@ export default function OnboardingPage() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
                     {t.companyName} <span className="text-red-400">*</span>
                   </label>
                   <input value={orgName} onChange={e => setOrgName(e.target.value)}
                     placeholder={t.companyPlaceholder} className={INPUT} autoFocus />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t.industry}</label>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t.industry}</label>
                   <select value={industry} onChange={e => setIndustry(e.target.value)} className={SELECT}>
                     {INDUSTRIES[locale].map(ind => <option key={ind.value} value={ind.value}>{ind.label}</option>)}
                   </select>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t.country}</label>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">{t.country}</label>
                     <select value={country} onChange={e => setCountry(e.target.value)} className={SELECT}>
                       {COUNTRIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[#031f18] mb-1.5">{t.employees}</label>
+                    <label className="block text-xs font-medium text-gray-500 mb-1">{t.employees}</label>
                     <select value={employees} onChange={e => setEmployees(e.target.value)} className={SELECT}>
                       {EMPLOYEES[locale].map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
                     </select>
@@ -246,8 +246,8 @@ export default function OnboardingPage() {
           {step === 2 && (
             <div className="p-8">
               <div className="flex items-start gap-4 mb-6">
-                <div className="w-10 h-10 bg-[#efefef] rounded-xl flex items-center justify-center shrink-0">
-                  <User className="h-5 w-5 text-[#0f0f10]" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#e5eeff' }}>
+                  <User className="h-5 w-5" style={{ color: '#215bcf' }} />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-[#031f18] leading-tight">{t.s2title}</h2>
@@ -257,14 +257,14 @@ export default function OnboardingPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
                     {t.firstName} <span className="text-red-400">*</span>
                   </label>
                   <input value={firstName} onChange={e => setFirstName(e.target.value)}
                     placeholder={t.firstPh} className={INPUT} autoFocus />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#031f18] mb-1.5">
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
                     {t.lastName} <span className="text-red-400">*</span>
                   </label>
                   <input value={lastName} onChange={e => setLastName(e.target.value)}
