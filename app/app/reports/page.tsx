@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { usePeriodStore } from '@/stores/period'
 import { useOrganizationStore } from '@/stores/organization'
-import { ChevronDown, Download, FileText } from 'lucide-react'
+import { ChevronDown, Download, FileText, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { downloadGhgPdf } from '@/components/reports/GhgPdf'
 
@@ -226,9 +226,15 @@ export default function ReportsPage() {
             })
             setExporting(false)
           }}
-          disabled={!report || exporting}
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-gray-900 text-white rounded-xl hover:bg-gray-700 disabled:opacity-50 transition-colors shrink-0">
-          <Download className="h-4 w-4" />
+          disabled={!report || exporting || !organization?.is_active}
+          title={!organization?.is_active ? t('Funkcija je na voljo za plačnike', 'Available for paid accounts') : undefined}
+          className={cn(
+            'inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl transition-colors shrink-0',
+            organization?.is_active
+              ? 'bg-gray-900 text-white hover:bg-gray-700 disabled:opacity-50'
+              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+          )}>
+          {organization?.is_active ? <Download className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
           {exporting ? t('Generiranje...', 'Generating...') : t('Izvozi PDF', 'Export PDF')}
         </button>
       </div>
@@ -258,21 +264,21 @@ export default function ReportsPage() {
 
           {/* Scope 1 */}
           {report && (
-            <ScopeSection scope="1" label="Scope 1"
+            <ScopeSection scope="1" label={t('Obseg 1', 'Scope 1')}
               sub={t('Direktne emisije toplogrednih plinov', 'Direct GHG Emissions')}
               data={report.scope1} defaultOpen />
           )}
 
           {/* Scope 2 */}
           {report && (
-            <ScopeSection scope="2" label="Scope 2"
+            <ScopeSection scope="2" label={t('Obseg 2', 'Scope 2')}
               sub={t('Posredne emisije iz kupljene energije', 'Electricity Indirect GHG Emissions')}
               data={report.scope2} defaultOpen />
           )}
 
           {/* Scope 3 */}
           {report && (
-            <ScopeSection scope="3" label="Scope 3"
+            <ScopeSection scope="3" label={t('Obseg 3', 'Scope 3')}
               sub={t('Ostale posredne emisije vrednostne verige', 'Other Indirect GHG Emissions')}
               data={report.scope3} defaultOpen />
           )}

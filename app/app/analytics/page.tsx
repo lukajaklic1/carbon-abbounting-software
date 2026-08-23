@@ -6,8 +6,7 @@ import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { usePeriodStore } from '@/stores/period'
 import { IconAtom2, IconEngine, IconPlugConnected, IconTruckDelivery } from '@tabler/icons-react'
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, Legend,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
 } from 'recharts'
 import { cn } from '@/lib/utils'
 
@@ -149,10 +148,10 @@ export default function AnalyticsPage() {
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: t('Skupne emisije', 'Total emissions'), value: fmtT(total), sub: 'tCO₂e', icon: IconAtom2, iconColor: '#215bcf', bg: '#e5eeff' },
-          { label: t('Obseg 1', 'Scope 1'), value: fmtT(scopeData?.scope1_kg ?? 0), sub: `${pct(scopeData?.scope1_kg ?? 0)}% ${t('skupaj', 'of total')}`, icon: IconEngine, iconColor: '#098259', bg: '#e0fced' },
-          { label: t('Obseg 2', 'Scope 2'), value: fmtT(scopeData?.scope2_kg ?? 0), sub: `${pct(scopeData?.scope2_kg ?? 0)}% ${t('skupaj', 'of total')}`, icon: IconPlugConnected, iconColor: '#215bcf', bg: '#e5eeff' },
-          { label: t('Obseg 3', 'Scope 3'), value: fmtT(scopeData?.scope3_kg ?? 0), sub: `${pct(scopeData?.scope3_kg ?? 0)}% ${t('skupaj', 'of total')}`, icon: IconTruckDelivery, iconColor: '#098259', bg: '#e0fced' },
+          { label: t('Skupne emisije', 'Total emissions'), value: fmtT(total), icon: IconAtom2, iconColor: '#215bcf', bg: '#e5eeff' },
+          { label: t('Obseg 1', 'Scope 1'), value: fmtT(scopeData?.scope1_kg ?? 0), icon: IconEngine, iconColor: '#098259', bg: '#e0fced' },
+          { label: t('Obseg 2', 'Scope 2'), value: fmtT(scopeData?.scope2_kg ?? 0), icon: IconPlugConnected, iconColor: '#215bcf', bg: '#e5eeff' },
+          { label: t('Obseg 3', 'Scope 3'), value: fmtT(scopeData?.scope3_kg ?? 0), icon: IconTruckDelivery, iconColor: '#098259', bg: '#e0fced' },
         ].map(card => {
           const Icon = card.icon
           return (
@@ -160,9 +159,8 @@ export default function AnalyticsPage() {
               <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: card.bg }}>
                 <Icon className="h-4 w-4" style={{ color: card.iconColor }} />
               </div>
-              <p className="text-sm text-gray-500 mb-1">{card.label}</p>
-              <p className="text-2xl font-semibold text-gray-900 tabular-nums">{loading ? '—' : card.value}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{card.sub}</p>
+              <p className="text-xs font-medium text-gray-500 mb-1">{card.label}</p>
+              <p className="text-2xl font-semibold text-gray-900 tabular-nums">{loading ? '—' : card.value} <span className="text-sm font-medium text-gray-500">tCO₂e</span></p>
             </div>
           )
         })}
@@ -171,15 +169,15 @@ export default function AnalyticsPage() {
       {/* Charts row 1: trend + scope pie */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Trend by year */}
+        {/* Trend by year */}
         <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <p className="text-sm font-semibold text-gray-900 mb-0.5">{t('Trend emisij po letih', 'Emissions trend by year')}</p>
-          <p className="text-xs text-gray-500 mb-5">tCO₂e</p>
+          <p className="text-base font-semibold text-gray-900 mb-5">{t('Emisije po letu', 'Emissions by year')}</p>
           {yearChartData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={yearChartData} barSize={40}>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={yearChartData} barSize={48}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                 <XAxis dataKey="year" tick={{ fontSize: 12, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 12, fill: '#94a3b8' }} axisLine={false} tickLine={false} unit=" t" width={50} />
+                <YAxis tick={{ fontSize: 12, fill: '#94a3b8' }} axisLine={false} tickLine={false} unit=" t" width={52} />
                 <Tooltip
                   contentStyle={{ borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: 12 }}
                   formatter={(v: any) => [`${String(v).replace('.', ',')} tCO₂e`, t('Emisije', 'Emissions')]}
@@ -192,40 +190,39 @@ export default function AnalyticsPage() {
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-48 flex items-center justify-center text-sm text-gray-300">{t('Ni podatkov za prikaz', 'No data to display')}</div>
+            <div className="h-52 flex items-center justify-center text-sm text-gray-300">{t('Ni podatkov za prikaz', 'No data to display')}</div>
           )}
         </div>
 
-        {/* Scope breakdown pie */}
+        {/* Scope breakdown bar */}
         <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <p className="text-sm font-semibold text-gray-900 mb-0.5">{t('Delež po obsegu', 'Breakdown by scope')}</p>
-          <p className="text-xs text-gray-500 mb-5">{year} · tCO₂e</p>
+          <p className="text-base font-semibold text-gray-900 mb-5">{t('Emisije po obsegu', 'Emissions by scope')}</p>
           {scopeChartData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={200}>
-              <PieChart>
-                <Pie data={scopeChartData} cx="50%" cy="45%" innerRadius={55} outerRadius={80}
-                  dataKey="value" paddingAngle={3}>
-                  {scopeChartData.map((entry, i) => (
-                    <Cell key={i} fill={entry.color} />
-                  ))}
-                </Pie>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={scopeChartData} barSize={48}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 12, fill: '#94a3b8' }} axisLine={false} tickLine={false} unit=" t" width={52} />
                 <Tooltip
                   contentStyle={{ borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: 12 }}
                   formatter={(v: any) => [`${String(v).replace('.', ',')} tCO₂e`]}
                 />
-                <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: 12 }} />
-              </PieChart>
+                <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+                  {scopeChartData.map((entry, i) => (
+                    <Cell key={i} fill={['#2563eb', '#bfdbfe', '#93c5fd'][i % 3]} />
+                  ))}
+                </Bar>
+              </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-48 flex items-center justify-center text-sm text-gray-300">{t('Ni podatkov', 'No data')}</div>
+            <div className="h-52 flex items-center justify-center text-sm text-gray-300">{t('Ni podatkov', 'No data')}</div>
           )}
         </div>
       </div>
 
       {/* Emission sources breakdown */}
       <div className="bg-white border border-gray-200 rounded-xl p-6">
-        <p className="text-sm font-semibold text-gray-900 mb-0.5">{t('Emisije po virih', 'Emissions by source')}</p>
-        <p className="text-xs text-gray-500 mb-5">{year} · tCO₂e</p>
+        <p className="text-base font-semibold text-gray-900 mb-5">{t('Emisije po virih', 'Emissions by source')}</p>
         {sourceChartData.length > 0 ? (
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={sourceChartData} layout="vertical" barSize={18} margin={{ left: 16, right: 32 }}>

@@ -8,6 +8,7 @@ export interface Organization {
   country_code: string
   employees_range?: string
   plan: 'free' | 'starter' | 'professional' | 'enterprise'
+  is_active: boolean
   owner_id: string
   created_at: string
 }

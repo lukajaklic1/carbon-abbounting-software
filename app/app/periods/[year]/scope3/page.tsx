@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Upload, Check, Clock, FileText, X, Download } from 'lucide-react'
+import { Upload, Check, Clock, FileText, X, Download, Lock } from 'lucide-react'
+import { useOrganizationStore } from '@/stores/organization'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { useParams } from 'next/navigation'
@@ -47,6 +48,8 @@ export default function Scope3Page() {
   const { t } = useLocale()
   const params = useParams()
   const year = Number(params.year)
+  const { organization } = useOrganizationStore()
+  const isPaid = organization?.is_active ?? false
 
   const [submissions, setSubmissions] = useState<Record<number, Submission>>({})
   const [deleting, setDeleting] = useState<Set<number>>(new Set())
@@ -258,10 +261,15 @@ export default function Scope3Page() {
                 {/* Upload button */}
                 {!sub && (
                   <button
-                    onClick={() => openModal(cat)}
-                    className="inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-lg transition-colors shrink-0 bg-blue-600 text-white hover:bg-blue-700"
+                    onClick={() => isPaid && openModal(cat)}
+                    disabled={!isPaid}
+                    title={!isPaid ? t('Na voljo za plačnike', 'Available for paid accounts') : undefined}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-lg transition-colors shrink-0',
+                      isPaid ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    )}
                   >
-                    <Upload className="h-3.5 w-3.5" />
+                    {isPaid ? <Upload className="h-3.5 w-3.5" /> : <Lock className="h-3.5 w-3.5" />}
                     {t('Naloži podatke', 'Upload data')}
                   </button>
                 )}

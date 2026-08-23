@@ -10,12 +10,13 @@ type Company = {
   name: string
   created_at: string
   member_count: number
-  status: 'active'
+  is_active: boolean
 }
 
 export default function CompaniesPage() {
   const [companies, setCompanies] = useState<Company[]>([])
   const [loading, setLoading] = useState(true)
+  const [toggling, setToggling] = useState<string | null>(null)
   const [search, setSearch] = useState('')
 
   useEffect(() => { load() }, [])
@@ -24,7 +25,7 @@ export default function CompaniesPage() {
     setLoading(true)
     try {
       const supabase = createClient()
-      const { data: orgs } = await supabase.from('organizations').select('id, name, created_at').order('created_at', { ascending: false })
+      const { data: orgs } = await supabase.from('organizations').select('id, name, created_at, is_active').order('created_at', { ascending: false })
       const { data: members } = await supabase.from('organization_members').select('organization_id, status')
 
       const countMap: Record<string, number> = {}
@@ -37,26 +38,31 @@ export default function CompaniesPage() {
         name: o.name,
         created_at: o.created_at,
         member_count: countMap[o.id] ?? 0,
-        status: 'active',
+        is_active: o.is_active ?? false,
       })))
     } catch (e) { console.error(e) }
     setLoading(false)
   }
 
-  const filtered = companies.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
+  async function toggleActive(id: string, current: boolean) {
+    setToggling(id)
+    try {
+      const supabase = createClient()
+      await supabase.from('organizations').update({ is_active: !current }).eq('id', id)
+      setCompanies(cs => cs.map(c => c.id === id ? { ...c, is_active: !current } : c))
+    } catch (e) { console.error(e) }
+    setToggling(null)
+  }
 
+  const filtered = companies.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
   const fmt = (d: string) => new Date(d).toLocaleDateString('sl-SI', { day: 'numeric', month: 'numeric', year: 'numeric' })
 
   return (
     <div className="flex flex-col h-full">
-      {/* Header */}
       <div className="flex items-center justify-between px-6 border-b border-gray-200 h-[57px] shrink-0">
-        <div className="flex items-baseline gap-3 min-w-0">
-          <h1 className="text-base font-semibold text-gray-900 shrink-0">Podjetja</h1>
-        </div>
+        <h1 className="text-base font-semibold text-gray-900">Podjetja</h1>
       </div>
 
-      {/* Filters */}
       <div className="flex gap-3 px-6 py-3.5 border-b border-gray-200">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" />
@@ -66,7 +72,6 @@ export default function CompaniesPage() {
         </div>
       </div>
 
-      {/* Table */}
       <div className="flex-1 overflow-auto">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -75,7 +80,7 @@ export default function CompaniesPage() {
                 <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">Podjetje</th>
                 <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">Registrirano</th>
                 <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">Uporabniki</th>
-                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">Status</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">Plačnik</th>
               </tr>
             </thead>
             <tbody>
@@ -84,12 +89,26 @@ export default function CompaniesPage() {
               ) : filtered.length === 0 ? (
                 <tr><td colSpan={4} className="text-center py-12 text-sm text-gray-500">Ni rezultatov.</td></tr>
               ) : filtered.map((c, i) => (
-                <tr key={c.id} className={cn('hover:bg-gray-50 transition-colors', i !== 0 && 'border-t border-gray-200')}>
-                  <td className="px-5 py-3.5 text-sm font-semibold text-gray-900">{c.name}</td>
-                  <td className="px-5 py-3.5 text-sm text-gray-700">{fmt(c.created_at)}</td>
-                  <td className="px-5 py-3.5 text-sm text-gray-700">{c.member_count} {c.member_count === 1 ? 'uporabnik' : 'uporabnika'}</td>
+                <tr key={c.id} className={cn('hover:bg-gray-50 transition-colors', i !== 0 && 'border-t border-gray-100')}>
+                  <td className="px-5 py-3.5 text-sm font-medium text-gray-900">{c.name}</td>
+                  <td className="px-5 py-3.5 text-sm text-gray-500">{fmt(c.created_at)}</td>
+                  <td className="px-5 py-3.5 text-sm text-gray-500">{c.member_count} {c.member_count === 1 ? 'uporabnik' : 'uporabnika'}</td>
                   <td className="px-5 py-3.5">
-                    <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#e0fced',border:'1px solid #d4f8e6',color:'#098259'}}>Aktivno</span>
+                    <button
+                      onClick={() => toggleActive(c.id, c.is_active)}
+                      disabled={toggling === c.id}
+                      className={cn(
+                        'relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none',
+                        c.is_active ? 'bg-blue-600' : 'bg-gray-200',
+                        toggling === c.id && 'opacity-50 cursor-not-allowed'
+                      )}
+                    >
+                      <span className={cn(
+                        'inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform',
+                        c.is_active ? 'translate-x-4.5' : 'translate-x-0.5'
+                      )} />
+                    </button>
+                    <span className="ml-2 text-xs text-gray-500">{c.is_active ? 'Plačnik' : 'Brezplačno'}</span>
                   </td>
                 </tr>
               ))}
