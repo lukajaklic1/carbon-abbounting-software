@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { FlaskConical, Plus, Pencil, X, Leaf, Check, Settings2 } from 'lucide-react'
@@ -254,7 +254,7 @@ export default function Scope1IndustrialGasesPage() {
                           </button>
                         ) : (
                           <button onClick={() => openAdd(item)}
-                            className="inline-flex items-center gap-1 text-xs font-semibold text-gray-900 hover:text-gray-900 px-3 py-1.5 bg-gray-100 hover:bg-[#d4eddf] rounded-lg transition-colors">
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-gray-900 hover:text-gray-900 px-3 py-1.5 bg-gray-100 hover:bg-[#dbeafe] rounded-lg transition-colors">
                             <Plus className="h-3 w-3" />{t('Dodaj emisije', 'Add emission data')}
                           </button>
                         )}
