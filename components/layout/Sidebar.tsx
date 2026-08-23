@@ -115,11 +115,11 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
       <div className="h-[57px] px-4 border-b border-gray-200 flex items-center justify-between shrink-0">
         {!collapsed && (
           <div className="flex items-center gap-2">
-            <CarboniqIcon size={20} />
-            <span className="font-semibold text-[15px] text-gray-900 tracking-tight">Carboniqdesk</span>
+            <CarboniqIcon size={24} />
+            <span className="font-semibold text-base text-gray-900 tracking-tight">Carboniqdesk</span>
           </div>
         )}
-        {collapsed && <CarboniqIcon size={20} />}
+        {collapsed && <CarboniqIcon size={24} />}
         {!collapsed && onToggleCollapse && (
           <button onClick={onToggleCollapse}
             className="p-1.5 rounded-md text-gray-400 hover:text-gray-700 hover:bg-[#f6f6f6] transition-colors">

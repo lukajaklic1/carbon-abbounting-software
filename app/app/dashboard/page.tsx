@@ -105,8 +105,8 @@ export default function DashboardPage() {
                 <p className="text-2xl font-semibold text-gray-900">{s.value}</p>
                 <p className="text-xs text-gray-500 mt-0.5">{s.sub}</p>
               </div>
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: s.bg }}>
-                <Icon className="h-4 w-4" style={{ color: s.iconColor }} />
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: s.bg }}>
+                <Icon className="h-5 w-5" style={{ color: s.iconColor }} />
               </div>
             </div>
           )
