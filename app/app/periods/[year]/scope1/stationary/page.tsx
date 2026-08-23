@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Building2, Plus, Pencil, X, Leaf, Check } from 'lucide-react'
+import { Building2, Plus, Pencil, X, Leaf, Check, Settings2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getFuelFactors, calcCo2eKg } from '@/lib/emission-factors'
@@ -27,7 +27,13 @@ export default function Scope1StationaryPage() {
   const FUEL_FACTORS = getFuelFactors(year)
   const refreshCounters = useEmissionCountersStore(s => s.refresh)
 
-  const [locations, setLocations] = useState<any[]>([])
+  const [allLocations, setAllLocations] = useState<any[]>([])
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [periodLocMap, setPeriodLocMap] = useState<Record<string, string>>({})
+  const [orgId, setOrgId] = useState<string | null>(null)
+  const [showSelect, setShowSelect] = useState(false)
+  const [draftIds, setDraftIds] = useState<Set<string>>(new Set())
+  const [selectSaving, setSelectSaving] = useState(false)
   const [entriesMap, setEntriesMap] = useState<Record<string, any>>({})
   const [period, setPeriod] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -37,9 +43,25 @@ export default function Scope1StationaryPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [page, setPage] = useState(1)
-  const [confirmDelete, setConfirmDelete] = useState(null)
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
 
   useEffect(() => { if (year) load() }, [year])
+
+  function openSelect() { setDraftIds(new Set(selectedIds)); setShowSelect(true) }
+  function toggleDraft(id: string) {
+    if (draftIds.has(id) && entriesMap[id]) return
+    setDraftIds(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n })
+  }
+  async function saveSelection() {
+    if (!period || !orgId) return
+    setSelectSaving(true)
+    const sup = createClient()
+    const toAdd = [...draftIds].filter(id => !selectedIds.has(id))
+    const toRemove = [...selectedIds].filter(id => !draftIds.has(id))
+    if (toAdd.length) await sup.from('period_locations').insert(toAdd.map(location_id => ({ reporting_period_id: period.id, location_id, organization_id: orgId, scope_type: 'stationary' })))
+    if (toRemove.length) { const ids = toRemove.map(id => periodLocMap[id]).filter(Boolean); if (ids.length) await sup.from('period_locations').delete().in('id', ids) }
+    await load(); refreshCounters(year); setSelectSaving(false); setShowSelect(false)
+  }
 
   async function load() {
     setLoading(true)
@@ -50,14 +72,21 @@ export default function Scope1StationaryPage() {
       const { data: org } = await supabase.from('organizations').select('id').eq('owner_id', user.id).single()
       if (!org) return
 
-      const [{ data: pd }, { data: locs }, { data: ents }] = await Promise.all([
+      const [{ data: pd }, { data: locs }, { data: plRows }, { data: ents }] = await Promise.all([
         supabase.from('reporting_periods').select('*').eq('organization_id', org.id).eq('year', year).single(),
         supabase.from('locations').select('id, name, address').eq('organization_id', org.id).eq('is_active', true).eq('uses_natural_gas', true).order('name'),
+        supabase.from('period_locations').select('id, location_id, reporting_period_id').eq('organization_id', org.id).eq('scope_type', 'stationary'),
         supabase.from('scope1_stationary').select('*').eq('organization_id', org.id),
       ])
 
+      setOrgId(org.id)
       setPeriod(pd)
-      setLocations(locs ?? [])
+      setAllLocations(locs ?? [])
+      const thisPl = (plRows ?? []).filter((r: any) => r.reporting_period_id === pd?.id)
+      const plMap: Record<string, string> = {}
+      thisPl.forEach((r: any) => { plMap[r.location_id] = r.id })
+      setPeriodLocMap(plMap)
+      setSelectedIds(new Set(Object.keys(plMap)))
       const map: Record<string, any> = {}
       if (pd && ents) ents.filter((e: any) => e.reporting_period_id === pd.id).forEach((e: any) => { map[e.location_id] = e })
       setEntriesMap(map)
@@ -128,11 +157,12 @@ export default function Scope1StationaryPage() {
 
   const f = (key: keyof EntryForm, val: any) => setForm(prev => ({ ...prev, [key]: val }))
   const preview = co2ePreview()
-  const totalCo2e = Object.values(entriesMap).reduce((s: number, e: any) => s + (e.co2e_kg ?? 0), 0)
-  const done = Object.keys(entriesMap).length
-  const total = locations.length
+  const reportLocations = allLocations.filter(l => selectedIds.has(l.id))
+  const totalCo2e = reportLocations.reduce((s: number, l: any) => s + (entriesMap[l.id]?.co2e_kg ?? 0), 0)
+  const done = reportLocations.filter(l => entriesMap[l.id]).length
+  const total = reportLocations.length
   const totalPages = Math.ceil(total / PAGE_SIZE)
-  const paginated = locations.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const paginated = reportLocations.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
     <div className="flex flex-col h-full">
@@ -141,25 +171,29 @@ export default function Scope1StationaryPage() {
           <h1 className="text-base font-semibold text-gray-900">{t('Stacionarno zgorevanje – lokacije', 'Stationary combustion – locations')}</h1>
       </div>
         <div className="flex items-center gap-2 shrink-0">
-          <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
-            <span className="font-medium text-gray-900">{(totalCo2e / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
-          </div>
-          <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm gap-2">
-            <span className="text-gray-500">{t('Vneseno', 'Entered')}</span>
-            <span className="font-medium text-gray-900">{done} / {total}</span>
-          </div>
+          {total > 0 && <>
+            <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
+              <span className="font-medium text-gray-900">{(totalCo2e / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
+            </div>
+            <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
+              <span className="text-gray-500">{t('Vneseno', 'Entered')}</span>
+              <span className="font-medium text-gray-900">{done} / {total}</span>
+            </div>
+          </>}
+          <button onClick={openSelect} className="inline-flex items-center gap-1.5 h-9 px-4 bg-[#215bcf] hover:bg-[#1a4ab5] rounded-xl text-sm font-medium text-white transition-colors">
+            <Settings2 className="h-3.5 w-3.5" />
+            {t('Izberi lokacije', 'Select locations')}
+          </button>
         </div>
       </div>
 
       <div className="flex-1 overflow-auto">
       {loading ? (
         <div className="p-12 text-center text-sm text-gray-500">{t('Nalaganje...', 'Loading...')}</div>
-      ) : !locations.length ? (
-        <EmptyState
-            icon={Building2}
-            title={t('Ni aktivnih lokacij', 'No active locations')}
-            subtitle={t('Dodajte lokacijo, ki uporablja zemeljski plin.', 'Add a location that uses natural gas.')}
-          />
+      ) : allLocations.length === 0 ? (
+        <EmptyState icon={Building2} title={t('Ni aktivnih lokacij', 'No active locations')} subtitle={t('Dodajte lokacijo, ki uporablja zemeljski plin.', 'Add a location that uses natural gas.')} />
+      ) : reportLocations.length === 0 ? (
+        <EmptyState icon={Settings2} title={t('Ni izbranih lokacij', 'No locations selected')} subtitle={t('Kliknite »Izberi lokacije« da dodate lokacije v poročilo.', 'Click "Select locations" to add locations to the report.')} />
       ) : (
         <>
             <div className="overflow-x-auto">
@@ -174,11 +208,11 @@ export default function Scope1StationaryPage() {
                 <th className="px-5 py-3" />
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-200 border-b border-gray-200">
               {paginated.map((loc, i) => {
                 const entry = entriesMap[loc.id]
                 return (
-                  <tr key={loc.id} className={`hover:bg-gray-50 transition-colors ${i !== 0 ? 'border-t border-gray-200' : ''}`}>
+                  <tr key={loc.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff'}}>
@@ -246,6 +280,53 @@ export default function Scope1StationaryPage() {
         onConfirm={handleDelete}
         onCancel={() => setConfirmDelete(null)}
       />
+      {showSelect && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowSelect(false)} />
+          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+              <h2 className="text-base font-semibold text-gray-900">{t('Izberi lokacije', 'Select locations')}</h2>
+              <button onClick={() => setShowSelect(false)} className="text-gray-400 hover:text-gray-600"><X className="h-4 w-4" /></button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-2 py-3 space-y-1.5">
+              {allLocations.length === 0 ? (
+                <p className="px-6 py-8 text-sm text-center text-gray-500">{t('Ni lokacij.', 'No locations.')}</p>
+              ) : allLocations.map(loc => {
+                const checked = draftIds.has(loc.id)
+                const hasData = !!entriesMap[loc.id]
+                const locked = checked && hasData
+                return (
+                  <div key={loc.id} className="rounded-xl border transition-all overflow-hidden" style={{ borderColor: checked ? '#215bcf' : '#e5e7eb' }}>
+                    <label className="flex items-center gap-3 px-4 py-3 cursor-pointer" style={{ backgroundColor: checked ? '#f0f5ff' : '#fff' }}>
+                      <input type="checkbox" checked={checked} onChange={() => toggleDraft(loc.id)} disabled={locked} className="w-4 h-4 rounded border-gray-300 accent-[#215bcf] cursor-pointer shrink-0 disabled:cursor-not-allowed" />
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border" style={{ backgroundColor: checked ? '#e5eeff' : '#f3f4f6', borderColor: checked ? '#c7d9ff' : '#e5e7eb' }}>
+                        <Building2 className={`w-3.5 h-3.5 ${checked ? 'text-[#215bcf]' : 'text-gray-400'}`} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-gray-900 truncate">{loc.name}</p>
+                        {loc.address && <p className="text-xs text-gray-500 truncate">{loc.address}</p>}
+                      </div>
+                    </label>
+                    {locked && (
+                      <div className="px-4 py-2 border-t flex items-center gap-1.5" style={{ borderColor: '#dbeafe', backgroundColor: '#eff6ff' }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#215bcf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <p className="text-xs text-[#215bcf]">{t('Lokacija ima vnesene emisije. Najprej izbrišite podatke o emisijah.', 'Location has emission data. Delete it first.')}</p>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+            <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+              <p className="text-xs text-gray-500">{draftIds.size} {t('izbranih', 'selected')}</p>
+              <div className="flex gap-2">
+                <button onClick={() => setShowSelect(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50">{t('Prekliči', 'Cancel')}</button>
+                <button onClick={saveSelection} disabled={selectSaving} className="px-4 py-2 text-sm font-semibold text-white bg-[#215bcf] hover:bg-[#1a4ab5] disabled:opacity-60 rounded-xl">{selectSaving ? t('Shranjevanje...', 'Saving...') : t('Potrdi', 'Confirm')}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {showModal && activeLocation && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowModal(false)} />

@@ -328,7 +328,7 @@ export default function LocationsPage() {
                     <th className="px-5 py-3"></th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-gray-200 border-b border-gray-200">
                   {paginatedLocations.map((loc, i) => (
                     <tr key={loc.id} className={`hover:bg-[#f6f6f6] transition-colors ${i !== 0 ? 'border-t border-gray-200' : ''}`}>
                       <td className="px-5 py-3.5">

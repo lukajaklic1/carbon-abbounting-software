@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FlaskConical, Plus, Pencil, X, Leaf, Check } from 'lucide-react'
+import { FlaskConical, Plus, Pencil, X, Leaf, Check, Settings2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { INDUSTRIAL_GAS_FACTORS, calcCo2eKg } from '@/lib/emission-factors'
@@ -28,7 +28,13 @@ export default function Scope1IndustrialGasesPage() {
   const year = Number(params.year)
   const refreshCounters = useEmissionCountersStore(s => s.refresh)
 
-  const [equipment, setEquipment] = useState<any[]>([])
+  const [allEquipment, setAllEquipment] = useState<any[]>([])
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [periodEquMap, setPeriodEquMap] = useState<Record<string, string>>({})
+  const [orgId, setOrgId] = useState<string | null>(null)
+  const [showSelect, setShowSelect] = useState(false)
+  const [draftIds, setDraftIds] = useState<Set<string>>(new Set())
+  const [selectSaving, setSelectSaving] = useState(false)
   const [entriesMap, setEntriesMap] = useState<Record<string, any>>({})
   const [period, setPeriod] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -38,9 +44,25 @@ export default function Scope1IndustrialGasesPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [page, setPage] = useState(1)
-  const [confirmDelete, setConfirmDelete] = useState(null)
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
 
   useEffect(() => { if (year) load() }, [year])
+
+  function openSelect() { setDraftIds(new Set(selectedIds)); setShowSelect(true) }
+  function toggleDraft(id: string) {
+    if (draftIds.has(id) && entriesMap[id]) return
+    setDraftIds(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n })
+  }
+  async function saveSelection() {
+    if (!period || !orgId) return
+    setSelectSaving(true)
+    const sup = createClient()
+    const toAdd = [...draftIds].filter(id => !selectedIds.has(id))
+    const toRemove = [...selectedIds].filter(id => !draftIds.has(id))
+    if (toAdd.length) await sup.from('period_equipment').insert(toAdd.map(equipment_id => ({ reporting_period_id: period.id, equipment_id, organization_id: orgId, scope_type: 'industrial_gases' })))
+    if (toRemove.length) { const ids = toRemove.map(id => periodEquMap[id]).filter(Boolean); if (ids.length) await sup.from('period_equipment').delete().in('id', ids) }
+    await load(); refreshCounters(year); setSelectSaving(false); setShowSelect(false)
+  }
 
   async function load() {
     setLoading(true)
@@ -51,14 +73,21 @@ export default function Scope1IndustrialGasesPage() {
       const { data: org } = await supabase.from('organizations').select('id').eq('owner_id', user.id).single()
       if (!org) return
 
-      const [{ data: pd }, { data: equip }, { data: ents }] = await Promise.all([
+      const [{ data: pd }, { data: equip }, { data: peRows }, { data: ents }] = await Promise.all([
         supabase.from('reporting_periods').select('*').eq('organization_id', org.id).eq('year', year).single(),
         supabase.from('equipment').select('id, name, industrial_gas_type').eq('organization_id', org.id).eq('is_active', true).eq('uses_industrial_gases', true).order('name'),
+        supabase.from('period_equipment').select('id, equipment_id, reporting_period_id').eq('organization_id', org.id).eq('scope_type', 'industrial_gases'),
         supabase.from('scope1_industrial_gases').select('*').eq('organization_id', org.id),
       ])
 
+      setOrgId(org.id)
       setPeriod(pd)
-      setEquipment(equip ?? [])
+      setAllEquipment(equip ?? [])
+      const thisPe = (peRows ?? []).filter((r: any) => r.reporting_period_id === pd?.id)
+      const peMap: Record<string, string> = {}
+      thisPe.forEach((r: any) => { peMap[r.equipment_id] = r.id })
+      setPeriodEquMap(peMap)
+      setSelectedIds(new Set(Object.keys(peMap)))
       const map: Record<string, any> = {}
       if (pd && ents) ents.filter((e: any) => e.reporting_period_id === pd.id).forEach((e: any) => { map[e.equipment_id] = e })
       setEntriesMap(map)
@@ -130,11 +159,12 @@ export default function Scope1IndustrialGasesPage() {
 
   const f = (key: keyof EntryForm, val: any) => setForm(prev => ({ ...prev, [key]: val }))
   const preview = co2ePreview()
-  const totalCo2e = Object.values(entriesMap).reduce((s: number, e: any) => s + (e.co2e_kg ?? 0), 0)
-  const done = Object.keys(entriesMap).length
-  const total = equipment.length
+  const reportEquipment = allEquipment.filter(e => selectedIds.has(e.id))
+  const totalCo2e = reportEquipment.reduce((s: number, e: any) => s + (entriesMap[e.id]?.co2e_kg ?? 0), 0)
+  const done = reportEquipment.filter(e => entriesMap[e.id]).length
+  const total = reportEquipment.length
   const totalPages = Math.ceil(total / PAGE_SIZE)
-  const paginated = equipment.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+  const paginated = reportEquipment.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
     <div className="flex flex-col h-full">
@@ -143,20 +173,28 @@ export default function Scope1IndustrialGasesPage() {
           <h1 className="text-base font-semibold text-gray-900">{t('Industrijski plini – oprema', 'Industrial gases – equipment')}</h1>
       </div>
         <div className="flex items-center gap-2 shrink-0">
-          <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
-            <span className="font-medium text-gray-900">{(totalCo2e / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
-          </div>
-          <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm gap-2">
-            <span className="text-gray-500">{t('Vneseno', 'Entered')}</span>
-            <span className="font-medium text-gray-900">{done} / {total}</span>
-          </div>
+          {total > 0 && <>
+            <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
+              <span className="font-medium text-gray-900">{(totalCo2e / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
+            </div>
+            <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">
+              <span className="text-gray-500">{t('Vneseno', 'Entered')}</span>
+              <span className="font-medium text-gray-900">{done} / {total}</span>
+            </div>
+          </>}
+          <button onClick={openSelect} className="inline-flex items-center gap-1.5 h-9 px-4 bg-[#215bcf] hover:bg-[#1a4ab5] rounded-xl text-sm font-medium text-white transition-colors">
+            <Settings2 className="h-3.5 w-3.5" />
+            {t('Izberi opremo', 'Select equipment')}
+          </button>
         </div>
       </div>
       <div className="flex-1 overflow-auto">
       {loading ? (
         <div className="p-12 text-center text-sm text-gray-500">{t('Nalaganje...', 'Loading...')}</div>
-      ) : !equipment.length ? (
+      ) : allEquipment.length === 0 ? (
         <EmptyState iconNode={<IconFireExtinguisher size={32} />} title={t('Ni opreme z industrijskimi plini', 'No industrial gas equipment')} subtitle={t('Dodajte opremo, ki vsebuje industrijske pline.', 'Add equipment that contains industrial gases.')} />
+      ) : reportEquipment.length === 0 ? (
+        <EmptyState icon={Settings2} title={t('Ni izbrane opreme', 'No equipment selected')} subtitle={t('Kliknite »Izberi opremo« da dodate opremo v poročilo.', 'Click "Select equipment" to add equipment to the report.')} />
       ) : (
         <>
             <div className="overflow-x-auto">
@@ -171,11 +209,11 @@ export default function Scope1IndustrialGasesPage() {
                 <th className="px-5 py-3" />
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-200 border-b border-gray-200">
               {paginated.map((item, i) => {
                 const entry = entriesMap[item.id]
                 return (
-                  <tr key={item.id} className={`hover:bg-gray-50 transition-colors ${i !== 0 ? 'border-t border-gray-200' : ''}`}>
+                  <tr key={item.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff'}}>
@@ -241,6 +279,53 @@ export default function Scope1IndustrialGasesPage() {
         onConfirm={handleDelete}
         onCancel={() => setConfirmDelete(null)}
       />
+      {showSelect && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowSelect(false)} />
+          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
+              <h2 className="text-base font-semibold text-gray-900">{t('Izberi opremo', 'Select equipment')}</h2>
+              <button onClick={() => setShowSelect(false)} className="text-gray-400 hover:text-gray-600"><X className="h-4 w-4" /></button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-2 py-3 space-y-1.5">
+              {allEquipment.length === 0 ? (
+                <p className="px-6 py-8 text-sm text-center text-gray-500">{t('Ni opreme.', 'No equipment.')}</p>
+              ) : allEquipment.map(item => {
+                const checked = draftIds.has(item.id)
+                const hasData = !!entriesMap[item.id]
+                const locked = checked && hasData
+                return (
+                  <div key={item.id} className="rounded-xl border transition-all overflow-hidden" style={{ borderColor: checked ? '#215bcf' : '#e5e7eb' }}>
+                    <label className="flex items-center gap-3 px-4 py-3 cursor-pointer" style={{ backgroundColor: checked ? '#f0f5ff' : '#fff' }}>
+                      <input type="checkbox" checked={checked} onChange={() => toggleDraft(item.id)} disabled={locked} className="w-4 h-4 rounded border-gray-300 accent-[#215bcf] cursor-pointer shrink-0 disabled:cursor-not-allowed" />
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border" style={{ backgroundColor: checked ? '#e5eeff' : '#f3f4f6', borderColor: checked ? '#c7d9ff' : '#e5e7eb' }}>
+                        <FlaskConical className={`w-3.5 h-3.5 ${checked ? 'text-[#215bcf]' : 'text-gray-400'}`} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-gray-900 truncate">{item.name}</p>
+                        {item.industrial_gas_type && <p className="text-xs text-gray-500 truncate">{item.industrial_gas_type}</p>}
+                      </div>
+                    </label>
+                    {locked && (
+                      <div className="px-4 py-2 border-t flex items-center gap-1.5" style={{ borderColor: '#dbeafe', backgroundColor: '#eff6ff' }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#215bcf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <p className="text-xs text-[#215bcf]">{t('Oprema ima vnesene emisije. Najprej izbrišite podatke o emisijah.', 'Equipment has emission data. Delete it first.')}</p>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+            <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+              <p className="text-xs text-gray-500">{draftIds.size} {t('izbranih', 'selected')}</p>
+              <div className="flex gap-2">
+                <button onClick={() => setShowSelect(false)} className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50">{t('Prekliči', 'Cancel')}</button>
+                <button onClick={saveSelection} disabled={selectSaving} className="px-4 py-2 text-sm font-semibold text-white bg-[#215bcf] hover:bg-[#1a4ab5] disabled:opacity-60 rounded-xl">{selectSaving ? t('Shranjevanje...', 'Saving...') : t('Potrdi', 'Confirm')}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {showModal && activeItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/30 backdrop-blur-sm" onClick={() => setShowModal(false)} />
