@@ -27,8 +27,6 @@ const FUEL_BASE: Record<string, FuelEntry> = {
   wood:              { factor: 0.01530, unit: 'kg', label_sl: 'Les / polena',           label_en: 'Wood / logs' },
   wood_chips:        { factor: 0.01530, unit: 'kg', label_sl: 'Les / biomasa',         label_en: 'Wood / biomass' },
   wood_pellets:      { factor: 0.01530, unit: 'kg', label_sl: 'Lesne pelete',          label_en: 'Wood pellets' },
-  biogas:            { factor: 0.07040, unit: 'm³', label_sl: 'Bioplin',               label_en: 'Biogas' },
-  biodiesel:         { factor: 0.17280, unit: 'L',  label_sl: 'Biodizel',              label_en: 'Biodiesel' },
   msw:               { factor: 0.52430, unit: 'kg', label_sl: 'Komunalni odpadki',     label_en: 'Municipal solid waste' },
   propane:           { factor: 1.55540, unit: 'L',  label_sl: 'Propan',                label_en: 'Propane' },
   butane:            { factor: 1.75550, unit: 'L',  label_sl: 'Butan',                 label_en: 'Butane' },
