@@ -38,14 +38,12 @@ function FadeUp({ children, delay = 0, className = '' }: { children: React.React
 /* ── Logo ── */
 function CarboniqLogo({ size = 28, showName = true }: { size?: number; showName?: boolean }) {
   return (
-    <div className="flex items-center gap-2.5">
-      <div className="flex items-center justify-center rounded-xl" style={{ width: size + 8, height: size + 8, background: '#0f0f10' }}>
-        <svg width={size * 0.7} height={size * 0.7} viewBox="0 0 24 24" fill="none">
-          <path d="M14 6L8 12L14 18" stroke="#c0c0c0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M10 6L4 12L10 18" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </div>
-      {showName && <span className="text-[15px] font-semibold text-[#0f0f10] tracking-tight">Carboniqdesk</span>}
+    <div className="flex items-center gap-1.5">
+      <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
+        <polyline points="26,6 10,20 26,34" stroke="#111111" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round" />
+        <polyline points="33,6 17,20 33,34" stroke="#111111" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.3" />
+      </svg>
+      {showName && <span className="text-xl font-semibold text-gray-900 tracking-tight">Carboniqdesk</span>}
     </div>
   )
 }

@@ -37,7 +37,7 @@ export async function middleware(request: NextRequest) {
 
     // Logged in but on login/register/landing → send home
     if (pathname === '/login' || pathname === '/register' || pathname === '/') {
-      const dest = isSuperAdmin ? '/app/super-admin' : '/app/dashboard'
+      const dest = isSuperAdmin ? '/app/super-admin' : '/app/analytics'
       return NextResponse.redirect(new URL(dest, request.url))
     }
 
