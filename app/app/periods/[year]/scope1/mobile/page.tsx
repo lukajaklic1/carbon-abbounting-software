@@ -441,7 +441,7 @@ export default function Scope1MobilePage() {
         title={t('Izbriši vnos', 'Delete entry')}
         message={t('Podatki o emisijah bodo trajno izbrisani. Tega dejanja ni mogoče razveljaviti.', 'Emission data will be permanently deleted. This action cannot be undone.')}
         confirmLabel={t('Izbriši', 'Delete')}
-        danger
+
         onConfirm={handleDelete}
         onCancel={() => setConfirmDelete(null)}
       />
