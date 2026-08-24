@@ -345,7 +345,7 @@ export default function LocationsPage() {
                             {(() => { const lt = LOCATION_TYPES.find(lt => lt.value === loc.location_type); const Icon = lt?.icon ?? MapPin; return <Icon className="w-3.5 h-3.5" style={{color:'#215bcf'}} /> })()}
                           </div>
                           <div>
-                            <p className="text-xs font-medium text-gray-500">{loc.name}</p>
+                            <p className="text-sm font-semibold text-gray-900">{loc.name}</p>
                           </div>
                         </div>
                       </td>

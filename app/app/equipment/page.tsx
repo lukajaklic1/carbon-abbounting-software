@@ -587,8 +587,8 @@ export default function EquipmentPage() {
                           <EquipmentIcon eq={eq} />
                         </div>
                         <div>
-                          <p className="text-xs font-medium text-gray-500">{eq.name}</p>
-                          {subtitle && <p className="text-xs text-[#767676] mt-0.5">{subtitle}</p>}
+                          <p className="text-sm font-semibold text-gray-900">{eq.name}</p>
+                          {subtitle && <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>}
                         </div>
                       </div>
                     </td>
