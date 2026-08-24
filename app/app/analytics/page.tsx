@@ -148,10 +148,10 @@ export default function AnalyticsPage() {
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: t('Skupne emisije', 'Total emissions'), value: fmtT(total), icon: IconAtom2, iconColor: '#2563eb', bg: '#eff6ff' },
-          { label: t('Obseg 1', 'Scope 1'), value: fmtT(scopeData?.scope1_kg ?? 0), icon: IconEngine, iconColor: '#2563eb', bg: '#eff6ff' },
-          { label: t('Obseg 2', 'Scope 2'), value: fmtT(scopeData?.scope2_kg ?? 0), icon: IconPlugConnected, iconColor: '#2563eb', bg: '#eff6ff' },
-          { label: t('Obseg 3', 'Scope 3'), value: fmtT(scopeData?.scope3_kg ?? 0), icon: IconTruckDelivery, iconColor: '#2563eb', bg: '#eff6ff' },
+          { label: t('Skupne emisije', 'Total emissions'), value: fmtT(total), icon: IconAtom2, iconColor: '#3b82f6', bg: '#eff6ff' },
+          { label: t('Obseg 1', 'Scope 1'), value: fmtT(scopeData?.scope1_kg ?? 0), icon: IconEngine, iconColor: '#007d53', bg: '#e0fced' },
+          { label: t('Obseg 2', 'Scope 2'), value: fmtT(scopeData?.scope2_kg ?? 0), icon: IconPlugConnected, iconColor: '#3b82f6', bg: '#eff6ff' },
+          { label: t('Obseg 3', 'Scope 3'), value: fmtT(scopeData?.scope3_kg ?? 0), icon: IconTruckDelivery, iconColor: '#007d53', bg: '#e0fced' },
         ].map(card => {
           const Icon = card.icon
           return (
