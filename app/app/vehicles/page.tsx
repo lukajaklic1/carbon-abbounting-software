@@ -30,13 +30,15 @@ const fuelColors: Record<string, {bg:string,border:string,color:string}> = {
 }
 
 const FUEL_TYPES = [
-  { value: 'diesel',   sl: 'Dizel',      en: 'Diesel' },
-  { value: 'petrol',   sl: 'Bencin',     en: 'Petrol' },
-  { value: 'electric', sl: 'Električno', en: 'Electric' },
-  { value: 'hybrid',   sl: 'Hibrid',     en: 'Hybrid' },
-  { value: 'lpg',      sl: 'LPG',        en: 'LPG' },
-  { value: 'cng',      sl: 'CNG',        en: 'CNG' },
-  { value: 'unknown',  sl: 'Neznano',    en: 'Unknown' },
+  { value: 'diesel',    sl: 'Dizel',      en: 'Diesel' },
+  { value: 'petrol',    sl: 'Bencin',     en: 'Petrol' },
+  { value: 'lpg',       sl: 'LPG',        en: 'LPG' },
+  { value: 'cng',       sl: 'CNG',        en: 'CNG' },
+  { value: 'lng',       sl: 'LNG',        en: 'LNG' },
+  { value: 'biodiesel', sl: 'Biodizel',   en: 'Biodiesel' },
+  { value: 'biogas',    sl: 'Bioplin',    en: 'Biogas' },
+  { value: 'other',     sl: 'Drugo',      en: 'Other' },
+  { value: 'unknown',   sl: 'Neznano',    en: 'Unknown' },
 ]
 
 const VEHICLE_TYPES = [
