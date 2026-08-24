@@ -17,8 +17,21 @@ const FUEL_BASE: Record<string, FuelEntry> = {
   biodiesel:   { factor: 0.17280, unit: 'L',  label_sl: 'Biodizel',       label_en: 'Biodiesel' },
   biogas:      { factor: 0.07040, unit: 'm³', label_sl: 'Bioplin',        label_en: 'Biogas' },
   natural_gas: { factor: 2.02230, unit: 'm³', label_sl: 'Zemeljski plin', label_en: 'Natural gas' },
-  heating_oil: { factor: 2.51963, unit: 'L',  label_sl: 'Kurilno olje',   label_en: 'Heating oil' },
-  wood_chips:  { factor: 0.01530, unit: 'kg', label_sl: 'Les / biomasa',  label_en: 'Wood / biomass' },
+  heating_oil:       { factor: 2.51963, unit: 'L',  label_sl: 'Kurilno olje',          label_en: 'Heating oil' },
+  heavy_fuel_oil:    { factor: 3.17860, unit: 'L',  label_sl: 'Težko kurilno olje',    label_en: 'Heavy fuel oil' },
+  kerosene:          { factor: 2.53670, unit: 'L',  label_sl: 'Kerozin',               label_en: 'Kerosene' },
+  coal_anthracite:   { factor: 2.54580, unit: 'kg', label_sl: 'Premog – antracit',     label_en: 'Coal – Anthracite' },
+  coal_bituminous:   { factor: 2.42650, unit: 'kg', label_sl: 'Premog – bituminozni',  label_en: 'Coal – Bituminous' },
+  coal_lignite:      { factor: 1.01500, unit: 'kg', label_sl: 'Premog – lignit',       label_en: 'Coal – Lignite' },
+  coke:              { factor: 3.17300, unit: 'kg', label_sl: 'Koks',                  label_en: 'Coke' },
+  wood:              { factor: 0.01530, unit: 'kg', label_sl: 'Les / polena',           label_en: 'Wood / logs' },
+  wood_chips:        { factor: 0.01530, unit: 'kg', label_sl: 'Les / biomasa',         label_en: 'Wood / biomass' },
+  wood_pellets:      { factor: 0.01530, unit: 'kg', label_sl: 'Lesne pelete',          label_en: 'Wood pellets' },
+  biogas:            { factor: 0.07040, unit: 'm³', label_sl: 'Bioplin',               label_en: 'Biogas' },
+  biodiesel:         { factor: 0.17280, unit: 'L',  label_sl: 'Biodizel',              label_en: 'Biodiesel' },
+  msw:               { factor: 0.52430, unit: 'kg', label_sl: 'Komunalni odpadki',     label_en: 'Municipal solid waste' },
+  propane:           { factor: 1.55540, unit: 'L',  label_sl: 'Propan',                label_en: 'Propane' },
+  butane:            { factor: 1.75550, unit: 'L',  label_sl: 'Butan',                 label_en: 'Butane' },
 }
 
 export function getFuelFactors(_year: number): Record<string, FuelEntry> {
