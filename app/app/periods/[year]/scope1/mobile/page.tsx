@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import React, { useState, useEffect } from 'react'
 import { Car, Plus, X, Leaf, Truck, Bus, Bike, Settings2 } from 'lucide-react'
@@ -43,6 +43,7 @@ export default function Scope1MobilePage() {
   const [form, setForm] = useState<EntryForm>({ ...EMPTY_FORM })
   const [modalSaving, setModalSaving] = useState(false)
   const [error, setError] = useState('')
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
 
   useEffect(() => { if (year) load() }, [year])
 
@@ -147,6 +148,17 @@ export default function Scope1MobilePage() {
     return calcCo2eKg(qty, ff.factor)
   }
 
+  async function handleDelete() {
+    if (!confirmDelete) return
+    const entry = entriesMap[confirmDelete]
+    if (!entry) { setConfirmDelete(null); return }
+    const supabase = createClient()
+    await supabase.from('scope1_mobile').delete().eq('id', entry.id)
+    setEntriesMap(prev => { const n = { ...prev }; delete n[confirmDelete]; return n })
+    refreshCounters(year)
+    setConfirmDelete(null)
+  }
+
   async function handleSave() {
     const qty = parseQty(form.quantity)
     if (isNaN(qty) || qty < 0) { setError(t('Vnesite veljavno količino.', 'Enter a valid quantity.')); return }
@@ -239,7 +251,7 @@ export default function Scope1MobilePage() {
                           <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: '#e5eeff', border: '1px solid #d6e5ff' }}>
                             <Icon className="w-3.5 h-3.5 text-blue-500" />
                           </div>
-                          <p className="text-sm font-medium text-gray-900">{v.name}</p>
+                          <p className="text-sm font-semibold text-gray-900">{v.name}</p>
                         </div>
                       </td>
                       <td className="px-5 py-3.5 text-sm text-gray-700">
@@ -405,6 +417,12 @@ export default function Scope1MobilePage() {
               {error && <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>}
             </div>
             <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex gap-3 rounded-b-2xl">
+              {entriesMap[activeVehicle.id] && (
+                <button onClick={() => { setShowModal(false); setConfirmDelete(activeVehicle.id) }}
+                  className="px-4 py-2.5 text-sm font-medium text-red-600 hover:text-red-700 bg-white border border-red-200 hover:bg-red-50 rounded-xl transition-colors">
+                  {t('Izbriši podatke o porabi', 'Delete usage data')}
+                </button>
+              )}
               <button onClick={() => setShowModal(false)}
                 className="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
                 {t('Prekliči', 'Cancel')}
@@ -417,6 +435,16 @@ export default function Scope1MobilePage() {
           </div>
         </div>
       )}
+
+      <ConfirmDialog
+        open={!!confirmDelete}
+        title={t('Izbriši vnos', 'Delete entry')}
+        message={t('Podatki o emisijah bodo trajno izbrisani. Tega dejanja ni mogoče razveljaviti.', 'Emission data will be permanently deleted. This action cannot be undone.')}
+        confirmLabel={t('Izbriši', 'Delete')}
+        danger
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmDelete(null)}
+      />
     </div>
   )
 }

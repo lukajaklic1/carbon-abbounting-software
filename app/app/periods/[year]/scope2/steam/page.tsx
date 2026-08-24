@@ -218,7 +218,7 @@ export default function Scope2SteamPage() {
                           <Building2 className="h-4 w-4 text-gray-900" />
                         </div>
                         <div>
-                          <p className="text-xs font-medium text-gray-500">{loc.name}</p>
+                          <p className="text-sm font-semibold text-gray-900">{loc.name}</p>
                           {loc.address && <p className="text-xs text-gray-400 mt-0.5">{loc.address}</p>}
                         </div>
                       </div>

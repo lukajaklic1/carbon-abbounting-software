@@ -229,7 +229,7 @@ export default function Scope1RefrigerantsPage() {
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff'}}>
                           <Thermometer className="h-3.5 w-3.5" style={{color:'#215bcf'}} />
                         </div>
-                        <p className="text-xs font-medium text-gray-500">{item.name}</p>
+                        <p className="text-sm font-semibold text-gray-900">{item.name}</p>
                       </div>
                     </td>
                     <td className="px-5 py-3.5 text-sm text-gray-700">
