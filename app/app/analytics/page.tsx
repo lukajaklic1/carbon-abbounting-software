@@ -306,7 +306,7 @@ export default function AnalyticsPage() {
                     ))}
                     {equipKgTotal > 0 && <>
                       <tr className="hover:bg-gray-50 transition-colors">
-                        <td className="px-5 py-3 text-sm font-medium text-gray-900">{t('Gorivo opreme', 'Equipment fuel')}</td>
+                        <td className="px-5 py-3 text-sm text-gray-700">{t('Gorivo opreme', 'Equipment fuel')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
                         <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(equipKgTotal / 1000).toFixed(3).replace('.', ',')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(equipKgTotal)}%</td>
@@ -322,7 +322,7 @@ export default function AnalyticsPage() {
                     </>}
                     {mobileKg > 0 && <>
                       <tr className="hover:bg-gray-50 transition-colors">
-                        <td className="px-5 py-3 text-sm font-medium text-gray-900">{t('Gorivo vozil', 'Vehicle fuel')}</td>
+                        <td className="px-5 py-3 text-sm text-gray-700">{t('Gorivo vozil', 'Vehicle fuel')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
                         <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(mobileKg / 1000).toFixed(3).replace('.', ',')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(mobileKg)}%</td>
