@@ -109,7 +109,9 @@ export default function Scope1EquipmentFuelPage() {
 
   function openEdit(item: any) {
     const e = entriesMap[item.id]
-    setForm({ fuel_type: e.fuel_type ?? 'diesel', quantity: fmtQty(e.quantity ?? 0) })
+    // Always use equipment's fuel_type (not stored entry's — may be stale)
+    const ft = item.fuel_type && FUEL_FACTORS[item.fuel_type] ? item.fuel_type : 'diesel'
+    setForm({ fuel_type: ft, quantity: fmtQty(e.quantity ?? 0) })
     setActiveItem(item); setError(''); setShowModal(true)
   }
 

@@ -57,7 +57,7 @@ export default function AnalyticsPage() {
       const [stationary, mobile, equipFuel, refrigerants, gases, electricity, heat, steam, cooling, scope3subs] = await Promise.all([
         supabase.from('scope1_stationary').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
         supabase.from('scope1_mobile').select('co2e_kg, fuel_type, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
-        supabase.from('scope1_equipment_fuel').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
+        supabase.from('scope1_equipment_fuel').select('co2e_kg, fuel_type, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
         supabase.from('scope1_refrigerants').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
         supabase.from('scope1_industrial_gases').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
         supabase.from('scope2_electricity').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
