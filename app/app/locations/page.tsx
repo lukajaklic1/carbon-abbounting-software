@@ -338,7 +338,7 @@ export default function LocationsPage() {
                 </thead>
                 <tbody className="divide-y divide-gray-200 border-b border-gray-200">
                   {paginatedLocations.map((loc, i) => (
-                    <tr key={loc.id} className={`hover:bg-[#f6f6f6] transition-colors ${i !== 0 ? 'border-t border-gray-200' : ''}`}>
+                    <tr key={loc.id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff'}}>

@@ -371,7 +371,7 @@ export default function VehiclesPage() {
                 <th className="px-5 py-3" />
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-200 border-b border-gray-200">
               {paginatedVehicles.map((v, i) => (
                 <tr key={v.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-5 py-3.5">

@@ -256,7 +256,7 @@ export default function TeamPage() {
               <th className="w-12 px-5 py-3" />
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-200 border-b border-gray-200">
             {loading ? (
               <tr><td colSpan={6} className="px-6 py-12 text-center text-sm text-gray-500">{t('Nalaganje...', 'Loading...')}</td></tr>
             ) : filtered.length === 0 ? (
@@ -268,7 +268,7 @@ export default function TeamPage() {
               const canDeactivate = isAdmin && !isOwner && !isMe && m.status === 'active'
 
               return (
-                <tr key={m.id} className={cn('hover:bg-gray-50/60 transition-colors', i !== 0 && 'border-t border-gray-100')}>
+                <tr key={m.id} className="hover:bg-gray-50 transition-colors">
                   {/* Name + avatar */}
                   <td className="px-6 py-3.5">
                     <div className="flex items-center gap-3">

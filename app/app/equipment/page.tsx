@@ -575,12 +575,12 @@ export default function EquipmentPage() {
                 <th className="px-5 py-3" />
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-200 border-b border-gray-200">
               {paginatedEquipment.map((eq, i) => {
                 const badges = getCategoryBadges(eq)
                 const subtitle = getEquipmentSubtitle(eq)
                 return (
-                  <tr key={eq.id} className={`hover:bg-[#f9f9f9] transition-colors ${i !== 0 ? 'border-t border-gray-200' : ''}`}>
+                  <tr key={eq.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{backgroundColor:'#e5eeff',border:'1px solid #d6e5ff'}}>
