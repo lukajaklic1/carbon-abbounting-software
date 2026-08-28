@@ -351,9 +351,9 @@ export default function Scope1EquipmentFuelPage() {
             <div className="p-6 space-y-4">
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">{t('Vrsta goriva', 'Fuel type')}</label>
-                <select value={form.fuel_type} onChange={e => f('fuel_type', e.target.value)} className={SELECT}>
-                  {ALL_FUEL_KEYS.map(k => <option key={k} value={k}>{t(FUEL_FACTORS[k]?.label_sl ?? k, FUEL_FACTORS[k]?.label_en ?? k)}</option>)}
-                </select>
+                <div className="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-900 font-medium">
+                  {t(FUEL_FACTORS[form.fuel_type]?.label_sl ?? form.fuel_type, FUEL_FACTORS[form.fuel_type]?.label_en ?? form.fuel_type)}
+                </div>
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1">{t('Letna poraba', 'Annual consumption')} <span className="text-red-400">*</span></label>
