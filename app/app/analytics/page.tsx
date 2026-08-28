@@ -6,20 +6,22 @@ import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { usePeriodStore } from '@/stores/period'
 import { IconAtom2, IconEngine, IconPlugConnected, IconTruckDelivery } from '@tabler/icons-react'
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell
 } from 'recharts'
 import { cn } from '@/lib/utils'
 
 const SCOPE_COLORS = ['#3b82f6', '#60a5fa', '#93c5fd']
-const SOURCE_COLORS = ['#1d4ed8','#2563eb','#3b82f6','#60a5fa','#93c5fd','#bfdbfe','#1e40af','#3b82f6','#60a5fa']
 
 type Period = { id: string; year: number; total_co2e_kg: number }
+
+type FuelBreakdown = { fuel_type: string; quantity: number; unit: string; co2e_kg: number }
 
 type ScopeData = {
   scope1_kg: number
   scope2_kg: number
   scope3_kg: number
   sources: { name: string; kg: number; scope: string }[]
+  mobileFuels: FuelBreakdown[]
 }
 
 type YearPoint = { year: string; emisije: number }
@@ -48,12 +50,12 @@ export default function AnalyticsPage() {
       setOrgId(org.id)
 
       const { data: pd } = await supabase.from('reporting_periods').select('id').eq('organization_id', org.id).eq('year', year).single()
-      if (!pd) { setScopeData({ scope1_kg: 0, scope2_kg: 0, scope3_kg: 0, sources: [] }); setLoading(false); return }
+      if (!pd) { setScopeData({ scope1_kg: 0, scope2_kg: 0, scope3_kg: 0, sources: [], mobileFuels: [] }); setLoading(false); return }
 
       // Fetch all emission sources in parallel
       const [stationary, mobile, equipFuel, refrigerants, gases, electricity, heat, steam, cooling, scope3subs] = await Promise.all([
         supabase.from('scope1_stationary').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
-        supabase.from('scope1_mobile').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
+        supabase.from('scope1_mobile').select('co2e_kg, fuel_type, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
         supabase.from('scope1_equipment_fuel').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
         supabase.from('scope1_refrigerants').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
         supabase.from('scope1_industrial_gases').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
@@ -93,7 +95,21 @@ export default function AnalyticsPage() {
         { name: t('Obseg 3', 'Scope 3'), kg: scope3Kg, scope: 'Scope 3' },
       ].filter(s => s.kg > 0)
 
-      setScopeData({ scope1_kg, scope2_kg, scope3_kg: scope3Kg, sources })
+      // Fuel breakdown for mobile
+      const mobileFuelsRaw = mobile.data ?? []
+      const fuelMap: Record<string, { quantity: number; unit: string; co2e_kg: number }> = {}
+      for (const r of mobileFuelsRaw) {
+        const ft = r.fuel_type ?? 'other'
+        if (!fuelMap[ft]) fuelMap[ft] = { quantity: 0, unit: r.unit ?? 'L', co2e_kg: 0 }
+        fuelMap[ft].quantity += r.quantity ?? 0
+        fuelMap[ft].co2e_kg += r.co2e_kg ?? 0
+      }
+      const mobileFuels: FuelBreakdown[] = Object.entries(fuelMap)
+        .map(([fuel_type, v]) => ({ fuel_type, ...v }))
+        .filter(f => f.co2e_kg > 0)
+        .sort((a, b) => b.co2e_kg - a.co2e_kg)
+
+      setScopeData({ scope1_kg, scope2_kg, scope3_kg: scope3Kg, sources, mobileFuels })
 
       // Trend: fetch real sums for all available periods
       const { data: allPeriods } = await supabase
@@ -126,10 +142,6 @@ export default function AnalyticsPage() {
     { name: t('Obseg 2', 'Scope 2'), value: parseFloat(((scopeData?.scope2_kg ?? 0) / 1000).toFixed(3)), color: SCOPE_COLORS[1] },
     { name: t('Obseg 3', 'Scope 3'), value: parseFloat(((scopeData?.scope3_kg ?? 0) / 1000).toFixed(3)), color: SCOPE_COLORS[2] },
   ].filter(d => d.value > 0)
-
-  const sourceChartData = (scopeData?.sources ?? [])
-    .sort((a, b) => b.kg - a.kg)
-    .map(s => ({ name: s.name, value: parseFloat((s.kg / 1000).toFixed(3)), scope: s.scope }))
 
   const pct = (kg: number) => total > 0 ? ((kg / total) * 100).toFixed(1) : '0'
 
@@ -220,42 +232,131 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* Emission sources breakdown */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6">
-        <p className="text-base font-semibold text-gray-900 mb-5">{t('Emisije po virih', 'Emissions by source')}</p>
-        {sourceChartData.length > 0 ? (
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={sourceChartData} layout="vertical" barSize={18} margin={{ left: 16, right: 32 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" horizontal={false} />
-              <XAxis type="number" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} unit=" t" />
-              <YAxis type="category" dataKey="name" tick={{ fontSize: 12, fill: '#374151' }} axisLine={false} tickLine={false} width={130} />
-              <Tooltip
-                contentStyle={{ borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: 12 }}
-                formatter={(v: any) => [`${String(v).replace('.', ',')} tCO₂e`]}
-              />
-              <Bar dataKey="value" radius={[0, 6, 6, 0]}>
-                {sourceChartData.map((entry, i) => (
-                  <Cell key={i} fill={SOURCE_COLORS[i % SOURCE_COLORS.length]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+      {/* Emission sources table */}
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <p className="text-base font-semibold text-gray-900">{t('Emisije po virih', 'Emissions by source')}</p>
+        </div>
+        {loading ? (
+          <div className="py-12 text-center text-sm text-gray-400">{t('Nalaganje...', 'Loading...')}</div>
+        ) : total === 0 ? (
+          <div className="py-12 text-center text-sm text-gray-300">{t('Ni podatkov za prikaz', 'No data to display')}</div>
         ) : (
-          <div className="py-16 text-center text-sm text-gray-300">{t('Ni podatkov za prikaz', 'No data to display')}</div>
-        )}
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-200 bg-gray-50">
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Vir', 'Source')}</th>
+                <th className="text-right text-xs font-medium text-gray-500 px-5 py-3">{t('Poraba', 'Consumption')}</th>
+                <th className="text-right text-xs font-medium text-gray-500 px-5 py-3">tCO₂e</th>
+                <th className="text-right text-xs font-medium text-gray-500 px-5 py-3">%</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {/* OBSEG 1 */}
+              {scopeData?.scope1_kg !== undefined && scopeData.scope1_kg > 0 && <>
+                <tr className="bg-gray-50">
+                  <td colSpan={4} className="px-5 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('Obseg 1 – Neposredne emisije', 'Scope 1 – Direct emissions')}</td>
+                </tr>
+                {(() => {
+                  const mobileKg = (scopeData?.mobileFuels ?? []).reduce((s, f) => s + f.co2e_kg, 0)
+                  const rows = [
+                    { name: t('Zemeljski plin', 'Natural gas'), kg: scopeData.sources.find(s => s.name === t('Zemeljski plin', 'Natural gas'))?.kg ?? 0, unit: null },
+                    { name: t('Gorivo opreme', 'Equipment fuel'), kg: scopeData.sources.find(s => s.name === t('Gorivo opreme', 'Equipment fuel'))?.kg ?? 0, unit: null },
+                    { name: t('Hladilni plini', 'Refrigerants'), kg: scopeData.sources.find(s => s.name === t('Hladilni plini', 'Refrigerants'))?.kg ?? 0, unit: null },
+                    { name: t('Industrijski plini', 'Industrial gases'), kg: scopeData.sources.find(s => s.name === t('Industrijski plini', 'Industrial gases'))?.kg ?? 0, unit: null },
+                  ].filter(r => r.kg > 0)
+                  const FUEL_LABELS: Record<string, string> = {
+                    diesel: t('Dizel', 'Diesel'), petrol: t('Bencin', 'Petrol'),
+                    lpg: 'LPG', cng: 'CNG', lng: 'LNG',
+                    other: t('Drugo', 'Other'),
+                  }
+                  return <>
+                    {rows.map(r => (
+                      <tr key={r.name} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-5 py-3 text-sm text-gray-700">{r.name}</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-500">—</td>
+                        <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(r.kg / 1000).toFixed(3).replace('.', ',')}</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(r.kg)}%</td>
+                      </tr>
+                    ))}
+                    {mobileKg > 0 && <>
+                      <tr className="hover:bg-gray-50 transition-colors">
+                        <td className="px-5 py-3 text-sm font-medium text-gray-900">{t('Gorivo vozil', 'Vehicle fuel')}</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
+                        <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(mobileKg / 1000).toFixed(3).replace('.', ',')}</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(mobileKg)}%</td>
+                      </tr>
+                      {(scopeData?.mobileFuels ?? []).map(f => (
+                        <tr key={f.fuel_type} className="hover:bg-gray-50 transition-colors bg-gray-50/50">
+                          <td className="pl-10 pr-5 py-2.5 text-sm text-gray-500">↳ {FUEL_LABELS[f.fuel_type] ?? f.fuel_type}</td>
+                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{f.quantity.toLocaleString('sl-SI', { maximumFractionDigits: 1 })} {f.unit}</td>
+                          <td className="px-5 py-2.5 text-sm text-right text-gray-700 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{pct(f.co2e_kg)}%</td>
+                        </tr>
+                      ))}
+                    </>}
+                    <tr className="bg-blue-50/50">
+                      <td className="px-5 py-2.5 text-sm font-semibold text-gray-700">{t('Skupaj Obseg 1', 'Scope 1 Total')}</td>
+                      <td className="px-5 py-2.5" />
+                      <td className="px-5 py-2.5 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope1_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                      <td className="px-5 py-2.5 text-sm font-semibold text-right text-gray-700 tabular-nums">{pct(scopeData.scope1_kg)}%</td>
+                    </tr>
+                  </>
+                })()}
+              </>}
 
-        {/* Source list */}
-        {sourceChartData.length > 0 && (
-          <div className="mt-6 space-y-2">
-            {sourceChartData.map((s, i) => (
-              <div key={s.name} className="flex items-center gap-3">
-                <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: SOURCE_COLORS[i % SOURCE_COLORS.length] }} />
-                <span className="text-xs text-gray-500 flex-1">{s.name}</span>
-                <span className="text-xs font-semibold text-gray-900 tabular-nums">{String(s.value).replace('.', ',')} t</span>
-                <span className="text-xs text-gray-500 w-10 text-right">{total > 0 ? ((s.value * 1000 / total) * 100).toFixed(1) : 0}%</span>
-              </div>
-            ))}
-          </div>
+              {/* OBSEG 2 */}
+              {scopeData?.scope2_kg !== undefined && scopeData.scope2_kg > 0 && <>
+                <tr className="bg-gray-50">
+                  <td colSpan={4} className="px-5 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('Obseg 2 – Posredne emisije (energija)', 'Scope 2 – Indirect emissions (energy)')}</td>
+                </tr>
+                {[
+                  { key: t('Elektrika', 'Electricity'), label: t('Elektrika', 'Electricity') },
+                  { key: t('Toplota', 'Heat'), label: t('Toplota', 'Heat') },
+                  { key: t('Para', 'Steam'), label: t('Para', 'Steam') },
+                  { key: t('Hlajenje', 'Cooling'), label: t('Hlajenje', 'Cooling') },
+                ].map(({ key, label }) => {
+                  const src = scopeData.sources.find(s => s.name === key)
+                  if (!src || src.kg === 0) return null
+                  return (
+                    <tr key={key} className="hover:bg-gray-50 transition-colors">
+                      <td className="px-5 py-3 text-sm text-gray-700">{label}</td>
+                      <td className="px-5 py-3 text-sm text-right text-gray-500">—</td>
+                      <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(src.kg / 1000).toFixed(3).replace('.', ',')}</td>
+                      <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(src.kg)}%</td>
+                    </tr>
+                  )
+                })}
+                <tr className="bg-blue-50/50">
+                  <td className="px-5 py-2.5 text-sm font-semibold text-gray-700">{t('Skupaj Obseg 2', 'Scope 2 Total')}</td>
+                  <td className="px-5 py-2.5" />
+                  <td className="px-5 py-2.5 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope2_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                  <td className="px-5 py-2.5 text-sm font-semibold text-right text-gray-700 tabular-nums">{pct(scopeData.scope2_kg)}%</td>
+                </tr>
+              </>}
+
+              {/* OBSEG 3 */}
+              {scopeData?.scope3_kg !== undefined && scopeData.scope3_kg > 0 && <>
+                <tr className="bg-gray-50">
+                  <td colSpan={4} className="px-5 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('Obseg 3 – Ostale posredne emisije', 'Scope 3 – Other indirect emissions')}</td>
+                </tr>
+                <tr className="bg-blue-50/50">
+                  <td className="px-5 py-2.5 text-sm font-semibold text-gray-700">{t('Skupaj Obseg 3', 'Scope 3 Total')}</td>
+                  <td className="px-5 py-2.5" />
+                  <td className="px-5 py-2.5 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope3_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                  <td className="px-5 py-2.5 text-sm font-semibold text-right text-gray-700 tabular-nums">{pct(scopeData.scope3_kg)}%</td>
+                </tr>
+              </>}
+
+              {/* TOTAL */}
+              <tr className="border-t-2 border-gray-300 bg-gray-100">
+                <td className="px-5 py-3 text-sm font-bold text-gray-900">{t('Skupne emisije', 'Total emissions')}</td>
+                <td className="px-5 py-3" />
+                <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(total / 1000).toFixed(3).replace('.', ',')}</td>
+                <td className="px-5 py-3 text-sm font-bold text-right text-gray-900">100%</td>
+              </tr>
+            </tbody>
+          </table>
         )}
       </div>
       </div>
