@@ -22,6 +22,7 @@ type ScopeData = {
   scope3_kg: number
   sources: { name: string; kg: number; scope: string; qty?: number; unit?: string }[]
   mobileFuels: FuelBreakdown[]
+  equipFuels: FuelBreakdown[]
 }
 
 type YearPoint = { year: string; emisije: number }
@@ -50,7 +51,7 @@ export default function AnalyticsPage() {
       setOrgId(org.id)
 
       const { data: pd } = await supabase.from('reporting_periods').select('id').eq('organization_id', org.id).eq('year', year).single()
-      if (!pd) { setScopeData({ scope1_kg: 0, scope2_kg: 0, scope3_kg: 0, sources: [], mobileFuels: [] }); setLoading(false); return }
+      if (!pd) { setScopeData({ scope1_kg: 0, scope2_kg: 0, scope3_kg: 0, sources: [], mobileFuels: [], equipFuels: [] }); setLoading(false); return }
 
       // Fetch all emission sources in parallel
       const [stationary, mobile, equipFuel, refrigerants, gases, electricity, heat, steam, cooling, scope3subs] = await Promise.all([
@@ -112,21 +113,26 @@ export default function AnalyticsPage() {
         { name: t('Obseg 3', 'Scope 3'), kg: scope3Kg, scope: 'Scope 3' },
       ].filter(s => s.kg > 0)
 
-      // Fuel breakdown for mobile
-      const mobileFuelsRaw = mobile.data ?? []
-      const fuelMap: Record<string, { quantity: number; unit: string; co2e_kg: number }> = {}
-      for (const r of mobileFuelsRaw) {
-        const ft = r.fuel_type ?? 'other'
-        if (!fuelMap[ft]) fuelMap[ft] = { quantity: 0, unit: r.unit ?? 'L', co2e_kg: 0 }
-        fuelMap[ft].quantity += r.quantity ?? 0
-        fuelMap[ft].co2e_kg += r.co2e_kg ?? 0
+      // Helper: group rows by fuel_type
+      const groupByFuel = (rows: any): FuelBreakdown[] => {
+        const map: Record<string, { quantity: number; unit: string; co2e_kg: number }> = {}
+        for (const r of (rows.data ?? [])) {
+          const ft = r.fuel_type ?? 'other'
+          if (!map[ft]) map[ft] = { quantity: 0, unit: r.unit ?? 'L', co2e_kg: 0 }
+          map[ft].quantity += r.quantity ?? 0
+          map[ft].co2e_kg += r.co2e_kg ?? 0
+          map[ft].unit = r.unit ?? map[ft].unit
+        }
+        return Object.entries(map)
+          .map(([fuel_type, v]) => ({ fuel_type, ...v }))
+          .filter(f => f.co2e_kg > 0)
+          .sort((a, b) => b.co2e_kg - a.co2e_kg)
       }
-      const mobileFuels: FuelBreakdown[] = Object.entries(fuelMap)
-        .map(([fuel_type, v]) => ({ fuel_type, ...v }))
-        .filter(f => f.co2e_kg > 0)
-        .sort((a, b) => b.co2e_kg - a.co2e_kg)
 
-      setScopeData({ scope1_kg, scope2_kg, scope3_kg: scope3Kg, sources, mobileFuels })
+      const mobileFuels = groupByFuel(mobile)
+      const equipFuels = groupByFuel(equipFuel)
+
+      setScopeData({ scope1_kg, scope2_kg, scope3_kg: scope3Kg, sources, mobileFuels, equipFuels })
 
       // Trend: fetch real sums for all available periods
       const { data: allPeriods } = await supabase
@@ -278,10 +284,10 @@ export default function AnalyticsPage() {
                   const mobileKg = (scopeData?.mobileFuels ?? []).reduce((s, f) => s + f.co2e_kg, 0)
                   const rows = [
                     t('Zemeljski plin', 'Natural gas'),
-                    t('Gorivo opreme', 'Equipment fuel'),
                     t('Hladilni plini', 'Refrigerants'),
                     t('Industrijski plini', 'Industrial gases'),
                   ].map(name => scopeData.sources.find(s => s.name === name)).filter((s): s is NonNullable<typeof s> => !!s && s.kg > 0)
+                  const equipKgTotal = (scopeData?.equipFuels ?? []).reduce((s, f) => s + f.co2e_kg, 0)
                   const FUEL_LABELS: Record<string, string> = {
                     diesel: t('Dizel', 'Diesel'), petrol: t('Bencin', 'Petrol'),
                     lpg: 'LPG', cng: 'CNG', lng: 'LNG',
@@ -298,6 +304,22 @@ export default function AnalyticsPage() {
                         <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(r.kg)}%</td>
                       </tr>
                     ))}
+                    {equipKgTotal > 0 && <>
+                      <tr className="hover:bg-gray-50 transition-colors">
+                        <td className="px-5 py-3 text-sm font-medium text-gray-900">{t('Gorivo opreme', 'Equipment fuel')}</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
+                        <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(equipKgTotal / 1000).toFixed(3).replace('.', ',')}</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(equipKgTotal)}%</td>
+                      </tr>
+                      {(scopeData?.equipFuels ?? []).map(f => (
+                        <tr key={`eq-${f.fuel_type}`} className="hover:bg-gray-50 transition-colors bg-gray-50/50">
+                          <td className="pl-10 pr-5 py-2.5 text-sm text-gray-500">↳ {FUEL_LABELS[f.fuel_type] ?? f.fuel_type}</td>
+                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{f.quantity.toLocaleString('sl-SI', { maximumFractionDigits: 1 })} {f.unit}</td>
+                          <td className="px-5 py-2.5 text-sm text-right text-gray-700 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{pct(f.co2e_kg)}%</td>
+                        </tr>
+                      ))}
+                    </>}
                     {mobileKg > 0 && <>
                       <tr className="hover:bg-gray-50 transition-colors">
                         <td className="px-5 py-3 text-sm font-medium text-gray-900">{t('Gorivo vozil', 'Vehicle fuel')}</td>
