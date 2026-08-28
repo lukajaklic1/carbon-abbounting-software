@@ -291,6 +291,22 @@ export default function AnalyticsPage() {
                   const FUEL_LABELS: Record<string, string> = {
                     diesel: t('Dizel', 'Diesel'), petrol: t('Bencin', 'Petrol'),
                     lpg: 'LPG', cng: 'CNG', lng: 'LNG',
+                    natural_gas: t('Zemeljski plin', 'Natural gas'),
+                    heating_oil: t('Kurilno olje', 'Heating oil'),
+                    heavy_fuel_oil: t('Težko kurilno olje', 'Heavy fuel oil'),
+                    kerosene: t('Kerozin', 'Kerosene'),
+                    biodiesel: t('Biodizel', 'Biodiesel'),
+                    biogas: t('Bioplin', 'Biogas'),
+                    propane: t('Propan', 'Propane'),
+                    butane: t('Butan', 'Butane'),
+                    coal_anthracite: t('Premog – antracit', 'Coal – Anthracite'),
+                    coal_bituminous: t('Premog – bituminozni', 'Coal – Bituminous'),
+                    coal_lignite: t('Premog – lignit', 'Coal – Lignite'),
+                    coke: t('Koks', 'Coke'),
+                    wood: t('Les / polena', 'Wood / logs'),
+                    wood_chips: t('Les / biomasa', 'Wood / biomass'),
+                    wood_pellets: t('Lesne pelete', 'Wood pellets'),
+                    msw: t('Komunalni odpadki', 'Municipal solid waste'),
                     other: t('Drugo', 'Other'),
                   }
                   return <>
