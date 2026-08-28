@@ -20,7 +20,7 @@ type ScopeData = {
   scope1_kg: number
   scope2_kg: number
   scope3_kg: number
-  sources: { name: string; kg: number; scope: string }[]
+  sources: { name: string; kg: number; scope: string; qty?: number; unit?: string }[]
   mobileFuels: FuelBreakdown[]
 }
 
@@ -54,19 +54,27 @@ export default function AnalyticsPage() {
 
       // Fetch all emission sources in parallel
       const [stationary, mobile, equipFuel, refrigerants, gases, electricity, heat, steam, cooling, scope3subs] = await Promise.all([
-        supabase.from('scope1_stationary').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
+        supabase.from('scope1_stationary').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
         supabase.from('scope1_mobile').select('co2e_kg, fuel_type, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
-        supabase.from('scope1_equipment_fuel').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
-        supabase.from('scope1_refrigerants').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
-        supabase.from('scope1_industrial_gases').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
-        supabase.from('scope2_electricity').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
-        supabase.from('scope2_heat').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
-        supabase.from('scope2_steam').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
-        supabase.from('scope2_cooling').select('co2e_kg').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
+        supabase.from('scope1_equipment_fuel').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
+        supabase.from('scope1_refrigerants').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
+        supabase.from('scope1_industrial_gases').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
+        supabase.from('scope2_electricity').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
+        supabase.from('scope2_heat').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
+        supabase.from('scope2_steam').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
+        supabase.from('scope2_cooling').select('co2e_kg, quantity, unit').eq('organization_id', org.id).eq('reporting_period_id', pd.id),
         supabase.from('scope3_submissions').select('co2e_kg, category_number').eq('organization_id', org.id).eq('reporting_period_id', pd.id).eq('status', 'done'),
       ])
 
       const sum = (rows: any) => (rows.data ?? []).reduce((s: number, r: any) => s + (r.co2e_kg ?? 0), 0)
+      // Sum quantity — returns null if mixed units, otherwise {qty, unit}
+      const sumQty = (rows: any): { qty: number; unit: string } | null => {
+        const data = rows.data ?? []
+        if (!data.length) return null
+        const units = [...new Set(data.map((r: any) => r.unit))]
+        if (units.length !== 1) return null
+        return { qty: data.reduce((s: number, r: any) => s + (r.quantity ?? 0), 0), unit: units[0] as string }
+      }
 
       const stationaryKg = sum(stationary)
       const mobileKg = sum(mobile)
@@ -82,16 +90,25 @@ export default function AnalyticsPage() {
       const scope1_kg = stationaryKg + mobileKg + equipKg + refKg + gasKg
       const scope2_kg = elecKg + heatKg + steamKg + coolingKg
 
+      const qStationary = sumQty(stationary)
+      const qEquip = sumQty(equipFuel)
+      const qRef = sumQty(refrigerants)
+      const qGas = sumQty(gases)
+      const qElec = sumQty(electricity)
+      const qHeat = sumQty(heat)
+      const qSteam = sumQty(steam)
+      const qCooling = sumQty(cooling)
+
       const sources = [
-        { name: t('Zemeljski plin', 'Natural gas'), kg: stationaryKg, scope: 'Scope 1' },
+        { name: t('Zemeljski plin', 'Natural gas'), kg: stationaryKg, scope: 'Scope 1', qty: qStationary?.qty, unit: qStationary?.unit },
         { name: t('Gorivo vozil', 'Vehicle fuel'), kg: mobileKg, scope: 'Scope 1' },
-        { name: t('Gorivo opreme', 'Equipment fuel'), kg: equipKg, scope: 'Scope 1' },
-        { name: t('Hladilni plini', 'Refrigerants'), kg: refKg, scope: 'Scope 1' },
-        { name: t('Industrijski plini', 'Industrial gases'), kg: gasKg, scope: 'Scope 1' },
-        { name: t('Elektrika', 'Electricity'), kg: elecKg, scope: 'Scope 2' },
-        { name: t('Toplota', 'Heat'), kg: heatKg, scope: 'Scope 2' },
-        { name: t('Para', 'Steam'), kg: steamKg, scope: 'Scope 2' },
-        { name: t('Hlajenje', 'Cooling'), kg: coolingKg, scope: 'Scope 2' },
+        { name: t('Gorivo opreme', 'Equipment fuel'), kg: equipKg, scope: 'Scope 1', qty: qEquip?.qty, unit: qEquip?.unit },
+        { name: t('Hladilni plini', 'Refrigerants'), kg: refKg, scope: 'Scope 1', qty: qRef?.qty, unit: qRef?.unit },
+        { name: t('Industrijski plini', 'Industrial gases'), kg: gasKg, scope: 'Scope 1', qty: qGas?.qty, unit: qGas?.unit },
+        { name: t('Elektrika', 'Electricity'), kg: elecKg, scope: 'Scope 2', qty: qElec?.qty, unit: qElec?.unit },
+        { name: t('Toplota', 'Heat'), kg: heatKg, scope: 'Scope 2', qty: qHeat?.qty, unit: qHeat?.unit },
+        { name: t('Para', 'Steam'), kg: steamKg, scope: 'Scope 2', qty: qSteam?.qty, unit: qSteam?.unit },
+        { name: t('Hlajenje', 'Cooling'), kg: coolingKg, scope: 'Scope 2', qty: qCooling?.qty, unit: qCooling?.unit },
         { name: t('Obseg 3', 'Scope 3'), kg: scope3Kg, scope: 'Scope 3' },
       ].filter(s => s.kg > 0)
 
@@ -260,11 +277,11 @@ export default function AnalyticsPage() {
                 {(() => {
                   const mobileKg = (scopeData?.mobileFuels ?? []).reduce((s, f) => s + f.co2e_kg, 0)
                   const rows = [
-                    { name: t('Zemeljski plin', 'Natural gas'), kg: scopeData.sources.find(s => s.name === t('Zemeljski plin', 'Natural gas'))?.kg ?? 0, unit: null },
-                    { name: t('Gorivo opreme', 'Equipment fuel'), kg: scopeData.sources.find(s => s.name === t('Gorivo opreme', 'Equipment fuel'))?.kg ?? 0, unit: null },
-                    { name: t('Hladilni plini', 'Refrigerants'), kg: scopeData.sources.find(s => s.name === t('Hladilni plini', 'Refrigerants'))?.kg ?? 0, unit: null },
-                    { name: t('Industrijski plini', 'Industrial gases'), kg: scopeData.sources.find(s => s.name === t('Industrijski plini', 'Industrial gases'))?.kg ?? 0, unit: null },
-                  ].filter(r => r.kg > 0)
+                    t('Zemeljski plin', 'Natural gas'),
+                    t('Gorivo opreme', 'Equipment fuel'),
+                    t('Hladilni plini', 'Refrigerants'),
+                    t('Industrijski plini', 'Industrial gases'),
+                  ].map(name => scopeData.sources.find(s => s.name === name)).filter((s): s is NonNullable<typeof s> => !!s && s.kg > 0)
                   const FUEL_LABELS: Record<string, string> = {
                     diesel: t('Dizel', 'Diesel'), petrol: t('Bencin', 'Petrol'),
                     lpg: 'LPG', cng: 'CNG', lng: 'LNG',
@@ -274,7 +291,9 @@ export default function AnalyticsPage() {
                     {rows.map(r => (
                       <tr key={r.name} className="hover:bg-gray-50 transition-colors">
                         <td className="px-5 py-3 text-sm text-gray-700">{r.name}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-500">—</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">
+                          {r.qty != null ? `${r.qty.toLocaleString('sl-SI', { maximumFractionDigits: 1 })} ${r.unit}` : '—'}
+                        </td>
                         <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(r.kg / 1000).toFixed(3).replace('.', ',')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(r.kg)}%</td>
                       </tr>
@@ -321,7 +340,9 @@ export default function AnalyticsPage() {
                   return (
                     <tr key={key} className="hover:bg-gray-50 transition-colors">
                       <td className="px-5 py-3 text-sm text-gray-700">{label}</td>
-                      <td className="px-5 py-3 text-sm text-right text-gray-500">—</td>
+                      <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">
+                        {src.qty != null ? `${src.qty.toLocaleString('sl-SI', { maximumFractionDigits: 1 })} ${src.unit}` : '—'}
+                      </td>
                       <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(src.kg / 1000).toFixed(3).replace('.', ',')}</td>
                       <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(src.kg)}%</td>
                     </tr>
