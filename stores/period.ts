@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export interface ReportingPeriod {
   id: string
@@ -18,11 +19,19 @@ interface PeriodStore {
   setAvailablePeriods: (periods: ReportingPeriod[]) => void
 }
 
-export const usePeriodStore = create<PeriodStore>((set) => ({
-  selectedYear: null,
-  currentPeriod: null,
-  availablePeriods: [],
-  setSelectedYear: (year) => set({ selectedYear: year }),
-  setCurrentPeriod: (period) => set({ currentPeriod: period }),
-  setAvailablePeriods: (periods) => set({ availablePeriods: periods }),
-}))
+export const usePeriodStore = create<PeriodStore>()(
+  persist(
+    (set) => ({
+      selectedYear: null,
+      currentPeriod: null,
+      availablePeriods: [],
+      setSelectedYear: (year) => set({ selectedYear: year }),
+      setCurrentPeriod: (period) => set({ currentPeriod: period }),
+      setAvailablePeriods: (periods) => set({ availablePeriods: periods }),
+    }),
+    {
+      name: 'carboniq-period',
+      partialize: (state: PeriodStore) => ({ selectedYear: state.selectedYear }),
+    }
+  )
+)
