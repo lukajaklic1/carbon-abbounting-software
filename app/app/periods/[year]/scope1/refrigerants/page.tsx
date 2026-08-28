@@ -349,6 +349,7 @@ export default function Scope1RefrigerantsPage() {
             <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-5 flex items-center justify-between rounded-t-2xl">
               <div>
                 <h2 className="text-base font-semibold text-gray-900">{entriesMap[activeItem.id] ? t('Uredi vnos', 'Edit entry') : t('Dodaj hladivo', 'Add refrigerant')}</h2>
+                <p className="text-xs text-gray-500 mt-0.5">{activeItem.name}</p>
               </div>
               <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors"><X className="h-4 w-4" /></button>
             </div>
