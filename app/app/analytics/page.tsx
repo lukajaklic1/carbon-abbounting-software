@@ -328,14 +328,14 @@ export default function AnalyticsPage() {
                       <tr className="hover:bg-gray-50 transition-colors">
                         <td className="px-5 py-3 text-sm text-gray-700">{t('Gorivo opreme', 'Equipment fuel')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
-                        <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(equipKgTotal / 1000).toFixed(3).replace('.', ',')}</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-700 tabular-nums">{(equipKgTotal / 1000).toFixed(3).replace('.', ',')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(equipKgTotal)}%</td>
                       </tr>
                       {(scopeData?.equipFuels ?? []).map(f => (
                         <tr key={`eq-${f.fuel_type}`} className="hover:bg-gray-50 transition-colors bg-gray-50/50">
                           <td className="pl-10 pr-5 py-2.5 text-sm text-gray-500">↳ {FUEL_LABELS[f.fuel_type] ?? f.fuel_type}</td>
                           <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{f.quantity.toLocaleString('sl-SI', { maximumFractionDigits: 1 })} {f.unit}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-700 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
                           <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{pct(f.co2e_kg)}%</td>
                         </tr>
                       ))}
@@ -344,14 +344,14 @@ export default function AnalyticsPage() {
                       <tr className="hover:bg-gray-50 transition-colors">
                         <td className="px-5 py-3 text-sm text-gray-700">{t('Gorivo vozil', 'Vehicle fuel')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
-                        <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(mobileKg / 1000).toFixed(3).replace('.', ',')}</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-700 tabular-nums">{(mobileKg / 1000).toFixed(3).replace('.', ',')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(mobileKg)}%</td>
                       </tr>
                       {(scopeData?.mobileFuels ?? []).map(f => (
                         <tr key={f.fuel_type} className="hover:bg-gray-50 transition-colors bg-gray-50/50">
                           <td className="pl-10 pr-5 py-2.5 text-sm text-gray-500">↳ {FUEL_LABELS[f.fuel_type] ?? f.fuel_type}</td>
                           <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{f.quantity.toLocaleString('sl-SI', { maximumFractionDigits: 1 })} {f.unit}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-700 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
                           <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{pct(f.co2e_kg)}%</td>
                         </tr>
                       ))}
@@ -360,14 +360,14 @@ export default function AnalyticsPage() {
                       <tr className="hover:bg-gray-50 transition-colors">
                         <td className="px-5 py-3 text-sm text-gray-700">{t('Hladilni plini', 'Refrigerants')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
-                        <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(refKgTotal / 1000).toFixed(3).replace('.', ',')}</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-700 tabular-nums">{(refKgTotal / 1000).toFixed(3).replace('.', ',')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(refKgTotal)}%</td>
                       </tr>
                       {(scopeData?.refFuels ?? []).map(f => (
                         <tr key={`ref-${f.fuel_type}`} className="hover:bg-gray-50 transition-colors bg-gray-50/50">
                           <td className="pl-10 pr-5 py-2.5 text-sm text-gray-500">↳ {f.fuel_type}</td>
                           <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{f.quantity.toLocaleString('sl-SI', { maximumFractionDigits: 2 })} {f.unit}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-700 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
                           <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{pct(f.co2e_kg)}%</td>
                         </tr>
                       ))}
@@ -376,14 +376,14 @@ export default function AnalyticsPage() {
                       <tr className="hover:bg-gray-50 transition-colors">
                         <td className="px-5 py-3 text-sm text-gray-700">{t('Industrijski plini', 'Industrial gases')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
-                        <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(gasKgTotal / 1000).toFixed(3).replace('.', ',')}</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-700 tabular-nums">{(gasKgTotal / 1000).toFixed(3).replace('.', ',')}</td>
                         <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(gasKgTotal)}%</td>
                       </tr>
                       {(scopeData?.gasFuels ?? []).map(f => (
                         <tr key={`gas-${f.fuel_type}`} className="hover:bg-gray-50 transition-colors bg-gray-50/50">
                           <td className="pl-10 pr-5 py-2.5 text-sm text-gray-500">↳ {f.fuel_type}</td>
                           <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{f.quantity.toLocaleString('sl-SI', { maximumFractionDigits: 2 })} {f.unit}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-700 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
                           <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{pct(f.co2e_kg)}%</td>
                         </tr>
                       ))}
