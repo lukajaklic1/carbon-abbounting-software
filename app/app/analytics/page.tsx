@@ -90,7 +90,7 @@ export default function AnalyticsPage() {
         { name: t('Toplota', 'Heat'), kg: heatKg, scope: 'Scope 2' },
         { name: t('Para', 'Steam'), kg: steamKg, scope: 'Scope 2' },
         { name: t('Hlajenje', 'Cooling'), kg: coolingKg, scope: 'Scope 2' },
-        { name: 'Scope 3', kg: scope3Kg, scope: 'Scope 3' },
+        { name: t('Obseg 3', 'Scope 3'), kg: scope3Kg, scope: 'Scope 3' },
       ].filter(s => s.kg > 0)
 
       setScopeData({ scope1_kg, scope2_kg, scope3_kg: scope3Kg, sources })
@@ -122,9 +122,9 @@ export default function AnalyticsPage() {
   const yearChartData = yearTrend
 
   const scopeChartData = [
-    { name: 'Scope 1', value: parseFloat(((scopeData?.scope1_kg ?? 0) / 1000).toFixed(3)), color: SCOPE_COLORS[0] },
-    { name: 'Scope 2', value: parseFloat(((scopeData?.scope2_kg ?? 0) / 1000).toFixed(3)), color: SCOPE_COLORS[1] },
-    { name: 'Scope 3', value: parseFloat(((scopeData?.scope3_kg ?? 0) / 1000).toFixed(3)), color: SCOPE_COLORS[2] },
+    { name: t('Obseg 1', 'Scope 1'), value: parseFloat(((scopeData?.scope1_kg ?? 0) / 1000).toFixed(3)), color: SCOPE_COLORS[0] },
+    { name: t('Obseg 2', 'Scope 2'), value: parseFloat(((scopeData?.scope2_kg ?? 0) / 1000).toFixed(3)), color: SCOPE_COLORS[1] },
+    { name: t('Obseg 3', 'Scope 3'), value: parseFloat(((scopeData?.scope3_kg ?? 0) / 1000).toFixed(3)), color: SCOPE_COLORS[2] },
   ].filter(d => d.value > 0)
 
   const sourceChartData = (scopeData?.sources ?? [])
