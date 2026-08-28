@@ -53,7 +53,14 @@ export function OrgLoader() {
         if (!periods?.length) return
         setAvailablePeriods(periods)
 
-        const targetYear = selectedYear ?? periods[0].year
+        // Read persisted year directly from localStorage (store may not be rehydrated yet)
+        let persistedYear: number | null = null
+        try {
+          const raw = localStorage.getItem('carboniq-period')
+          if (raw) persistedYear = JSON.parse(raw)?.state?.selectedYear ?? null
+        } catch {}
+
+        const targetYear = persistedYear ?? selectedYear ?? periods[0].year
         const match = periods.find(p => p.year === targetYear) ?? periods[0]
         setSelectedYear(match.year)
         setCurrentPeriod(match)
