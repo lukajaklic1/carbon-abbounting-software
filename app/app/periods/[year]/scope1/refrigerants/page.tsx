@@ -324,7 +324,7 @@ export default function Scope1RefrigerantsPage() {
                       {locked && (
                         <div className="px-4 py-2 border-t flex items-center gap-1.5" style={{ borderColor: '#dbeafe', backgroundColor: '#eff6ff' }}>
                           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#215bcf" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                          <p className="text-xs text-[#215bcf]">{t('Oprema ima vnesene emisije. Najprej izbrišite podatke o emisijah.', 'Equipment has emission data. Delete it first.')}</p>
+                          <p className="text-xs text-[#215bcf]">{t('Oprema ima vnesene podatke o emisijah. Če želite odstraniti opremo iz poročila, najprej izbrišite podatke o emisijah.', 'Equipment has emission data. To remove it from the report, first delete the emission data.')}</p>
                         </div>
                       )}
                     </div>
