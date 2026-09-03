@@ -271,9 +271,9 @@ export default function OnboardingPage() {
                   <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{error}</p>
                 )}
 
-                <div className="flex gap-3 mt-1">
+                <div className="flex gap-2 mt-6">
                   <button onClick={() => setStep(1)}
-                    className="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    className="flex-1 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                     {t.back}
                   </button>
                   <button onClick={handleComplete}
