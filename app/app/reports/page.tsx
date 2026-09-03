@@ -206,7 +206,7 @@ export default function ReportsPage() {
 
       const { data: pd } = await supabase.from('reporting_periods').select('*').eq('organization_id', org.id).eq('year', year).single()
       const EMPTY_GAS: GasBreakdown = { co2_kg: 0, ch4_kg: 0, n2o_kg: 0, hfc_kg: 0, pfc_kg: 0, sf6_kg: 0 }
-      if (!pd) { setReport({ period: null, scope1: { total: 0, sources: [], gases: EMPTY_GAS }, scope2: { total: 0, sources: [] }, scope3: { total: 0, sources: [] } }); setLoading(false); return }
+      if (!pd) { setReport({ period: null, scope1: { total: 0, sources: [], gases: EMPTY_GAS }, scope2: { total: 0, sources: [] }, scope3: { total: 0, sources: [] }, baseYear: null }); setLoading(false); return }
       setPeriodId(pd.id)
 
       // Load report settings
