@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { Car, Plus, X, Leaf, Truck, Bus, Bike, Settings2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
-import { getFuelFactors, calcCo2eKg } from '@/lib/emission-factors'
+import { getFuelFactors, calcCo2eKg, calcFuelGases } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
@@ -165,12 +165,14 @@ export default function Scope1MobilePage() {
     if (!period || !orgId) return
     const ff = FUEL_FACTORS[form.fuel_type]
     const co2e_kg = ff ? calcCo2eKg(qty, ff.factor) : 0
+    const gases = calcFuelGases(qty, form.fuel_type)
     setModalSaving(true); setError('')
     try {
       const supabase = createClient()
       const payload = {
         vehicle_id: activeVehicle.id, fuel_type: form.fuel_type, quantity: qty,
         unit: form.unit, co2e_kg, factor_kg_co2e_per_unit: ff?.factor ?? null,
+        co2_kg: gases.co2_kg, ch4_kg: gases.ch4_kg, n2o_kg: gases.n2o_kg,
         organization_id: orgId, reporting_period_id: period.id,
       }
       const existing = entriesMap[activeVehicle.id]
@@ -383,7 +385,7 @@ export default function Scope1MobilePage() {
                 <h2 className="text-base font-semibold text-gray-900">
                   {entriesMap[activeVehicle.id] ? t('Uredi vnos', 'Edit entry') : t('Vnesi porabo', 'Enter consumption')}
                 </h2>
-                <p className="text-xs text-gray-500 mt-0.5">{activeVehicle.name}</p>
+                <p className="text-sm text-gray-500 mt-0.5">{activeVehicle.name}</p>
               </div>
               <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors"><X className="h-4 w-4" /></button>
             </div>

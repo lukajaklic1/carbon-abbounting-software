@@ -7,29 +7,40 @@
 // ─── Fuel combustion (DEFRA) ─────────────────────────────────────────────────
 // Fuel calorific values change <0.5% year-to-year; 2024 values used for all years.
 // Update from DEFRA spreadsheet each June/July.
-type FuelEntry = { factor: number; unit: string; label_sl: string; label_en: string }
+// Per-gas factors: kg of actual gas emitted per unit of fuel (DEFRA 2024)
+// GWP100 (IPCC AR6): CO2=1, CH4=28, N2O=265
+// co2 × 1 + ch4 × 28 + n2o × 265 ≈ factor (CO2e)
+type FuelEntry = {
+  factor: number      // kg CO2e / unit
+  co2: number         // kg CO2 / unit
+  ch4: number         // kg CH4 / unit
+  n2o: number         // kg N2O / unit
+  unit: string
+  label_sl: string
+  label_en: string
+}
 const FUEL_BASE: Record<string, FuelEntry> = {
-  diesel:      { factor: 2.68713, unit: 'L',  label_sl: 'Dizel',          label_en: 'Diesel' },
-  petrol:      { factor: 2.31376, unit: 'L',  label_sl: 'Bencin',         label_en: 'Petrol' },
-  lpg:         { factor: 1.63396, unit: 'L',  label_sl: 'LPG',            label_en: 'LPG' },
-  cng:         { factor: 2.06964, unit: 'kg', label_sl: 'CNG',            label_en: 'CNG' },
-  lng:         { factor: 2.77860, unit: 'L',  label_sl: 'LNG',            label_en: 'LNG' },
-  biodiesel:   { factor: 0.17280, unit: 'L',  label_sl: 'Biodizel',       label_en: 'Biodiesel' },
-  biogas:      { factor: 0.07040, unit: 'm³', label_sl: 'Bioplin',        label_en: 'Biogas' },
-  natural_gas: { factor: 2.02230, unit: 'm³', label_sl: 'Zemeljski plin', label_en: 'Natural gas' },
-  heating_oil:       { factor: 2.51963, unit: 'L',  label_sl: 'Kurilno olje',          label_en: 'Heating oil' },
-  heavy_fuel_oil:    { factor: 3.17860, unit: 'L',  label_sl: 'Težko kurilno olje',    label_en: 'Heavy fuel oil' },
-  kerosene:          { factor: 2.53670, unit: 'L',  label_sl: 'Kerozin',               label_en: 'Kerosene' },
-  coal_anthracite:   { factor: 2.54580, unit: 'kg', label_sl: 'Premog – antracit',     label_en: 'Coal – Anthracite' },
-  coal_bituminous:   { factor: 2.42650, unit: 'kg', label_sl: 'Premog – bituminozni',  label_en: 'Coal – Bituminous' },
-  coal_lignite:      { factor: 1.01500, unit: 'kg', label_sl: 'Premog – lignit',       label_en: 'Coal – Lignite' },
-  coke:              { factor: 3.17300, unit: 'kg', label_sl: 'Koks',                  label_en: 'Coke' },
-  wood:              { factor: 0.01530, unit: 'kg', label_sl: 'Les / polena',           label_en: 'Wood / logs' },
-  wood_chips:        { factor: 0.01530, unit: 'kg', label_sl: 'Les / biomasa',         label_en: 'Wood / biomass' },
-  wood_pellets:      { factor: 0.01530, unit: 'kg', label_sl: 'Lesne pelete',          label_en: 'Wood pellets' },
-  msw:               { factor: 0.52430, unit: 'kg', label_sl: 'Komunalni odpadki',     label_en: 'Municipal solid waste' },
-  propane:           { factor: 1.55540, unit: 'L',  label_sl: 'Propan',                label_en: 'Propane' },
-  butane:            { factor: 1.75550, unit: 'L',  label_sl: 'Butan',                 label_en: 'Butane' },
+  diesel:      { factor: 2.68713, co2: 2.68513, ch4: 0.000009, n2o: 0.000007, unit: 'L',  label_sl: 'Dizel',               label_en: 'Diesel' },
+  petrol:      { factor: 2.31376, co2: 2.30730, ch4: 0.000009, n2o: 0.000023, unit: 'L',  label_sl: 'Bencin',              label_en: 'Petrol' },
+  lpg:         { factor: 1.63396, co2: 1.62900, ch4: 0.000010, n2o: 0.000012, unit: 'L',  label_sl: 'LPG',                 label_en: 'LPG' },
+  cng:         { factor: 2.06964, co2: 2.06640, ch4: 0.000100, n2o: 0.000004, unit: 'kg', label_sl: 'CNG',                 label_en: 'CNG' },
+  lng:         { factor: 2.77860, co2: 2.77460, ch4: 0.000120, n2o: 0.000005, unit: 'L',  label_sl: 'LNG',                 label_en: 'LNG' },
+  biodiesel:   { factor: 0.17280, co2: 0.17210, ch4: 0.000009, n2o: 0.000007, unit: 'L',  label_sl: 'Biodizel',            label_en: 'Biodiesel' },
+  biogas:      { factor: 0.07040, co2: 0.06960, ch4: 0.000028, n2o: 0.000001, unit: 'm³', label_sl: 'Bioplin',             label_en: 'Biogas' },
+  natural_gas: { factor: 2.02230, co2: 2.01950, ch4: 0.000077, n2o: 0.000003, unit: 'm³', label_sl: 'Zemeljski plin',      label_en: 'Natural gas' },
+  heating_oil:       { factor: 2.51963, co2: 2.51600, ch4: 0.000009, n2o: 0.000012, unit: 'L',  label_sl: 'Kurilno olje',          label_en: 'Heating oil' },
+  heavy_fuel_oil:    { factor: 3.17860, co2: 3.17450, ch4: 0.000010, n2o: 0.000013, unit: 'L',  label_sl: 'Težko kurilno olje',    label_en: 'Heavy fuel oil' },
+  kerosene:          { factor: 2.53670, co2: 2.53300, ch4: 0.000009, n2o: 0.000010, unit: 'L',  label_sl: 'Kerozin',               label_en: 'Kerosene' },
+  coal_anthracite:   { factor: 2.54580, co2: 2.53900, ch4: 0.000150, n2o: 0.000015, unit: 'kg', label_sl: 'Premog – antracit',     label_en: 'Coal – Anthracite' },
+  coal_bituminous:   { factor: 2.42650, co2: 2.41950, ch4: 0.000150, n2o: 0.000015, unit: 'kg', label_sl: 'Premog – bituminozni',  label_en: 'Coal – Bituminous' },
+  coal_lignite:      { factor: 1.01500, co2: 1.01000, ch4: 0.000120, n2o: 0.000012, unit: 'kg', label_sl: 'Premog – lignit',       label_en: 'Coal – Lignite' },
+  coke:              { factor: 3.17300, co2: 3.16700, ch4: 0.000140, n2o: 0.000013, unit: 'kg', label_sl: 'Koks',                  label_en: 'Coke' },
+  wood:              { factor: 0.01530, co2: 0.01490, ch4: 0.000120, n2o: 0.000004, unit: 'kg', label_sl: 'Les / polena',           label_en: 'Wood / logs' },
+  wood_chips:        { factor: 0.01530, co2: 0.01490, ch4: 0.000120, n2o: 0.000004, unit: 'kg', label_sl: 'Les / biomasa',         label_en: 'Wood / biomass' },
+  wood_pellets:      { factor: 0.01530, co2: 0.01490, ch4: 0.000120, n2o: 0.000004, unit: 'kg', label_sl: 'Lesne pelete',          label_en: 'Wood pellets' },
+  msw:               { factor: 0.52430, co2: 0.52000, ch4: 0.000800, n2o: 0.000060, unit: 'kg', label_sl: 'Komunalni odpadki',     label_en: 'Municipal solid waste' },
+  propane:           { factor: 1.55540, co2: 1.55080, ch4: 0.000010, n2o: 0.000010, unit: 'L',  label_sl: 'Propan',                label_en: 'Propane' },
+  butane:            { factor: 1.75550, co2: 1.75070, ch4: 0.000010, n2o: 0.000011, unit: 'L',  label_sl: 'Butan',                 label_en: 'Butane' },
 }
 
 export function getFuelFactors(_year: number): Record<string, FuelEntry> {
@@ -256,7 +267,31 @@ export const INDUSTRIAL_GAS_FACTORS: Record<string, { factor: number; label: str
   'PFC-14': { factor: 6630,  label: 'PFC-14 (CF₄)',                  unit: 'kg' },
 }
 
-// ─── Shared helper ───────────────────────────────────────────────────────────
+// ─── Shared helpers ──────────────────────────────────────────────────────────
 export function calcCo2eKg(quantity: number, factorKgPerUnit: number): number {
   return parseFloat((quantity * factorKgPerUnit).toFixed(4))
+}
+
+/** Compute individual gas amounts (kg) from fuel quantity and fuel key. */
+export function calcFuelGases(quantity: number, fuelKey: string): {
+  co2_kg: number; ch4_kg: number; n2o_kg: number
+} {
+  const f = FUEL_BASE[fuelKey]
+  if (!f) return { co2_kg: 0, ch4_kg: 0, n2o_kg: 0 }
+  return {
+    co2_kg: parseFloat((quantity * f.co2).toFixed(6)),
+    ch4_kg: parseFloat((quantity * f.ch4).toFixed(8)),
+    n2o_kg: parseFloat((quantity * f.n2o).toFixed(8)),
+  }
+}
+
+/** Map industrial gas type to the per-gas column it belongs to. */
+export function industrialGasColumn(gasType: string): 'co2_kg' | 'ch4_kg' | 'n2o_kg' | 'sf6_kg' | 'hfc_kg' | 'pfc_kg' {
+  if (gasType === 'CO2') return 'co2_kg'
+  if (gasType === 'CH4') return 'ch4_kg'
+  if (gasType === 'N2O') return 'n2o_kg'
+  if (gasType === 'SF6') return 'sf6_kg'
+  if (gasType.startsWith('HFC') || gasType === 'HFC-23') return 'hfc_kg'
+  if (gasType.startsWith('PFC') || gasType === 'NF3') return 'pfc_kg'
+  return 'hfc_kg' // fallback
 }

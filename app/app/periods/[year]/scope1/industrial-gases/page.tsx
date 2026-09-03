@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { FlaskConical, Plus, Pencil, X, Leaf, Check, Settings2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
-import { INDUSTRIAL_GAS_FACTORS, calcCo2eKg } from '@/lib/emission-factors'
+import { INDUSTRIAL_GAS_FACTORS, calcCo2eKg, industrialGasColumn } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { IconFireExtinguisher } from '@tabler/icons-react'
@@ -130,10 +130,13 @@ export default function Scope1IndustrialGasesPage() {
       if (!user) return
       const { data: org } = await supabase.from('organizations').select('id').eq('owner_id', user.id).single()
       if (!org) return
+      const gasCol = industrialGasColumn(form.gas_type)
+      const gasPayload: Record<string, number> = { co2_kg: 0, ch4_kg: 0, n2o_kg: 0, sf6_kg: 0, hfc_kg: 0, pfc_kg: 0 }
+      gasPayload[gasCol] = qty
       const payload = {
         equipment_id: activeItem.id, gas_type: form.gas_type,
         quantity: qty, unit: 'kg', co2e_kg,
-
+        ...gasPayload,
         organization_id: org.id, reporting_period_id: period.id,
       }
       const existing = entriesMap[activeItem.id]
@@ -341,7 +344,7 @@ export default function Scope1IndustrialGasesPage() {
             <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-5 flex items-center justify-between rounded-t-2xl">
               <div>
                 <h2 className="text-base font-semibold text-gray-900">{entriesMap[activeItem.id] ? t('Uredi vnos', 'Edit entry') : t('Dodaj plin', 'Add gas')}</h2>
-                <p className="text-xs text-gray-500 mt-0.5">{activeItem.name}</p>
+                <p className="text-sm text-gray-500 mt-0.5">{activeItem.name}</p>
               </div>
               <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors"><X className="h-4 w-4" /></button>
             </div>

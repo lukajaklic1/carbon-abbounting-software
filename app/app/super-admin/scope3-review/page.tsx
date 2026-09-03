@@ -174,14 +174,12 @@ export default function Scope3ReviewPage() {
                 )}
 
                 {sub.status === 'done' ? (
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-900 border border-gray-200 shrink-0">
-                    <Check className="h-3 w-3" />
+                  <span className="text-xs font-medium px-2 py-0.5 rounded-md shrink-0" style={{backgroundColor:'#e0fced',border:'1px solid #d4f8e6',color:'#098259'}}>
                     Zaključeno
                     {sub.co2e_kg != null && <span className="ml-1 font-normal">· {(sub.co2e_kg / 1000).toFixed(2).replace('.', ',')} t</span>}
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200 shrink-0">
-                    <Clock className="h-3 w-3" />
+                  <span className="text-xs font-medium px-2 py-0.5 rounded-md shrink-0" style={{backgroundColor:'#fff3bf',border:'1px solid #ffe066',color:'#e67700'}}>
                     V pregledu
                   </span>
                 )}

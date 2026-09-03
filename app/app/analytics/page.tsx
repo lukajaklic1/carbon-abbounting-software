@@ -272,127 +272,42 @@ export default function AnalyticsPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50">
-                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Vir', 'Source')}</th>
-                <th className="text-right text-xs font-medium text-gray-500 px-5 py-3">{t('Poraba', 'Consumption')}</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">{t('Vir emisij', 'Emission source')}</th>
                 <th className="text-right text-xs font-medium text-gray-500 px-5 py-3">tCO₂e</th>
-                <th className="text-right text-xs font-medium text-gray-500 px-5 py-3">%</th>
+                <th className="text-right text-xs font-medium text-gray-500 px-5 py-3 w-20">%</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {/* OBSEG 1 */}
               {scopeData?.scope1_kg !== undefined && scopeData.scope1_kg > 0 && <>
-                <tr className="bg-gray-50">
-                  <td colSpan={4} className="px-5 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('Obseg 1 – Neposredne emisije', 'Scope 1 – Direct emissions')}</td>
+                <tr className="border-t border-gray-200">
+                  <td colSpan={3} className="px-5 py-3 text-sm font-semibold text-gray-900">{t('Obseg 1 – Neposredne emisije', 'Scope 1 – Direct emissions')}</td>
                 </tr>
                 {(() => {
                   const mobileKg = (scopeData?.mobileFuels ?? []).reduce((s, f) => s + f.co2e_kg, 0)
-                  const rows = [
-                    t('Zemeljski plin', 'Natural gas'),
-                  ].map(name => scopeData.sources.find(s => s.name === name)).filter((s): s is NonNullable<typeof s> => !!s && s.kg > 0)
+                  const equipKgTotal = (scopeData?.equipFuels ?? []).reduce((s, f) => s + f.co2e_kg, 0)
                   const refKgTotal = (scopeData?.refFuels ?? []).reduce((s, f) => s + f.co2e_kg, 0)
                   const gasKgTotal = (scopeData?.gasFuels ?? []).reduce((s, f) => s + f.co2e_kg, 0)
-                  const equipKgTotal = (scopeData?.equipFuels ?? []).reduce((s, f) => s + f.co2e_kg, 0)
-                  const FUEL_LABELS: Record<string, string> = {
-                    diesel: t('Dizel', 'Diesel'), petrol: t('Bencin', 'Petrol'),
-                    lpg: 'LPG', cng: 'CNG', lng: 'LNG',
-                    natural_gas: t('Zemeljski plin', 'Natural gas'),
-                    heating_oil: t('Kurilno olje', 'Heating oil'),
-                    heavy_fuel_oil: t('Težko kurilno olje', 'Heavy fuel oil'),
-                    kerosene: t('Kerozin', 'Kerosene'),
-                    biodiesel: t('Biodizel', 'Biodiesel'),
-                    biogas: t('Bioplin', 'Biogas'),
-                    propane: t('Propan', 'Propane'),
-                    butane: t('Butan', 'Butane'),
-                    coal_anthracite: t('Premog – antracit', 'Coal – Anthracite'),
-                    coal_bituminous: t('Premog – bituminozni', 'Coal – Bituminous'),
-                    coal_lignite: t('Premog – lignit', 'Coal – Lignite'),
-                    coke: t('Koks', 'Coke'),
-                    wood: t('Les / polena', 'Wood / logs'),
-                    wood_chips: t('Les / biomasa', 'Wood / biomass'),
-                    wood_pellets: t('Lesne pelete', 'Wood pellets'),
-                    msw: t('Komunalni odpadki', 'Municipal solid waste'),
-                    other: t('Drugo', 'Other'),
-                  }
+                  const stationaryKg = scopeData.sources.find(s => s.name === t('Zemeljski plin', 'Natural gas'))?.kg ?? 0
+                  const rows = [
+                    { name: t('Stacionarni viri', 'Stationary sources'), kg: stationaryKg },
+                    { name: t('Gorivo vozil', 'Vehicle fuel'), kg: mobileKg },
+                    { name: t('Gorivo opreme', 'Equipment fuel'), kg: equipKgTotal },
+                    { name: t('Hladilni plini', 'Refrigerants'), kg: refKgTotal },
+                    { name: t('Industrijski plini', 'Industrial gases'), kg: gasKgTotal },
+                  ].filter(r => r.kg > 0)
                   return <>
                     {rows.map(r => (
-                      <tr key={r.name} className="hover:bg-gray-50 transition-colors">
+                      <tr key={r.name} className="border-t border-gray-200 hover:bg-gray-50 transition-colors">
                         <td className="px-5 py-3 text-sm text-gray-700">{r.name}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">
-                          {r.qty != null ? `${r.qty.toLocaleString('sl-SI', { maximumFractionDigits: 1 })} ${r.unit}` : '—'}
-                        </td>
-                        <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(r.kg / 1000).toFixed(3).replace('.', ',')}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(r.kg)}%</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-900 tabular-nums">{(r.kg / 1000).toFixed(3).replace('.', ',')}</td>
+                        <td className="px-5 py-3 text-xs text-right text-gray-400 tabular-nums">{pct(r.kg)}%</td>
                       </tr>
                     ))}
-                    {equipKgTotal > 0 && <>
-                      <tr className="hover:bg-gray-50 transition-colors">
-                        <td className="px-5 py-3 text-sm text-gray-700">{t('Gorivo opreme', 'Equipment fuel')}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-700 tabular-nums">{(equipKgTotal / 1000).toFixed(3).replace('.', ',')}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(equipKgTotal)}%</td>
-                      </tr>
-                      {(scopeData?.equipFuels ?? []).map(f => (
-                        <tr key={`eq-${f.fuel_type}`} className="hover:bg-gray-50 transition-colors bg-gray-50/50">
-                          <td className="pl-10 pr-5 py-2.5 text-sm text-gray-500">↳ {FUEL_LABELS[f.fuel_type] ?? f.fuel_type}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{f.quantity.toLocaleString('sl-SI', { maximumFractionDigits: 1 })} {f.unit}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{pct(f.co2e_kg)}%</td>
-                        </tr>
-                      ))}
-                    </>}
-                    {mobileKg > 0 && <>
-                      <tr className="hover:bg-gray-50 transition-colors">
-                        <td className="px-5 py-3 text-sm text-gray-700">{t('Gorivo vozil', 'Vehicle fuel')}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-700 tabular-nums">{(mobileKg / 1000).toFixed(3).replace('.', ',')}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(mobileKg)}%</td>
-                      </tr>
-                      {(scopeData?.mobileFuels ?? []).map(f => (
-                        <tr key={f.fuel_type} className="hover:bg-gray-50 transition-colors bg-gray-50/50">
-                          <td className="pl-10 pr-5 py-2.5 text-sm text-gray-500">↳ {FUEL_LABELS[f.fuel_type] ?? f.fuel_type}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{f.quantity.toLocaleString('sl-SI', { maximumFractionDigits: 1 })} {f.unit}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{pct(f.co2e_kg)}%</td>
-                        </tr>
-                      ))}
-                    </>}
-                    {refKgTotal > 0 && <>
-                      <tr className="hover:bg-gray-50 transition-colors">
-                        <td className="px-5 py-3 text-sm text-gray-700">{t('Hladilni plini', 'Refrigerants')}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-700 tabular-nums">{(refKgTotal / 1000).toFixed(3).replace('.', ',')}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(refKgTotal)}%</td>
-                      </tr>
-                      {(scopeData?.refFuels ?? []).map(f => (
-                        <tr key={`ref-${f.fuel_type}`} className="hover:bg-gray-50 transition-colors bg-gray-50/50">
-                          <td className="pl-10 pr-5 py-2.5 text-sm text-gray-500">↳ {f.fuel_type}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{f.quantity.toLocaleString('sl-SI', { maximumFractionDigits: 2 })} {f.unit}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{pct(f.co2e_kg)}%</td>
-                        </tr>
-                      ))}
-                    </>}
-                    {gasKgTotal > 0 && <>
-                      <tr className="hover:bg-gray-50 transition-colors">
-                        <td className="px-5 py-3 text-sm text-gray-700">{t('Industrijski plini', 'Industrial gases')}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-400">—</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-700 tabular-nums">{(gasKgTotal / 1000).toFixed(3).replace('.', ',')}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(gasKgTotal)}%</td>
-                      </tr>
-                      {(scopeData?.gasFuels ?? []).map(f => (
-                        <tr key={`gas-${f.fuel_type}`} className="hover:bg-gray-50 transition-colors bg-gray-50/50">
-                          <td className="pl-10 pr-5 py-2.5 text-sm text-gray-500">↳ {f.fuel_type}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{f.quantity.toLocaleString('sl-SI', { maximumFractionDigits: 2 })} {f.unit}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{(f.co2e_kg / 1000).toFixed(3).replace('.', ',')}</td>
-                          <td className="px-5 py-2.5 text-sm text-right text-gray-400 tabular-nums">{pct(f.co2e_kg)}%</td>
-                        </tr>
-                      ))}
-                    </>}
-                    <tr className="bg-blue-50/50">
-                      <td className="px-5 py-2.5 text-sm font-semibold text-gray-700">{t('Skupaj Obseg 1', 'Scope 1 Total')}</td>
-                      <td className="px-5 py-2.5" />
-                      <td className="px-5 py-2.5 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope1_kg / 1000).toFixed(3).replace('.', ',')}</td>
-                      <td className="px-5 py-2.5 text-sm font-semibold text-right text-gray-700 tabular-nums">{pct(scopeData.scope1_kg)}%</td>
+                    <tr className="border-t border-gray-200">
+                      <td className="px-5 py-3 text-sm font-semibold text-gray-900">{t('Skupaj Obseg 1', 'Scope 1 Total')}</td>
+                      <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope1_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                      <td className="px-5 py-3 text-xs font-semibold text-right text-gray-500 tabular-nums">{pct(scopeData.scope1_kg)}%</td>
                     </tr>
                   </>
                 })()}
@@ -400,8 +315,8 @@ export default function AnalyticsPage() {
 
               {/* OBSEG 2 */}
               {scopeData?.scope2_kg !== undefined && scopeData.scope2_kg > 0 && <>
-                <tr className="bg-gray-50">
-                  <td colSpan={4} className="px-5 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('Obseg 2 – Posredne emisije (energija)', 'Scope 2 – Indirect emissions (energy)')}</td>
+                <tr className="border-t border-gray-200">
+                  <td colSpan={3} className="px-5 py-3 text-sm font-semibold text-gray-900">{t('Obseg 2 – Posredne emisije (energija)', 'Scope 2 – Indirect emissions (energy)')}</td>
                 </tr>
                 {[
                   { key: t('Elektrika', 'Electricity'), label: t('Elektrika', 'Electricity') },
@@ -412,41 +327,40 @@ export default function AnalyticsPage() {
                   const src = scopeData.sources.find(s => s.name === key)
                   if (!src || src.kg === 0) return null
                   return (
-                    <tr key={key} className="hover:bg-gray-50 transition-colors">
+                    <tr key={key} className="border-t border-gray-200 hover:bg-gray-50 transition-colors">
                       <td className="px-5 py-3 text-sm text-gray-700">{label}</td>
-                      <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">
-                        {src.qty != null ? `${src.qty.toLocaleString('sl-SI', { maximumFractionDigits: 1 })} ${src.unit}` : '—'}
-                      </td>
-                      <td className="px-5 py-3 text-sm font-semibold text-right text-gray-900 tabular-nums">{(src.kg / 1000).toFixed(3).replace('.', ',')}</td>
-                      <td className="px-5 py-3 text-sm text-right text-gray-500 tabular-nums">{pct(src.kg)}%</td>
+                      <td className="px-5 py-3 text-sm text-right text-gray-900 tabular-nums">{(src.kg / 1000).toFixed(3).replace('.', ',')}</td>
+                      <td className="px-5 py-3 text-xs text-right text-gray-400 tabular-nums">{pct(src.kg)}%</td>
                     </tr>
                   )
                 })}
-                <tr className="bg-blue-50/50">
-                  <td className="px-5 py-2.5 text-sm font-semibold text-gray-700">{t('Skupaj Obseg 2', 'Scope 2 Total')}</td>
-                  <td className="px-5 py-2.5" />
-                  <td className="px-5 py-2.5 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope2_kg / 1000).toFixed(3).replace('.', ',')}</td>
-                  <td className="px-5 py-2.5 text-sm font-semibold text-right text-gray-700 tabular-nums">{pct(scopeData.scope2_kg)}%</td>
+                <tr className="border-t border-gray-200">
+                  <td className="px-5 py-3 text-sm font-semibold text-gray-900">{t('Skupaj Obseg 2', 'Scope 2 Total')}</td>
+                  <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope2_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                  <td className="px-5 py-3 text-xs font-semibold text-right text-gray-500 tabular-nums">{pct(scopeData.scope2_kg)}%</td>
                 </tr>
               </>}
 
               {/* OBSEG 3 */}
               {scopeData?.scope3_kg !== undefined && scopeData.scope3_kg > 0 && <>
-                <tr className="bg-gray-50">
-                  <td colSpan={4} className="px-5 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide">{t('Obseg 3 – Ostale posredne emisije', 'Scope 3 – Other indirect emissions')}</td>
+                <tr className="border-t border-gray-200">
+                  <td colSpan={3} className="px-5 py-3 text-sm font-semibold text-gray-900">{t('Obseg 3 – Ostale posredne emisije', 'Scope 3 – Other indirect emissions')}</td>
                 </tr>
-                <tr className="bg-blue-50/50">
-                  <td className="px-5 py-2.5 text-sm font-semibold text-gray-700">{t('Skupaj Obseg 3', 'Scope 3 Total')}</td>
-                  <td className="px-5 py-2.5" />
-                  <td className="px-5 py-2.5 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope3_kg / 1000).toFixed(3).replace('.', ',')}</td>
-                  <td className="px-5 py-2.5 text-sm font-semibold text-right text-gray-700 tabular-nums">{pct(scopeData.scope3_kg)}%</td>
+                <tr className="border-t border-gray-200 hover:bg-gray-50 transition-colors">
+                  <td className="px-5 py-3 text-sm text-gray-700">{t('Vrednostna veriga', 'Value chain')}</td>
+                  <td className="px-5 py-3 text-sm text-right text-gray-900 tabular-nums">{(scopeData.scope3_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                  <td className="px-5 py-3 text-xs text-right text-gray-400 tabular-nums">{pct(scopeData.scope3_kg)}%</td>
+                </tr>
+                <tr className="border-t border-gray-200">
+                  <td className="px-5 py-3 text-sm font-semibold text-gray-900">{t('Skupaj Obseg 3', 'Scope 3 Total')}</td>
+                  <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope3_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                  <td className="px-5 py-3 text-xs font-semibold text-right text-gray-500 tabular-nums">{pct(scopeData.scope3_kg)}%</td>
                 </tr>
               </>}
 
               {/* TOTAL */}
-              <tr className="border-t-2 border-gray-300 bg-gray-100">
+              <tr className="border-t border-gray-200 bg-gray-100">
                 <td className="px-5 py-3 text-sm font-bold text-gray-900">{t('Skupne emisije', 'Total emissions')}</td>
-                <td className="px-5 py-3" />
                 <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(total / 1000).toFixed(3).replace('.', ',')}</td>
                 <td className="px-5 py-3 text-sm font-bold text-right text-gray-900">100%</td>
               </tr>

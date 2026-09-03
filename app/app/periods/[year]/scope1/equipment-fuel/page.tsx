@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Wrench, Plus, Pencil, X, Leaf, Check, Settings2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
-import { getFuelFactors, calcCo2eKg } from '@/lib/emission-factors'
+import { getFuelFactors, calcCo2eKg, calcFuelGases } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { IconEngine } from '@tabler/icons-react'
@@ -128,6 +128,7 @@ export default function Scope1EquipmentFuelPage() {
     if (!period) { setError('Poročevalsko obdobje ni najdeno.'); return }
     const ff = FUEL_FACTORS[form.fuel_type]
     const co2e_kg = ff ? calcCo2eKg(qty, ff.factor) : 0
+    const gases = calcFuelGases(qty, form.fuel_type)
     setSaving(true); setError('')
     try {
       const supabase = createClient()
@@ -139,7 +140,7 @@ export default function Scope1EquipmentFuelPage() {
       const payload = {
         equipment_id: activeItem.id, fuel_type: form.fuel_type, quantity: qty, unit,
         co2e_kg, factor_kg_co2e_per_unit: ff?.factor ?? null,
-
+        co2_kg: gases.co2_kg, ch4_kg: gases.ch4_kg, n2o_kg: gases.n2o_kg,
         organization_id: org.id, reporting_period_id: period.id,
       }
       const existing = entriesMap[activeItem.id]
@@ -347,7 +348,7 @@ export default function Scope1EquipmentFuelPage() {
             <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-5 flex items-center justify-between rounded-t-2xl">
               <div>
                 <h2 className="text-base font-semibold text-gray-900">{entriesMap[activeItem.id] ? t('Uredi vnos', 'Edit entry') : t('Dodaj porabo', 'Add consumption')}</h2>
-                <p className="text-xs text-gray-500 mt-0.5">{activeItem.name}</p>
+                <p className="text-sm text-gray-500 mt-0.5">{activeItem.name}</p>
               </div>
               <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors"><X className="h-4 w-4" /></button>
             </div>

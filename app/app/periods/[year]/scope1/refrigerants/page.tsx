@@ -138,10 +138,13 @@ export default function Scope1RefrigerantsPage() {
       if (!user) return
       const { data: org } = await supabase.from('organizations').select('id').eq('owner_id', user.id).single()
       if (!org) return
+      // hfc_kg = actual kg of HFC refrigerant emitted (R-744/CO2 → co2_kg instead)
+      const isRefCO2 = form.refrigerant_type === 'R-744'
       const payload = {
         equipment_id: activeItem.id, refrigerant_type: form.refrigerant_type,
         quantity: qty, co2e_kg,
-
+        hfc_kg: isRefCO2 ? 0 : qty,
+        co2_kg: isRefCO2 ? qty : 0,
         organization_id: org.id, reporting_period_id: period.id,
       }
       const existing = entriesMap[activeItem.id]
@@ -349,7 +352,7 @@ export default function Scope1RefrigerantsPage() {
             <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-5 flex items-center justify-between rounded-t-2xl">
               <div>
                 <h2 className="text-base font-semibold text-gray-900">{entriesMap[activeItem.id] ? t('Uredi vnos', 'Edit entry') : t('Dodaj hladivo', 'Add refrigerant')}</h2>
-                <p className="text-xs text-gray-500 mt-0.5">{activeItem.name}</p>
+                <p className="text-sm text-gray-500 mt-0.5">{activeItem.name}</p>
               </div>
               <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors"><X className="h-4 w-4" /></button>
             </div>

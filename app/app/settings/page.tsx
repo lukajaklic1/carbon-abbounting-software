@@ -26,10 +26,14 @@ const INDUSTRIES = [
 ]
 
 const COUNTRIES = [
-  { value: 'SI', label: 'Slovenija' }, { value: 'HR', label: 'Hrvaška' },
-  { value: 'AT', label: 'Avstrija' }, { value: 'DE', label: 'Nemčija' },
-  { value: 'IT', label: 'Italija' },  { value: 'FR', label: 'Francija' },
-  { value: 'GB', label: 'Združeno kraljestvo' }, { value: 'OTHER', label: 'Drugo' },
+  { value: 'SI', sl: 'Slovenija',           en: 'Slovenia' },
+  { value: 'HR', sl: 'Hrvaška',             en: 'Croatia' },
+  { value: 'AT', sl: 'Avstrija',            en: 'Austria' },
+  { value: 'DE', sl: 'Nemčija',             en: 'Germany' },
+  { value: 'IT', sl: 'Italija',             en: 'Italy' },
+  { value: 'FR', sl: 'Francija',            en: 'France' },
+  { value: 'GB', sl: 'Združeno kraljestvo', en: 'United Kingdom' },
+  { value: 'OTHER', sl: 'Drugo',            en: 'Other' },
 ]
 
 const EMPLOYEES = [
@@ -82,7 +86,7 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 export default function SettingsPage() {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const { organization, memberRole, setOrganization } = useOrganizationStore()
   const isAdmin = memberRole === 'admin'
 
@@ -164,14 +168,14 @@ export default function SettingsPage() {
             <Field label={t('Panoga', 'Industry')}>
               <select value={industry} onChange={e => setIndustry(e.target.value)}
                 disabled={!isAdmin} className={disabled(SELECT)}>
-                {INDUSTRIES.map(i => <option key={i.value} value={i.value}>{i.sl}</option>)}
+                {INDUSTRIES.map(i => <option key={i.value} value={i.value}>{locale === 'EN' ? i.en : i.sl}</option>)}
               </select>
             </Field>
             <div className="grid grid-cols-2 gap-4">
               <Field label={t('Država', 'Country')}>
                 <select value={country} onChange={e => setCountry(e.target.value)}
                   disabled={!isAdmin} className={disabled(SELECT)}>
-                  {COUNTRIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+                  {COUNTRIES.map(c => <option key={c.value} value={c.value}>{locale === 'EN' ? c.en : c.sl}</option>)}
                 </select>
               </Field>
               <Field label={t('Število zaposlenih', 'Employees')}>

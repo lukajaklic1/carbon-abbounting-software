@@ -59,6 +59,8 @@ function TopBarContent({ pathname }: { pathname: string }) {
     const period = availablePeriods.find(p => p.year === year)
     setSelectedYear(year)
     setCurrentPeriod(period ?? null)
+    const newPath = pathname.replace(/\/periods\/\d{4}\//, `/periods/${year}/`)
+    if (newPath !== pathname) router.push(newPath)
   }
 
   return (

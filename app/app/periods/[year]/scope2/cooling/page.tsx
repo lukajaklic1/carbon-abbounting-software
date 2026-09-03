@@ -228,9 +228,9 @@ export default function Scope2CoolingPage() {
                     <td className="px-5 py-3.5">{entry ? <span className="text-xs font-medium text-gray-500">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span> : <span className="text-gray-300 text-sm">—</span>}</td>
                     <td className="px-5 py-3.5">
                       {entry ? (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-900"><span className="w-1.5 h-1.5 rounded-full bg-gray-1000" />{t('Podatki vneseni', 'Data entered')}</span>
+                        <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#e0fced',border:'1px solid #d4f8e6',color:'#098259'}}>{t('Podatki vneseni', 'Data entered')}</span>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-700"><span className="w-1.5 h-1.5 rounded-full bg-amber-400" />{t('Potreben je vnos podatkov', 'Data entry required')}</span>
+                        <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#fff3bf',border:'1px solid #ffe066',color:'#e67700'}}>{t('Potreben je vnos podatkov', 'Data entry required')}</span>
                       )}
                     </td>
                     <td className="px-5 py-3.5">
@@ -328,7 +328,7 @@ export default function Scope2CoolingPage() {
             <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-6 py-5 flex items-center justify-between rounded-t-2xl">
               <div>
                 <h2 className="text-base font-semibold text-gray-900">{entriesMap[activeLocation.id] ? t('Uredi vnos', 'Edit entry') : t('Dodaj porabo', 'Add consumption')}</h2>
-                <p className="text-xs text-gray-500 mt-0.5">{activeLocation.name}</p>
+                <p className="text-sm text-gray-500 mt-0.5">{activeLocation.name}</p>
               </div>
               <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors"><X className="h-4 w-4" /></button>
             </div>

@@ -257,14 +257,12 @@ export default function Scope3Page() {
                 {/* Badge */}
                 <div className="shrink-0">
                   {isDone && (
-                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
-                      <Check className="h-3 w-3" />
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#e0fced',border:'1px solid #d4f8e6',color:'#098259'}}>
                       {t('Zaključeno', 'Done')}
                     </span>
                   )}
                   {isInReview && (
-                    <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
-                      <Clock className="h-3 w-3" />
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#fff3bf',border:'1px solid #ffe066',color:'#e67700'}}>
                       {t('V pregledu', 'In review')}
                     </span>
                   )}

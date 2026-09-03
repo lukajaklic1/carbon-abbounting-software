@@ -68,6 +68,11 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
   function handleSelectYear(y: number) {
     setSelectedYear(y)
     setCurrentPeriod(availablePeriods.find(p => p.year === y) ?? null)
+    // Če smo na scope strani z letom v URL-u, navigiraj na isto stran z novim letom
+    const newPath = pathname.replace(/\/periods\/\d{4}\//, `/periods/${y}/`)
+    if (newPath !== pathname) {
+      router.push(newPath)
+    }
   }
 
   const initials = userMeta
