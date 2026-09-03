@@ -10,8 +10,12 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'CarbonTrack – GHG Emissions Reporting',
-  description: 'Measure, track and report your Scope 1 and Scope 2 greenhouse gas emissions.',
+  title: 'Carboniqdesk – GHG Emissions Reporting',
+  description: 'Sledite emisijam Obsega 1, 2 in 3 po GHG Protokolu. Generirajte poročila za ESG zahteve.',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+  },
 }
 
 export default async function RootLayout({
