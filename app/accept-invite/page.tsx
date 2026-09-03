@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { Check } from 'lucide-react'
 
 export default function AcceptInvitePage() {
   const router = useRouter()
@@ -39,25 +41,64 @@ export default function AcceptInvitePage() {
   }, [router])
 
   return (
-    <div className="min-h-screen bg-[#f7f8fa] flex items-center justify-center">
-      <div className="bg-white border border-[#ececec] rounded-2xl shadow-sm p-10 text-center max-w-sm w-full">
-        <div className="w-12 h-12 bg-[#0f0f10] rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-blue-100">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-            <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
-            <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>
-            <polygon points="28,10 16,16 16,28 28,22" fill="white" fillOpacity="0.75"/>
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Logo */}
+      <div className="flex justify-center pt-10">
+        <Link href="/" className="flex items-center gap-2 text-gray-900 hover:opacity-80 transition-opacity">
+          <svg width="22" height="22" viewBox="0 0 40 40" fill="none">
+            <polyline points="26,6 10,20 26,34" stroke="#111" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <polyline points="33,6 17,20 33,34" stroke="#111" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.3"/>
           </svg>
+          <span className="text-lg font-semibold tracking-tight">Carboniqdesk</span>
+        </Link>
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 -mt-10">
+        <div className="w-full max-w-sm text-center">
+
+          {status === 'loading' && (
+            <>
+              <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-5">
+                <svg className="animate-spin h-5 w-5 text-blue-600" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                </svg>
+              </div>
+              <h1 className="text-2xl font-semibold text-gray-900 mb-2">Sprejemam povabilo</h1>
+              <p className="text-sm text-gray-400">Prosimo počakajte...</p>
+            </>
+          )}
+
+          {status === 'done' && (
+            <>
+              <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-5">
+                <Check className="h-5 w-5 text-green-500" />
+              </div>
+              <h1 className="text-2xl font-semibold text-gray-900 mb-2">Dobrodošli!</h1>
+              <p className="text-sm text-gray-400">Preusmeritev na nadzorno ploščo...</p>
+            </>
+          )}
+
+          {status === 'error' && (
+            <>
+              <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-5">
+                <span className="text-red-500 text-xl">!</span>
+              </div>
+              <h1 className="text-2xl font-semibold text-gray-900 mb-2">Napaka</h1>
+              <p className="text-sm text-gray-400 mb-6">Napaka pri sprejemanju povabila. Poskusite znova ali se obrnite na admina.</p>
+              <Link href="/login" className="text-sm text-blue-600 hover:underline font-medium">
+                Nazaj na prijavo
+              </Link>
+            </>
+          )}
+
         </div>
-        {status === 'loading' && <p className="text-sm text-[#767676]">Sprejemam povabilo...</p>}
-        {status === 'done' && (
-          <>
-            <p className="text-lg font-bold text-[#031f18] mb-1">Dobrodošli!</p>
-            <p className="text-sm text-[#767676]">Preusmeritev na nadzorno ploščo...</p>
-          </>
-        )}
-        {status === 'error' && (
-          <p className="text-sm text-red-600">Napaka pri sprejemanju povabila. Poskusite znova ali se obrnite na admina.</p>
-        )}
+      </div>
+
+      {/* Footer */}
+      <div className="flex justify-center px-8 py-5">
+        <p className="text-xs text-gray-400">© {new Date().getFullYear()} Carboniqdesk</p>
       </div>
     </div>
   )

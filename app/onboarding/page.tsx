@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { Check, Building2, User } from 'lucide-react'
+import { Check } from 'lucide-react'
 
 const INDUSTRIES = {
   EN: [
@@ -69,25 +70,31 @@ const EMPLOYEES = {
 const T = {
   EN: {
     steps: ['Company', 'Your profile'] as string[],
-    s1title: 'Set up your company', s1sub: 'This data will appear on your emissions reports.',
+    s1title: 'Set up your company',
+    s1sub: 'This data will appear on your emissions reports.',
     companyName: 'Company name', companyPlaceholder: 'e.g. Acme d.o.o.',
     industry: 'Industry', country: 'Country', employees: 'Number of employees',
-    s2title: 'Your profile', s2sub: (org: string) => `Who is responsible for emissions reporting at ${org}?`,
+    s2title: 'Your profile',
+    s2sub: (org: string) => `Who is responsible for emissions reporting at ${org}?`,
     firstName: 'First name', lastName: 'Last name',
     firstPh: 'Jana', lastPh: 'Novak',
     continue: 'Continue', back: 'Back', finish: 'Finish setup', finishing: 'Setting up...',
     footer: 'You can change all of this later in Settings',
+    terms: <>By signing up you agree to our <Link href="/terms" className="underline hover:text-gray-600">Terms</Link> and <Link href="/privacy" className="underline hover:text-gray-600">Privacy Policy</Link>.</>,
   },
   SL: {
     steps: ['Podjetje', 'Vaš profil'] as string[],
-    s1title: 'Nastavite vaše podjetje', s1sub: 'Ti podatki bodo prikazani na vaših poročilih o emisijah.',
+    s1title: 'Nastavite vaše podjetje',
+    s1sub: 'Ti podatki bodo prikazani na vaših poročilih o emisijah.',
     companyName: 'Ime podjetja', companyPlaceholder: 'npr. Acme d.o.o.',
     industry: 'Panoga', country: 'Država', employees: 'Število zaposlenih',
-    s2title: 'Vaš profil', s2sub: (org: string) => `Kdo je odgovoren za poročanje o emisijah v ${org}?`,
+    s2title: 'Vaš profil',
+    s2sub: (org: string) => `Kdo je odgovoren za poročanje o emisijah v ${org}?`,
     firstName: 'Ime', lastName: 'Priimek',
     firstPh: 'Jana', lastPh: 'Novak',
     continue: 'Nadaljuj', back: 'Nazaj', finish: 'Zaključi nastavitev', finishing: 'Nastavljanje...',
     footer: 'Vse to lahko pozneje spremenite v nastavitvah',
+    terms: <>Z registracijo se strinjate z našimi <Link href="/terms" className="underline hover:text-gray-600">pogoji</Link> in <Link href="/privacy" className="underline hover:text-gray-600">politiko zasebnosti</Link>.</>,
   },
 }
 
@@ -97,14 +104,12 @@ function getCookieLocale(): 'EN' | 'SL' {
   return m?.[1]?.toUpperCase() === 'EN' ? 'EN' : 'SL'
 }
 
-const INPUT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] placeholder:text-gray-300 transition-shadow'
-const SELECT = 'w-full px-3.5 py-2.5 text-sm bg-white border border-[#ececec] rounded-xl focus:outline-none focus:border-[#0f0f10] focus:shadow-[0_0_0_2px_#0f0f1033] transition-shadow'
+const INPUT = 'w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-gray-300 transition-colors'
+const SELECT = 'w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-gray-300 transition-colors bg-white'
 
 export default function OnboardingPage() {
   const router = useRouter()
-  const [locale, setLocale] = useState<'EN' | 'SL'>(() =>
-    typeof document !== 'undefined' ? getCookieLocale() : 'SL'
-  )
+  const [locale, setLocale] = useState<'EN' | 'SL'>('SL')
   const t = T[locale]
 
   const [step, setStep] = useState(1)
@@ -116,6 +121,8 @@ export default function OnboardingPage() {
   const [lastName, setLastName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => { setLocale(getCookieLocale()) }, [])
 
   function switchLocale(l: 'EN' | 'SL') {
     document.cookie = `locale=${l.toLowerCase()}; path=/; max-age=31536000`
@@ -149,171 +156,161 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f8fa] flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Logo */}
+      <div className="flex justify-center pt-10">
+        <Link href="/" className="flex items-center gap-2 text-gray-900 hover:opacity-80 transition-opacity">
+          <svg width="22" height="22" viewBox="0 0 40 40" fill="none">
+            <polyline points="26,6 10,20 26,34" stroke="#111" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <polyline points="33,6 17,20 33,34" stroke="#111" strokeWidth="5.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.3"/>
+          </svg>
+          <span className="text-lg font-semibold tracking-tight">Carboniqdesk</span>
+        </Link>
+      </div>
 
-        {/* Logo */}
-        <div className="flex justify-center mb-10">
-          <div className="w-11 h-11 bg-[#0f0f10] rounded-2xl flex items-center justify-center shadow-lg shadow-blue-100">
-            <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-              <polygon points="16,4 28,10 16,16 4,10" fill="white" fillOpacity="0.95"/>
-              <polygon points="4,10 16,16 16,28 4,22" fill="white" fillOpacity="0.55"/>
-              <polygon points="28,10 16,16 16,28 28,22" fill="white" fillOpacity="0.75"/>
-            </svg>
-          </div>
-        </div>
+      {/* Content */}
+      <div className="flex-1 flex flex-col items-center justify-center px-4 py-10">
+        <div className="w-full max-w-sm">
 
-        {/* Step indicators */}
-        <div className="flex items-center justify-center mb-8">
-          {[Building2, User].map((Icon, i) => {
-            const num = i + 1
-            const done = step > num
-            const active = step === num
-            return (
-              <div key={i} className="flex items-center">
-                <div className="flex flex-col items-center gap-1.5">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                    done ? 'bg-green-500 text-white' :
-                    active ? 'bg-[#0f0f10] text-white shadow-md shadow-blue-200' :
-                    'bg-white border-2 border-[#ececec] text-[#767676]'
-                  }`}>
-                    {done ? <Check className="h-4 w-4" strokeWidth={2.5} /> : num}
+          {/* Step indicators */}
+          <div className="flex items-center justify-center mb-8">
+            {t.steps.map((label, i) => {
+              const num = i + 1
+              const done = step > num
+              const active = step === num
+              return (
+                <div key={i} className="flex items-center">
+                  <div className="flex flex-col items-center gap-1.5">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
+                      done ? 'bg-blue-600 text-white' :
+                      active ? 'bg-blue-600 text-white' :
+                      'bg-gray-100 text-gray-400'
+                    }`}>
+                      {done ? <Check className="h-3.5 w-3.5" strokeWidth={2.5} /> : num}
+                    </div>
+                    <span className={`text-xs font-medium ${active || done ? 'text-gray-900' : 'text-gray-400'}`}>
+                      {label}
+                    </span>
                   </div>
-                  <span className={`text-xs font-semibold ${active ? 'text-[#0f0f10]' : done ? 'text-[#0f0f10]' : 'text-[#767676]'}`}>
-                    {t.steps[i]}
-                  </span>
+                  {i < t.steps.length - 1 && (
+                    <div className={`w-20 h-px mx-3 mb-5 ${step > num ? 'bg-blue-600' : 'bg-gray-200'}`} />
+                  )}
                 </div>
-                {i < 1 && <div className={`w-28 h-px mx-4 mb-5 ${step > num ? 'bg-green-400' : 'bg-[#efefef]'}`} />}
-              </div>
-            )
-          })}
-        </div>
-
-        {/* Card */}
-        <div className="bg-white border border-[#ececec] rounded-2xl shadow-sm">
+              )
+            })}
+          </div>
 
           {/* Step 1 */}
           {step === 1 && (
-            <div className="p-8">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#e5eeff' }}>
-                  <Building2 className="h-5 w-5" style={{ color: '#215bcf' }} />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold text-[#031f18] leading-tight">{t.s1title}</h2>
-                  <p className="text-sm text-[#767676] mt-0.5">{t.s1sub}</p>
-                </div>
-              </div>
+            <div>
+              <h1 className="text-2xl font-semibold text-gray-900 text-center mb-1">{t.s1title}</h1>
+              <p className="text-sm text-gray-400 text-center mb-8">{t.s1sub}</p>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <label className="text-xs font-medium text-gray-500">
                     {t.companyName} <span className="text-red-400">*</span>
                   </label>
                   <input value={orgName} onChange={e => setOrgName(e.target.value)}
                     placeholder={t.companyPlaceholder} className={INPUT} autoFocus />
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">{t.industry}</label>
+                <div className="flex flex-col gap-1">
+                  <label className="text-xs font-medium text-gray-500">{t.industry}</label>
                   <select value={industry} onChange={e => setIndustry(e.target.value)} className={SELECT}>
                     {INDUSTRIES[locale].map(ind => <option key={ind.value} value={ind.value}>{ind.label}</option>)}
                   </select>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1">{t.country}</label>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-xs font-medium text-gray-500">{t.country}</label>
                     <select value={country} onChange={e => setCountry(e.target.value)} className={SELECT}>
                       {COUNTRIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                     </select>
                   </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-500 mb-1">{t.employees}</label>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-xs font-medium text-gray-500">{t.employees}</label>
                     <select value={employees} onChange={e => setEmployees(e.target.value)} className={SELECT}>
                       {EMPLOYEES[locale].map(e => <option key={e.value} value={e.value}>{e.label}</option>)}
                     </select>
                   </div>
                 </div>
-              </div>
 
-              <button onClick={() => setStep(2)} disabled={!orgName.trim()}
-                className="w-full mt-7 bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-3 rounded-xl transition-colors">
-                {t.continue}
-              </button>
+                <button onClick={() => setStep(2)} disabled={!orgName.trim()}
+                  className="w-full bg-blue-600 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-1">
+                  {t.continue}
+                </button>
+              </div>
             </div>
           )}
 
           {/* Step 2 */}
           {step === 2 && (
-            <div className="p-8">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: '#e5eeff' }}>
-                  <User className="h-5 w-5" style={{ color: '#215bcf' }} />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold text-[#031f18] leading-tight">{t.s2title}</h2>
-                  <p className="text-sm text-[#767676] mt-0.5">{t.s2sub(orgName)}</p>
-                </div>
-              </div>
+            <div>
+              <h1 className="text-2xl font-semibold text-gray-900 text-center mb-1">{t.s2title}</h1>
+              <p className="text-sm text-gray-400 text-center mb-8">{t.s2sub(orgName)}</p>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">
-                    {t.firstName} <span className="text-red-400">*</span>
-                  </label>
-                  <input value={firstName} onChange={e => setFirstName(e.target.value)}
-                    placeholder={t.firstPh} className={INPUT} autoFocus />
+              <div className="flex flex-col gap-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-xs font-medium text-gray-500">
+                      {t.firstName} <span className="text-red-400">*</span>
+                    </label>
+                    <input value={firstName} onChange={e => setFirstName(e.target.value)}
+                      placeholder={t.firstPh} className={INPUT} autoFocus />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-xs font-medium text-gray-500">
+                      {t.lastName} <span className="text-red-400">*</span>
+                    </label>
+                    <input value={lastName} onChange={e => setLastName(e.target.value)}
+                      placeholder={t.lastPh} className={INPUT} />
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">
-                    {t.lastName} <span className="text-red-400">*</span>
-                  </label>
-                  <input value={lastName} onChange={e => setLastName(e.target.value)}
-                    placeholder={t.lastPh} className={INPUT} />
+
+                {error && (
+                  <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">{error}</p>
+                )}
+
+                <div className="flex gap-3 mt-1">
+                  <button onClick={() => setStep(1)}
+                    className="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    {t.back}
+                  </button>
+                  <button onClick={handleComplete}
+                    disabled={loading || !firstName.trim() || !lastName.trim()}
+                    className="flex-1 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed rounded-lg transition-colors">
+                    {loading ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                        </svg>
+                        {t.finishing}
+                      </span>
+                    ) : t.finish}
+                  </button>
                 </div>
-              </div>
-
-              {error && (
-                <p className="mt-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2">{error}</p>
-              )}
-
-              <div className="flex gap-3 mt-7">
-                <button onClick={() => setStep(1)}
-                  className="px-5 py-3 text-sm font-medium text-[#031f18] bg-white border border-[#ececec] rounded-xl hover:bg-[#f9f9f9] transition-colors">
-                  {t.back}
-                </button>
-                <button onClick={handleComplete}
-                  disabled={loading || !firstName.trim() || !lastName.trim()}
-                  className="flex-1 py-3 text-sm font-semibold text-white bg-[#0f0f10] hover:bg-[#2a2a2b] disabled:opacity-50 rounded-xl transition-colors">
-                  {loading ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
-                      </svg>
-                      {t.finishing}
-                    </span>
-                  ) : t.finish}
-                </button>
               </div>
             </div>
           )}
-        </div>
 
-        {/* Footer */}
-        <div className="mt-5 flex items-center justify-between px-1">
-          <p className="text-xs text-[#767676]">{t.footer}</p>
-          <div className="flex gap-0.5">
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="flex flex-col items-center gap-3 px-8 py-5">
+        <p className="text-xs text-gray-400 text-center max-w-sm">{t.terms}</p>
+        <div className="flex items-center gap-4">
+          <p className="text-xs text-gray-400">© {new Date().getFullYear()} Carboniqdesk</p>
+          <div className="flex gap-1">
             {(['SL', 'EN'] as const).map(l => (
               <button key={l} onClick={() => switchLocale(l)}
-                className={`text-xs font-semibold px-2.5 py-1 rounded-full transition-colors ${
-                  locale === l ? 'bg-[#0f0f10] text-white' : 'text-[#767676] hover:text-[#767676]'
-                }`}>
+                className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${locale === l ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'}`}>
                 {l}
               </button>
             ))}
           </div>
         </div>
-
       </div>
     </div>
   )
