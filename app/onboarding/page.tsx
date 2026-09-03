@@ -236,7 +236,7 @@ export default function OnboardingPage() {
                 </div>
 
                 <button onClick={() => setStep(2)} disabled={!orgName.trim()}
-                  className="w-full bg-blue-600 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-1">
+                  className="w-full bg-blue-600 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-6">
                   {t.continue}
                 </button>
               </div>
