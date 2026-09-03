@@ -8,7 +8,7 @@ import { Mail } from 'lucide-react'
 const T = {
   EN: {
     title: 'Forgot password',
-    subtitle: 'Enter your email and we'll send you a reset link.',
+    subtitle: "Enter your email and we'll send you a reset link.",
     email: 'Email',
     submit: 'Send reset link',
     submitting: 'Sending...',
