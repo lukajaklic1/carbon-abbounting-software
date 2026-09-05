@@ -26,7 +26,7 @@ export default function ReportsPage() {
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {upgradeRequested ? (
-            <div className="inline-flex items-center gap-1.5 h-9 px-4 bg-green-50 border border-green-200 rounded-xl text-sm font-medium text-green-700">
+            <div className="inline-flex items-center gap-1.5 h-9 px-4 border rounded-xl text-sm font-medium" style={{backgroundColor:'#e0fced',borderColor:'#d4f8e6',color:'#098259'}}>
               <Check className="h-3.5 w-3.5" />
               {t('Zahteva za nadgraditev poslana', 'Upgrade request sent')}
             </div>
@@ -54,7 +54,7 @@ export default function ReportsPage() {
             {t('Dostopno z nadgradnjo.', 'Available with an upgrade.')}
           </p>
           {upgradeRequested ? (
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-50 border border-green-200 rounded-xl text-sm font-medium text-green-700">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 border rounded-xl text-sm font-medium" style={{backgroundColor:'#e0fced',borderColor:'#d4f8e6',color:'#098259'}}>
               <Check className="h-4 w-4" />
               {t('Naša ekipa vas bo kmalu kontaktirala', 'Our team will contact you soon')}
             </div>

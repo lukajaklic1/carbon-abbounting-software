@@ -193,7 +193,7 @@ export default function Scope3Page() {
             <span className="font-medium text-gray-900">{doneCount} / 15</span>
           </div>
           {upgradeRequested ? (
-            <div className="inline-flex items-center gap-1.5 h-9 px-4 bg-green-50 border border-green-200 rounded-xl text-sm font-medium text-green-700">
+            <div className="inline-flex items-center gap-1.5 h-9 px-4 border rounded-xl text-sm font-medium" style={{backgroundColor:'#e0fced',borderColor:'#d4f8e6',color:'#098259'}}>
               <Check className="h-3.5 w-3.5" />
               {t('Zahteva za nadgraditev poslana', 'Upgrade request sent')}
             </div>
