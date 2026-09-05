@@ -119,7 +119,7 @@ export default function Scope2CoolingPage() {
   async function handleSave() {
     const kwh = parseQty(form.kwh)
     if (isNaN(kwh) || kwh < 0) { setError(t('Vnesite veljavno količino kWh.', 'Enter a valid kWh quantity.')); return }
-    if (!period) { setError('Poročevalsko obdobje ni najdeno.'); return }
+    if (!period) { setError(t('Poročevalsko obdobje ni najdeno.', 'Reporting period not found.')); return }
     const cf = COOLING_FACTORS[form.method]
     const co2e_kg = cf ? calcCo2eKg(kwh, cf.factor) : 0
     setSaving(true); setError('')

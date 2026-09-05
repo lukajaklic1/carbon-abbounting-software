@@ -120,7 +120,7 @@ export default function Scope1IndustrialGasesPage() {
   async function handleSave() {
     const qty = parseQty(form.quantity_kg)
     if (isNaN(qty) || qty < 0) { setError(t('Vnesite veljavno količino.', 'Enter a valid quantity.')); return }
-    if (!period) { setError('Poročevalsko obdobje ni najdeno.'); return }
+    if (!period) { setError(t('Poročevalsko obdobje ni najdeno.', 'Reporting period not found.')); return }
     const gf = INDUSTRIAL_GAS_FACTORS[form.gas_type]
     const co2e_kg = gf ? calcCo2eKg(qty, gf.factor) : 0
     setSaving(true); setError('')

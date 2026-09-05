@@ -15,10 +15,10 @@ const PAGE_SIZE = 20
 const IS_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL
 
 const COUNTRIES = [
-  { value: 'SI', label: 'Slovenija' }, { value: 'HR', label: 'Hrvaška' },
-  { value: 'AT', label: 'Avstrija' }, { value: 'DE', label: 'Nemčija' },
-  { value: 'IT', label: 'Italija' }, { value: 'FR', label: 'Francija' },
-  { value: 'GB', label: 'Združeno kraljestvo' }, { value: 'OTHER', label: 'Drugo' },
+  { value: 'SI', sl: 'Slovenija', en: 'Slovenia' }, { value: 'HR', sl: 'Hrvaška', en: 'Croatia' },
+  { value: 'AT', sl: 'Avstrija', en: 'Austria' }, { value: 'DE', sl: 'Nemčija', en: 'Germany' },
+  { value: 'IT', sl: 'Italija', en: 'Italy' }, { value: 'FR', sl: 'Francija', en: 'France' },
+  { value: 'GB', sl: 'Združeno kraljestvo', en: 'United Kingdom' }, { value: 'OTHER', sl: 'Drugo', en: 'Other' },
 ]
 
 const LOCATION_TYPES = [
@@ -39,11 +39,11 @@ const LOCATION_TYPES = [
 ]
 
 const UTILITIES = [
-  { key: 'uses_electricity', label: 'Ta lokacija uporablja elektriko', desc: 'Elektrika je najpogostejši vir energije v stavbah po vsem svetu, ki se uporablja za razsvetljavo, ogrevanje, hlajenje in opremo.' },
-  { key: 'uses_natural_gas', label: 'Ta lokacija uporablja zemeljski plin', desc: 'Zemeljski plin je pogosto gorivo v stavbah po vsem svetu, ki se uporablja za ogrevanje.' },
-  { key: 'uses_heat', label: 'Ta lokacija uporablja daljinsko toploto', desc: 'Toplota, kupljena od zunanjega dobavitelja in dostavljena prek omrežja daljinskega ogrevanja.' },
-  { key: 'uses_steam', label: 'Ta lokacija uporablja paro', desc: 'Para, kupljena od zunanjega dobavitelja in dostavljena prek omrežja.' },
-  { key: 'uses_cooling', label: 'Ta lokacija uporablja daljinsko hlajenje', desc: 'Daljinsko hlajenje je redko (< 2 % lokacij). Gre za nakup hladne vode od zunanjega dobavitelja in NI enako navadni klimatski napravi, ki deluje na elektriko in hladilne plina.' },
+  { key: 'uses_electricity', sl: 'Ta lokacija uporablja elektriko', en: 'This location uses electricity', descSl: 'Elektrika je najpogostejši vir energije v stavbah po vsem svetu, ki se uporablja za razsvetljavo, ogrevanje, hlajenje in opremo.', descEn: 'Electricity is the most common energy source in buildings worldwide, used for lighting, heating, cooling and equipment.' },
+  { key: 'uses_natural_gas', sl: 'Ta lokacija uporablja zemeljski plin', en: 'This location uses natural gas', descSl: 'Zemeljski plin je pogosto gorivo v stavbah po vsem svetu, ki se uporablja za ogrevanje.', descEn: 'Natural gas is a common fuel in buildings worldwide, used for heating.' },
+  { key: 'uses_heat', sl: 'Ta lokacija uporablja daljinsko toploto', en: 'This location uses district heating', descSl: 'Toplota, kupljena od zunanjega dobavitelja in dostavljena prek omrežja daljinskega ogrevanja.', descEn: 'Heat purchased from an external supplier and delivered via a district heating network.' },
+  { key: 'uses_steam', sl: 'Ta lokacija uporablja paro', en: 'This location uses steam', descSl: 'Para, kupljena od zunanjega dobavitelja in dostavljena prek omrežja.', descEn: 'Steam purchased from an external supplier and delivered via a network.' },
+  { key: 'uses_cooling', sl: 'Ta lokacija uporablja daljinsko hlajenje', en: 'This location uses district cooling', descSl: 'Daljinsko hlajenje je redko (< 2 % lokacij). Gre za nakup hladne vode od zunanjega dobavitelja in NI enako navadni klimatski napravi, ki deluje na elektriko in hladilne plina.', descEn: 'District cooling is rare (< 2% of locations). It is the purchase of chilled water from an external supplier and is NOT the same as a regular air conditioner running on electricity and refrigerants.' },
 ]
 
 const EMPTY_FORM = {
@@ -260,7 +260,7 @@ export default function LocationsPage() {
           <select value={filterType} onChange={e => { setFilterType(e.target.value); setPage(1) }}
             className="font-medium text-gray-900 bg-transparent focus:outline-none cursor-pointer">
             <option value="">{t('Vsi', 'All')}</option>
-            {LOCATION_TYPES.map(lt => <option key={lt.value} value={lt.value}>{lt.sl}</option>)}
+            {LOCATION_TYPES.map(lt => <option key={lt.value} value={lt.value}>{locale === 'EN' ? lt.en : lt.sl}</option>)}
           </select>
         </label>
         <label className="inline-flex items-center gap-1.5 h-8 px-3 bg-white border border-gray-200 rounded-lg text-[13px] cursor-pointer hover:bg-[#f6f6f6] transition-colors">
@@ -462,7 +462,7 @@ export default function LocationsPage() {
                   <label className="block text-xs font-medium text-gray-500 mb-1">{t('Država', 'Country')}</label>
                   <select value={form.country_code} onChange={e => f('country_code', e.target.value)}
                     className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_#3b82f633]">
-                    {COUNTRIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+                    {COUNTRIES.map(c => <option key={c.value} value={c.value}>{locale === 'EN' ? c.en : c.sl}</option>)}
                   </select>
                 </div>
                 <div>
@@ -517,7 +517,7 @@ export default function LocationsPage() {
                             </div>
                           </div>
                           <div>
-                            <p className="text-xs font-medium text-gray-500">{u.label}</p>
+                            <p className="text-xs font-medium text-gray-500">{locale === 'EN' ? u.en : u.sl}</p>
                           </div>
                         </label>
                         {isLocked && (

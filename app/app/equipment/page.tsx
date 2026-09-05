@@ -526,9 +526,9 @@ export default function EquipmentPage() {
             <select value={filterFuelType} onChange={e => { setFilterFuelType(e.target.value); setPage(1) }}
               className="font-medium text-[#0f0f10] bg-transparent focus:outline-none cursor-pointer">
               <option value="">{t('Vsi', 'All')}</option>
-              {(!filterCategory || filterCategory === 'fuel') && FUEL_TYPES.map(ft => <option key={ft.value} value={ft.value}>{ft.sl}</option>)}
-              {(!filterCategory || filterCategory === 'refrigerants') && REFRIGERANT_TYPES.map(rt => <option key={rt.value} value={rt.value}>{rt.sl}</option>)}
-              {(!filterCategory || filterCategory === 'industrial_gas') && INDUSTRIAL_GAS_TYPES.map(gt => <option key={gt.value} value={gt.value}>{gt.sl}</option>)}
+              {(!filterCategory || filterCategory === 'fuel') && FUEL_TYPES.map(ft => <option key={ft.value} value={ft.value}>{locale === 'EN' ? ft.en : ft.sl}</option>)}
+              {(!filterCategory || filterCategory === 'refrigerants') && REFRIGERANT_TYPES.map(rt => <option key={rt.value} value={rt.value}>{locale === 'EN' ? rt.en : rt.sl}</option>)}
+              {(!filterCategory || filterCategory === 'industrial_gas') && INDUSTRIAL_GAS_TYPES.map(gt => <option key={gt.value} value={gt.value}>{locale === 'EN' ? gt.en : gt.sl}</option>)}
             </select>
           </label>
           <label className="inline-flex items-center gap-1.5 h-9 px-3 bg-white border border-gray-200 rounded-xl text-[13px] cursor-pointer hover:bg-[#fafafa] has-[:focus]:border-[#0f0f10] transition-colors">

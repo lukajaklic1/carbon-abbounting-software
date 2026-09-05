@@ -121,7 +121,7 @@ export default function Scope1StationaryPage() {
   async function handleSave() {
     const qty = parseQty(form.quantity)
     if (isNaN(qty) || qty < 0) { setError(t('Vnesite veljavno količino.', 'Enter a valid quantity.')); return }
-    if (!period) { setError('Poročevalsko obdobje ni najdeno.'); return }
+    if (!period) { setError(t('Poročevalsko obdobje ni najdeno.', 'Reporting period not found.')); return }
     const ff = FUEL_FACTORS[form.fuel_type]
     const co2e_kg = ff ? calcCo2eKg(qty, ff.factor) : 0
     const gases = calcFuelGases(qty, form.fuel_type)

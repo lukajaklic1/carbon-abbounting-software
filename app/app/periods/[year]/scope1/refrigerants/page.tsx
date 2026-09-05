@@ -128,7 +128,7 @@ export default function Scope1RefrigerantsPage() {
   async function handleSave() {
     const qty = parseQty(form.quantity_kg)
     if (isNaN(qty) || qty < 0) { setError(t('Vnesite veljavno količino.', 'Enter a valid quantity.')); return }
-    if (!period) { setError('Poročevalsko obdobje ni najdeno.'); return }
+    if (!period) { setError(t('Poročevalsko obdobje ni najdeno.', 'Reporting period not found.')); return }
     const rf = REFRIGERANT_FACTORS[form.refrigerant_type]
     const co2e_kg = rf ? calcCo2eKg(qty, rf.factor) : 0
     setSaving(true); setError('')
