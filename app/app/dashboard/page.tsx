@@ -16,11 +16,20 @@ import {
 
 const IS_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL
 
-const INDUSTRY_LABELS: Record<string, string> = {
-  manufacturing: 'Predelovalna industrija', retail: 'Trgovina', transport: 'Transport',
-  energy: 'Energetika', finance: 'Finance', construction: 'Gradbeništvo',
-  agriculture: 'Kmetijstvo', hospitality: 'Gostinstvo', healthcare: 'Zdravstvo',
-  it: 'Informacijska tehnologija', education: 'Izobraževanje', public: 'Javna uprava', other: 'Drugo',
+const INDUSTRY_LABELS: Record<string, { sl: string; en: string }> = {
+  manufacturing: { sl: 'Predelovalna industrija', en: 'Manufacturing' },
+  retail:        { sl: 'Trgovina',                en: 'Retail' },
+  transport:     { sl: 'Transport',               en: 'Transport' },
+  energy:        { sl: 'Energetika',              en: 'Energy' },
+  finance:       { sl: 'Finance',                 en: 'Finance' },
+  construction:  { sl: 'Gradbeništvo',            en: 'Construction' },
+  agriculture:   { sl: 'Kmetijstvo',              en: 'Agriculture' },
+  hospitality:   { sl: 'Gostinstvo',              en: 'Hospitality' },
+  healthcare:    { sl: 'Zdravstvo',               en: 'Healthcare' },
+  it:            { sl: 'Informacijska tehnologija', en: 'Information Technology' },
+  education:     { sl: 'Izobraževanje',           en: 'Education' },
+  public:        { sl: 'Javna uprava',            en: 'Public Administration' },
+  other:         { sl: 'Drugo',                   en: 'Other' },
 }
 
 const SCOPE_COLORS = ['#215bcf', '#098259', '#f59e0b']
@@ -29,7 +38,7 @@ const YEAR_COLOR = '#215bcf'
 export default function DashboardPage() {
   const { selectedYear, currentPeriod, availablePeriods, setSelectedYear, setCurrentPeriod } = usePeriodStore()
   const { organization } = useOrganizationStore()
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
 
   const org = IS_MOCK ? mockOrg : organization
   const period = IS_MOCK ? mockPeriod : currentPeriod
@@ -53,29 +62,29 @@ export default function DashboardPage() {
   // Chart: scope breakdown for selected year (mock data for now)
   const scopeChartData = totalKg > 0
     ? [
-        { name: 'Obseg 1', value: parseFloat((totalKg * 0.7 / 1000).toFixed(2)) },
-        { name: 'Obseg 2', value: parseFloat((totalKg * 0.3 / 1000).toFixed(2)) },
+        { name: t('Obseg 1', 'Scope 1'), value: parseFloat((totalKg * 0.7 / 1000).toFixed(2)) },
+        { name: t('Obseg 2', 'Scope 2'), value: parseFloat((totalKg * 0.3 / 1000).toFixed(2)) },
       ]
     : IS_MOCK
       ? [
-          { name: 'Obseg 1', value: 33.8 },
-          { name: 'Obseg 2', value: 14.5 },
+          { name: t('Obseg 1', 'Scope 1'), value: 33.8 },
+          { name: t('Obseg 2', 'Scope 2'), value: 14.5 },
         ]
       : []
 
   const sources = [
-    { label: t('Zemeljski plin', 'Natural gas'), href: `/app/periods/${displayYear}/scope1/stationary`, icon: Flame, iconColor: '#215bcf', bg: '#e5eeff', scope: 'Obseg 1' },
-    { label: t('Vozila', 'Vehicles'), href: `/app/periods/${displayYear}/scope1/mobile`, icon: Car, iconColor: '#215bcf', bg: '#e5eeff', scope: 'Obseg 1' },
-    { label: t('Oprema', 'Equipment'), href: `/app/periods/${displayYear}/scope1/equipment-fuel`, icon: Wrench, iconColor: '#215bcf', bg: '#e5eeff', scope: 'Obseg 1' },
-    { label: t('Hladilni plini', 'Refrigerants'), href: `/app/periods/${displayYear}/scope1/refrigerants`, icon: Thermometer, iconColor: '#098259', bg: '#e0fced', scope: 'Obseg 1' },
-    { label: t('Industrijski plini', 'Industrial gases'), href: `/app/periods/${displayYear}/scope1/industrial-gases`, icon: FlaskConical, iconColor: '#098259', bg: '#e0fced', scope: 'Obseg 1' },
-    { label: t('Elektrika', 'Electricity'), href: `/app/periods/${displayYear}/scope2/electricity`, icon: Zap, iconColor: '#098259', bg: '#e0fced', scope: 'Obseg 2' },
+    { label: t('Zemeljski plin', 'Natural gas'), href: `/app/periods/${displayYear}/scope1/stationary`, icon: Flame, iconColor: '#215bcf', bg: '#e5eeff', scope: t('Obseg 1', 'Scope 1') },
+    { label: t('Vozila', 'Vehicles'), href: `/app/periods/${displayYear}/scope1/mobile`, icon: Car, iconColor: '#215bcf', bg: '#e5eeff', scope: t('Obseg 1', 'Scope 1') },
+    { label: t('Oprema', 'Equipment'), href: `/app/periods/${displayYear}/scope1/equipment-fuel`, icon: Wrench, iconColor: '#215bcf', bg: '#e5eeff', scope: t('Obseg 1', 'Scope 1') },
+    { label: t('Hladilni plini', 'Refrigerants'), href: `/app/periods/${displayYear}/scope1/refrigerants`, icon: Thermometer, iconColor: '#098259', bg: '#e0fced', scope: t('Obseg 1', 'Scope 1') },
+    { label: t('Industrijski plini', 'Industrial gases'), href: `/app/periods/${displayYear}/scope1/industrial-gases`, icon: FlaskConical, iconColor: '#098259', bg: '#e0fced', scope: t('Obseg 1', 'Scope 1') },
+    { label: t('Elektrika', 'Electricity'), href: `/app/periods/${displayYear}/scope2/electricity`, icon: Zap, iconColor: '#098259', bg: '#e0fced', scope: t('Obseg 2', 'Scope 2') },
   ]
 
   const statsCards = [
     { label: t('Skupne emisije', 'Total emissions'), value: `${totalTons.toFixed(2)} t`, sub: t('CO₂e letno', 'CO₂e annual'), icon: Leaf, iconColor: '#215bcf', bg: '#e5eeff' },
-    { label: 'Obseg 1', value: '0.00 t', sub: t('Direktne emisije', 'Direct emissions'), icon: Flame, iconColor: '#098259', bg: '#e0fced' },
-    { label: 'Obseg 2', value: '0.00 t', sub: t('Posredne emisije', 'Indirect emissions'), icon: Zap, iconColor: '#215bcf', bg: '#e5eeff' },
+    { label: t('Obseg 1', 'Scope 1'), value: '0.00 t', sub: t('Direktne emisije', 'Direct emissions'), icon: Flame, iconColor: '#098259', bg: '#e0fced' },
+    { label: t('Obseg 2', 'Scope 2'), value: '0.00 t', sub: t('Posredne emisije', 'Indirect emissions'), icon: Zap, iconColor: '#215bcf', bg: '#e5eeff' },
     { label: t('Viri podatkov', 'Data sources'), value: `0 / ${sources.length}`, sub: t('Izpolnjeno', 'Completed'), icon: BarChart3, iconColor: '#098259', bg: '#e0fced' },
   ]
 
