@@ -526,7 +526,7 @@ export default function LocationsPage() {
                         {isLocked && (
                           <p className="mt-1 ml-1 text-xs text-[#215bcf] flex items-center gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                            {t('Lokacija je v poročilu za ta energent. Energenta ni mogoče odstraniti.', 'Location is in a report for this utility. Cannot remove.')}
+                            {t('Ta lokacija ima že poročilo povezano s tem energentom, zato energenta ni več možno odstraniti.', 'This location already has a report linked to this utility and can no longer be removed.')}
                           </p>
                         )}
                       </div>
