@@ -35,7 +35,6 @@ const FUEL_TYPES = [
   { value: 'lpg',     sl: 'LPG',    en: 'LPG' },
   { value: 'cng',     sl: 'CNG',    en: 'CNG' },
   { value: 'lng',     sl: 'LNG',    en: 'LNG' },
-  { value: 'other',   sl: 'Drugo',  en: 'Other' },
 ]
 
 const VEHICLE_TYPES = [
