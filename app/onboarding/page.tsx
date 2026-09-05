@@ -236,7 +236,7 @@ export default function OnboardingPage() {
                 </div>
 
                 <button onClick={() => setStep(2)} disabled={!orgName.trim()}
-                  className="w-full bg-blue-600 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-6">
+                  className="w-full bg-gray-900 text-white rounded-lg py-2.5 text-sm font-medium hover:bg-gray-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-6">
                   {t.continue}
                 </button>
               </div>
@@ -278,7 +278,7 @@ export default function OnboardingPage() {
                   </button>
                   <button onClick={handleComplete}
                     disabled={loading || !firstName.trim() || !lastName.trim()}
-                    className="flex-1 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed rounded-lg transition-colors">
+                    className="flex-1 py-2.5 text-sm font-medium text-white bg-gray-900 hover:bg-gray-700 disabled:opacity-60 disabled:cursor-not-allowed rounded-lg transition-colors">
                     {loading ? (
                       <span className="flex items-center justify-center gap-2">
                         <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
