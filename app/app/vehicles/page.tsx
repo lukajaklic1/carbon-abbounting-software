@@ -256,7 +256,7 @@ export default function VehiclesPage() {
       <div className="flex items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 h-[57px] shrink-0">
         <div className="flex items-baseline gap-3 min-w-0">
           <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Vozila', 'Vehicles')}</h1>
-          <p className="text-sm text-gray-500 truncate">{t('Bencinska, dizelska in hibridna vozila. Električna se vodijo v Obsegu 2.', 'Petrol, diesel and hybrid vehicles. Electric vehicles are tracked under Scope 2.')}</p>
+          <p className="text-sm text-gray-500 truncate">{t('Sem spadajo bencinska, dizelska in hibridna vozila.', 'Includes petrol, diesel and hybrid vehicles.')}</p>
         </div>
         <button onClick={openNew}
           className="inline-flex items-center gap-1.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg transition-colors shrink-0">
