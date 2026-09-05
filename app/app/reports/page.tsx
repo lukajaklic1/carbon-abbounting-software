@@ -51,10 +51,7 @@ export default function ReportsPage() {
             {t('GHG Poročilo', 'GHG Report')}
           </h2>
           <p className="text-sm text-gray-500 mb-6">
-            {t(
-              'Samodejno generirano poročilo o emisijah toplogrednih plinov v skladu z GHG Protocol standardom. Dostopno z nadgradnjo.',
-              'Automatically generated greenhouse gas emissions report in accordance with the GHG Protocol standard. Available with an upgrade.'
-            )}
+            {t('Dostopno z nadgradnjo.', 'Available with an upgrade.')}
           </p>
           {upgradeRequested ? (
             <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-50 border border-green-200 rounded-xl text-sm font-medium text-green-700">
