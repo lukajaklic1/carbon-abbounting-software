@@ -541,11 +541,11 @@ export default function LocationsPage() {
                   <label className="block text-xs font-medium text-gray-500 mb-1">{t('Status', 'Status')}</label>
                   <div className="flex gap-2">
                     <button type="button" onClick={() => f('is_active', true)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-gray-900 border-gray-900 text-white' : 'border-gray-200 text-gray-400 hover:border-gray-300 hover:text-gray-600'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${form.is_active ? 'bg-gray-100 border-gray-900 text-gray-900' : 'bg-white border-gray-200 text-gray-400 hover:border-gray-300'}`}>
                       {t('Aktivno', 'Active')}
                     </button>
                     <button type="button" onClick={() => f('is_active', false)}
-                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${!form.is_active ? 'bg-gray-100 border-gray-300 text-gray-700' : 'border-gray-200 text-gray-400 hover:border-gray-300 hover:text-gray-600'}`}>
+                      className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${!form.is_active ? 'bg-gray-100 border-gray-900 text-gray-900' : 'bg-white border-gray-200 text-gray-400 hover:border-gray-300'}`}>
                       {t('Neaktivno', 'Inactive')}
                     </button>
                   </div>
