@@ -237,9 +237,12 @@ export default function LocationsPage() {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 h-[57px] shrink-0">
-        <h1 className="text-base font-semibold text-gray-900">{t('Lokacije', 'Locations')}</h1>
+        <div className="flex items-baseline gap-3 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Lokacije', 'Locations')}</h1>
+          <p className="text-sm text-gray-500 truncate">{t('Upravljajte lokacije, kjer vaše podjetje posluje.', 'Manage the locations where your company operates.')}</p>
+        </div>
         <button onClick={openNew}
-          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg transition-colors shrink-0">
+          className="inline-flex items-center gap-1.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg transition-colors shrink-0">
           <Plus className="h-3.5 w-3.5" />
           {t('Nova lokacija', 'New location')}
         </button>
@@ -568,7 +571,7 @@ export default function LocationsPage() {
                 {t('Prekliči', 'Cancel')}
               </button>
               <button onClick={handleSave} disabled={saving || !form.name.trim()}
-                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl transition-colors">
                 {saving ? t('Shranjevanje...', 'Saving...') : editingId ? t('Shrani spremembe', 'Save changes') : t('Dodaj lokacijo', 'Add location')}
               </button>
             </div>
