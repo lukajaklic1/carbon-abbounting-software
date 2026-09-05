@@ -177,7 +177,8 @@ export function Sidebar({ collapsed = false, onToggleCollapse }: { collapsed?: b
       <div className="border-t border-gray-200 p-2">
         <NavItem href="/app/settings" label={t('Nastavitve', 'Settings')} icon={Settings} active={pathname.startsWith('/app/settings')} collapsed={collapsed} />
         {isAdmin && <NavItem href="/app/team" label={t('Uporabniki', 'Users')} icon={Users} active={pathname.startsWith('/app/team')} collapsed={collapsed} />}
-        {isSuperAdmin && <NavItem href="/app/admin/scope3" label="Admin" icon={FileText} active={pathname.startsWith('/app/admin')} collapsed={collapsed} />}
+        {isSuperAdmin && <NavItem href="/app/admin/scope3" label="Admin – Scope 3" icon={FileText} active={pathname === '/app/admin/scope3'} collapsed={collapsed} />}
+        {isSuperAdmin && <NavItem href="/app/admin/emission-factors" label="Emisijski faktorji" icon={FlaskConical} active={pathname.startsWith('/app/admin/emission-factors')} collapsed={collapsed} />}
 
         {/* Lang switcher */}
         {!collapsed && (

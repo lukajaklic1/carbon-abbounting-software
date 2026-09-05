@@ -149,7 +149,7 @@ export default function OnboardingPage() {
         organization_id: org.id, year: new Date().getFullYear(), status: 'draft'
       })
 
-      router.push('/app/dashboard')
+      router.push('/app/analytics')
     } catch (err: any) {
       setError(err.message); setLoading(false)
     }

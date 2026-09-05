@@ -32,7 +32,7 @@ export default function AcceptInvitePage() {
         }
 
         setStatus('done')
-        setTimeout(() => router.push('/app/dashboard'), 1500)
+        setTimeout(() => router.push('/app/analytics'), 1500)
       } catch {
         setStatus('error')
       }

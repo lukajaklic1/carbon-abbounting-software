@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { Menu, ChevronDown, Plus, PanelLeft, MapPin, Car, Wrench, Flame, Zap, Thermometer, FlaskConical, Wind, Package, BarChart2, FileText, Settings, Users, LayoutDashboard } from 'lucide-react'
+import { Menu, ChevronDown, Plus, PanelLeft, MapPin, Car, Wrench, Flame, Zap, Thermometer, FlaskConical, Wind, Package, BarChart2, FileText, Settings, Users } from 'lucide-react'
 import { Sidebar } from './Sidebar'
 import { OrgLoader } from './OrgLoader'
 import { LocaleProvider } from '@/lib/i18n/LocaleProvider'
@@ -23,7 +23,6 @@ function usePageMeta(pathname: string) {
   const { counters } = useEmissionCountersStore()
 
   const pages: { match: (p: string) => boolean; label: string; icon: React.ElementType; counter?: { done: number; total: number }; entityOnly?: boolean }[] = [
-    { match: p => p === '/app/dashboard',                              label: t('Nadzorna plošča', 'Dashboard'),      icon: LayoutDashboard },
     { match: p => p.startsWith('/app/locations'),                      label: t('Lokacije', 'Locations'),             icon: MapPin,        counter: counters['/app/locations'],  entityOnly: true },
     { match: p => p.startsWith('/app/vehicles'),                       label: t('Vozila', 'Vehicles'),                icon: Car,           counter: counters['/app/vehicles'],   entityOnly: true },
     { match: p => p.startsWith('/app/equipment'),                      label: t('Oprema', 'Equipment'),               icon: Wrench,        counter: counters['/app/equipment'],  entityOnly: true },

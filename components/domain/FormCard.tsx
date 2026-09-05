@@ -1,19 +1,24 @@
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+'use client'
 
-export function FormCard({ title, subtitle, backHref, children }: {
+import { useRouter } from 'next/navigation'
+import { ArrowLeft } from 'lucide-react'
+import { useLocale } from '@/lib/i18n/LocaleProvider'
+
+export function FormCard({ title, subtitle, backHref: _backHref, children }: {
   title: string
   subtitle?: string
-  backHref: string
+  backHref?: string
   children: React.ReactNode
 }) {
+  const { t } = useLocale()
+  const router = useRouter()
   return (
     <div className="max-w-6xl mx-auto p-4 lg:p-6">
       <div className="mb-5">
-        <Link href={backHref} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-500 transition-colors mb-4">
+        <button onClick={() => router.back()} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-4">
           <ArrowLeft className="h-3.5 w-3.5" />
-          Back
-        </Link>
+          {t('Nazaj', 'Back')}
+        </button>
         <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
         {subtitle && <p className="text-sm text-gray-500 mt-0.5">{subtitle}</p>}
       </div>

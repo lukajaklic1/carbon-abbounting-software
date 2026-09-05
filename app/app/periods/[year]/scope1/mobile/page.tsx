@@ -165,7 +165,7 @@ export default function Scope1MobilePage() {
     if (!period || !orgId) return
     const ff = FUEL_FACTORS[form.fuel_type]
     const co2e_kg = ff ? calcCo2eKg(qty, ff.factor) : 0
-    const gases = calcFuelGases(qty, form.fuel_type)
+    const gases = calcFuelGases(qty, form.fuel_type, year)
     setModalSaving(true); setError('')
     try {
       const supabase = createClient()
@@ -198,7 +198,10 @@ export default function Scope1MobilePage() {
 
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
-        <h1 className="text-base font-semibold text-gray-900">{t('Poraba goriva – vozila', 'Vehicle fuel consumption')}</h1>
+        <div className="flex items-center gap-2 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Poraba vozil', 'Vehicle Fuel')}</h1>
+          <p className="text-sm text-gray-500 truncate">{t('Vnesite porabo goriva za vsako vozilo v tem poročevalskem obdobju.', 'Enter fuel consumption for each vehicle in this reporting period.')}</p>
+        </div>
         <div className="flex items-center gap-2 shrink-0">
           {total > 0 && <>
             <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">

@@ -128,7 +128,7 @@ export default function Scope1EquipmentFuelPage() {
     if (!period) { setError(t('Poročevalsko obdobje ni najdeno.', 'Reporting period not found.')); return }
     const ff = FUEL_FACTORS[form.fuel_type]
     const co2e_kg = ff ? calcCo2eKg(qty, ff.factor) : 0
-    const gases = calcFuelGases(qty, form.fuel_type)
+    const gases = calcFuelGases(qty, form.fuel_type, year)
     setSaving(true); setError('')
     try {
       const supabase = createClient()
@@ -178,9 +178,10 @@ export default function Scope1EquipmentFuelPage() {
   return (
     <div className="flex flex-col h-full">
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
-        <div>
-          <h1 className="text-base font-semibold text-gray-900">{t('Gorivo opreme', 'Equipment fuel')}</h1>
-      </div>
+        <div className="flex items-center gap-2 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Gorivo opreme', 'Equipment Fuel')}</h1>
+          <p className="text-sm text-gray-500 truncate">{t('Vnesite porabo goriva za vsak kos stacionarne opreme v tem obdobju.', 'Enter fuel consumption for each piece of stationary equipment in this period.')}</p>
+        </div>
         <div className="flex items-center gap-2 shrink-0">
           {total > 0 && <>
             <div className="inline-flex items-center gap-2 h-9 px-4 bg-white border border-gray-200 rounded-xl text-sm">

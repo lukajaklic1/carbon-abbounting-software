@@ -8,7 +8,8 @@ import { CalendarDays } from 'lucide-react'
 import { usePeriodStore } from '@/stores/period'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 
-const YEARS = Array.from({ length: 8 }, (_, i) => new Date().getFullYear() - i)
+const MIN_YEAR = 2023
+const YEARS = Array.from({ length: new Date().getFullYear() - MIN_YEAR + 1 }, (_, i) => new Date().getFullYear() - i).filter(y => y >= MIN_YEAR)
 
 export default function NewPeriodPage() {
   const router = useRouter()
@@ -45,7 +46,7 @@ export default function NewPeriodPage() {
       setAvailablePeriods(updated)
       setSelectedYear(period.year)
       setCurrentPeriod(period)
-      router.push('/app/dashboard')
+      router.push('/app/analytics')
     } catch (err: any) {
       setError(err.message)
       setLoading(false)

@@ -394,13 +394,17 @@ export default function EquipmentPage() {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 h-[57px] shrink-0">
-        <h1 className="text-base font-semibold text-gray-900">{t('Oprema', 'Equipment')}</h1>
+        <div className="flex items-center gap-2 min-w-0">
+          <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Oprema', 'Equipment')}</h1>
+          <p className="text-sm text-gray-500 truncate">{t('Sem spada oprema, ki porablja gorivo, hladiva ali industrijske pline.', 'Includes equipment that burns fuel, uses refrigerants, or industrial gases.')}</p>
+        </div>
         <button onClick={openNew}
           className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg transition-colors shrink-0">
           <Plus className="h-3.5 w-3.5" />
           {t('Nova oprema', 'New equipment')}
         </button>
       </div>
+
 
       {/* Guide view */}
       {activeTab === 'guide' && (
