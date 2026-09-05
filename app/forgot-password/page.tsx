@@ -136,7 +136,7 @@ export default function ForgotPasswordPage() {
           <div className="flex gap-1">
             {(['SL', 'EN'] as const).map(l => (
               <button key={l} onClick={() => switchLocale(l)}
-                className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${locale === l ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'}`}>
+                className={`px-2 py-0.5 rounded text-xs font-medium transition-colors ${locale === l ? 'bg-gray-900 text-white' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'}`}>
                 {l}
               </button>
             ))}

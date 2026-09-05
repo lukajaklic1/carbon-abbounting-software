@@ -512,7 +512,7 @@ export default function ReportsPage() {
               </div>
               <div className="flex justify-end pt-1">
                 <button onClick={saveSettings} disabled={settingsSaving}
-                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 transition-colors">
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl bg-gray-900 text-white hover:bg-gray-800 disabled:opacity-50 transition-colors">
                   {settingsSaved ? t('Shranjeno ✓', 'Saved ✓') : settingsSaving ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
                 </button>
               </div>

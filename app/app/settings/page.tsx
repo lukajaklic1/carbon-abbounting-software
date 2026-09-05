@@ -189,7 +189,7 @@ export default function SettingsPage() {
             {isAdmin && (
               <div className="flex justify-end pt-1">
                 <button onClick={saveOrg} disabled={savingOrg || !orgName.trim()}
-                  className="px-5 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl transition-colors">
+                  className="px-5 py-2 text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl transition-colors">
                   {savingOrg ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
                 </button>
               </div>
@@ -214,7 +214,7 @@ export default function SettingsPage() {
 
             <div className="flex justify-end pt-1">
               <button onClick={saveProfile} disabled={savingProfile}
-                className="px-5 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl transition-colors">
+                className="px-5 py-2 text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl transition-colors">
                 {savingProfile ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
               </button>
             </div>
