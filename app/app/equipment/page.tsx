@@ -460,8 +460,8 @@ export default function EquipmentPage() {
             <GuideCard
               title={t('Industrijski plini', 'Industrial Gases')}
               description={t(
-                'Sem spada oprema, ki vsebuje ali sprošča industrijske pline z visokim potencialom globalnega segrevanja (GWP), kot so SF₆, FM-200 in drugi. Tipično to zajema sisteme za gašenje požarov. Beležite dejansko porabljeno ali napolnjeno količino plina v kilogramih.',
-                'Includes equipment that contains or releases industrial gases with high global warming potential (GWP), such as SF₆, FM-200 and others. Typically covers fire suppression systems. Record the actual quantity of gas consumed or charged in kilograms.'
+                'Sem spada vsa oprema, ki vsebuje ali sprošča industrijske pline z visokim potencialom globalnega segrevanja. Ta oprema zajema sisteme za gašenje požarov. Porabo beležite kot dejansko porabljeno ali napolnjeno količino plina v kilogramih.',
+                'Includes all equipment that contains or releases industrial gases with high global warming potential. This covers fire suppression systems. Record consumption as the actual quantity of gas consumed or charged in kilograms.'
               )}
               items={[
                 t('Fiksni sistemi za gašenje požarov', 'Fixed Fire Suppression Systems'),
