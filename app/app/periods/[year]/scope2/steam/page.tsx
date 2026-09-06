@@ -283,7 +283,7 @@ export default function Scope2SteamPage() {
                 const inactiveSelected = reportLocationsAll.filter(l => l.is_active === false && draftIds.has(l.id))
                 const inactiveIds = new Set(inactiveSelected.map((l: any) => l.id))
                 const modalList = [...inactiveSelected, ...allLocations.filter(l => !inactiveIds.has(l.id))]
-                if (modalList.length === 0) return <div className="mx-4 my-3 border border-gray-200 bg-white rounded-xl flex flex-col items-center justify-center py-10 px-6 text-center"><Wind className="h-8 w-8 mb-3" style={{ color: '#e4e4e8' }} /><p className="text-sm font-medium text-gray-900">{t('Ni lokacij s kupljeno paro', 'No locations with purchased steam')}</p><p className="text-xs text-gray-400 mt-1 max-w-[200px]">{t('Dodajte lokacijo, ki kupuje paro.', 'Add a location that purchases steam.')}</p></div>
+                if (modalList.length === 0) return <div className="mx-4 my-3 border border-gray-200 bg-white rounded-xl flex flex-col items-center justify-center py-10 px-6 text-center"><Wind className="h-8 w-8 mb-3" style={{ color: '#e4e4e8' }} /><p className="text-sm font-medium text-gray-900">{t('Ni lokacij s kupljeno paro', 'No locations with purchased steam')}</p><p className="text-sm text-gray-500 mt-1 max-w-[280px] leading-relaxed">{t('Dodajte lokacijo, ki kupuje paro.', 'Add a location that purchases steam.')}</p></div>
                 return modalList.map(loc => {
                   const checked = draftIds.has(loc.id)
                   const hasData = !!entriesMap[loc.id]
