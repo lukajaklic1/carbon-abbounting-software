@@ -182,7 +182,7 @@ export default function Scope1EquipmentFuelPage() {
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
         <div className="flex items-center gap-2 min-w-0">
           <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Gorivo opreme', 'Equipment Fuel')}</h1>
-          <p className="text-sm text-gray-500 truncate">{t('Vnesite porabo goriva za vsak kos stacionarne opreme v tem obdobju.', 'Enter fuel consumption for each piece of stationary equipment in this period.')}</p>
+          <p className="text-sm text-gray-500 truncate">{t('Vnesite letno porabo goriva znotraj poročevalskega obdobja po posameznem kosu opreme.', 'Enter the annual fuel consumption for the reporting period per piece of equipment.')}</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {total > 0 && <>

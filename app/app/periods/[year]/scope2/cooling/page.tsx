@@ -170,7 +170,7 @@ export default function Scope2CoolingPage() {
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
         <div className="flex items-center gap-2 min-w-0">
           <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Hlajenje', 'Cooling')}</h1>
-          <p className="text-sm text-gray-500 truncate">{t('Vnesite letno porabo daljinskega hlajenja po lokacijah.', 'Enter the annual district cooling consumption by location.')}</p>
+          <p className="text-sm text-gray-500 truncate">{t('Vnesite letno porabo daljinskega hlajenja znotraj poročevalskega obdobja po lokacijah.', 'Enter the annual district cooling consumption for the reporting period by location.')}</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {total > 0 && <>
