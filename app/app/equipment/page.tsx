@@ -421,8 +421,8 @@ export default function EquipmentPage() {
             <GuideCard
               title={t('Gorivo', 'Fuel')}
               description={t(
-                'Sem spadajo vse naprave, ki sežigajo gorivo na fiksni lokaciji. Porabo vnesite v Obsegu 1 pod "Gorivo opreme". Pozor: če ste porabo zemeljskega plina že zajeli na ravni lokacije (v Zemeljski plin), kotlov na plin sem ne dodajajte — to bi pomenilo dvojno štetje.',
-                'Includes all equipment that burns fuel at a fixed location. Enter consumption under Scope 1 – Equipment Fuel. Note: if you have already captured natural gas usage at the facility level, do not add gas boilers here — that would result in double counting.'
+                'Sem spadajo vse naprave, ki sežigajo gorivo na fiksni lokaciji. Porabo vnesite v razdelku Gorivo opreme. Pazite na dvojno štetje: če ste porabo zemeljskega plina že zajeli na ravni lokacije, kotlov na plin sem ne dodajajte.',
+                'Includes all equipment that burns fuel at a fixed location. Enter consumption under Equipment Fuel. Watch out for double counting: if you have already captured natural gas usage at the facility level, do not add gas boilers here.'
               )}
               items={[
                 t('Kotel', 'Boiler'),
@@ -444,8 +444,8 @@ export default function EquipmentPage() {
             <GuideCard
               title={t('Hladiva', 'Refrigerants')}
               description={t(
-                'Sem spada oprema, ki vsebuje hladilne pline (HFC, HFO, PFC…). Emisije nastanejo pri polnjenju, servisiranju ali uhajanju hladiva. Beležite količino napolnjenega hladiva v kilogramih — ne porabe energije.',
-                'Includes equipment that contains refrigerant gases (HFC, HFO, PFC…). Emissions occur when refrigerant is charged, serviced, or leaks. Record the quantity of refrigerant charged in kilograms — not energy consumption.'
+                'Sem spada oprema, ki vsebuje hladilne pline (HFC, HFO, PFC…). Emisije nastanejo pri polnjenju, servisiranju ali uhajanju hladiva. Beležite količino napolnjenega hladiva v kilogramih, ne porabe energije.',
+                'Includes equipment that contains refrigerant gases (HFC, HFO, PFC…). Emissions occur when refrigerant is charged, serviced, or leaks. Record the quantity of refrigerant charged in kilograms, not energy consumption.'
               )}
               items={[
                 t('Hladilniki (chillerji)', 'Chillers'),
