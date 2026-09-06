@@ -605,11 +605,7 @@ export default function VehiclesPage() {
               </button>
               <button onClick={handleSave} disabled={saving || !form.name.trim()}
                 className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed rounded-xl transition-colors">
-                {saving
-                  ? t('Shranjevanje...', 'Saving...')
-                  : editingId
-                    ? t('Shrani spremembe', 'Save changes')
-                    : t('Dodaj vozilo', 'Add vehicle')}
+                {editingId ? t('Shrani spremembe', 'Save changes') : t('Dodaj vozilo', 'Add vehicle')}
               </button>
             </div>
 

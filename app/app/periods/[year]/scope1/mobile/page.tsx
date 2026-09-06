@@ -372,7 +372,7 @@ export default function Scope1MobilePage() {
                 </button>
                 <button onClick={saveSelection} disabled={saving}
                   className="px-4 py-2 text-sm font-semibold text-white bg-[#215bcf] hover:bg-[#1a4ab5] disabled:opacity-60 rounded-xl transition-colors">
-                  {saving ? t('Shranjevanje...', 'Saving...') : t('Potrdi', 'Confirm')}
+                  {t('Potrdi', 'Confirm')}
                 </button>
               </div>
             </div>

@@ -79,7 +79,7 @@ export default function EditVehicleForm({ vehicle }: { vehicle: any }) {
           </button>
           <button type="submit" disabled={loading}
             className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60 rounded-xl transition-colors">
-            {loading ? 'Saving...' : 'Save changes'}
+            {'Save changes'}
           </button>
         </div>
       </form>

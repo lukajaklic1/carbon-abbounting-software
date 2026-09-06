@@ -64,7 +64,7 @@ export default function NewLocationPage() {
           </button>
           <button type="submit" disabled={loading}
             className="flex-1 px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-60 rounded-xl transition-colors">
-            {loading ? 'Saving...' : 'Add Location'}
+            {'Add Location'}
           </button>
         </div>
       </form>

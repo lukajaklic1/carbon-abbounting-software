@@ -429,7 +429,7 @@ export default function TeamPage() {
               <div className="flex gap-2 justify-end">
                 <button onClick={() => setEditMember(null)} className="px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 rounded-lg transition-colors">{t('Prekliči', 'Cancel')}</button>
                 <button onClick={saveEdit} disabled={saving} className="px-4 py-2 text-sm font-semibold text-white bg-gray-900 hover:bg-gray-800 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-lg transition-colors">
-                  {saving ? t('Shranjevanje...', 'Saving...') : t('Shrani', 'Save')}
+                  {t('Shrani', 'Save')}
                 </button>
               </div>
             </div>
