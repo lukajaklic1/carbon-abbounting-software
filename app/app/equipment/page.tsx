@@ -163,78 +163,83 @@ function getPrimaryCategory(eq: any) {
   return 'fuel'
 }
 
-function FuelIllustration() {
-  return (
-    <svg width="96" height="80" viewBox="0 0 96 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="20" y="18" width="56" height="38" rx="9" fill="#FFF7ED" stroke="#FB923C" strokeWidth="2"/>
-      <rect x="36" y="7" width="9" height="13" rx="3" fill="#FDBA74"/>
-      <rect x="51" y="7" width="9" height="13" rx="3" fill="#FDBA74"/>
-      <circle cx="48" cy="37" r="9" fill="#FEF3C7" stroke="#FB923C" strokeWidth="1.5"/>
-      <circle cx="48" cy="37" r="4.5" fill="#FDBA74"/>
-      <ellipse cx="35" cy="56" rx="7" ry="9" fill="#FEF08A"/>
-      <ellipse cx="35" cy="57" rx="4" ry="6" fill="#FB923C"/>
-      <ellipse cx="48" cy="58" rx="7" ry="9" fill="#FEF08A"/>
-      <ellipse cx="48" cy="59" rx="4" ry="6" fill="#F97316"/>
-      <ellipse cx="61" cy="56" rx="7" ry="9" fill="#FEF08A"/>
-      <ellipse cx="61" cy="57" rx="4" ry="6" fill="#FB923C"/>
-      <rect x="14" y="56" width="68" height="8" rx="4" fill="#FDBA74"/>
-    </svg>
-  )
+// Small 20×20 SVG icons for each equipment item
+function SvgFlame({ c = '#F97316' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 17C7.2 17 5 14.8 5 12c0-2 1-3.5 2.5-5 0 1.8 1 3 2 3.5C9.5 8 10 5.5 12 3.5c.5 2 1.5 3.5 2 5C15 10 15 11.5 15 12c0 2.8-2.2 5-5 5Z" fill={c} fillOpacity=".18" stroke={c} strokeWidth="1.4" strokeLinejoin="round"/></svg>
+}
+function SvgBoiler({ c = '#F97316' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="5" width="12" height="10" rx="3" stroke={c} strokeWidth="1.4"/><path d="M7 5V3.5M10 5V3M13 5V3.5" stroke={c} strokeWidth="1.3" strokeLinecap="round"/><circle cx="10" cy="10" r="2.2" stroke={c} strokeWidth="1.3"/><line x1="4" y1="15" x2="16" y2="15" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg>
+}
+function SvgDrum({ c = '#F97316' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke={c} strokeWidth="1.4"/><circle cx="10" cy="10" r="3" stroke={c} strokeWidth="1.3"/><path d="M10 3v4M10 13v4M3 10h4M13 10h4" stroke={c} strokeWidth="1.1" strokeLinecap="round" opacity=".5"/></svg>
+}
+function SvgFurnace({ c = '#F97316' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="11" rx="2" stroke={c} strokeWidth="1.4"/><path d="M7 5V3h6v2" stroke={c} strokeWidth="1.3" strokeLinejoin="round"/><rect x="6.5" y="9" width="7" height="5" rx="1.5" stroke={c} strokeWidth="1.2"/><path d="M9 11.5 Q10 10 11 11.5" stroke={c} strokeWidth="1.1" strokeLinecap="round" fill="none"/></svg>
+}
+function SvgLightning({ c = '#F97316' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M11.5 2.5 L5 11h5.5L8.5 17.5 L15 9H9.5Z" fill={c} fillOpacity=".15" stroke={c} strokeWidth="1.4" strokeLinejoin="round"/></svg>
+}
+function SvgWaves({ c = '#F97316' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 6c1-1 2 1 3 0s2-1 3 0 2 1 3 0 2-1 3 0" stroke={c} strokeWidth="1.4" strokeLinecap="round" fill="none"/><path d="M3 10c1-1 2 1 3 0s2-1 3 0 2 1 3 0 2-1 3 0" stroke={c} strokeWidth="1.4" strokeLinecap="round" fill="none"/><path d="M3 14c1-1 2 1 3 0s2-1 3 0 2 1 3 0 2-1 3 0" stroke={c} strokeWidth="1.4" strokeLinecap="round" fill="none"/></svg>
+}
+function SvgChimney({ c = '#F97316' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="5" y="8" width="10" height="9" rx="1.5" stroke={c} strokeWidth="1.4"/><path d="M8 8V5h4v3" stroke={c} strokeWidth="1.3" strokeLinejoin="round"/><path d="M9 3.5c0 1 .5 1.5 1 2" stroke={c} strokeWidth="1.2" strokeLinecap="round" fill="none" opacity=".6"/><path d="M12 2.5c0 1 .5 2 .5 3" stroke={c} strokeWidth="1.2" strokeLinecap="round" fill="none" opacity=".4"/></svg>
+}
+function SvgPiston({ c = '#F97316' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="7" width="11" height="6" rx="1.5" stroke={c} strokeWidth="1.4"/><rect x="13" y="5" width="5" height="10" rx="1.5" stroke={c} strokeWidth="1.3"/><line x1="13" y1="10" x2="18" y2="10" stroke={c} strokeWidth="1.2" opacity=".5"/><circle cx="6" cy="10" r="2" stroke={c} strokeWidth="1.2"/></svg>
+}
+function SvgKiln({ c = '#F97316' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 16 C2 8 5 4 10 4 C15 4 18 8 18 16Z" stroke={c} strokeWidth="1.4" strokeLinejoin="round"/><path d="M6 16 C6 11 7.5 8 10 8 C12.5 8 14 11 14 16" stroke={c} strokeWidth="1.2" fill="none" opacity=".5"/><line x1="2" y1="16" x2="18" y2="16" stroke={c} strokeWidth="1.4" strokeLinecap="round"/></svg>
+}
+function SvgOven({ c = '#F97316' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2" stroke={c} strokeWidth="1.4"/><rect x="6" y="8" width="8" height="6" rx="1" stroke={c} strokeWidth="1.2"/><line x1="3" y1="7" x2="17" y2="7" stroke={c} strokeWidth="1.1" opacity=".4"/><circle cx="14" cy="5.5" r="1" fill={c} opacity=".6"/></svg>
+}
+function SvgFan({ c = '#F97316' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2" fill={c}/><path d="M10 8C10 8 9 4.5 7 3.5S4 4 4.5 6C5 7.5 8 8 8 8" stroke={c} strokeWidth="1.3" fill="none"/><path d="M12 10C12 10 15.5 9 16.5 7S16 4 14 4.5C12.5 5 12 8 12 8" stroke={c} strokeWidth="1.3" fill="none" transform="rotate(120,10,10)"/><path d="M12 10C12 10 15.5 9 16.5 7S16 4 14 4.5C12.5 5 12 8 12 8" stroke={c} strokeWidth="1.3" fill="none" transform="rotate(240,10,10)"/></svg>
+}
+// Refrigerant icons
+function SvgCoolingTower({ c = '#3B82F6' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 17L5.5 4h9L17 17Z" stroke={c} strokeWidth="1.4" strokeLinejoin="round"/><line x1="4" y1="11" x2="16" y2="11" stroke={c} strokeWidth="1.2"/><path d="M7 4c0-.5 1-1.5 3-1.5S16 4 16 4" stroke={c} strokeWidth="1.1" fill="none" opacity=".5"/></svg>
+}
+function SvgFridge({ c = '#3B82F6' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="5" y="2" width="10" height="16" rx="2.5" stroke={c} strokeWidth="1.4"/><line x1="5" y1="9" x2="15" y2="9" stroke={c} strokeWidth="1.3"/><line x1="8" y1="5.5" x2="8" y2="7.5" stroke={c} strokeWidth="1.3" strokeLinecap="round"/><line x1="8" y1="11.5" x2="8" y2="15" stroke={c} strokeWidth="1.3" strokeLinecap="round"/></svg>
+}
+function SvgIndustrialFridge({ c = '#3B82F6' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="12" rx="2" stroke={c} strokeWidth="1.4"/><path d="M17 7v8M18.5 8v6" stroke={c} strokeWidth="1.1" strokeLinecap="round" opacity=".5"/><line x1="5" y1="10" x2="14" y2="10" stroke={c} strokeWidth="1.2"/><line x1="5" y1="13" x2="14" y2="13" stroke={c} strokeWidth="1" opacity=".5"/></svg>
+}
+function SvgDisplayCase({ c = '#3B82F6' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 7h16v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7Z" stroke={c} strokeWidth="1.4"/><path d="M2 7 L5 3h10l3 4" stroke={c} strokeWidth="1.3" strokeLinejoin="round"/><line x1="5" y1="11" x2="15" y2="11" stroke={c} strokeWidth="1.1" opacity=".5"/></svg>
+}
+function SvgCar({ c = '#3B82F6' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1.5" y="9" width="17" height="7" rx="2" stroke={c} strokeWidth="1.4"/><path d="M4.5 9 L6.5 5h7l2 4" stroke={c} strokeWidth="1.3" strokeLinejoin="round"/><circle cx="5.5" cy="16" r="1.5" fill={c}/><circle cx="14.5" cy="16" r="1.5" fill={c}/></svg>
+}
+function SvgAC({ c = '#3B82F6' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="8" rx="3" stroke={c} strokeWidth="1.4"/><line x1="5" y1="10" x2="15" y2="10" stroke={c} strokeWidth="1.2"/><line x1="5" y1="12" x2="15" y2="12" stroke={c} strokeWidth="1" opacity=".4"/><circle cx="14" cy="7.5" r="1.2" fill={c} opacity=".5"/><path d="M4 15q2-1 4 0M9 15q2-1 4 0M14 15q1-.5 2.5 0" stroke={c} strokeWidth="1.2" fill="none" strokeLinecap="round" opacity=".6"/></svg>
+}
+function SvgTruck({ c = '#3B82F6' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1" y="7" width="12" height="8" rx="1.5" stroke={c} strokeWidth="1.4"/><path d="M13 9.5H16L18.5 12.5V15H13V9.5Z" stroke={c} strokeWidth="1.3" strokeLinejoin="round"/><circle cx="4.5" cy="15" r="1.5" fill={c}/><circle cx="16" cy="15" r="1.5" fill={c}/></svg>
+}
+// Industrial gas icons
+function SvgFixedSuppression({ c = '#16A34A' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="7" y="4" width="6" height="12" rx="2.5" stroke={c} strokeWidth="1.4"/><rect x="8.5" y="1.5" width="3" height="4" rx="1.5" stroke={c} strokeWidth="1.2"/><path d="M13 7.5c1 .5 2 1.5 2 3" stroke={c} strokeWidth="1.3" strokeLinecap="round" fill="none"/><line x1="10" y1="9" x2="10" y2="12" stroke={c} strokeWidth="1.2" strokeLinecap="round" opacity=".5"/></svg>
+}
+function SvgPortableExt({ c = '#16A34A' }: { c?: string }) {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="6" y="7" width="8" height="11" rx="3" stroke={c} strokeWidth="1.4"/><rect x="8" y="3" width="4" height="5" rx="2" stroke={c} strokeWidth="1.2"/><path d="M12 4.5h3M15 4.5c.5 0 1.5.5 1.5 1.5" stroke={c} strokeWidth="1.3" strokeLinecap="round"/><line x1="10" y1="11" x2="10" y2="14" stroke={c} strokeWidth="1.2" strokeLinecap="round" opacity=".5"/></svg>
 }
 
-function RefrigerantIllustration() {
-  return (
-    <svg width="96" height="80" viewBox="0 0 96 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="6" y="22" width="60" height="34" rx="9" fill="#EFF6FF" stroke="#60A5FA" strokeWidth="2"/>
-      <rect x="6" y="22" width="60" height="12" rx="9" fill="#DBEAFE"/>
-      <circle cx="56" cy="28" r="3.5" fill="#34D399"/>
-      <line x1="16" y1="42" x2="58" y2="42" stroke="#93C5FD" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="16" y1="48" x2="58" y2="48" stroke="#BFDBFE" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="79" y1="20" x2="79" y2="52" stroke="#3B82F6" strokeWidth="2.5" strokeLinecap="round"/>
-      <line x1="65" y1="36" x2="93" y2="36" stroke="#3B82F6" strokeWidth="2.5" strokeLinecap="round"/>
-      <line x1="69.5" y1="25.5" x2="88.5" y2="46.5" stroke="#3B82F6" strokeWidth="2.5" strokeLinecap="round"/>
-      <line x1="88.5" y1="25.5" x2="69.5" y2="46.5" stroke="#3B82F6" strokeWidth="2.5" strokeLinecap="round"/>
-      <circle cx="79" cy="36" r="4" fill="#DBEAFE" stroke="#3B82F6" strokeWidth="1.5"/>
-      <path d="M20 64 Q26 58 32 64 Q38 70 44 64" stroke="#93C5FD" strokeWidth="2" fill="none" strokeLinecap="round"/>
-    </svg>
-  )
-}
-
-function IndustrialGasIllustration() {
-  return (
-    <svg width="96" height="80" viewBox="0 0 96 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="8" y="24" width="22" height="44" rx="7" fill="#F0FDF4" stroke="#4ADE80" strokeWidth="2"/>
-      <rect x="12" y="16" width="14" height="11" rx="4" fill="#22C55E"/>
-      <rect x="66" y="27" width="22" height="41" rx="7" fill="#F0FDF4" stroke="#4ADE80" strokeWidth="2"/>
-      <rect x="70" y="19" width="14" height="11" rx="4" fill="#22C55E"/>
-      <rect x="33" y="10" width="30" height="58" rx="10" fill="#DCFCE7" stroke="#16A34A" strokeWidth="2"/>
-      <rect x="39" y="2" width="18" height="12" rx="5" fill="#15803D"/>
-      <circle cx="48" cy="32" r="10" fill="#BBF7D0" stroke="#16A34A" strokeWidth="1.5"/>
-      <text x="48" y="37" textAnchor="middle" fontSize="9" fill="#15803D" fontWeight="700" fontFamily="system-ui">SF₆</text>
-      <line x1="37" y1="52" x2="59" y2="52" stroke="#86EFAC" strokeWidth="2" strokeLinecap="round"/>
-      <line x1="37" y1="58" x2="59" y2="58" stroke="#86EFAC" strokeWidth="2" strokeLinecap="round"/>
-      <path d="M63 28 Q74 32 72 44" stroke="#4ADE80" strokeWidth="2" fill="none" strokeLinecap="round"/>
-    </svg>
-  )
-}
-
-function GuideCard({ title, description, items, illustration }: { title: string; description: string; items: string[]; illustration?: React.ReactNode }) {
+function GuideCard({ title, description, items }: { title: string; description: string; items: { icon: React.ReactNode; label: string }[] }) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-      <div className="px-6 py-5 border-b border-gray-100 flex items-start gap-5">
-        <div className="flex-1 min-w-0">
-          <p className="text-base font-semibold text-gray-900">{title}</p>
-          <p className="text-sm text-gray-500 mt-1.5 leading-relaxed">{description}</p>
-        </div>
-        {illustration && (
-          <div className="shrink-0 rounded-xl bg-gray-50 flex items-center justify-center" style={{ width: 96, height: 80 }}>
-            {illustration}
-          </div>
-        )}
+      <div className="px-6 py-5 border-b border-gray-100">
+        <p className="text-base font-semibold text-gray-900">{title}</p>
+        <p className="text-sm text-gray-500 mt-1.5 leading-relaxed">{description}</p>
       </div>
-      <div className="px-6 py-4 grid grid-cols-2 gap-x-8 gap-y-2">
-        {items.map((item, i) => (
-          <p key={i} className="text-sm text-gray-700">{item}</p>
+      <div className="px-6 py-4 grid grid-cols-2 gap-x-6 gap-y-2.5">
+        {items.map(({ icon, label }, i) => (
+          <div key={i} className="flex items-center gap-2.5">
+            <span className="shrink-0">{icon}</span>
+            <span className="text-sm text-gray-700 leading-tight">{label}</span>
+          </div>
         ))}
       </div>
     </div>
@@ -481,56 +486,53 @@ export default function EquipmentPage() {
           <div className="px-6 py-6">
           <div className="max-w-2xl mx-auto space-y-4">
             <GuideCard
-              illustration={<FuelIllustration />}
               title={t('Gorivo', 'Fuel')}
               description={t(
                 'Sem spadajo vse naprave, ki sežigajo gorivo na fiksni lokaciji. Porabo vnesite v razdelku Gorivo opreme. Pazite na dvojno štetje: če ste porabo zemeljskega plina že zajeli na ravni lokacije, kotlov na plin sem ne dodajajte.',
                 'Includes all equipment that burns fuel at a fixed location. Enter consumption under Equipment Fuel. Watch out for double counting: if you have already captured natural gas usage at the facility level, do not add gas boilers here.'
               )}
               items={[
-                t('Kotel', 'Boiler'),
-                t('Gorilnik', 'Burner'),
-                t('Sušilnik', 'Dryer'),
-                t('Plinska bakla', 'Flare'),
-                t('Industrijska peč', 'Furnace'),
-                t('Generator', 'Generator'),
-                t('Grelnik', 'Heater'),
-                t('Sežigalnik odpadkov', 'Incinerator'),
-                t('Motor z notranjim izgorevanjem', 'Internal Combustion Engine'),
-                t('Peč za žganje (kilna)', 'Kiln'),
-                t('Odprto kurjenje', 'Open Burning'),
-                t('Pečica / Kuhalna peč', 'Oven'),
-                t('Termalni oksidator', 'Thermal Oxidizer'),
-                t('Turbina', 'Turbine'),
+                { icon: <SvgBoiler />, label: t('Kotel', 'Boiler') },
+                { icon: <SvgFlame />, label: t('Gorilnik', 'Burner') },
+                { icon: <SvgDrum />, label: t('Sušilnik', 'Dryer') },
+                { icon: <SvgFlame />, label: t('Plinska bakla', 'Flare') },
+                { icon: <SvgFurnace />, label: t('Industrijska peč', 'Furnace') },
+                { icon: <SvgLightning />, label: t('Generator', 'Generator') },
+                { icon: <SvgWaves />, label: t('Grelnik', 'Heater') },
+                { icon: <SvgChimney />, label: t('Sežigalnik odpadkov', 'Incinerator') },
+                { icon: <SvgPiston />, label: t('Motor z notranjim izgorevanjem', 'Internal Combustion Engine') },
+                { icon: <SvgKiln />, label: t('Peč za žganje (kilna)', 'Kiln') },
+                { icon: <SvgFlame />, label: t('Odprto kurjenje', 'Open Burning') },
+                { icon: <SvgOven />, label: t('Pečica / Kuhalna peč', 'Oven') },
+                { icon: <SvgFurnace />, label: t('Termalni oksidator', 'Thermal Oxidizer') },
+                { icon: <SvgFan />, label: t('Turbina', 'Turbine') },
               ]}
             />
             <GuideCard
-              illustration={<RefrigerantIllustration />}
               title={t('Hladiva', 'Refrigerants')}
               description={t(
                 'Sem spada oprema, ki vsebuje hladilne pline (HFC, HFO, PFC…). Emisije nastanejo pri polnjenju, servisiranju ali uhajanju hladiva. Beležite količino napolnjenega hladiva v kilogramih, ne porabe energije.',
                 'Includes equipment that contains refrigerant gases (HFC, HFO, PFC…). Emissions occur when refrigerant is charged, serviced, or leaks. Record the quantity of refrigerant charged in kilograms, not energy consumption.'
               )}
               items={[
-                t('Hladilniki (chillerji)', 'Chillers'),
-                t('Gospodinjski hladilniki', 'Domestic Refrigeration'),
-                t('Industrijska hladilna tehnika', 'Industrial Refrigeration'),
-                t('Komercialni hladilniki', 'Commercial Refrigeration'),
-                t('Mobilna klimatizacija', 'Mobile A/C'),
-                t('Klimatske naprave in toplotne črpalke', 'A/C & Heat Pumps'),
-                t('Transportna hladilna tehnika', 'Transport Refrigeration'),
+                { icon: <SvgCoolingTower />, label: t('Hladilniki (chillerji)', 'Chillers') },
+                { icon: <SvgFridge />, label: t('Gospodinjski hladilniki', 'Domestic Refrigeration') },
+                { icon: <SvgIndustrialFridge />, label: t('Industrijska hladilna tehnika', 'Industrial Refrigeration') },
+                { icon: <SvgDisplayCase />, label: t('Komercialni hladilniki', 'Commercial Refrigeration') },
+                { icon: <SvgCar />, label: t('Mobilna klimatizacija', 'Mobile A/C') },
+                { icon: <SvgAC />, label: t('Klimatske naprave in toplotne črpalke', 'A/C & Heat Pumps') },
+                { icon: <SvgTruck />, label: t('Transportna hladilna tehnika', 'Transport Refrigeration') },
               ]}
             />
             <GuideCard
-              illustration={<IndustrialGasIllustration />}
               title={t('Industrijski plini', 'Industrial Gases')}
               description={t(
                 'Sem spada oprema, ki vsebuje ali sprošča industrijske pline z visokim potencialom globalnega segrevanja (GWP), kot so SF₆, FM-200 in drugi. Tipično to zajema sisteme za gašenje požarov. Beležite dejansko porabljeno ali napolnjeno količino plina v kilogramih.',
                 'Includes equipment that contains or releases industrial gases with high global warming potential (GWP), such as SF₆, FM-200 and others. Typically covers fire suppression systems. Record the actual quantity of gas consumed or charged in kilograms.'
               )}
               items={[
-                t('Fiksni sistemi za gašenje požarov (SF₆, FM-200…)', 'Fixed Fire Suppression (SF₆, FM-200…)'),
-                t('Prenosni aparati za gašenje (CO₂, prah…)', 'Portable Fire Extinguishers (CO₂, powder…)'),
+                { icon: <SvgFixedSuppression />, label: t('Fiksni sistemi za gašenje požarov (SF₆, FM-200…)', 'Fixed Fire Suppression (SF₆, FM-200…)') },
+                { icon: <SvgPortableExt />, label: t('Prenosni aparati za gašenje (CO₂, prah…)', 'Portable Fire Extinguishers (CO₂, powder…)') },
               ]}
             />
             <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-500">
