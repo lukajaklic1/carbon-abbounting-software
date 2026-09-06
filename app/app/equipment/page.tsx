@@ -421,8 +421,8 @@ export default function EquipmentPage() {
             <GuideCard
               title={t('Gorivo', 'Fuel')}
               description={t(
-                'Sem spadajo vse naprave, ki sežigajo gorivo na fiksni lokaciji. Porabo vnesite v razdelku Gorivo opreme. Pazite na dvojno štetje: če ste porabo zemeljskega plina že zajeli na ravni lokacije, kotlov na plin sem ne dodajajte.',
-                'Includes all equipment that burns fuel at a fixed location. Enter consumption under Equipment Fuel. Watch out for double counting: if you have already captured natural gas usage at the facility level, do not add gas boilers here.'
+                'Sem spadajo vse naprave, ki porabljajo gorivo na lokaciji, kjer podjetje posluje. Pazite na dvojno štetje: če ste porabo zemeljskega plina že zajeli na ravni lokacije, kotlov na plin tukaj ne dodajajte.',
+                'Includes all equipment that consumes fuel at a location where the company operates. Watch out for double counting: if you have already captured natural gas usage at the facility level, do not add gas boilers here.'
               )}
               items={[
                 t('Kotel', 'Boiler'),
