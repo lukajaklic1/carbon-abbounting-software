@@ -163,12 +163,74 @@ function getPrimaryCategory(eq: any) {
   return 'fuel'
 }
 
-function GuideCard({ title, description, items }: { title: string; description: string; items: string[] }) {
+function FuelIllustration() {
+  return (
+    <svg width="96" height="80" viewBox="0 0 96 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="18" width="56" height="38" rx="9" fill="#FFF7ED" stroke="#FB923C" strokeWidth="2"/>
+      <rect x="36" y="7" width="9" height="13" rx="3" fill="#FDBA74"/>
+      <rect x="51" y="7" width="9" height="13" rx="3" fill="#FDBA74"/>
+      <circle cx="48" cy="37" r="9" fill="#FEF3C7" stroke="#FB923C" strokeWidth="1.5"/>
+      <circle cx="48" cy="37" r="4.5" fill="#FDBA74"/>
+      <ellipse cx="35" cy="56" rx="7" ry="9" fill="#FEF08A"/>
+      <ellipse cx="35" cy="57" rx="4" ry="6" fill="#FB923C"/>
+      <ellipse cx="48" cy="58" rx="7" ry="9" fill="#FEF08A"/>
+      <ellipse cx="48" cy="59" rx="4" ry="6" fill="#F97316"/>
+      <ellipse cx="61" cy="56" rx="7" ry="9" fill="#FEF08A"/>
+      <ellipse cx="61" cy="57" rx="4" ry="6" fill="#FB923C"/>
+      <rect x="14" y="56" width="68" height="8" rx="4" fill="#FDBA74"/>
+    </svg>
+  )
+}
+
+function RefrigerantIllustration() {
+  return (
+    <svg width="96" height="80" viewBox="0 0 96 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="22" width="60" height="34" rx="9" fill="#EFF6FF" stroke="#60A5FA" strokeWidth="2"/>
+      <rect x="6" y="22" width="60" height="12" rx="9" fill="#DBEAFE"/>
+      <circle cx="56" cy="28" r="3.5" fill="#34D399"/>
+      <line x1="16" y1="42" x2="58" y2="42" stroke="#93C5FD" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="16" y1="48" x2="58" y2="48" stroke="#BFDBFE" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="79" y1="20" x2="79" y2="52" stroke="#3B82F6" strokeWidth="2.5" strokeLinecap="round"/>
+      <line x1="65" y1="36" x2="93" y2="36" stroke="#3B82F6" strokeWidth="2.5" strokeLinecap="round"/>
+      <line x1="69.5" y1="25.5" x2="88.5" y2="46.5" stroke="#3B82F6" strokeWidth="2.5" strokeLinecap="round"/>
+      <line x1="88.5" y1="25.5" x2="69.5" y2="46.5" stroke="#3B82F6" strokeWidth="2.5" strokeLinecap="round"/>
+      <circle cx="79" cy="36" r="4" fill="#DBEAFE" stroke="#3B82F6" strokeWidth="1.5"/>
+      <path d="M20 64 Q26 58 32 64 Q38 70 44 64" stroke="#93C5FD" strokeWidth="2" fill="none" strokeLinecap="round"/>
+    </svg>
+  )
+}
+
+function IndustrialGasIllustration() {
+  return (
+    <svg width="96" height="80" viewBox="0 0 96 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="24" width="22" height="44" rx="7" fill="#F0FDF4" stroke="#4ADE80" strokeWidth="2"/>
+      <rect x="12" y="16" width="14" height="11" rx="4" fill="#22C55E"/>
+      <rect x="66" y="27" width="22" height="41" rx="7" fill="#F0FDF4" stroke="#4ADE80" strokeWidth="2"/>
+      <rect x="70" y="19" width="14" height="11" rx="4" fill="#22C55E"/>
+      <rect x="33" y="10" width="30" height="58" rx="10" fill="#DCFCE7" stroke="#16A34A" strokeWidth="2"/>
+      <rect x="39" y="2" width="18" height="12" rx="5" fill="#15803D"/>
+      <circle cx="48" cy="32" r="10" fill="#BBF7D0" stroke="#16A34A" strokeWidth="1.5"/>
+      <text x="48" y="37" textAnchor="middle" fontSize="9" fill="#15803D" fontWeight="700" fontFamily="system-ui">SF₆</text>
+      <line x1="37" y1="52" x2="59" y2="52" stroke="#86EFAC" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="37" y1="58" x2="59" y2="58" stroke="#86EFAC" strokeWidth="2" strokeLinecap="round"/>
+      <path d="M63 28 Q74 32 72 44" stroke="#4ADE80" strokeWidth="2" fill="none" strokeLinecap="round"/>
+    </svg>
+  )
+}
+
+function GuideCard({ title, description, items, illustration }: { title: string; description: string; items: string[]; illustration?: React.ReactNode }) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-      <div className="px-6 py-5 border-b border-gray-100">
-        <p className="text-base font-semibold text-gray-900">{title}</p>
-        <p className="text-sm text-gray-500 mt-1.5 leading-relaxed">{description}</p>
+      <div className="px-6 py-5 border-b border-gray-100 flex items-start gap-5">
+        <div className="flex-1 min-w-0">
+          <p className="text-base font-semibold text-gray-900">{title}</p>
+          <p className="text-sm text-gray-500 mt-1.5 leading-relaxed">{description}</p>
+        </div>
+        {illustration && (
+          <div className="shrink-0 rounded-xl bg-gray-50 flex items-center justify-center" style={{ width: 96, height: 80 }}>
+            {illustration}
+          </div>
+        )}
       </div>
       <div className="px-6 py-4 grid grid-cols-2 gap-x-8 gap-y-2">
         {items.map((item, i) => (
@@ -419,6 +481,7 @@ export default function EquipmentPage() {
           <div className="px-6 py-6">
           <div className="max-w-2xl mx-auto space-y-4">
             <GuideCard
+              illustration={<FuelIllustration />}
               title={t('Gorivo', 'Fuel')}
               description={t(
                 'Sem spadajo vse naprave, ki sežigajo gorivo na fiksni lokaciji. Porabo vnesite v razdelku Gorivo opreme. Pazite na dvojno štetje: če ste porabo zemeljskega plina že zajeli na ravni lokacije, kotlov na plin sem ne dodajajte.',
@@ -442,6 +505,7 @@ export default function EquipmentPage() {
               ]}
             />
             <GuideCard
+              illustration={<RefrigerantIllustration />}
               title={t('Hladiva', 'Refrigerants')}
               description={t(
                 'Sem spada oprema, ki vsebuje hladilne pline (HFC, HFO, PFC…). Emisije nastanejo pri polnjenju, servisiranju ali uhajanju hladiva. Beležite količino napolnjenega hladiva v kilogramih, ne porabe energije.',
@@ -458,6 +522,7 @@ export default function EquipmentPage() {
               ]}
             />
             <GuideCard
+              illustration={<IndustrialGasIllustration />}
               title={t('Industrijski plini', 'Industrial Gases')}
               description={t(
                 'Sem spada oprema, ki vsebuje ali sprošča industrijske pline z visokim potencialom globalnega segrevanja (GWP), kot so SF₆, FM-200 in drugi. Tipično to zajema sisteme za gašenje požarov. Beležite dejansko porabljeno ali napolnjeno količino plina v kilogramih.',
