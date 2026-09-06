@@ -320,7 +320,7 @@ export default function Scope1MobilePage() {
                 const inactiveSelected = reportVehiclesAll.filter(v => v.is_active === false && draftIds.has(v.id))
                 const inactiveIds = new Set(inactiveSelected.map((v: any) => v.id))
                 const modalList = [...inactiveSelected, ...allVehicles.filter(v => !inactiveIds.has(v.id))]
-                if (modalList.length === 0) return <div className="mx-4 my-3 border border-gray-200 bg-white rounded-xl flex flex-col items-center justify-center py-10 px-6 text-center"><Car className="h-8 w-8 mb-3" style={{ color: '#e4e4e8' }} /><p className="text-sm font-medium text-gray-900">{t('Ni vozil.', 'No vehicles.')}</p></div>
+                if (modalList.length === 0) return <div className="mx-4 my-3 border border-gray-200 bg-white rounded-xl flex flex-col items-center justify-center py-10 px-6 text-center"><Car className="h-8 w-8 mb-3" style={{ color: '#e4e4e8' }} /><p className="text-sm font-medium text-gray-900">{t('Ni aktivnih vozil', 'No active vehicles')}</p><p className="text-xs text-gray-400 mt-1 max-w-[200px]">{t('Dodajte vozilo v razdelku Vozila.', 'Add a vehicle in the Vehicles section.')}</p></div>
                 return modalList.map(v => {
                   const Icon = VEHICLE_ICON[v.vehicle_type] ?? Car
                   const checked = draftIds.has(v.id)
