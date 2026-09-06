@@ -396,7 +396,11 @@ export default function EquipmentPage() {
       <div className="flex items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 h-[57px] shrink-0">
         <div className="flex items-center gap-2 min-w-0">
           <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Oprema', 'Equipment')}</h1>
-          <p className="text-sm text-gray-500 truncate">{t('Sem spada oprema, ki porablja gorivo, hladiva ali industrijske pline.', 'Includes equipment that burns fuel, uses refrigerants, or industrial gases.')}</p>
+          <p className="text-sm text-gray-500 truncate hidden sm:block">{t('Sem spada oprema, ki porablja gorivo, hladiva ali industrijske pline.', 'Includes equipment that burns fuel, uses refrigerants, or industrial gases.')}</p>
+          <button onClick={() => setActiveTab('guide')}
+            className="shrink-0 text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors">
+            {t('Kaj spada sem?', 'What belongs here?')}
+          </button>
         </div>
         <button onClick={openNew}
           className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg transition-colors shrink-0">
@@ -550,10 +554,6 @@ export default function EquipmentPage() {
               {t('Počisti', 'Clear')}
             </button>
           )}
-          <button onClick={() => setActiveTab('guide')}
-            className="ml-auto h-9 px-3 text-[13px] font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-xl transition-colors">
-            {t('Kaj spada sem?', 'What belongs here?')}
-          </button>
         </div>
       )}
 
