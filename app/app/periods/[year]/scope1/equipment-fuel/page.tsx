@@ -383,7 +383,7 @@ export default function Scope1EquipmentFuelPage() {
             <div className="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex gap-3 rounded-b-2xl">
               {entriesMap[activeItem.id] && (
                 <button onClick={() => { setShowModal(false); setConfirmDelete(activeItem.id) }}
-                  className="px-4 py-2.5 text-sm font-medium text-red-600 hover:text-red-700 bg-white border border-red-200 hover:bg-red-50 rounded-xl transition-colors">
+                  className="shrink-0 whitespace-nowrap px-4 py-2.5 text-sm font-medium text-red-600 hover:text-red-700 bg-white border border-red-200 hover:bg-red-50 rounded-xl transition-colors">
                   {t('Izbriši podatke o porabi', 'Delete usage data')}
                 </button>
               )}
