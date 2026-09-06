@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Wrench, Plus, Pencil, Trash2, X, Search } from 'lucide-react'
 import { IconEngine, IconAirConditioning, IconFireExtinguisher } from '@tabler/icons-react'
 import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 import { mockEquipment, mockLocations } from '@/lib/mock-data'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { Pagination } from '@/components/ui/Pagination'
@@ -203,12 +204,12 @@ export default function EquipmentPage() {
 
   useEffect(() => { load() }, [])
 
-  async function load() {
-    setLoading(true)
+  async function load(silent = false) {
+    if (!silent) setLoading(true)
     if (IS_MOCK) {
       setEquipment(mockEquipment)
       setLocations(mockLocations)
-      setLoading(false)
+      if (!silent) setLoading(false)
       return
     }
     try {
@@ -240,7 +241,7 @@ export default function EquipmentPage() {
         setInReportIds(new Set((peData ?? []).map((r: any) => r.equipment_id)))
       }
     } catch { setEquipment(mockEquipment); setLocations(mockLocations) }
-    setLoading(false)
+    if (!silent) setLoading(false)
   }
 
   function openNew() {
@@ -328,8 +329,9 @@ export default function EquipmentPage() {
       }
 
       if (dbError) { setError(dbError.message); setSaving(false); return }
-      await load()
+      load(true)
       if (selectedYear) refreshCounters(selectedYear)
+      toast.success(t('Shranjeno', 'Saved'))
       setShowModal(false)
     } catch (err: any) { setError(err.message) }
     setSaving(false)
