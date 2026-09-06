@@ -141,7 +141,7 @@ export default function Scope2CoolingPage() {
         ? await supabase.from('scope2_cooling').update(payload).eq('id', existing.id)
         : await supabase.from('scope2_cooling').insert(payload)
       if (dbErr) { setError(dbErr.message); setSaving(false); return }
-      await load(); refreshCounters(year); toast.success('Saved'); setShowModal(false)
+      await load(); refreshCounters(year); toast.success(t('Shranjeno', 'Saved')); setShowModal(false)
     } catch (err: any) { setError(err.message) }
     setSaving(false)
   }

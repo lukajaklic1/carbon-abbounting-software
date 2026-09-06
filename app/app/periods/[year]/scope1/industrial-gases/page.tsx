@@ -147,7 +147,7 @@ export default function Scope1IndustrialGasesPage() {
       if (dbErr) { setError(dbErr.message); setSaving(false); return }
       await load()
       refreshCounters(year)
-      toast.success('Saved')
+      toast.success(t('Shranjeno', 'Saved'))
       setShowModal(false)
     } catch (err: any) { setError(err.message) }
     setSaving(false)

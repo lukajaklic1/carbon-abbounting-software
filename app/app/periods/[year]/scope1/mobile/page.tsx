@@ -183,7 +183,7 @@ export default function Scope1MobilePage() {
       if (dbErr) { setError(dbErr.message); setModalSaving(false); return }
       await load()
       refreshCounters(year)
-      toast.success('Saved')
+      toast.success(t('Shranjeno', 'Saved'))
       setShowModal(false)
     } catch (err: any) { setError(err.message) }
     setModalSaving(false)
