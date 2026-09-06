@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Wind, Plus, X, Leaf, Check, Building2, Settings2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getSteamFactors, calcCo2eKg } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
@@ -140,7 +141,7 @@ export default function Scope2SteamPage() {
         ? await supabase.from('scope2_steam').update(payload).eq('id', existing.id)
         : await supabase.from('scope2_steam').insert(payload)
       if (dbErr) { setError(dbErr.message); setSaving(false); return }
-      await load(); refreshCounters(year); setShowModal(false)
+      await load(); refreshCounters(year); toast.success('Saved'); setShowModal(false)
     } catch (err: any) { setError(err.message) }
     setSaving(false)
   }

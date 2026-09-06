@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Zap, Plus, Pencil, X, Leaf, Check, Settings2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getElectricityFactors, calcCo2eKg } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Building2, Plus, Pencil, X, Leaf, Check, Settings2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { getFuelFactors, calcCo2eKg, calcFuelGases } from '@/lib/emission-factors'
 import { useParams } from 'next/navigation'
@@ -146,6 +147,7 @@ export default function Scope1StationaryPage() {
       if (dbErr) { setError(dbErr.message); setSaving(false); return }
       await load()
       refreshCounters(year)
+      toast.success('Saved')
       setShowModal(false)
     } catch (err: any) { setError(err.message) }
     setSaving(false)
