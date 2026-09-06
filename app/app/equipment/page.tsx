@@ -464,8 +464,8 @@ export default function EquipmentPage() {
                 'Includes equipment that contains or releases industrial gases with high global warming potential (GWP), such as SF₆, FM-200 and others. Typically covers fire suppression systems. Record the actual quantity of gas consumed or charged in kilograms.'
               )}
               items={[
-                t('Fiksni sistemi za gašenje požarov (SF₆, FM-200…)', 'Fixed Fire Suppression (SF₆, FM-200…)'),
-                t('Prenosni aparati za gašenje (CO₂, prah…)', 'Portable Fire Extinguishers (CO₂, powder…)'),
+                t('Fiksni sistemi za gašenje požarov', 'Fixed Fire Suppression Systems'),
+                t('Prenosni aparati za gašenje', 'Portable Fire Extinguishers'),
               ]}
             />
             <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-500">
