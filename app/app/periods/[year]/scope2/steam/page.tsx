@@ -227,7 +227,7 @@ export default function Scope2SteamPage() {
                     </td>
                     <td className="px-5 py-3.5 text-sm text-gray-700">{entry ? STEAM_FACTORS[entry.country_code]?.label ?? entry.country_code : <span className="text-gray-300">—</span>}</td>
                     <td className="px-5 py-3.5 text-sm font-medium text-gray-700">{entry ? `${fmtQty(entry.quantity)} kWh` : <span className="text-gray-300">—</span>}</td>
-                    <td className="px-5 py-3.5">{entry ? <span className="text-sm font-semibold text-gray-500">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span> : <span className="text-gray-300 text-sm">—</span>}</td>
+                    <td className="px-5 py-3.5">{entry ? <span className="text-sm text-gray-500">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span> : <span className="text-gray-300 text-sm">—</span>}</td>
                     <td className="px-5 py-3.5">
                       {entry ? (
                         <span className="text-xs font-medium px-2 py-0.5 rounded-md" style={{backgroundColor:'#e0fced',border:'1px solid #d4f8e6',color:'#098259'}}>{t('Podatki vneseni', 'Data entered')}</span>
