@@ -176,7 +176,7 @@ export default function Scope1StationaryPage() {
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 border-b border-gray-200 min-h-[57px] py-3 sm:h-[57px] sm:py-0 shrink-0">
         <div className="flex items-center gap-2 min-w-0">
           <h1 className="text-base font-semibold text-gray-900 shrink-0">{t('Zemeljski plin', 'Natural Gas')}</h1>
-          <p className="text-sm text-gray-500 truncate">{t('Vnesite letno porabo zemeljskega plina in drugih goriv po lokacijah.', 'Enter the annual fuel consumption by location for this period.')}</p>
+          <p className="text-sm text-gray-500 truncate">{t('Vnesite letno porabo zemeljskega plina po lokacijah.', 'Enter the annual natural gas consumption by location for this period.')}</p>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {total > 0 && <>
