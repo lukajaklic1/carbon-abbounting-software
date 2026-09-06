@@ -308,7 +308,7 @@ export default function Scope1RefrigerantsPage() {
                 const inactiveSelected = reportEquipmentAll.filter(e => e.is_active === false && draftIds.has(e.id))
                 const inactiveIds = new Set(inactiveSelected.map((e: any) => e.id))
                 const modalList = [...inactiveSelected, ...allEquipment.filter(e => !inactiveIds.has(e.id))]
-                if (modalList.length === 0) return <p className="px-6 py-8 text-sm text-center text-gray-500">{t('Ni opreme.', 'No equipment.')}</p>
+                if (modalList.length === 0) return <div className="flex flex-col items-center justify-center py-10 px-6 text-center"><Thermometer className="h-8 w-8 mb-3" style={{ color: '#e4e4e8' }} /><p className="text-sm font-medium text-gray-900">{t('Ni opreme.', 'No equipment.')}</p></div>
                 return modalList.map(item => {
                   const checked = draftIds.has(item.id)
                   const hasData = !!entriesMap[item.id]

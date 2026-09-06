@@ -300,7 +300,7 @@ export default function Scope2ElectricityPage() {
                 const inactiveSelected = reportLocationsAll.filter(l => l.is_active === false && draftIds.has(l.id))
                 const inactiveIds = new Set(inactiveSelected.map((l: any) => l.id))
                 const modalList = [...inactiveSelected, ...allLocations.filter(l => !inactiveIds.has(l.id))]
-                if (modalList.length === 0) return <p className="px-6 py-8 text-sm text-center text-gray-500">{t('Ni lokacij.', 'No locations.')}</p>
+                if (modalList.length === 0) return <div className="flex flex-col items-center justify-center py-10 px-6 text-center"><Zap className="h-8 w-8 mb-3" style={{ color: '#e4e4e8' }} /><p className="text-sm font-medium text-gray-900">{t('Ni lokacij.', 'No locations.')}</p></div>
                 return modalList.map(loc => {
                   const checked = draftIds.has(loc.id)
                   const hasData = !!entriesMap[loc.id]
