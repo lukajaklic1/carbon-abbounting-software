@@ -468,7 +468,7 @@ export default function EquipmentPage() {
                 t('Prenosni aparati za gašenje', 'Portable Fire Extinguishers'),
               ]}
             />
-            <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-500">
+            <div className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-500">
               💡 {t('Vozila, ki porabljajo gorivo (avtomobili, tovornjaki, viličarji…), vnesite pod razdelek', 'Fuel-burning vehicles (cars, trucks, forklifts…) enter under')}{' '}
               <strong className="text-gray-700">„{t('Vozila', 'Vehicles')}"</strong>.{' '}
               {t('Poraba električnih vozil se obravnava pod razdelkom', 'Consumption of electric vehicles is covered under')}{' '}
