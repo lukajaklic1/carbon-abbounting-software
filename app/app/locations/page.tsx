@@ -242,7 +242,7 @@ export default function LocationsPage() {
           <p className="text-sm text-gray-500 truncate">{t('Sem spadajo vse lokacije, na katerih vaše podjetje posluje.', 'Includes all locations where your company operates.')}</p>
         </div>
         <button onClick={openNew}
-          className="inline-flex items-center gap-1.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg transition-colors shrink-0">
+          className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-3 sm:px-4 py-2 rounded-lg transition-colors shrink-0">
           <Plus className="h-3.5 w-3.5" />
           {t('Nova lokacija', 'New location')}
         </button>
