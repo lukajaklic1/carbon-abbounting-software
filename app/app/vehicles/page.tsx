@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Car, Plus, Pencil, Trash2, X, Truck, Bus, Search } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 import { mockVehicles } from '@/lib/mock-data'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { Pagination } from '@/components/ui/Pagination'
@@ -108,9 +109,9 @@ export default function VehiclesPage() {
     } catch {}
   }
 
-  async function loadVehicles() {
-    setLoading(true)
-    if (IS_MOCK) { setVehicles(mockVehicles); setLoading(false); return }
+  async function loadVehicles(silent = false) {
+    if (!silent) setLoading(true)
+    if (IS_MOCK) { setVehicles(mockVehicles); if (!silent) setLoading(false); return }
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
@@ -133,7 +134,7 @@ export default function VehiclesPage() {
         setInReportIds(new Set((pvRows ?? []).map((r: any) => r.vehicle_id)))
       }
     } catch { setVehicles(mockVehicles) }
-    setLoading(false)
+    if (!silent) setLoading(false)
   }
 
   function openNew() {
@@ -207,8 +208,9 @@ export default function VehiclesPage() {
       }
 
       if (dbError) { setError(dbError.message); setSaving(false); return }
-      await loadVehicles()
+      loadVehicles(true)
       if (selectedYear) refreshCounters(selectedYear)
+      toast.success(t('Shranjeno', 'Saved'))
       setShowModal(false)
     } catch (err: any) { setError(err.message) }
     setSaving(false)

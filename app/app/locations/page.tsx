@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { MapPin, Plus, Pencil, Trash2, Building2, X, Check, Search, Factory, Warehouse, ShoppingBag, UtensilsCrossed, Hotel, Cross, GraduationCap, Trophy, Server, Truck, Landmark, LayoutGrid } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 import { mockLocations } from '@/lib/mock-data'
 import { useLocale } from '@/lib/i18n/LocaleProvider'
 import { Pagination } from '@/components/ui/Pagination'
@@ -78,9 +79,9 @@ export default function LocationsPage() {
 
   useEffect(() => { loadLocations() }, [])
 
-  async function loadLocations() {
-    setLoading(true)
-    if (IS_MOCK) { setLocations(mockLocations); setLoading(false); return }
+  async function loadLocations(silent = false) {
+    if (!silent) setLoading(true)
+    if (IS_MOCK) { setLocations(mockLocations); if (!silent) setLoading(false); return }
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
@@ -126,7 +127,7 @@ export default function LocationsPage() {
         setLockedScopes(locked)
       }
     } catch { setLocations(mockLocations) }
-    setLoading(false)
+    if (!silent) setLoading(false)
   }
 
   function openNew() {
@@ -203,8 +204,9 @@ export default function LocationsPage() {
         dbError = error
       }
       if (dbError) { setError(dbError.message); setSaving(false); return }
-      await loadLocations()
+      loadLocations(true)
       if (selectedYear) refreshCounters(selectedYear)
+      toast.success(t('Shranjeno', 'Saved'))
       setShowModal(false)
     } catch (err: any) { setError(err.message) }
     setSaving(false)

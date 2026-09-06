@@ -146,6 +146,7 @@ export default function Scope2ElectricityPage() {
       if (dbErr) { setError(dbErr.message); setSaving(false); return }
       load(true)
       refreshCounters(year)
+      toast.success(t('Shranjeno', 'Saved'))
       setShowModal(false)
     } catch (err: any) { setError(err.message) }
     setSaving(false)
