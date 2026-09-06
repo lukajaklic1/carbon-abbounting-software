@@ -434,7 +434,7 @@ export default function Scope1MobilePage() {
               </button>
               <button onClick={handleSave} disabled={modalSaving || !form.quantity || parseQty(form.quantity) < 0}
                 className="flex-[2] px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed rounded-xl transition-colors">
-                {modalSaving ? t('Shranjevanje...', 'Saving...') : entriesMap[activeVehicle.id] ? t('Shrani', 'Save') : t('Dodaj vnos', 'Add entry')}
+                {entriesMap[activeVehicle.id] ? t('Shrani', 'Save') : t('Dodaj vnos', 'Add entry')}
               </button>
             </div>
           </div>
