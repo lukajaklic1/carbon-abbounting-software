@@ -469,9 +469,9 @@ export default function EquipmentPage() {
               ]}
             />
             <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-500">
-              💡 {t('Vozila (avtomobili, tovornjaki, viličarji…) vnesite pod', 'Vehicles (cars, trucks, forklifts…) enter under')}{' '}
+              💡 {t('Vozila, ki porabljajo gorivo (avtomobili, tovornjaki, viličarji…), vnesite pod razdelek', 'Fuel-burning vehicles (cars, trucks, forklifts…) enter under')}{' '}
               <strong className="text-gray-700">{t('Vozila', 'Vehicles')}</strong>.{' '}
-              {t('Električna vozila sem ne spadajo — njihova poraba se obravnava pod elektriko.', 'Electric vehicles do not belong here — their consumption is covered under electricity.')}
+              {t('Poraba električnih vozil se obravnava pod razdelkom elektrika.', 'Consumption of electric vehicles is covered under electricity.')}
             </div>
           </div>
           </div>
