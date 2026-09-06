@@ -269,7 +269,7 @@ export default function Scope1MobilePage() {
                       </td>
                       <td className="px-5 py-3.5">
                         {entry
-                          ? <span className="text-xs font-medium text-gray-500">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
+                          ? <span className="text-sm font-medium text-gray-900">{(entry.co2e_kg / 1000).toFixed(2).replace('.', ',')} tCO₂e</span>
                           : <span className="text-gray-300 text-sm">—</span>}
                       </td>
                       <td className="px-5 py-3.5">
