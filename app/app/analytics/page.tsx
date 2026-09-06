@@ -300,13 +300,13 @@ export default function AnalyticsPage() {
                     {rows.map(r => (
                       <tr key={r.name} className="border-t border-gray-200 hover:bg-gray-50 transition-colors">
                         <td className="px-5 py-3 text-sm text-gray-700">{r.name}</td>
-                        <td className="px-5 py-3 text-sm text-right text-gray-900 tabular-nums">{(r.kg / 1000).toFixed(3).replace('.', ',')}</td>
+                        <td className="px-5 py-3 text-sm text-right text-gray-900 tabular-nums">{(r.kg / 1000).toFixed(2).replace('.', ',')}</td>
                         <td className="px-5 py-3 text-xs text-right text-gray-400 tabular-nums">{pct(r.kg)}%</td>
                       </tr>
                     ))}
                     <tr className="border-t border-gray-200">
                       <td className="px-5 py-3 text-sm font-semibold text-gray-900">{t('Skupaj Obseg 1', 'Scope 1 Total')}</td>
-                      <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope1_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                      <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope1_kg / 1000).toFixed(2).replace('.', ',')}</td>
                       <td className="px-5 py-3 text-xs font-semibold text-right text-gray-500 tabular-nums">{pct(scopeData.scope1_kg)}%</td>
                     </tr>
                   </>
@@ -329,14 +329,14 @@ export default function AnalyticsPage() {
                   return (
                     <tr key={key} className="border-t border-gray-200 hover:bg-gray-50 transition-colors">
                       <td className="px-5 py-3 text-sm text-gray-700">{label}</td>
-                      <td className="px-5 py-3 text-sm text-right text-gray-900 tabular-nums">{(src.kg / 1000).toFixed(3).replace('.', ',')}</td>
+                      <td className="px-5 py-3 text-sm text-right text-gray-900 tabular-nums">{(src.kg / 1000).toFixed(2).replace('.', ',')}</td>
                       <td className="px-5 py-3 text-xs text-right text-gray-400 tabular-nums">{pct(src.kg)}%</td>
                     </tr>
                   )
                 })}
                 <tr className="border-t border-gray-200">
                   <td className="px-5 py-3 text-sm font-semibold text-gray-900">{t('Skupaj Obseg 2', 'Scope 2 Total')}</td>
-                  <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope2_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                  <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope2_kg / 1000).toFixed(2).replace('.', ',')}</td>
                   <td className="px-5 py-3 text-xs font-semibold text-right text-gray-500 tabular-nums">{pct(scopeData.scope2_kg)}%</td>
                 </tr>
               </>}
@@ -348,12 +348,12 @@ export default function AnalyticsPage() {
                 </tr>
                 <tr className="border-t border-gray-200 hover:bg-gray-50 transition-colors">
                   <td className="px-5 py-3 text-sm text-gray-700">{t('Vrednostna veriga', 'Value chain')}</td>
-                  <td className="px-5 py-3 text-sm text-right text-gray-900 tabular-nums">{(scopeData.scope3_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                  <td className="px-5 py-3 text-sm text-right text-gray-900 tabular-nums">{(scopeData.scope3_kg / 1000).toFixed(2).replace('.', ',')}</td>
                   <td className="px-5 py-3 text-xs text-right text-gray-400 tabular-nums">{pct(scopeData.scope3_kg)}%</td>
                 </tr>
                 <tr className="border-t border-gray-200">
                   <td className="px-5 py-3 text-sm font-semibold text-gray-900">{t('Skupaj Obseg 3', 'Scope 3 Total')}</td>
-                  <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope3_kg / 1000).toFixed(3).replace('.', ',')}</td>
+                  <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(scopeData.scope3_kg / 1000).toFixed(2).replace('.', ',')}</td>
                   <td className="px-5 py-3 text-xs font-semibold text-right text-gray-500 tabular-nums">{pct(scopeData.scope3_kg)}%</td>
                 </tr>
               </>}
@@ -361,7 +361,7 @@ export default function AnalyticsPage() {
               {/* TOTAL */}
               <tr className="border-t border-gray-200 bg-gray-100">
                 <td className="px-5 py-3 text-sm font-bold text-gray-900">{t('Skupne emisije', 'Total emissions')}</td>
-                <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(total / 1000).toFixed(3).replace('.', ',')}</td>
+                <td className="px-5 py-3 text-sm font-bold text-right text-gray-900 tabular-nums">{(total / 1000).toFixed(2).replace('.', ',')}</td>
                 <td className="px-5 py-3 text-sm font-bold text-right text-gray-900">100%</td>
               </tr>
             </tbody>
