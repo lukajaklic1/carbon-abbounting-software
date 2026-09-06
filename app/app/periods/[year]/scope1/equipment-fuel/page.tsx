@@ -370,11 +370,11 @@ export default function Scope1EquipmentFuelPage() {
                 </div>
               </div>
               {preview !== null && (
-                <div className="bg-gray-100 border border-green-100 rounded-xl px-4 py-3 flex items-center gap-3">
-                  <Leaf className="h-4 w-4 text-gray-900 shrink-0" />
-                  <div>
-                    <p className="text-xs text-gray-900">{t('Izračunane emisije', 'Calculated emissions')}</p>
-                    <p className="text-base font-bold text-green-800">{(preview / 1000).toFixed(2).replace('.', ',')} tCO₂e</p>
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">{t('Izračunane emisije', 'Calculated emissions')}</label>
+                  <div className="flex gap-2">
+                    <div className="flex-1 px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-700 font-medium">{(preview / 1000).toFixed(2).replace('.', ',')}</div>
+                    <div className="w-16 px-2 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg text-gray-500 flex items-center justify-center shrink-0">tCO₂e</div>
                   </div>
                 </div>
               )}
