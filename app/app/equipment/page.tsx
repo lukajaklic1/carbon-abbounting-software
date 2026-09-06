@@ -166,13 +166,13 @@ function getPrimaryCategory(eq: any) {
 function GuideCard({ title, description, items }: { title: string; description: string; items: string[] }) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-      <div className="px-5 py-4 border-b border-gray-100">
-        <p className="text-sm font-semibold text-gray-900">{title}</p>
-        <p className="text-sm text-gray-500 mt-1 leading-relaxed">{description}</p>
+      <div className="px-6 py-5 border-b border-gray-100">
+        <p className="text-base font-semibold text-gray-900">{title}</p>
+        <p className="text-sm text-gray-500 mt-1.5 leading-relaxed">{description}</p>
       </div>
-      <div className="px-5 py-4 flex flex-wrap gap-2">
+      <div className="px-6 py-4 grid grid-cols-2 gap-x-8 gap-y-2">
         {items.map((item, i) => (
-          <span key={i} className="text-xs font-medium px-2.5 py-1 rounded-md bg-gray-100 text-gray-700">{item}</span>
+          <p key={i} className="text-sm text-gray-700">{item}</p>
         ))}
       </div>
     </div>
