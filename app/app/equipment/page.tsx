@@ -444,8 +444,8 @@ export default function EquipmentPage() {
             <GuideCard
               title={t('Hladiva', 'Refrigerants')}
               description={t(
-                'Sem spada oprema, ki vsebuje hladilne pline (HFC, HFO, PFC…). Emisije nastanejo pri polnjenju, servisiranju ali uhajanju hladiva. Beležite količino napolnjenega hladiva v kilogramih, ne porabe energije.',
-                'Includes equipment that contains refrigerant gases (HFC, HFO, PFC…). Emissions occur when refrigerant is charged, serviced, or leaks. Record the quantity of refrigerant charged in kilograms, not energy consumption.'
+                'Sem spada vsa oprema, ki vsebuje hladilne pline (HFC, HFO, PFC…). Emisije nastanejo pri uhajanju hladilnih plinov. Porabo beležite kot količino napolnjenega hladiva v kilogramih pri vsakem servisiranju ali vzdrževanju.',
+                'Includes all equipment that contains refrigerant gases (HFC, HFO, PFC…). Emissions occur when refrigerants leak. Record consumption as the quantity of refrigerant charged in kilograms during each service or maintenance event.'
               )}
               items={[
                 t('Hladilniki (chillerji)', 'Chillers'),
