@@ -48,8 +48,8 @@ export default function Scope1MobilePage() {
 
   useEffect(() => { if (year) load() }, [year])
 
-  async function load() {
-    setLoading(true)
+  async function load(silent = false) {
+    if (!silent) setLoading(true)
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
@@ -87,7 +87,7 @@ export default function Scope1MobilePage() {
       if (pd && ents) ents.filter((e: any) => e.reporting_period_id === pd.id).forEach((e: any) => { entMap[e.vehicle_id] = e })
       setEntriesMap(entMap)
     } catch {}
-    setLoading(false)
+    if (!silent) setLoading(false)
   }
 
   // Open select modal — prefill with current selection
@@ -181,7 +181,7 @@ export default function Scope1MobilePage() {
         ? await supabase.from('scope1_mobile').update(payload).eq('id', existing.id)
         : await supabase.from('scope1_mobile').insert(payload)
       if (dbErr) { setError(dbErr.message); setModalSaving(false); return }
-      await load()
+      load(true)
       refreshCounters(year)
       toast.success(t('Shranjeno', 'Saved'))
       setShowModal(false)

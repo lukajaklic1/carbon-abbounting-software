@@ -66,8 +66,8 @@ export default function Scope1EquipmentFuelPage() {
     await load(); refreshCounters(year); setSelectSaving(false); setShowSelect(false)
   }
 
-  async function load() {
-    setLoading(true)
+  async function load(silent = false) {
+    if (!silent) setLoading(true)
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
@@ -99,7 +99,7 @@ export default function Scope1EquipmentFuelPage() {
       if (pd && ents) ents.filter((e: any) => e.reporting_period_id === pd.id).forEach((e: any) => { map[e.equipment_id] = e })
       setEntriesMap(map)
     } catch {}
-    setLoading(false)
+    if (!silent) setLoading(false)
   }
 
   function openAdd(item: any) {
@@ -149,7 +149,7 @@ export default function Scope1EquipmentFuelPage() {
         ? await supabase.from('scope1_equipment_fuel').update(payload).eq('id', existing.id)
         : await supabase.from('scope1_equipment_fuel').insert(payload)
       if (dbErr) { setError(dbErr.message); setSaving(false); return }
-      await load()
+      load(true)
       refreshCounters(year)
       toast.success(t('Shranjeno', 'Saved'))
       setShowModal(false)

@@ -65,8 +65,8 @@ export default function Scope1StationaryPage() {
     await load(); refreshCounters(year); setSelectSaving(false); setShowSelect(false)
   }
 
-  async function load() {
-    setLoading(true)
+  async function load(silent = false) {
+    if (!silent) setLoading(true)
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
@@ -98,7 +98,7 @@ export default function Scope1StationaryPage() {
       if (pd && ents) ents.filter((e: any) => e.reporting_period_id === pd.id).forEach((e: any) => { map[e.location_id] = e })
       setEntriesMap(map)
     } catch {}
-    setLoading(false)
+    if (!silent) setLoading(false)
   }
 
   function openAdd(location: any) {
@@ -145,7 +145,7 @@ export default function Scope1StationaryPage() {
         ? await supabase.from('scope1_stationary').update(payload).eq('id', existing.id)
         : await supabase.from('scope1_stationary').insert(payload)
       if (dbErr) { setError(dbErr.message); setSaving(false); return }
-      await load()
+      load(true)
       refreshCounters(year)
       toast.success(t('Shranjeno', 'Saved'))
       setShowModal(false)

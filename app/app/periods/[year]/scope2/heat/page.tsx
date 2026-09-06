@@ -65,8 +65,8 @@ export default function Scope2HeatPage() {
     await load(); refreshCounters(year); setSelectSaving(false); setShowSelect(false)
   }
 
-  async function load() {
-    setLoading(true)
+  async function load(silent = false) {
+    if (!silent) setLoading(true)
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
@@ -96,7 +96,7 @@ export default function Scope2HeatPage() {
       if (pd && ents) ents.filter((e: any) => e.reporting_period_id === pd.id).forEach((e: any) => { map[e.location_id] = e })
       setEntriesMap(map)
     } catch {}
-    setLoading(false)
+    if (!silent) setLoading(false)
   }
 
   function openAdd(loc: any) {

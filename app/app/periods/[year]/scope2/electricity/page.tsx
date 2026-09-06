@@ -65,8 +65,8 @@ export default function Scope2ElectricityPage() {
     await load(); refreshCounters(year); setSelectSaving(false); setShowSelect(false)
   }
 
-  async function load() {
-    setLoading(true)
+  async function load(silent = false) {
+    if (!silent) setLoading(true)
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
@@ -98,7 +98,7 @@ export default function Scope2ElectricityPage() {
       if (pd && ents) ents.filter((e: any) => e.reporting_period_id === pd.id).forEach((e: any) => { map[e.location_id] = e })
       setEntriesMap(map)
     } catch {}
-    setLoading(false)
+    if (!silent) setLoading(false)
   }
 
   function openAdd(location: any) {
@@ -144,7 +144,7 @@ export default function Scope2ElectricityPage() {
         ? await supabase.from('scope2_electricity').update(payload).eq('id', existing.id)
         : await supabase.from('scope2_electricity').insert(payload)
       if (dbErr) { setError(dbErr.message); setSaving(false); return }
-      await load()
+      load(true)
       refreshCounters(year)
       setShowModal(false)
     } catch (err: any) { setError(err.message) }
