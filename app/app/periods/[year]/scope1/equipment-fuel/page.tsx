@@ -304,7 +304,7 @@ export default function Scope1EquipmentFuelPage() {
                 const inactiveSelected = reportEquipmentAll.filter(e => e.is_active === false && draftIds.has(e.id))
                 const inactiveIds = new Set(inactiveSelected.map((e: any) => e.id))
                 const modalList = [...inactiveSelected, ...allEquipment.filter(e => !inactiveIds.has(e.id))]
-                if (modalList.length === 0) return <div className="flex flex-col items-center justify-center py-10 px-6 text-center"><Wrench className="h-8 w-8 mb-3" style={{ color: '#e4e4e8' }} /><p className="text-sm font-medium text-gray-900">{t('Ni opreme.', 'No equipment.')}</p></div>
+                if (modalList.length === 0) return <div className="mx-4 my-3 border border-gray-200 bg-gray-50 rounded-xl flex flex-col items-center justify-center py-10 px-6 text-center"><Wrench className="h-8 w-8 mb-3" style={{ color: '#e4e4e8' }} /><p className="text-sm font-medium text-gray-900">{t('Ni opreme.', 'No equipment.')}</p></div>
                 return modalList.map(item => {
                   const checked = draftIds.has(item.id)
                   const hasData = !!entriesMap[item.id]

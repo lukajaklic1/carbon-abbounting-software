@@ -283,7 +283,7 @@ export default function Scope2SteamPage() {
                 const inactiveSelected = reportLocationsAll.filter(l => l.is_active === false && draftIds.has(l.id))
                 const inactiveIds = new Set(inactiveSelected.map((l: any) => l.id))
                 const modalList = [...inactiveSelected, ...allLocations.filter(l => !inactiveIds.has(l.id))]
-                if (modalList.length === 0) return <div className="flex flex-col items-center justify-center py-10 px-6 text-center"><Wind className="h-8 w-8 mb-3" style={{ color: '#e4e4e8' }} /><p className="text-sm font-medium text-gray-900">{t('Ni lokacij.', 'No locations.')}</p></div>
+                if (modalList.length === 0) return <div className="mx-4 my-3 border border-gray-200 bg-gray-50 rounded-xl flex flex-col items-center justify-center py-10 px-6 text-center"><Wind className="h-8 w-8 mb-3" style={{ color: '#e4e4e8' }} /><p className="text-sm font-medium text-gray-900">{t('Ni lokacij.', 'No locations.')}</p></div>
                 return modalList.map(loc => {
                   const checked = draftIds.has(loc.id)
                   const hasData = !!entriesMap[loc.id]
