@@ -189,7 +189,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </main>
         </div>
       </div>
+      <Toaster position="bottom-right" />
     </LocaleProvider>
-    <Toaster position="bottom-right" />
   )
 }
