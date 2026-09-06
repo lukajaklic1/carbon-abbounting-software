@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getLocale } from 'next-intl/server'
-import { ToastProvider } from '@/components/ui/toast-provider'
 import './globals.css'
 
 const inter = Inter({
@@ -36,7 +35,6 @@ export default async function RootLayout({
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>
-        <ToastProvider />
       </body>
     </html>
   )
