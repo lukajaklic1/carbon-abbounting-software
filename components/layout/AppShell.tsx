@@ -6,7 +6,6 @@ import { Menu, ChevronDown, Plus, PanelLeft, MapPin, Car, Wrench, Flame, Zap, Th
 import { Sidebar } from './Sidebar'
 import { OrgLoader } from './OrgLoader'
 import { LocaleProvider } from '@/lib/i18n/LocaleProvider'
-import { Toaster } from '@/components/ui/sonner'
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuTrigger, DropdownMenuSeparator,
@@ -189,7 +188,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </main>
         </div>
       </div>
-      <Toaster position="bottom-right" />
     </LocaleProvider>
   )
 }
