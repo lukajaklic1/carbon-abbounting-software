@@ -163,24 +163,18 @@ function getPrimaryCategory(eq: any) {
   return 'fuel'
 }
 
-function GuideCard({ iconColor, title, subtitle, items }: { iconColor: string; title: string; subtitle: string; items: string[] }) {
+function GuideCard({ title, description, items }: { title: string; description: string; items: string[] }) {
   return (
     <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
-        <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: iconColor }} />
-        <div>
-          <p className="text-sm font-semibold text-gray-900">{title}</p>
-          <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>
-        </div>
+      <div className="px-5 py-4 border-b border-gray-100">
+        <p className="text-sm font-semibold text-gray-900">{title}</p>
+        <p className="text-sm text-gray-500 mt-1 leading-relaxed">{description}</p>
       </div>
-      <ul className="px-5 py-3 space-y-2">
+      <div className="px-5 py-4 flex flex-wrap gap-2">
         {items.map((item, i) => (
-          <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
-            <span className="mt-1.5 w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: iconColor }} />
-            {item}
-          </li>
+          <span key={i} className="text-xs font-medium px-2.5 py-1 rounded-md bg-gray-100 text-gray-700">{item}</span>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }
@@ -425,9 +419,11 @@ export default function EquipmentPage() {
           <div className="px-6 py-6">
           <div className="max-w-2xl mx-auto space-y-4">
             <GuideCard
-              iconColor="#215bcf"
-              title={t('Gorivo — stacionarna oprema', 'Fuel — stationary equipment')}
-              subtitle={t('Naprave, ki sežigajo gorivo na eni lokaciji', 'Equipment that burns fuel at a fixed location')}
+              title={t('Gorivo', 'Fuel')}
+              description={t(
+                'Sem spadajo vse naprave, ki sežigajo gorivo na fiksni lokaciji. Porabo vnesite v Obsegu 1 pod "Gorivo opreme". Pozor: če ste porabo zemeljskega plina že zajeli na ravni lokacije (v Zemeljski plin), kotlov na plin sem ne dodajajte — to bi pomenilo dvojno štetje.',
+                'Includes all equipment that burns fuel at a fixed location. Enter consumption under Scope 1 – Equipment Fuel. Note: if you have already captured natural gas usage at the facility level, do not add gas boilers here — that would result in double counting.'
+              )}
               items={[
                 t('Kotel', 'Boiler'),
                 t('Gorilnik', 'Burner'),
@@ -446,27 +442,30 @@ export default function EquipmentPage() {
               ]}
             />
             <GuideCard
-              iconColor="#215bcf"
-              title={t('Hladiva — hladilna in klimatska oprema', 'Refrigerants — cooling & A/C equipment')}
-              subtitle={t('Naprave, ki vsebujejo hladilne pline (HFC, HFO, PFC…)', 'Equipment that contains refrigerant gases (HFC, HFO, PFC…)')}
+              title={t('Hladiva', 'Refrigerants')}
+              description={t(
+                'Sem spada oprema, ki vsebuje hladilne pline (HFC, HFO, PFC…). Emisije nastanejo pri polnjenju, servisiranju ali uhajanju hladiva. Beležite količino napolnjenega hladiva v kilogramih — ne porabe energije.',
+                'Includes equipment that contains refrigerant gases (HFC, HFO, PFC…). Emissions occur when refrigerant is charged, serviced, or leaks. Record the quantity of refrigerant charged in kilograms — not energy consumption.'
+              )}
               items={[
                 t('Hladilniki (chillerji)', 'Chillers'),
                 t('Gospodinjski hladilniki', 'Domestic Refrigeration'),
-                t('Industrijska hladilna tehnika in predelava hrane', 'Industrial Refrigeration incl. Food Processing & Cold Storage'),
-                t('Srednji in veliki komercialni hladilniki', 'Medium & Large Commercial Refrigeration'),
-                t('Mobilna klimatizacija', 'Mobile Air Conditioning'),
-                t('Stanovanjske in poslovne klimatske naprave (toplotne črpalke)', 'Residential & Commercial A/C incl. Heat Pumps'),
-                t('Samostojne komercialne hladilne naprave', 'Stand-alone Commercial Applications'),
+                t('Industrijska hladilna tehnika', 'Industrial Refrigeration'),
+                t('Komercialni hladilniki', 'Commercial Refrigeration'),
+                t('Mobilna klimatizacija', 'Mobile A/C'),
+                t('Klimatske naprave in toplotne črpalke', 'A/C & Heat Pumps'),
                 t('Transportna hladilna tehnika', 'Transport Refrigeration'),
               ]}
             />
             <GuideCard
-              iconColor="#215bcf"
-              title={t('Industrijski plini', 'Industrial gases')}
-              subtitle={t('Oprema, ki vsebuje ali oddaja industrijske pline z visokimi GWP vrednostmi', 'Equipment that contains or emits industrial gases with high GWP values')}
+              title={t('Industrijski plini', 'Industrial Gases')}
+              description={t(
+                'Sem spada oprema, ki vsebuje ali sprošča industrijske pline z visokim potencialom globalnega segrevanja (GWP), kot so SF₆, FM-200 in drugi. Tipično to zajema sisteme za gašenje požarov. Beležite dejansko porabljeno ali napolnjeno količino plina v kilogramih.',
+                'Includes equipment that contains or releases industrial gases with high global warming potential (GWP), such as SF₆, FM-200 and others. Typically covers fire suppression systems. Record the actual quantity of gas consumed or charged in kilograms.'
+              )}
               items={[
-                t('Fiksna oprema za gašenje požarov (SF₆, FM-200…)', 'Fixed Fire Suppression Equipment (SF₆, FM-200…)'),
-                t('Prenosna oprema za gašenje požarov (CO₂, prah…)', 'Portable Fire Suppression Equipment (CO₂, powder…)'),
+                t('Fiksni sistemi za gašenje požarov (SF₆, FM-200…)', 'Fixed Fire Suppression (SF₆, FM-200…)'),
+                t('Prenosni aparati za gašenje (CO₂, prah…)', 'Portable Fire Extinguishers (CO₂, powder…)'),
               ]}
             />
             <div className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-500">
